@@ -1,10 +1,1 @@
-{
-  "name": "வேத வசனம் — Bible Verses",
-  "short_name": "வேத வசனம்",
-  "description": "Tamil & English Bible — 66 Books, AI Search, Audio TTS",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#0f0f0f",
-  "theme_color": "#0078D7",
-  "orientation": "portrait"
-}
+{"name":"வேத வசனம் · Holy Bible","short_name":"வேத வசனம்","description":"Tamil + English Bible — 31102 verses, Character Stories, Audio TTS","start_url":"./index.html","display":"standalone","background_color":"#080810","theme_color":"#c9a84c","orientation":"portrait"}
