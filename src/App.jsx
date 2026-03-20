@@ -1,290 +1,252 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 
-const BIBLE_DATA = [
-  { id:1,  book:"ஆதியாகமம்",     book_en:"Genesis",        ch:1,  v:1,
-    ta:"ஆதியிலே தேவன் வானத்தையும் பூமியையும் சிருஷ்டித்தார்.",
-    en:"In the beginning God created the heaven and the earth.",
-    tags:["creation","god","beginning","படைப்பு","தேவன்"]},
-  { id:2,  book:"ஆதியாகமம்",     book_en:"Genesis",        ch:1,  v:3,
-    ta:"தேவன்: வெளிச்சம் உண்டாகக்கடவது என்றார்; வெளிச்சம் உண்டாயிற்று.",
-    en:"And God said, Let there be light: and there was light.",
-    tags:["light","creation","god","வெளிச்சம்","படைப்பு"]},
-  { id:3,  book:"யாத்திராகமம்",  book_en:"Exodus",         ch:20, v:3,
-    ta:"என்னையன்றி உனக்கு வேறே தேவர்கள் இருக்கலாகாது.",
-    en:"Thou shalt have no other gods before me.",
-    tags:["commandment","god","worship","கட்டளை","வழிபாடு"]},
-  { id:4,  book:"சங்கீதம்",      book_en:"Psalms",         ch:1,  v:1,
-    ta:"பாக்கியவான் அந்த மனுஷன்; அவன் துன்மார்க்கரின் ஆலோசனையில் நடவாமலும், பாவிகளின் வழியில் நிற்காமலும் இருக்கிறான்.",
-    en:"Blessed is the man that walketh not in the counsel of the ungodly, nor standeth in the way of sinners.",
-    tags:["blessed","wisdom","righteous","ஆசீர்வாதம்","நீதி"]},
-  { id:5,  book:"சங்கீதம்",      book_en:"Psalms",         ch:23, v:1,
-    ta:"கர்த்தர் என் மேய்ப்பராயிருக்கிறார்; எனக்குக் குறைவு உண்டாகாது.",
-    en:"The Lord is my shepherd; I shall not want.",
-    tags:["shepherd","trust","lord","மேய்ப்பர்","நம்பிக்கை","ஆண்டவர்"]},
-  { id:6,  book:"சங்கீதம்",      book_en:"Psalms",         ch:23, v:4,
-    ta:"நான் மரண இருளின் பள்ளத்தாக்கிலே நடந்தாலும் தீமைக்கு அஞ்சமாட்டேன்; தேவரீர் என்னோடிருக்கிறீர்.",
-    en:"Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me.",
-    tags:["fear","protection","god","death","அச்சம்","பாதுகாப்பு","மரணம்"]},
-  { id:7,  book:"சங்கீதம்",      book_en:"Psalms",         ch:46, v:1,
-    ta:"தேவன் நமக்கு அடைக்கலமும் பெலனுமாயிருக்கிறார்; இக்கட்டுகளில் அவர் மிகவும் உதவியாயிருக்கிறார்.",
-    en:"God is our refuge and strength, a very present help in trouble.",
-    tags:["refuge","strength","help","trouble","அடைக்கலம்","பெலன்","உதவி"]},
-  { id:8,  book:"சங்கீதம்",      book_en:"Psalms",         ch:119,v:105,
-    ta:"உமது வார்த்தை என் பாதங்களுக்கு தீபமும் என் பாதையில் வெளிச்சமுமாயிருக்கிறது.",
-    en:"Thy word is a lamp unto my feet, and a light unto my path.",
-    tags:["word","light","path","guidance","வார்த்தை","வெளிச்சம்","வழி","வழிகாட்டுதல்"]},
-  { id:9,  book:"நீதிமொழிகள்",   book_en:"Proverbs",       ch:3,  v:5,
-    ta:"உன் சொந்த விவேகத்தின்மேல் சாயாமல், உன் முழு இருதயத்தோடும் கர்த்தரில் நம்பிக்கையாயிரு.",
-    en:"Trust in the Lord with all thine heart; and lean not unto thine own understanding.",
-    tags:["trust","wisdom","heart","lord","நம்பிக்கை","விவேகம்","இருதயம்"]},
-  { id:10, book:"நீதிமொழிகள்",   book_en:"Proverbs",       ch:3,  v:6,
-    ta:"உன் எல்லா வழிகளிலும் அவரை நினைத்துக்கொள், அவர் உன் பாதைகளை செவ்வைப்படுத்துவார்.",
-    en:"In all thy ways acknowledge him, and he shall direct thy paths.",
-    tags:["guidance","path","lord","direction","வழி","வழிகாட்டுதல்","நினைவு"]},
-  { id:11, book:"நீதிமொழிகள்",   book_en:"Proverbs",       ch:22, v:6,
-    ta:"பிள்ளையானவன் போகவேண்டிய வழியிலே அவனை நடத்து; அவன் முதிர்வயதிலும் அதை விடான்.",
-    en:"Train up a child in the way he should go: and when he is old, he will not depart from it.",
-    tags:["children","family","upbringing","பிள்ளை","குடும்பம்","வழி"]},
-  { id:12, book:"ஏசாயா",         book_en:"Isaiah",         ch:40, v:31,
-    ta:"கர்த்தரை நம்பிக்கொண்டிருக்கிறவர்களோ புதுப்பிக்கப்பட்ட பெலத்தை அடைவார்கள்; கழுகுகளைப்போல செட்டைகளை அடித்து எழும்புவார்கள்.",
-    en:"But they that wait upon the Lord shall renew their strength; they shall mount up with wings as eagles.",
-    tags:["strength","hope","wait","eagle","வலிமை","நம்பிக்கை","கழுகு"]},
-  { id:13, book:"எரேமியா",       book_en:"Jeremiah",       ch:29, v:11,
-    ta:"நான் உங்களுக்காக நினைக்கிற நினைவுகளை நான் அறிவேன்; அவை தீமைக்கல்ல நன்மைக்கேதுவான நினைவுகளே.",
-    en:"For I know the thoughts that I think toward you, saith the Lord, thoughts of peace, and not of evil, to give you an expected end.",
-    tags:["hope","future","plan","peace","நம்பிக்கை","எதிர்காலம்","சமாதானம்","திட்டம்"]},
-  { id:14, book:"மத்தேயு",       book_en:"Matthew",        ch:5,  v:3,
-    ta:"ஆவியில் எளிமையுள்ளவர்கள் பாக்கியவான்கள்; பரலோகராஜ்யம் அவர்களுடையது.",
-    en:"Blessed are the poor in spirit: for theirs is the kingdom of heaven.",
-    tags:["blessed","kingdom","heaven","ஆசீர்வாதம்","பரலோகம்"]},
-  { id:15, book:"மத்தேயு",       book_en:"Matthew",        ch:5,  v:9,
-    ta:"சமாதானம்பண்ணுகிறவர்கள் பாக்கியவான்கள்; அவர்கள் தேவனுடைய புத்திரர் என்னப்படுவார்கள்.",
-    en:"Blessed are the peacemakers: for they shall be called the children of God.",
-    tags:["peace","blessed","சமாதானம்","ஆசீர்வாதம்"]},
-  { id:16, book:"மத்தேயு",       book_en:"Matthew",        ch:6,  v:33,
-    ta:"முதலாவது தேவனுடைய ராஜ்யத்தையும் அவருடைய நீதியையும் தேடுங்கள்.",
-    en:"But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you.",
-    tags:["seek","kingdom","righteousness","தேடுங்கள்","ராஜ்யம்","நீதி"]},
-  { id:17, book:"மத்தேயு",       book_en:"Matthew",        ch:11, v:28,
-    ta:"வருத்தப்பட்டுப் பாரஞ்சுமக்கிற எல்லாரும் என்னிடத்தில் வாருங்கள்; நான் உங்களுக்கு இளைப்பாறுதல் தருவேன்.",
-    en:"Come unto me, all ye that labour and are heavy laden, and I will give you rest.",
-    tags:["rest","burden","comfort","இளைப்பாறுதல்","சுமை","ஆறுதல்"]},
-  { id:18, book:"யோவான்",        book_en:"John",           ch:3,  v:16,
-    ta:"தேவன், தம்முடைய ஒரே பேறான குமாரனை விசுவாசிக்கிறவன் எவனோ அவன் கெட்டுப்போகாமல் நித்தியஜீவனை அடையும்படிக்கு, அவரை தந்தருளி இவ்வளவாய் உலகத்தில் அன்பாயிருந்தார்.",
-    en:"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
-    tags:["love","salvation","eternal life","god","அன்பு","இரட்சிப்பு","நித்தியஜீவன்","தேவன்"]},
-  { id:19, book:"யோவான்",        book_en:"John",           ch:14, v:6,
-    ta:"இயேசு அவனை நோக்கி: நானே வழியும் சத்தியமும் ஜீவனுமாயிருக்கிறேன்.",
-    en:"Jesus saith unto him, I am the way, the truth, and the life: no man cometh unto the Father, but by me.",
-    tags:["jesus","truth","life","way","இயேசு","சத்தியம்","ஜீவன்","வழி"]},
-  { id:20, book:"யோவான்",        book_en:"John",           ch:15, v:13,
-    ta:"ஒருவன் தன் சிநேகிதருக்காக தன் ஜீவனைக் கொடுப்பதிலும் அதிகமான அன்பு ஒருவனிடத்திலும் இல்லை.",
-    en:"Greater love hath no man than this, that a man lay down his life for his friends.",
-    tags:["love","sacrifice","friendship","அன்பு","தியாகம்","நட்பு"]},
-  { id:21, book:"உரோமர்",        book_en:"Romans",         ch:3,  v:23,
-    ta:"எல்லாரும் பாவஞ்செய்து தேவமகிமையற்றவர்களாகி இருக்கிறார்கள்.",
-    en:"For all have sinned, and come short of the glory of God.",
-    tags:["sin","glory","god","பாவம்","மகிமை","தேவன்"]},
-  { id:22, book:"உரோமர்",        book_en:"Romans",         ch:6,  v:23,
-    ta:"பாவத்தின் சம்பளம் மரணம்; தேவனுடைய கிருபைவரமோ நம்முடைய கர்த்தராகிய இயேசுகிறிஸ்துவினால் உண்டான நித்தியஜீவன்.",
-    en:"For the wages of sin is death; but the gift of God is eternal life through Jesus Christ our Lord.",
-    tags:["sin","death","gift","eternal life","salvation","பாவம்","மரணம்","கிருபை","இரட்சிப்பு"]},
-  { id:23, book:"உரோமர்",        book_en:"Romans",         ch:8,  v:28,
-    ta:"தேவனிடத்தில் அன்பு கூர்ந்து, அவருடைய தீர்மானத்தின்படி அழைக்கப்பட்டவர்களுக்கு எல்லாவற்றிலும் நன்மையே உண்டாகும்.",
-    en:"And we know that all things work together for good to them that love God.",
-    tags:["good","love","purpose","faith","நன்மை","அன்பு","நோக்கம்","விசுவாசம்"]},
-  { id:24, book:"உரோமர்",        book_en:"Romans",         ch:10, v:9,
-    ta:"இயேசுவை ஆண்டவர் என்று உன் வாயினால் அறிக்கையிட்டு, தேவன் அவரை மரித்தோரிலிருந்து எழுப்பினார் என்று உன் இருதயத்தில் விசுவாசித்தால் இரட்சிக்கப்படுவாய்.",
-    en:"That if thou shalt confess with thy mouth the Lord Jesus, and shalt believe in thine heart that God hath raised him from the dead, thou shalt be saved.",
-    tags:["salvation","confession","believe","jesus","இரட்சிப்பு","விசுவாசம்","இயேசு"]},
-  { id:25, book:"1 கொரிந்தியர்", book_en:"1 Corinthians",  ch:13, v:4,
-    ta:"அன்பு நீடிய பொறுமையுள்ளது; அன்பு தயவுள்ளது; அன்பு பொறாமைப்படாது.",
-    en:"Charity suffereth long, and is kind; charity envieth not; charity vaunteth not itself.",
-    tags:["love","patience","kindness","அன்பு","பொறுமை","தயவு"]},
-  { id:26, book:"1 கொரிந்தியர்", book_en:"1 Corinthians",  ch:13, v:13,
-    ta:"இப்பொழுதும் விசுவாசம், நம்பிக்கை, அன்பு இம்மூன்றும் நிலைத்திருக்கும்; இவைகளில் அன்பே சிறந்தது.",
-    en:"And now abideth faith, hope, charity, these three; but the greatest of these is charity.",
-    tags:["faith","hope","love","greatest","விசுவாசம்","நம்பிக்கை","அன்பு"]},
-  { id:27, book:"பிலிப்பியர்",   book_en:"Philippians",    ch:4,  v:6,
-    ta:"எந்த காரியத்திலும் கவலைப்படாதிருங்கள்; எல்லாவற்றிலும் உங்கள் விண்ணப்பங்களை ஸ்தோத்திரத்தோடே கூடிய ஜெபத்தினாலும் தேவனுக்கு அறிவியுங்கள்.",
-    en:"Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God.",
-    tags:["prayer","anxiety","peace","thanksgiving","ஜெபம்","கவலை","சமாதானம்","நன்றி"]},
-  { id:28, book:"பிலிப்பியர்",   book_en:"Philippians",    ch:4,  v:7,
-    ta:"அப்பொழுது எல்லாவித சிந்தனைக்கும் மேலான தேவசமாதானம் உங்கள் இருதயங்களையும் சிந்தைகளையும் கிறிஸ்து இயேசுவுக்குள் காக்கும்.",
-    en:"And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus.",
-    tags:["peace","heart","mind","god","சமாதானம்","இருதயம்","சிந்தை"]},
-  { id:29, book:"பிலிப்பியர்",   book_en:"Philippians",    ch:4,  v:13,
-    ta:"என்னைப் பலப்படுத்துகிற கிறிஸ்துவினாலே எல்லாவற்றையும் செய்யக்கூடும்.",
-    en:"I can do all things through Christ which strengtheneth me.",
-    tags:["strength","christ","power","வலிமை","கிறிஸ்து","பெலன்"]},
-  { id:30, book:"எபிரேயர்",      book_en:"Hebrews",        ch:11, v:1,
-    ta:"விசுவாசம் என்பது நம்பப்படுகிறவைகளின் நிச்சயமும் காணப்படாதவைகளின் நிரூபணமுமாயிருக்கிறது.",
-    en:"Now faith is the substance of things hoped for, the evidence of things not seen.",
-    tags:["faith","hope","substance","evidence","விசுவாசம்","நம்பிக்கை","நிச்சயம்"]},
-  { id:31, book:"1 யோவான்",      book_en:"1 John",         ch:4,  v:8,
-    ta:"அன்பில்லாதவன் தேவனை அறியான்; ஏனெனில் தேவன் அன்பாகவே இருக்கிறார்.",
-    en:"He that loveth not knoweth not God; for God is love.",
-    tags:["love","god","know","அன்பு","தேவன்"]},
-  { id:32, book:"வெளிப்படுத்தல்",book_en:"Revelation",     ch:21, v:4,
-    ta:"தேவன் தாமே அவர்களுடைய கண்களிலிருந்து கண்ணீரனைத்தையும் துடைப்பார்; இனி மரணமுமில்லை, துக்கமுமில்லை, அழுகையுமில்லை, வேதனையுமில்லை.",
-    en:"And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying, neither shall there be any more pain.",
-    tags:["heaven","comfort","eternal","tears","hope","பரலோகம்","ஆறுதல்","கண்ணீர்","நம்பிக்கை"]},
+var BIBLE_DATA = [
+  { id:1,  book:"Aathiyagamam",   book_en:"Genesis",       ch:1,  v:1,  ta:"Aathiyilae thaevan vaanaththaiyum boomiyaiyum sirushtittaar.", en:"In the beginning God created the heaven and the earth.", tags:["creation","god","beginning"] },
+  { id:2,  book:"Psalms Tamil",   book_en:"Psalms",        ch:23, v:1,  ta:"Karthar en maeiparaayirukkiaar; enakku kuraivu undaagaathu.", en:"The Lord is my shepherd; I shall not want.", tags:["shepherd","trust","lord","hope"] },
+  { id:3,  book:"Proverbs Tamil", book_en:"Proverbs",      ch:3,  v:5,  ta:"Un sondha vivaegaththinmael saayaamal un muzhuu iruthaiyathodum kartharil nambikkaiyaayiru.", en:"Trust in the Lord with all thine heart; and lean not unto thine own understanding.", tags:["trust","wisdom","heart","lord"] },
+  { id:4,  book:"Isaiah Tamil",   book_en:"Isaiah",        ch:40, v:31, ta:"Kartharai nambikkondirukkiravargaalo pudhuppikkappatta pelaththai adaivaaargal.", en:"But they that wait upon the Lord shall renew their strength; they shall mount up with wings as eagles.", tags:["strength","hope","wait"] },
+  { id:5,  book:"Jeremiah Tamil", book_en:"Jeremiah",      ch:29, v:11, ta:"Naan ungalukkaaga ninaikkirtha ninaivugalai naan ariven; avai nannmaikkaedhuvana ninaivugale.", en:"For I know the thoughts that I think toward you, saith the Lord, thoughts of peace, and not of evil.", tags:["hope","future","plan","peace"] },
+  { id:6,  book:"Matthew Tamil",  book_en:"Matthew",       ch:11, v:28, ta:"Varutthapattu paaransumaakkira ellarum ennidaththil vaarungal; naan ungalukku ilaippaarudhal tharuvean.", en:"Come unto me, all ye that labour and are heavy laden, and I will give you rest.", tags:["rest","burden","comfort"] },
+  { id:7,  book:"Matthew Tamil",  book_en:"Matthew",       ch:6,  v:33, ta:"Mudhalaavathu thaevanuday raajyaththaiyum avuruday neethiyaiyum thaedungal.", en:"But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you.", tags:["seek","kingdom","righteousness"] },
+  { id:8,  book:"John Tamil",     book_en:"John",          ch:3,  v:16, ta:"Thaevan thamuday orae paeran kumaaran viswasikkiran evano avan naethiyajeevanai adaiyumbadikku avarai thandharuli.", en:"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.", tags:["love","salvation","eternal life","god"] },
+  { id:9,  book:"John Tamil",     book_en:"John",          ch:14, v:6,  ta:"Yesu avarai nokki: Naanae vazhiyum saththiyamum jeevanumaaayirukkiraen.", en:"Jesus saith unto him, I am the way, the truth, and the life: no man cometh unto the Father, but by me.", tags:["jesus","truth","life","way"] },
+  { id:10, book:"Romans Tamil",   book_en:"Romans",        ch:8,  v:28, ta:"Thaevanidaththil anbu koorndu avaruday theermanathinpadi azaikkappatavargalukku ella vazhigilum nanmaeyae undaagum.", en:"And we know that all things work together for good to them that love God.", tags:["good","love","purpose","faith"] },
+  { id:11, book:"Romans Tamil",   book_en:"Romans",        ch:6,  v:23, ta:"Paavathin sambalam maranam; Thaevanudaiya kirupaivaramoe naethiyajeevan.", en:"For the wages of sin is death; but the gift of God is eternal life through Jesus Christ our Lord.", tags:["sin","death","gift","eternal life","salvation"] },
+  { id:12, book:"Philippians",    book_en:"Philippians",   ch:4,  v:13, ta:"Ennai balapaduththukira Kiristhuvinalae ellavarraiyum seyyakkudum.", en:"I can do all things through Christ which strengtheneth me.", tags:["strength","christ","power"] },
+  { id:13, book:"Philippians",    book_en:"Philippians",   ch:4,  v:6,  ta:"Endha kaaryaththilum kavalaipadaathirungal; ellavarrilum ungal vinnapangalai sthothiraththodae kooda jaepathinalum thaevanukku ariviyngal.", en:"Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God.", tags:["prayer","anxiety","peace","thanksgiving"] },
+  { id:14, book:"Philippians",    book_en:"Philippians",   ch:4,  v:7,  ta:"Ellaavidha sinthanaikku maelaana thaeva samaadhanam ungal iruthaiyangalaiyum sinthaigalaiyum Kiristhu Yesuvinukul kaakkum.", en:"And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus.", tags:["peace","heart","mind","god"] },
+  { id:15, book:"Hebrews Tamil",  book_en:"Hebrews",       ch:11, v:1,  ta:"Viswasam enbathu nambappadura vaigalin nisayamum kaanappadaathavaikaiin nirupanamum aaayirukkiarthu.", en:"Now faith is the substance of things hoped for, the evidence of things not seen.", tags:["faith","hope","substance","evidence"] },
+  { id:16, book:"1 John Tamil",   book_en:"1 John",        ch:4,  v:8,  ta:"Anbillaathavan thaevanai ariyaan; aenaenil thaevan anbaagavae irukkiaar.", en:"He that loveth not knoweth not God; for God is love.", tags:["love","god","know"] },
+  { id:17, book:"Revelation",     book_en:"Revelation",    ch:21, v:4,  ta:"Thaevan thaame avarkaludaiya kanneeranathaiyum thudaippaar; ini maranamumillai thukkamumillai azhukaiyumillai vaedanayumillai.", en:"And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying.", tags:["heaven","comfort","eternal","tears","hope"] },
+  { id:18, book:"Psalms Tamil",   book_en:"Psalms",        ch:46, v:1,  ta:"Thaevan namakku adaikkalaum pelanumaaayirukkiaar; ikkattukkalil avar migavum udaviyaaayirukkiaar.", en:"God is our refuge and strength, a very present help in trouble.", tags:["refuge","strength","help","trouble"] },
+  { id:19, book:"Psalms Tamil",   book_en:"Psalms",        ch:119,v:105, ta:"Umathu vaarththai en paadangalukku deepamum en paadaiyil velissamumaaayirukkiarthu.", en:"Thy word is a lamp unto my feet, and a light unto my path.", tags:["word","light","path","guidance"] },
+  { id:20, book:"Psalms Tamil",   book_en:"Psalms",        ch:23, v:4,  ta:"Naan marana irulin pallathaakkil nadanthaalum theemaikku anjamattaen; thaevareer ennodirukkiraeer.", en:"Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me.", tags:["fear","protection","god","death"] }
 ];
 
-// ── Offline Search Engine ─────────────────────────────────────────
-const TOPIC_MAP = {
-  "அன்பு":["love","அன்பு"],"நேசிக்கிறேன்":["love"],
-  "நம்பிக்கை":["hope","faith","trust","நம்பிக்கை"],"விசுவாசம்":["faith","விசுவாசம்"],
-  "வலிமை":["strength","power","வலிமை"],"பெலன்":["strength","வலிமை"],
-  "சமாதானம்":["peace","சமாதானம்"],"அமைதி":["peace"],
-  "ஆறுதல்":["comfort","rest","ஆறுதல்"],"இளைப்பாறுதல்":["rest","comfort"],
-  "பயம்":["fear","அச்சம்"],"அச்சம்":["fear"],"கவலை":["anxiety","prayer"],
-  "ஜெபம்":["prayer","ஜெபம்"],"வழி":["path","way","guidance","வழி"],
-  "வழிகாட்டுதல்":["guidance"],"பாவம்":["sin","பாவம்"],
-  "இரட்சிப்பு":["salvation","இரட்சிப்பு"],"பரலோகம்":["heaven","kingdom","பரலோகம்"],
-  "குடும்பம்":["family","children","குடும்பம்"],"பிள்ளை":["children"],
-  "சந்தோஷம்":["joy","blessed"],"ஆசீர்வாதம்":["blessed","ஆசீர்வாதம்"],
-  "மரணம்":["death","eternal life","மரணம்"],"நித்தியம்":["eternal life"],
-  "படைப்பு":["creation","படைப்பு"],"இயேசு":["jesus","இயேசு"],
-  "தேவன்":["god","தேவன்"],"கர்த்தர்":["lord","shepherd"],
-  "love":["love","அன்பு"],"faith":["faith","விசுவாசம்"],"hope":["hope","நம்பிக்கை"],
-  "strength":["strength","வலிமை"],"peace":["peace","சமாதானம்"],
-  "comfort":["comfort","rest","ஆறுதல்"],"rest":["rest","comfort"],
-  "fear":["fear","அச்சம்"],"anxiety":["anxiety","prayer"],
-  "prayer":["prayer","ஜெபம்"],"guidance":["guidance","வழி"],
-  "sin":["sin","பாவம்"],"salvation":["salvation","இரட்சிப்பு"],
-  "heaven":["heaven","பரலோகம்"],"family":["family","children"],
-  "joy":["joy","blessed"],"blessed":["blessed","ஆசீர்வாதம்"],
-  "death":["death","மரணம்"],"eternal":["eternal life"],
-  "creation":["creation","படைப்பு"],"jesus":["jesus","இயேசு"],
-  "god":["god","தேவன்"],"lord":["lord","shepherd"],
-  "healing":["comfort","rest","hope"],"marriage":["love","family"],
-  "children":["children","family"],"depression":["comfort","hope","rest"],
-  "anger":["peace","prayer"],"forgiveness":["forgiveness","salvation","love"],
-  "protection":["refuge","protection","fear"],"wisdom":["wisdom","guidance"],
-  "truth":["truth","jesus"],"money":["guidance","trust"],
+var TOPIC_MAP = {
+  "love":["love","salvation"],"faith":["faith","hope","trust"],"hope":["hope","future","plan"],
+  "strength":["strength","power"],"peace":["peace","comfort","rest"],"comfort":["comfort","rest"],
+  "rest":["rest","comfort"],"fear":["fear","protection","death"],"anxiety":["anxiety","prayer"],
+  "prayer":["prayer","thanksgiving"],"guidance":["guidance","path","word"],"sin":["sin","death"],
+  "salvation":["salvation","eternal life","love"],"heaven":["heaven","comfort","eternal","tears"],
+  "family":["children","family"],"children":["children","family"],"blessed":["blessed"],
+  "death":["death","sin"],"eternal":["eternal life","heaven"],"creation":["creation","god","beginning"],
+  "jesus":["jesus","truth","life","way"],"god":["god","creation","love"],"lord":["lord","shepherd","trust"],
+  "healing":["comfort","rest","hope"],"marriage":["love","family"],"depression":["comfort","hope","rest"],
+  "anger":["peace","prayer"],"forgiveness":["salvation","love"],"wisdom":["wisdom","trust"],
+  "truth":["truth","jesus"],"money":["guidance","trust"],"protect":["refuge","strength","protection"]
 };
 
 function inbuiltAISearch(query) {
-  const q = query.toLowerCase().trim();
-  const words = q.split(/\s+/);
-  const matchedTags = new Set();
-  words.forEach(word => {
-    Object.keys(TOPIC_MAP).forEach(key => {
-      if (word.includes(key) || key.includes(word))
-        TOPIC_MAP[key].forEach(t => matchedTags.add(t));
-    });
-  });
-  const scored = BIBLE_DATA.map(v => {
-    let score = 0;
-    const combined = (v.ta + " " + v.en + " " + v.tags.join(" ")).toLowerCase();
-    matchedTags.forEach(tag => { if (v.tags.includes(tag)) score += 3; });
-    words.forEach(word => {
-      if (word.length > 2) {
-        if (combined.includes(word)) score += 2;
-        if (v.ta.includes(word)) score += 2;
+  var q = query.toLowerCase().trim();
+  var words = q.split(/\s+/);
+  var matchedTags = [];
+  words.forEach(function(word) {
+    Object.keys(TOPIC_MAP).forEach(function(key) {
+      if (word.indexOf(key) !== -1 || key.indexOf(word) !== -1) {
+        TOPIC_MAP[key].forEach(function(t) {
+          if (matchedTags.indexOf(t) === -1) matchedTags.push(t);
+        });
       }
     });
-    if (v.book.toLowerCase().includes(q) || v.book_en.toLowerCase().includes(q)) score += 5;
-    return { ...v, score };
-  }).filter(v => v.score > 0).sort((a,b) => b.score - a.score);
+  });
+  var scored = BIBLE_DATA.map(function(v) {
+    var score = 0;
+    var combined = (v.en + " " + v.tags.join(" ")).toLowerCase();
+    matchedTags.forEach(function(tag) { if (v.tags.indexOf(tag) !== -1) score += 3; });
+    words.forEach(function(word) {
+      if (word.length > 2 && combined.indexOf(word) !== -1) score += 2;
+    });
+    if (v.book_en.toLowerCase().indexOf(q) !== -1) score += 5;
+    return Object.assign({}, v, { score: score });
+  }).filter(function(v) { return v.score > 0; });
+  scored.sort(function(a, b) { return b.score - a.score; });
   return scored.slice(0, 6);
 }
 
-const QUICK_TOPICS = [
-  {ta:"அன்பு",en:"Love",q:"love அன்பு"},{ta:"சமாதானம்",en:"Peace",q:"peace சமாதானம்"},
-  {ta:"வலிமை",en:"Strength",q:"strength வலிமை"},{ta:"நம்பிக்கை",en:"Hope",q:"hope நம்பிக்கை"},
-  {ta:"ஜெபம்",en:"Prayer",q:"prayer ஜெபம்"},{ta:"பயம்",en:"Fear",q:"fear பயம்"},
-  {ta:"குடும்பம்",en:"Family",q:"family குடும்பம்"},{ta:"இரட்சிப்பு",en:"Salvation",q:"salvation இரட்சிப்பு"},
-  {ta:"விசுவாசம்",en:"Faith",q:"faith விசுவாசம்"},{ta:"ஆறுதல்",en:"Comfort",q:"comfort ஆறுதல்"},
-  {ta:"வழிகாட்டுதல்",en:"Guidance",q:"guidance வழி"},{ta:"இயேசு",en:"Jesus",q:"jesus இயேசு"},
+var QUICK_TOPICS = [
+  { label:"Love",     q:"love" },   { label:"Peace",    q:"peace" },
+  { label:"Strength", q:"strength"},{ label:"Hope",     q:"hope" },
+  { label:"Prayer",   q:"prayer" }, { label:"Fear",     q:"fear" },
+  { label:"Family",   q:"family" }, { label:"Salvation",q:"salvation" },
+  { label:"Faith",    q:"faith" },  { label:"Comfort",  q:"comfort" },
+  { label:"Guidance", q:"guidance"},{ label:"Jesus",    q:"jesus" }
 ];
 
-// ── ✅ FIXED Audio Hook — safe check for speechSynthesis ──────────
-const hasTTS = typeof window !== "undefined" && "speechSynthesis" in window;
-
-function useAudio() {
-  const [speaking, setSpeaking] = useState(false);
-  const [paused,   setPaused]   = useState(false);
-  const [voices,   setVoices]   = useState([]);
-
-  useEffect(() => {
-    if (!hasTTS) return;
-    const load = () => setVoices(window.speechSynthesis.getVoices());
-    load();
-    window.speechSynthesis.onvoiceschanged = load;
-    return () => window.speechSynthesis.cancel();
-  }, []);
-
-  const speak = useCallback((text, lang = "en-US") => {
-    if (!hasTTS) { alert("Audio not supported in this browser."); return; }
-    window.speechSynthesis.cancel();
-    const utter  = new SpeechSynthesisUtterance(text);
-    utter.lang   = lang;
-    utter.rate   = 0.85;
-    utter.pitch  = 1;
-    const match  = voices.find(v => v.lang.startsWith(lang.split("-")[0]));
-    if (match) utter.voice = match;
-    utter.onstart = () => { setSpeaking(true);  setPaused(false); };
-    utter.onend   = () => { setSpeaking(false); setPaused(false); };
-    utter.onerror = () => { setSpeaking(false); setPaused(false); };
-    window.speechSynthesis.speak(utter);
-  }, [voices]);
-
-  const pause  = () => { if (hasTTS) window.speechSynthesis.pause();  setPaused(true);  };
-  const resume = () => { if (hasTTS) window.speechSynthesis.resume(); setPaused(false); };
-  const stop   = () => { if (hasTTS) window.speechSynthesis.cancel(); setSpeaking(false); setPaused(false); };
-
-  return { speak, pause, resume, stop, speaking, paused, supported: hasTTS };
+var COLORS = ["#0078D7","#107C10","#E81123","#744DA9","#FF8C00","#008272","#00B4D8","#4C4C4C"];
+var BOOK_LIST = ["Genesis","Exodus","Psalms","Proverbs","Isaiah","Jeremiah","Matthew","Mark","Luke","John","Romans","1 Corinthians","Philippians","Hebrews","1 John","Revelation"];
+function bookColor(b) {
+  var i = BOOK_LIST.indexOf(b);
+  return COLORS[(i < 0 ? 0 : i) % COLORS.length];
 }
 
-// ── Ad Placeholder ────────────────────────────────────────────────
-const GoogleAd = ({ slot="", format="banner" }) => (
-  <div style={{ background:"#181818", border:"1px solid #2a2a2a", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:3, height:format==="rect"?180:52, margin:"6px 0" }}>
-    <span style={{ fontSize:8, color:"#444", letterSpacing:2 }}>ADVERTISEMENT · விளம்பரம்</span>
-    <span style={{ fontSize:9, color:"#333" }}>AdSense Slot: {slot}</span>
-  </div>
-);
+var TTS_OK = typeof window !== "undefined" && "speechSynthesis" in window;
 
-// ── Audio Floating Bar ────────────────────────────────────────────
-const AudioBar = ({ verse, onClose, audio }) => {
-  const [lang, setLang] = useState("en");
-  const { speak, pause, resume, stop, speaking, paused, supported } = audio;
+function useAudio() {
+  var s1 = useState(false); var speaking = s1[0]; var setSpeaking = s1[1];
+  var s2 = useState(false); var paused   = s2[0]; var setPaused   = s2[1];
+  var s3 = useState([]);    var voices   = s3[0]; var setVoices   = s3[1];
 
-  if (!supported) return (
-    <div style={{ position:"fixed", bottom:64, left:0, right:0, zIndex:200, background:"#333", padding:"12px 16px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-      <span style={{ color:"#aaa", fontSize:11 }}>⚠️ Audio not supported in this preview. Works on Android app.</span>
-      <button onClick={onClose} style={{ background:"#555", border:"none", color:"#fff", padding:"4px 10px", cursor:"pointer" }}>✕</button>
+  useEffect(function() {
+    if (!TTS_OK) return;
+    function load() { setVoices(window.speechSynthesis.getVoices()); }
+    load();
+    window.speechSynthesis.onvoiceschanged = load;
+    return function() { window.speechSynthesis.cancel(); };
+  }, []);
+
+  var speak = useCallback(function(text, lang) {
+    if (!TTS_OK) return;
+    if (!lang) lang = "en-US";
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = lang; u.rate = 0.85; u.pitch = 1;
+    var prefix = lang.split("-")[0];
+    for (var i = 0; i < voices.length; i++) {
+      if (voices[i].lang.indexOf(prefix) === 0) { u.voice = voices[i]; break; }
+    }
+    u.onstart = function() { setSpeaking(true);  setPaused(false); };
+    u.onend   = function() { setSpeaking(false); setPaused(false); };
+    u.onerror = function() { setSpeaking(false); setPaused(false); };
+    window.speechSynthesis.speak(u);
+  }, [voices]);
+
+  function pause()  { if (TTS_OK) window.speechSynthesis.pause();  setPaused(true);  }
+  function resume() { if (TTS_OK) window.speechSynthesis.resume(); setPaused(false); }
+  function stop()   { if (TTS_OK) window.speechSynthesis.cancel(); setSpeaking(false); setPaused(false); }
+
+  return { speak: speak, pause: pause, resume: resume, stop: stop, speaking: speaking, paused: paused };
+}
+
+function GoogleAd(props) {
+  var h = props.format === "rect" ? 180 : 52;
+  return (
+    <div style={{ background:"#181818", border:"1px solid #2a2a2a", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", height:h, margin:"6px 0" }}>
+      <span style={{ fontSize:8, color:"#444" }}>ADVERTISEMENT</span>
+      <span style={{ fontSize:9, color:"#333" }}>AdSense Slot: {props.slot}</span>
     </div>
   );
+}
 
-  const text     = lang === "ta" ? verse.ta : verse.en;
-  const langCode = lang === "ta" ? "ta-IN" : "en-US";
+function VerseCard(props) {
+  var v      = props.verse;
+  var favIds = props.favIds;
+  var dark   = props.darkMode;
+  var cs     = useState(false); var copied = cs[0]; var setCopied = cs[1];
+  var color  = bookColor(v.book_en);
+  var isFav  = favIds.indexOf(v.id) !== -1;
+  var bg     = dark ? "#1a1a1a" : "#fff";
+  var fg     = dark ? "#f0e6c8" : "#111";
+  var mt     = dark ? "rgba(240,230,200,0.5)" : "rgba(0,0,0,0.45)";
+
+  function doCopy() {
+    var text = v.ta + "\n" + v.en + "\n-- " + v.book_en + " " + v.ch + ":" + v.v;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(function() {});
+    }
+    setCopied(true);
+    setTimeout(function() { setCopied(false); }, 2000);
+  }
 
   return (
-    <div style={{ position:"fixed", bottom:64, left:0, right:0, zIndex:200, background:"linear-gradient(135deg,#0078D7,#005a9e)", padding:"12px 16px", boxShadow:"0 -4px 20px rgba(0,120,215,0.4)" }}>
-      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8 }}>
-        <div>
-          <div style={{ color:"#fff", fontSize:11, fontWeight:700, letterSpacing:1 }}>🔊 AUDIO · ஒலி வாசிப்பு</div>
-          <div style={{ color:"rgba(255,255,255,0.6)", fontSize:9 }}>{verse.book} {verse.ch}:{verse.v} · {verse.book_en}</div>
+    <div style={{ background:bg, marginBottom:2, borderLeft:"4px solid " + color }}>
+      <div style={{ background:color, padding:"7px 12px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+        <span style={{ color:"#fff", fontSize:11, fontWeight:700 }}>{v.book_en} {v.ch}:{v.v}</span>
+      </div>
+      <div style={{ padding:"12px 14px" }}>
+        <div style={{ fontSize:13, lineHeight:1.9, color:fg, fontFamily:"serif", marginBottom:8 }}>{v.ta}</div>
+        <div style={{ fontSize:12, lineHeight:1.7, color:mt, fontStyle:"italic", fontFamily:"Georgia,serif" }}>"{v.en}"</div>
+        <div style={{ display:"flex", gap:2, marginTop:10 }}>
+          <button onClick={function() { props.onFav(v.id); }} style={{ flex:1, padding:"6px 2px", border:"none", background:isFav?color:dark?"#2a2a2a":"#f0f0f0", color:isFav?"#fff":mt, fontSize:8, fontWeight:700, cursor:"pointer" }}>{isFav ? "SAVED" : "SAVE"}</button>
+          <button onClick={doCopy} style={{ flex:1, padding:"6px 2px", border:"none", background:copied?color:dark?"#2a2a2a":"#f0f0f0", color:copied?"#fff":mt, fontSize:8, fontWeight:700, cursor:"pointer" }}>{copied ? "COPIED" : "COPY"}</button>
+          <button onClick={function() { props.onRead(Object.assign({}, v, { color:color })); }} style={{ flex:1, padding:"6px 2px", border:"none", background:dark?"#2a2a2a":"#f0f0f0", color:mt, fontSize:8, fontWeight:700, cursor:"pointer" }}>READ</button>
+          <button onClick={function() { props.onAudio(Object.assign({}, v, { color:color })); }} style={{ flex:1, padding:"6px 2px", border:"none", background:dark?"#2a2a2a":"#f0f0f0", color:mt, fontSize:8, fontWeight:700, cursor:"pointer" }}>AUDIO</button>
         </div>
-        <button onClick={() => { stop(); onClose(); }} style={{ background:"rgba(255,255,255,0.2)", border:"none", color:"#fff", width:28, height:28, fontSize:13, cursor:"pointer" }}>✕</button>
-      </div>
-      <div style={{ display:"flex", gap:4, marginBottom:8 }}>
-        {[{val:"en",label:"English"},{val:"ta",label:"தமிழ்"}].map(l => (
-          <button key={l.val} onClick={() => { setLang(l.val); stop(); }} style={{ flex:1, padding:"5px 0", border:"none", background:lang===l.val?"#fff":"rgba(255,255,255,0.15)", color:lang===l.val?"#0078D7":"#fff", fontSize:10, fontWeight:700, cursor:"pointer" }}>{l.label}</button>
-        ))}
-      </div>
-      <div style={{ display:"flex", gap:6 }}>
-        <button onClick={() => speak(text, langCode)} style={{ flex:2, padding:"10px 0", border:"none", background:speaking&&!paused?"rgba(255,255,255,0.15)":"#fff", color:speaking&&!paused?"#fff":"#0078D7", fontSize:11, fontWeight:700, cursor:"pointer" }}>
-          {speaking && !paused ? "▶ PLAYING..." : "▶ PLAY"}
-        </button>
-        {speaking && !paused  && <button onClick={pause}  style={{ flex:1, padding:"10px 0", background:"rgba(255,255,255,0.2)", border:"none", color:"#fff", fontSize:11, fontWeight:700, cursor:"pointer" }}>⏸</button>}
-        {speaking &&  paused  && <button onClick={resume} style={{ flex:1, padding:"10px 0", background:"rgba(255,255,255,0.2)", border:"none", color:"#fff", fontSize:11, fontWeight:700, cursor:"pointer" }}>▶</button>}
-        <button onClick={stop} style={{ flex:1, padding:"10px 0", background:"rgba(255,255,255,0.15)", border:"none", color:"#fff", fontSize:11, cursor:"pointer" }}>⏹</button>
       </div>
     </div>
   );
-};
+}
 
-// ── Reading Mode ──────────────────────────────────
+function ReadingMode(props) {
+  var verse  = props.verse;
+  var dark   = props.darkMode;
+  var audio  = props.audio;
+  var fs1    = useState(18); var fs = fs1[0]; var setFs = fs1[1];
+  var sa1    = useState(false); var showAudio = sa1[0]; var setShowAudio = sa1[1];
+  var bg     = dark ? "#0a0a0a" : "#FFFEF7";
+  var fg     = dark ? "#f0e6c8" : "#1a1008";
+  var fgm    = dark ? "rgba(240,230,200,0.6)" : "rgba(26,16,8,0.6)";
+
+  return (
+    <div style={{ position:"fixed", top:0, left:0, right:0, bottom:0, zIndex:500, background:bg, display:"flex", flexDirection:"column" }}>
+      <div style={{ background:verse.color, padding:"10px 14px", display:"flex", alignItems:"center", justifyContent:"space-between", flexShrink:0 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+          <button onClick={function() { audio.stop(); props.onClose(); }} style={{ background:"rgba(255,255,255,0.2)", border:"none", color:"#fff", width:32, height:32, fontSize:16, cursor:"pointer" }}>{"<"}</button>
+          <div>
+            <div style={{ color:"#fff", fontSize:12, fontWeight:700 }}>{verse.book_en} {verse.ch}:{verse.v}</div>
+            <div style={{ color:"rgba(255,255,255,0.6)", fontSize:9 }}>Reading Mode</div>
+          </div>
+        </div>
+        <div style={{ display:"flex", gap:6 }}>
+          <button onClick={function() { setShowAudio(function(s) { return !s; }); }} style={{ background:showAudio?"#fff":"rgba(255,255,255,0.2)", border:"none", color:showAudio?verse.color:"#fff", width:32, height:32, fontSize:10, cursor:"pointer", borderRadius:"50%", fontWeight:700 }}>AUD</button>
+          <button onClick={function() { setFs(function(f) { return f > 12 ? f - 2 : f; }); }} style={{ background:"rgba(255,255,255,0.2)", border:"none", color:"#fff", width:28, height:28, fontSize:11, cursor:"pointer", fontWeight:700 }}>A-</button>
+          <button onClick={function() { setFs(function(f) { return f < 32 ? f + 2 : f; }); }} style={{ background:"rgba(255,255,255,0.2)", border:"none", color:"#fff", width:28, height:28, fontSize:15, cursor:"pointer", fontWeight:700 }}>A+</button>
+        </div>
+      </div>
+
+      {showAudio && (
+        <div style={{ background:"#005a9e", padding:"10px 14px", flexShrink:0 }}>
+          {TTS_OK ? (
+            <div style={{ display:"flex", gap:6 }}>
+              <button onClick={function() { audio.speak(verse.en, "en-US"); }} style={{ flex:1, padding:"8px 4px", border:"none", background:"rgba(255,255,255,0.15)", color:"#fff", fontSize:9, fontWeight:700, cursor:"pointer" }}>English</button>
+              <button onClick={function() { audio.speak(verse.ta, "ta-IN"); }} style={{ flex:1, padding:"8px 4px", border:"none", background:"rgba(255,255,255,0.15)", color:"#fff", fontSize:9, fontWeight:700, cursor:"pointer" }}>Tamil</button>
+              <button onClick={audio.speaking && !audio.paused ? audio.pause : audio.resume} style={{ flex:1, padding:"8px 4px", border:"none", background:"rgba(255,255,255,0.15)", color:"#fff", fontSize:9, fontWeight:700, cursor:"pointer" }}>{audio.speaking && !audio.paused ? "Pause" : "Resume"}</button>
+              <button onClick={audio.stop} style={{ flex:1, padding:"8px 4px", border:"none", background:"rgba(255,255,255,0.15)", color:"#fff", fontSize:9, fontWeight:700, cursor:"pointer" }}>Stop</button>
+            </div>
+          ) : (
+            <div style={{ color:"#aaa", fontSize:10 }}>Audio works on Android app.</div>
+          )}
+        </div>
+      )}
+
+      <div style={{ flex:1, overflowY:"auto", padding:"32px 20px" }}>
+        <div style={{ borderLeft:"4px solid " + verse.color, paddingLeft:20, marginBottom:32 }}>
+          <div style={{ fontSize:fs + 4, lineHeight:2.0, color:fg, fontFamily:"serif", marginBottom:20 }}>{verse.ta}</div>
+          <div style={{ width:32, height:2, background:verse.color, marginBottom:20 }} />
+          <div style={{ fontSize:fs, lineHeight:1.9, color:fgm, fontStyle:"italic", fontFamily:"Georgia,serif" }}>"{verse.en}"</div>
+        </div>
+        <div style={{ textAlign:"center", marginBottom:20 }}>
+          <span style={{ background:verse.color, color:"#fff", fontSize:10, padding:"5px 18px", fontWeight:700 }}>{verse.book_en} {verse.ch}:{verse.v}</span>
+        </div>
+        <GoogleAd slot="READ_AD" format="rect" />
+      </div>
+    </div>
+  );
+}
+
+function AudioBar(props) {
+  var verse  = props.verse;
+  var audio  = props.audio;
+  var ls     = useState("en"); var lang = ls[0]; var setLang = ls[1];
+
+  if (!TTS_OK) {
+    return (
+      <div style={{ position:"fixed", bottom:64, left:0, right:0, zIndex:200, background:"#333", padding:"12px 16px", display:"flex", justifyContent:"space-between" }}>
+        <span style={{ color:"#aaa", fontSize:11 }}>Audio works on Android app only.</span>
+        <button onClick={props.onClose} style={{ background:"#555", border:"none", color:"#fff", padding:"4px 10px", cursor:"pointer" }}>X</button>
+      </div>
+    );
+  }
+
+  var text = lang === "ta" ? verse.ta : verse.en;
+  var lc   = lang === "ta" ? "ta-IN" : "en-US";
+
+  return (
+    <div style={{ position:"fixed", bottom:64, left:0, right:0, zIndex:200, background:"#0078D7", padding:"12px 16px" }}>
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8 }}>
+        <div style={{ color:"#fff", fontSize:11, fontWeight:700 }}>AUDIO - {verse.book_en} {verse.ch}:{verse.v}</div>
+        <button onClick={function() { audio.stop(); props.onClose(); }} style={{ background:"rgba(255,255,255,0.2)", border:"none", color:"#fff", width:28, height:28, cursor:"pointer" }}>X</button>
+      </div>
+      <div style={{ display:"flex", gap:4, marginBottom:8 }}>
+        <button onClick={function() { setLang("en"); audio.stop(); }} style={{ flex:1, padding:"5px 0", border:"none", background:lang === "en" ? "#fff" : "rgba(255,255,255,0.15)", color:lang === "en" ? "#0078D7" : "#fff", fontSize:10, fontWeight:700, cursor:"pointer" }}>English</button>
+        <button onClick={function() { setLang("ta"); audio.stop(); }} style={{ flex:1, padding:"5px 0", border:"none", background:lang === "ta" ? "#fff" : "rgba(255,255,255,0.15)", color:lang === "ta" ? "#0078D7" : "#fff", fontSize:10, fontWe
