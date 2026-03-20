@@ -1,0 +1,47 @@
+name: Build Holy Bible APK
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'debug or release'
+        required: true
+        default: 'debug'
+        type: choice
+        options: [ debug, release ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - run: npm install
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - uses: android-actions/setup-android@v3
+      - run: yes | sdkmanager --licenses || true
+      - run: npm install -g @capacitor/cli@5
+      - run: npx cap add android || true
+      - run: npx cap sync android
+      - run: chmod +x android/gradlew
+      - if: ${{ github.event.inputs.build_type != 'release' }}
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+      - if: ${{ github.event.inputs.build_type == 'release' }}
+        working-directory: android
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > ../bible.keystore
+          ./gradlew assembleRelease -Pandroid.injected.signing.store.file=$(pwd)/../bible.keystore -Pandroid.injected.signing.store.password="${{ secrets.STORE_PASSWORD }}" -Pandroid.injected.signing.key.alias="${{ secrets.KEY_ALIAS }}" -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD }}" --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VedaVachanam-APK-${{ github.run_number }}
+          path: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android/app/build/outputs/apk/release/app-release*.apk
+          retention-days: 30
