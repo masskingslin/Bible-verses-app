@@ -1,4 +1,4 @@
-name: Build Bible APK
+name: Build Bible App APK v3
 
 on:
   push:
@@ -15,7 +15,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 35
 
     steps:
 
@@ -27,7 +27,10 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Capacitor
+      # NO npm run build — index.html is already complete in public/
+      # Capacitor wraps public/ directly into Android
+
+      - name: Install Capacitor packages
         run: npm install
 
       - name: Setup Java 17
@@ -42,19 +45,16 @@ jobs:
       - name: Accept Android Licenses
         run: yes | sdkmanager --licenses || true
 
-      - name: Install Capacitor CLI
+      - name: Install Capacitor CLI globally
         run: npm install -g @capacitor/cli@5
 
-      # NO npm run build — index.html is already in public/
-      # Capacitor wraps public/ directly
-
-      - name: Add Android Platform
+      - name: Add Android platform
         run: npx cap add android || true
 
-      - name: Sync to Android
+      - name: Sync web files into Android
         run: npx cap sync android
 
-      - name: Fix Permissions
+      - name: Fix gradlew permission
         run: chmod +x android/gradlew
 
       - name: Build Debug APK
@@ -77,11 +77,8 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: BibleApp-APK-${{ github.run_number }}
+          name: BibleApp-v3-APK-${{ github.run_number }}
           path: |
             android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/apk/release/app-release*.apk
           retention-days: 30
-
-      - name: Done
-        run: echo "APK ready. Download from Artifacts above."
