@@ -1,17 +1,1 @@
-{
-  "name": "vedhavachanam-bible-v3",
-  "version": "3.0.0",
-  "description": "Tamil & English Bible App — 100 verses, all 66 books",
-  "private": true,
-  "dependencies": {
-    "@capacitor/core": "^5.7.0",
-    "@capacitor/android": "^5.7.0"
-  },
-  "devDependencies": {
-    "@capacitor/cli": "^5.7.0"
-  },
-  "scripts": {
-    "sync": "npx cap sync android",
-    "open": "npx cap open android"
-  }
-}
+{"name":"veda-vachanam-holy-bible","version":"5.0.0","description":"Tamil + English Bible App — bilingual","private":true,"dependencies":{"@capacitor/core":"^5.7.0","@capacitor/android":"^5.7.0"},"devDependencies":{"@capacitor/cli":"^5.7.0"},"scripts":{"sync":"npx cap sync android"}}
