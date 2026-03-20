@@ -1,1224 +1,936 @@
 <!DOCTYPE html>
 <html lang="ta-IN">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <meta name="theme-color" content="#0a0a0a"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="mobile-web-app-capable" content="yes"/>
-  <title>வேத வசனம் — Bible Verses</title>
-  <link rel="manifest" href="manifest.json"/>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="theme-color" content="#0a0a0a"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>வேத வசனம் — Bible</title>
+<link rel="manifest" href="manifest.json"/>
 
-  <!-- Google AdSense — replace with your publisher ID after approval -->
-  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+<!-- Google AdSense: replace XXXX after approval -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXX" crossorigin="anonymous"></script> -->
 
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@300;400;600;700&family=Noto+Serif+Tamil:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@300;400;600;700&family=Noto+Serif+Tamil:wght@400;600&display=swap" rel="stylesheet"/>
 
 <style>
-/* ═══════════════════════════════════════
-   DESIGN TOKENS — Metro Widget 8 System
-   ═══════════════════════════════════════ */
-:root {
-  --bg:        #0f0f0f;
-  --bg2:       #1a1a1a;
-  --bg3:       #242424;
-  --border:    #2e2e2e;
-  --text:      #f0e6c8;
-  --text2:     rgba(240,230,200,0.55);
-  --text3:     rgba(240,230,200,0.25);
-  --accent:    #0078D7;
-  --nav-h:     56px;
-  --header-h:  52px;
-  --radius:    0px;
-  --tile-gap:  3px;
-  /* Book colors — Metro palette */
-  --c0:#0078D7; --c1:#107C10; --c2:#E81123; --c3:#744DA9;
-  --c4:#FF8C00; --c5:#008272; --c6:#00B4D8; --c7:#4C4C4C;
+:root{
+  --bg:#0f0f0f;--bg2:#1a1a1a;--bg3:#252525;--border:#303030;
+  --text:#f0e6c8;--text2:rgba(240,230,200,.55);--text3:rgba(240,230,200,.22);
+  --acc:#0078D7;--nav:56px;--hdr:52px;
 }
-[data-theme="light"] {
-  --bg:#f2f2f2; --bg2:#ffffff; --bg3:#e8e8e8;
-  --border:#d0d0d0; --text:#111111; --text2:rgba(0,0,0,0.5);
-  --text3:rgba(0,0,0,0.2);
+[data-light]{
+  --bg:#f0f0f0;--bg2:#ffffff;--bg3:#e4e4e4;--border:#cccccc;
+  --text:#111;--text2:rgba(0,0,0,.5);--text3:rgba(0,0,0,.2);
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Noto Sans Tamil','Segoe UI',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:active{opacity:.7}
+input,textarea{font-family:inherit;outline:none}
+::-webkit-scrollbar{display:none}
 
-/* ═══════════════════════════════════════
-   RESET & BASE
-   ═══════════════════════════════════════ */
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-html,body { height:100%; overflow:hidden; touch-action:pan-y; }
-body {
-  font-family:'Noto Sans Tamil','Segoe UI',sans-serif;
-  background:var(--bg); color:var(--text);
-  -webkit-font-smoothing:antialiased;
-}
-button { font-family:inherit; cursor:pointer; -webkit-tap-highlight-color:transparent; }
-button:active { opacity:0.7; }
-input,textarea { font-family:inherit; }
-::-webkit-scrollbar { display:none; }
-img { display:block; }
+/* ── SHELL ── */
+#app{display:flex;flex-direction:column;height:100vh;max-width:480px;margin:0 auto;position:relative;overflow:hidden}
+#hdr{flex-shrink:0;height:var(--hdr);background:#000;border-bottom:2px solid var(--acc);display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:50;position:relative}
+#main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+#nav{flex-shrink:0;height:var(--nav);background:var(--bg2);border-top:2px solid var(--acc);display:flex}
 
-/* ═══════════════════════════════════════
-   LAYOUT SHELL
-   ═══════════════════════════════════════ */
-#app { display:flex; flex-direction:column; height:100vh; max-width:480px; margin:0 auto; position:relative; overflow:hidden; }
-#header { flex-shrink:0; height:var(--header-h); background:#000; border-bottom:2px solid var(--accent); display:flex; align-items:center; justify-content:space-between; padding:0 14px; position:relative; z-index:50; }
-#content { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; }
-#nav { flex-shrink:0; height:var(--nav-h); background:var(--bg2); border-top:2px solid var(--accent); display:flex; }
+/* ── HEADER ── */
+.hbrand{display:flex;align-items:center;gap:10px}
+.hico{width:32px;height:32px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:900}
+.htitle{font-size:12px;letter-spacing:3px;font-weight:700;color:#fff}
+.hsub{font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:1px}
+.hacts{display:flex;gap:6px}
+.ibtn{background:var(--acc);border:none;color:#fff;width:32px;height:30px;font-size:10px;font-weight:700;letter-spacing:.5px}
 
-/* ═══════════════════════════════════════
-   HEADER
-   ═══════════════════════════════════════ */
-.header-brand { display:flex; align-items:center; gap:10px; }
-.header-icon { width:32px; height:32px; background:var(--accent); display:flex; align-items:center; justify-content:center; font-size:18px; color:#fff; font-weight:900; }
-.header-title { font-size:12px; letter-spacing:3px; font-weight:700; color:#fff; }
-.header-sub { font-size:8px; letter-spacing:2px; color:rgba(255,255,255,0.3); margin-top:1px; }
-.header-actions { display:flex; gap:6px; align-items:center; }
-.btn-icon { background:var(--accent); border:none; color:#fff; width:32px; height:32px; font-size:11px; font-weight:700; letter-spacing:1px; }
+/* ── NAV ── */
+.nb{flex:1;border:none;background:transparent;color:var(--text3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:background .15s,color .15s}
+.nb.on{background:var(--acc);color:#fff}
+.ni{font-size:18px;line-height:1}
+.nl{font-size:8px;font-weight:700;letter-spacing:1px}
 
-/* ═══════════════════════════════════════
-   BOTTOM NAV
-   ═══════════════════════════════════════ */
-.nav-btn { flex:1; border:none; background:transparent; color:var(--text3); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:0; transition:background .15s,color .15s; }
-.nav-btn.active { background:var(--accent); color:#fff; }
-.nav-icon { font-size:18px; line-height:1; }
-.nav-label { font-size:8px; font-weight:700; letter-spacing:1px; }
+/* ── SCREENS ── */
+.scr{display:none}
+.scr.on{display:block;animation:fu .2s ease}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* ═══════════════════════════════════════
-   SCREENS (router views)
-   ═══════════════════════════════════════ */
-.screen { display:none; animation:fadeUp .2s ease; }
-.screen.active { display:block; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+/* ── METRO TILES ── */
+.tg{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:3px}
+.t{padding:16px 14px;display:flex;flex-direction:column;justify-content:space-between;min-height:88px;cursor:pointer;overflow:hidden}
+.t.w2{grid-column:1/3;min-height:120px}
+.t.clk{grid-column:1/3;min-height:100px;cursor:default}
+.tl{font-size:12px;font-weight:700;color:#fff}
+.ts{font-size:9px;color:rgba(255,255,255,.5);letter-spacing:1px;margin-top:3px}
+.ctime{font-size:38px;font-weight:100;color:#fff;letter-spacing:-2px;line-height:1}
+.cdate{font-size:10px;color:rgba(255,255,255,.65);margin-top:6px}
+.dtag{font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.45);margin-bottom:10px}
+.dta{font-size:13px;color:#fff;line-height:1.85;font-family:'Noto Serif Tamil',serif;margin-bottom:8px}
+.dref{font-size:9px;color:rgba(255,255,255,.65);font-weight:700;letter-spacing:1px;margin-bottom:10px}
+.tbtns{display:flex;gap:6px}
+.tbtn{background:rgba(255,255,255,.18);border:none;color:#fff;padding:5px 12px;font-size:9px;font-weight:700;letter-spacing:.5px}
 
-/* ═══════════════════════════════════════
-   METRO TILE GRID
-   ═══════════════════════════════════════ */
-.tile-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--tile-gap); padding:var(--tile-gap); }
-.tile { padding:16px 14px; display:flex; flex-direction:column; justify-content:space-between; min-height:88px; cursor:pointer; position:relative; overflow:hidden; }
-.tile.wide { grid-column:1/3; min-height:120px; }
-.tile.clock { grid-column:1/3; min-height:100px; }
-.tile-label { font-size:12px; font-weight:700; color:#fff; }
-.tile-sub { font-size:9px; color:rgba(255,255,255,0.55); letter-spacing:1px; margin-top:4px; }
-.tile-icon { font-size:22px; color:rgba(255,255,255,0.7); margin-bottom:8px; }
+/* ── SECTION HDR ── */
+.sh{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.stit{font-size:9px;letter-spacing:3px;font-weight:700;color:var(--text2)}
+.scnt{font-size:9px;color:var(--text3)}
 
-/* Clock tile */
-.clock-time { font-size:38px; font-weight:100; color:#fff; letter-spacing:-2px; line-height:1; }
-.clock-date { font-size:10px; color:rgba(255,255,255,0.65); margin-top:6px; }
+/* ── VERSE CARD ── */
+.vc{background:var(--bg2);border-bottom:1px solid var(--border)}
+.vch{padding:7px 14px;display:flex;align-items:center;justify-content:space-between}
+.vr{font-size:10px;font-weight:700;color:#fff;letter-spacing:.5px}
+.vb{font-size:9px;color:rgba(255,255,255,.55)}
+.vbd{padding:12px 14px}
+.vta{font-size:14px;line-height:1.95;color:var(--text);font-family:'Noto Serif Tamil',serif;margin-bottom:10px}
+.ven{font-size:12px;line-height:1.75;color:var(--text2);font-style:italic}
+.va{display:flex;gap:2px;margin-top:12px}
+.va button{flex:1;padding:7px 2px;border:none;background:var(--bg3);color:var(--text2);font-size:8px;font-weight:700;letter-spacing:.5px;border-top:1px solid var(--border)}
+.va button.ac{color:#fff}
 
-/* Daily verse tile */
-.daily-tag { font-size:8px; letter-spacing:3px; color:rgba(255,255,255,0.5); margin-bottom:10px; }
-.daily-text { font-size:13px; color:#fff; line-height:1.8; font-family:'Noto Serif Tamil',serif; margin-bottom:10px; }
-.daily-ref { font-size:9px; color:rgba(255,255,255,0.65); font-weight:700; letter-spacing:1px; margin-bottom:10px; }
-.tile-actions { display:flex; gap:6px; }
-.tile-btn { background:rgba(255,255,255,0.2); border:none; color:#fff; padding:5px 12px; font-size:9px; font-weight:700; letter-spacing:1px; }
-.tile-btn:hover { background:rgba(255,255,255,0.3); }
+/* ── SEARCH ── */
+.sb{display:flex;border-bottom:2px solid var(--acc)}
+.si{flex:1;background:var(--bg2);border:none;padding:12px 14px;color:var(--text);font-size:13px}
+.si::placeholder{color:var(--text3)}
+.sbtn{background:var(--acc);border:none;color:#fff;width:44px;font-size:16px;font-weight:700}
+.chips{display:flex;gap:4px;overflow-x:auto;padding:8px 14px;border-bottom:1px solid var(--border)}
+.chip{background:var(--bg3);border:none;color:var(--text2);padding:6px 12px;font-size:9px;white-space:nowrap;letter-spacing:1px}
+.chip:hover,.chip.on{background:var(--acc);color:#fff}
 
-/* ═══════════════════════════════════════
-   SECTION HEADERS
-   ═══════════════════════════════════════ */
-.section-header { padding:12px 14px 10px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); }
-.section-title { font-size:10px; letter-spacing:3px; font-weight:700; color:var(--text2); }
-.section-count { font-size:9px; color:var(--text3); }
+/* ── BOOKS ── */
+.bfilt{display:flex;gap:3px;padding:3px}
+.bfilt button{flex:1;padding:8px 0;border:none;background:var(--bg3);color:var(--text2);font-size:9px;font-weight:700;letter-spacing:1px}
+.bfilt button.on{background:#107C10;color:#fff}
+.bg{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:0 3px 3px}
+.bt{padding:14px 12px;min-height:90px;display:flex;flex-direction:column;justify-content:space-between}
+.bn{font-size:13px;color:#fff;font-weight:700;line-height:1.3}
+.bta{font-size:11px;color:rgba(255,255,255,.75);font-family:'Noto Serif Tamil',serif}
+.bm{font-size:9px;color:rgba(255,255,255,.5)}
+.ba{display:flex;gap:3px;margin-top:10px}
+.ba button{flex:1;background:rgba(255,255,255,.18);border:none;color:#fff;padding:5px 0;font-size:8px;font-weight:700}
 
-/* ═══════════════════════════════════════
-   VERSE CARD
-   ═══════════════════════════════════════ */
-.verse-card { background:var(--bg2); border-bottom:1px solid var(--border); }
-.verse-card-header { padding:7px 14px; display:flex; align-items:center; justify-content:space-between; }
-.verse-ref { font-size:10px; font-weight:700; color:#fff; letter-spacing:1px; }
-.verse-book { font-size:9px; color:rgba(255,255,255,0.6); }
-.verse-body { padding:12px 14px; }
-.verse-ta { font-size:14px; line-height:1.95; color:var(--text); font-family:'Noto Serif Tamil',serif; margin-bottom:10px; }
-.verse-en { font-size:12px; line-height:1.75; color:var(--text2); font-style:italic; }
-.verse-actions { display:flex; gap:2px; margin-top:12px; }
-.verse-actions button { flex:1; padding:7px 2px; border:none; background:var(--bg3); color:var(--text2); font-size:8px; font-weight:700; letter-spacing:.5px; border-top:1px solid var(--border); }
-.verse-actions button.active { color:#fff; }
-.verse-actions button:hover { opacity:.8; }
+/* ── READING OVERLAY ── */
+#ro{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;flex-direction:column;max-width:480px;margin:0 auto}
+#ro.on{display:flex}
+.rbar{flex-shrink:0;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.rcnt{flex:1;overflow-y:auto;padding:32px 22px}
+.rta{font-family:'Noto Serif Tamil',serif;line-height:2.2;margin-bottom:26px;color:var(--text)}
+.rdiv{height:2px;width:36px;margin-bottom:26px}
+.ren{line-height:1.9;font-style:italic;color:var(--text2)}
+.rbadge{display:inline-block;padding:5px 20px;font-size:10px;font-weight:700;letter-spacing:2px;margin-top:20px}
+.rctls{display:flex;gap:6px}
+.rcbtn{background:rgba(255,255,255,.18);border:none;color:#fff}
 
-/* ═══════════════════════════════════════
-   SEARCH / FILTER BAR
-   ═══════════════════════════════════════ */
-.search-bar { display:flex; gap:0; border-bottom:2px solid var(--accent); }
-.search-input { flex:1; background:var(--bg2); border:none; padding:12px 14px; color:var(--text); font-size:13px; outline:none; }
-.search-input::placeholder { color:var(--text3); }
-.search-btn { background:var(--accent); border:none; color:#fff; width:44px; font-size:16px; font-weight:700; }
+/* ── AUDIO PANEL ── */
+#ap{display:none;position:fixed;bottom:var(--nav);left:0;right:0;z-index:150;max-width:480px;margin:0 auto}
+#ap.on{display:block}
+.api{background:linear-gradient(135deg,#004a8c,#0078D7);padding:14px;box-shadow:0 -6px 24px rgba(0,100,200,.35);position:relative}
+.att{font-size:11px;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:3px}
+.atr{font-size:9px;color:rgba(255,255,255,.6);margin-bottom:10px}
+.alng{display:flex;gap:3px;margin-bottom:10px}
+.alng button{flex:1;padding:6px;border:none;font-size:10px;font-weight:700;letter-spacing:.5px;transition:background .15s,color .15s}
+.actls{display:flex;gap:4px}
+.actls button{flex:1;padding:9px 4px;border:none;font-size:9px;font-weight:700;letter-spacing:.5px}
+.acls{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;font-size:13px}
 
-/* Chip tags */
-.chips { display:flex; gap:4px; overflow-x:auto; padding:8px 14px; border-bottom:1px solid var(--border); }
-.chip { background:var(--bg3); border:none; color:var(--text2); padding:6px 14px; font-size:10px; white-space:nowrap; letter-spacing:1px; }
-.chip:hover,.chip.active { background:var(--accent); color:#fff; }
+/* ── EMPTY ── */
+.emp{text-align:center;padding:56px 20px}
+.emico{font-size:48px;margin-bottom:14px;opacity:.25}
+.emtxt{font-size:10px;letter-spacing:2px;color:var(--text3);line-height:2}
 
-/* ═══════════════════════════════════════
-   READING MODE (fullscreen overlay)
-   ═══════════════════════════════════════ */
-#reading-overlay { display:none; position:fixed; inset:0; z-index:200; flex-direction:column; }
-#reading-overlay.open { display:flex; }
-.reading-bar { flex-shrink:0; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; }
-.reading-content { flex:1; overflow-y:auto; padding:32px 22px; }
-.reading-ta { line-height:2.2; font-family:'Noto Serif Tamil',serif; margin-bottom:28px; }
-.reading-divider { height:2px; width:36px; margin-bottom:28px; }
-.reading-en { line-height:1.9; font-style:italic; color:var(--text2); }
-.reading-ref-badge { display:inline-block; padding:5px 20px; font-size:10px; font-weight:700; letter-spacing:3px; margin-top:24px; }
-.reading-controls { display:flex; gap:6px; }
-.reading-ctrl-btn { background:rgba(255,255,255,0.18); border:none; color:#fff; }
+/* ── AD SLOT ── */
+.ad{background:#161616;border-top:1px solid #1e1e1e;border-bottom:1px solid #1e1e1e;height:52px;display:flex;align-items:center;justify-content:center;gap:8px}
+.ad.rect{height:180px;flex-direction:column}
+.adlbl{font-size:8px;color:#2a2a2a;letter-spacing:2px}
+/* Real ads: replace .ad divs with <ins class="adsbygoogle"> */
 
-/* ═══════════════════════════════════════
-   AUDIO PANEL
-   ═══════════════════════════════════════ */
-#audio-panel { display:none; position:fixed; bottom:var(--nav-h); left:0; right:0; z-index:150; max-width:480px; margin:0 auto; }
-#audio-panel.open { display:block; }
-.audio-inner { background:linear-gradient(135deg,#005a9e,#0078D7); padding:14px; box-shadow:0 -6px 24px rgba(0,120,215,.35); }
-.audio-title { font-size:11px; font-weight:700; color:#fff; letter-spacing:1px; margin-bottom:4px; }
-.audio-ref { font-size:9px; color:rgba(255,255,255,.6); margin-bottom:10px; }
-.audio-lang { display:flex; gap:3px; margin-bottom:10px; }
-.audio-lang button { flex:1; padding:6px; border:none; font-size:10px; font-weight:700; letter-spacing:1px; }
-.audio-controls { display:flex; gap:4px; }
-.audio-controls button { flex:1; padding:9px 4px; border:none; font-size:10px; font-weight:700; letter-spacing:1px; }
-.audio-close { position:absolute; top:10px; right:12px; background:rgba(255,255,255,.15); border:none; color:#fff; width:28px; height:28px; font-size:13px; }
-
-/* ═══════════════════════════════════════
-   BOOKS GRID
-   ═══════════════════════════════════════ */
-.books-filter { display:flex; gap:2px; padding:var(--tile-gap); }
-.books-filter button { flex:1; padding:8px 0; border:none; background:var(--bg3); color:var(--text2); font-size:9px; font-weight:700; letter-spacing:1px; }
-.books-filter button.active { background:var(--accent); color:#fff; }
-.books-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--tile-gap); padding:0 var(--tile-gap) var(--tile-gap); }
-.book-tile { padding:14px 12px; min-height:88px; display:flex; flex-direction:column; justify-content:space-between; }
-.book-title { font-size:12px; font-weight:700; color:#fff; line-height:1.3; margin-bottom:2px; }
-.book-meta { font-size:9px; color:rgba(255,255,255,.55); }
-.book-actions { display:flex; gap:3px; margin-top:10px; }
-.book-actions button { flex:1; background:rgba(255,255,255,.18); border:none; color:#fff; padding:5px 0; font-size:8px; font-weight:700; letter-spacing:.5px; }
-
-/* ═══════════════════════════════════════
-   EMPTY STATE
-   ═══════════════════════════════════════ */
-.empty { text-align:center; padding:60px 20px; }
-.empty-icon { font-size:48px; margin-bottom:14px; opacity:.3; }
-.empty-text { font-size:10px; letter-spacing:2px; color:var(--text3); line-height:2; }
-
-/* ═══════════════════════════════════════
-   AD PLACEHOLDER
-   ═══════════════════════════════════════ */
-.ad-slot { background:#181818; border-top:1px solid #222; border-bottom:1px solid #222; height:52px; display:flex; align-items:center; justify-content:center; gap:8px; }
-.ad-slot.rect { height:180px; }
-.ad-label { font-size:8px; color:#333; letter-spacing:2px; }
-
-/* ═══════════════════════════════════════
-   UTILITIES
-   ═══════════════════════════════════════ */
-.pb-nav { padding-bottom:calc(var(--nav-h) + 8px); }
-.badge { display:inline-block; padding:2px 10px; font-size:8px; letter-spacing:2px; font-weight:700; }
+.pb{padding-bottom:calc(var(--nav) + 10px)}
 </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════════
-     APP SHELL
-     ════════════════════════════════════ -->
+<style>
+#dlbanner{display:none;position:fixed;bottom:var(--nav);left:0;right:0;z-index:300;max-width:480px;margin:0 auto;
+  flex-direction:column;padding:10px 14px;box-shadow:0 -4px 16px rgba(0,0,0,.4);}
+#dlmsg{color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+#dltrack{height:4px;background:rgba(255,255,255,.2);border-radius:2px;overflow:hidden;}
+#dlbar{height:100%;background:#fff;width:0%;transition:width .4s ease;border-radius:2px;}
+</style>
+<div id="dlbanner">
+  <div id="dlmsg">Downloading full Bible...</div>
+  <div id="dltrack"><div id="dlbar"></div></div>
+</div>
 <div id="app">
-
   <!-- HEADER -->
-  <header id="header">
-    <div class="header-brand">
-      <div class="header-icon">✝</div>
+  <header id="hdr">
+    <div class="hbrand">
+      <div class="hico">✝</div>
       <div>
-        <div class="header-title">வேத வசனம்</div>
-        <div class="header-sub">OFFLINE · AUDIO · AI SEARCH</div>
+        <div class="htitle">வேத வசனம்</div>
+        <div class="hsub" id="hsubline">100 VERSES · AUDIO · AI SEARCH</div>
       </div>
     </div>
-    <div class="header-actions">
-      <button class="btn-icon" id="theme-btn" onclick="App.toggleTheme()">☀</button>
+    <div class="hacts">
+      <button class="ibtn" id="thbtn" onclick="App.theme()">☀</button>
     </div>
   </header>
 
-  <!-- CONTENT AREA -->
-  <main id="content">
+  <!-- MAIN -->
+  <main id="main">
 
-    <!-- ── SCREEN: HOME ── -->
-    <div class="screen active" id="screen-home">
-      <div class="tile-grid" id="home-tiles">
-        <!-- Tiles injected by JS -->
-      </div>
-      <div class="ad-slot"><span class="ad-label">ADVERTISEMENT · GOOGLE ADSENSE</span></div>
-      <div class="section-header">
-        <span class="section-title">FEATURED VERSES</span>
-        <span class="section-count" id="home-verse-count"></span>
-      </div>
-      <div id="home-verses" class="pb-nav"></div>
+    <!-- HOME -->
+    <div class="scr on" id="s-home">
+      <div class="tg" id="hometiles"></div>
+      <div class="ad"><span class="adlbl">GOOGLE ADSENSE SLOT 1</span></div>
+      <div class="sh"><span class="stit">FEATURED VERSES</span><span class="scnt" id="hvc"></span></div>
+      <div id="homev" class="pb"></div>
     </div>
 
-    <!-- ── SCREEN: ALL VERSES ── -->
-    <div class="screen" id="screen-verses">
-      <div class="search-bar">
-        <input class="search-input" id="verses-search" placeholder="Search Tamil or English..." oninput="Verses.filter(this.value)"/>
+    <!-- ALL VERSES -->
+    <div class="scr" id="s-verses">
+      <div class="sh"><span class="stit">ALL VERSES</span><span class="scnt" id="vcount"></span></div>
+      <div class="sb">
+        <input class="si" id="vsrch" placeholder="Search Tamil / English / Book..." oninput="Screens.verses.filter(this.value)"/>
       </div>
-      <div class="ad-slot"><span class="ad-label">ADVERTISEMENT</span></div>
-      <div id="verses-list" class="pb-nav"></div>
+      <div id="vlist" class="pb"></div>
     </div>
 
-    <!-- ── SCREEN: AI SEARCH ── -->
-    <div class="screen" id="screen-ai">
-      <div style="background:#744DA9;padding:14px 16px 12px;">
-        <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:2px;">AI VERSE FINDER</div>
-        <div style="color:rgba(255,255,255,.6);font-size:9px;margin-top:2px;">100% OFFLINE · NO INTERNET NEEDED</div>
+    <!-- AI SEARCH -->
+    <div class="scr" id="s-search">
+      <div style="background:#744DA9;padding:14px 16px 12px">
+        <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:2px">AI VERSE FINDER</div>
+        <div style="color:rgba(255,255,255,.6);font-size:9px;margin-top:2px">100% OFFLINE · NO INTERNET · 100 VERSES</div>
       </div>
-      <div class="search-bar">
-        <input class="search-input" id="ai-search" placeholder="Search: love, peace, fear, salvation, அன்பு..." onkeydown="if(event.key==='Enter')AI.search()"/>
-        <button class="search-btn" onclick="AI.search()">?</button>
+      <div class="sb">
+        <input class="si" id="aisrch" placeholder="love, peace, fear, salvation, அன்பு, சமாதானம்..." onkeydown="if(event.key==='Enter')Screens.ai.run()"/>
+        <button class="sbtn" onclick="Screens.ai.run()">→</button>
       </div>
-      <div class="chips" id="ai-chips"></div>
-      <div class="ad-slot"><span class="ad-label">ADVERTISEMENT</span></div>
-      <div id="ai-results" class="pb-nav">
-        <div class="empty">
-          <div class="empty-icon">✦</div>
-          <div class="empty-text">SEARCH BY TOPIC OR KEYWORD<br>TAMIL OR ENGLISH</div>
-        </div>
+      <div class="chips" id="aichips"></div>
+      <div class="ad"><span class="adlbl">GOOGLE ADSENSE SLOT 2</span></div>
+      <div id="ailist" class="pb">
+        <div class="emp"><div class="emico">✦</div><div class="emtxt">SEARCH BY TOPIC OR KEYWORD<br>WORKS IN TAMIL & ENGLISH</div></div>
       </div>
     </div>
 
-    <!-- ── SCREEN: BOOKS ── -->
-    <div class="screen" id="screen-books">
-      <div style="background:#107C10;padding:12px 16px 10px;">
-        <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:2px;">BIBLE BOOKS</div>
-        <div style="color:rgba(255,255,255,.6);font-size:9px;margin-top:2px;">66 BOOKS · OLD & NEW TESTAMENT</div>
+    <!-- BOOKS -->
+    <div class="scr" id="s-books">
+      <div style="background:#107C10;padding:12px 16px 10px">
+        <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:2px">BIBLE BOOKS — 66 BOOKS</div>
+        <div style="color:rgba(255,255,255,.6);font-size:9px;margin-top:2px">OLD & NEW TESTAMENT · TAP TO READ & HEAR</div>
       </div>
-      <div class="books-filter" id="books-filter"></div>
-      <div class="books-grid" id="books-grid"></div>
-      <div class="ad-slot"><span class="ad-label">ADVERTISEMENT</span></div>
+      <div class="bfilt" id="bfilt"></div>
+      <div class="bg" id="bgrid" class="pb"></div>
     </div>
 
-    <!-- ── SCREEN: SAVED ── -->
-    <div class="screen" id="screen-saved">
-      <div style="background:#E81123;padding:12px 16px 10px;">
-        <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:2px;">SAVED VERSES</div>
-        <div style="color:rgba(255,255,255,.6);font-size:9px;margin-top:2px;" id="saved-count-label">0 SAVED</div>
+    <!-- STUDY (new!) -->
+    <div class="scr" id="s-study">
+      <div style="background:#FF8C00;padding:12px 16px 10px">
+        <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:2px">BIBLE STUDY</div>
+        <div style="color:rgba(255,255,255,.6);font-size:9px;margin-top:2px">DAILY PLAN · TOPICS · NOTES</div>
       </div>
-      <div id="saved-list" class="pb-nav"></div>
-      <div class="ad-slot"><span class="ad-label">ADVERTISEMENT</span></div>
+      <div id="studycont" class="pb"></div>
+    </div>
+
+    <!-- SAVED -->
+    <div class="scr" id="s-saved">
+      <div style="background:#E81123;padding:12px 16px 10px">
+        <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:2px">SAVED VERSES</div>
+        <div style="color:rgba(255,255,255,.6);font-size:9px;margin-top:2px" id="savedlbl">0 SAVED</div>
+      </div>
+      <div id="savedlist" class="pb"></div>
+      <div class="ad"><span class="adlbl">GOOGLE ADSENSE SLOT 3</span></div>
     </div>
 
   </main>
 
-  <!-- BOTTOM NAV -->
+  <!-- NAV -->
   <nav id="nav">
-    <button class="nav-btn active" data-screen="home"   onclick="App.nav('home')">
-      <span class="nav-icon">⊞</span><span class="nav-label">HOME</span>
-    </button>
-    <button class="nav-btn" data-screen="verses" onclick="App.nav('verses')">
-      <span class="nav-icon">☰</span><span class="nav-label">VERSES</span>
-    </button>
-    <button class="nav-btn" data-screen="ai"     onclick="App.nav('ai')">
-      <span class="nav-icon">✦</span><span class="nav-label">SEARCH</span>
-    </button>
-    <button class="nav-btn" data-screen="books"  onclick="App.nav('books')">
-      <span class="nav-icon">📖</span><span class="nav-label">BOOKS</span>
-    </button>
-    <button class="nav-btn" data-screen="saved"  onclick="App.nav('saved')">
-      <span class="nav-icon">♥</span><span class="nav-label">SAVED</span>
-    </button>
+    <button class="nb on" data-s="home"   onclick="App.nav('home')">  <span class="ni">⊞</span><span class="nl">HOME</span>   </button>
+    <button class="nb"    data-s="verses" onclick="App.nav('verses')"><span class="ni">☰</span><span class="nl">VERSES</span> </button>
+    <button class="nb"    data-s="search" onclick="App.nav('search')"><span class="ni">✦</span><span class="nl">SEARCH</span> </button>
+    <button class="nb"    data-s="books"  onclick="App.nav('books')"> <span class="ni">📖</span><span class="nl">BOOKS</span>  </button>
+    <button class="nb"    data-s="study"  onclick="App.nav('study')"> <span class="ni">📝</span><span class="nl">STUDY</span>  </button>
+    <button class="nb"    data-s="saved"  onclick="App.nav('saved')"> <span class="ni">♥</span><span class="nl">SAVED</span>  </button>
   </nav>
+</div>
 
-</div><!-- #app -->
-
-<!-- ════════════════════════════════════
-     READING MODE OVERLAY
-     ════════════════════════════════════ -->
-<div id="reading-overlay">
-  <div class="reading-bar" id="reading-bar">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <button class="reading-ctrl-btn" style="width:32px;height:32px;font-size:16px;" onclick="Reading.close()">←</button>
+<!-- READING OVERLAY -->
+<div id="ro">
+  <div class="rbar" id="rbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="rcbtn" style="width:32px;height:32px;font-size:14px" onclick="Reading.close()">←</button>
       <div>
-        <div id="reading-ref" style="font-size:12px;font-weight:700;color:#fff;"></div>
-        <div style="font-size:9px;color:rgba(255,255,255,.55);">Reading Mode</div>
+        <div id="rref" style="font-size:12px;font-weight:700;color:#fff"></div>
+        <div style="font-size:9px;color:rgba(255,255,255,.5)">Reading Mode — Font: A- A+</div>
       </div>
     </div>
-    <div class="reading-controls">
-      <button class="reading-ctrl-btn" style="width:32px;height:32px;font-size:11px;font-weight:700;" id="audio-toggle-btn" onclick="Audio.togglePanel()">🔘</button>
-      <button class="reading-ctrl-btn" style="width:28px;height:28px;font-size:11px;font-weight:700;" onclick="Reading.fontSize(-2)">A-</button>
-      <button class="reading-ctrl-btn" style="width:28px;height:28px;font-size:14px;font-weight:700;" onclick="Reading.fontSize(+2)">A+</button>
+    <div class="rctls">
+      <button class="rcbtn" style="width:32px;height:32px;font-size:11px;font-weight:700;border-radius:50%" id="audtogbtn" onclick="AudioMgr.toggle()">🔘</button>
+      <button class="rcbtn" style="width:28px;height:28px;font-size:11px;font-weight:700" onclick="Reading.fs(-2)">A-</button>
+      <button class="rcbtn" style="width:28px;height:28px;font-size:14px;font-weight:700" onclick="Reading.fs(+2)">A+</button>
     </div>
   </div>
-  <div class="reading-content" id="reading-content">
-    <div class="reading-ta" id="reading-ta"></div>
-    <div class="reading-divider" id="reading-divider"></div>
-    <div class="reading-en" id="reading-en"></div>
-    <div style="text-align:center;margin-top:24px;">
-      <span class="reading-ref-badge" id="reading-badge"></span>
-    </div>
-    <div class="ad-slot rect" style="margin-top:24px;"><span class="ad-label">ADVERTISEMENT</span></div>
+  <div class="rcnt" id="rcnt">
+    <div class="rta" id="rta"></div>
+    <div class="rdiv" id="rdiv"></div>
+    <div class="ren" id="ren"></div>
+    <div style="text-align:center;margin-top:20px"><span class="rbadge" id="rbadge"></span></div>
+    <div class="ad rect" style="margin-top:24px"><span class="adlbl">GOOGLE ADSENSE SLOT 4</span></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════
-     AUDIO PANEL
-     ════════════════════════════════════ -->
-<div id="audio-panel">
-  <div class="audio-inner" style="position:relative;">
-    <button class="audio-close" onclick="Audio.close()">✕</button>
-    <div class="audio-title">🔊 AUDIO MODE · ஒலி வாசிப்பு</div>
-    <div class="audio-ref" id="audio-ref"></div>
-    <div class="audio-lang">
-      <button id="lang-en" onclick="Audio.setLang('en')" style="background:#fff;color:#0078D7;">English</button>
-      <button id="lang-ta" onclick="Audio.setLang('ta')" style="background:rgba(255,255,255,.15);color:#fff;">Tamil</button>
+<!-- AUDIO PANEL -->
+<div id="ap">
+  <div class="api">
+    <button class="acls" onclick="AudioMgr.close()">✕</button>
+    <div class="att">🔊 AUDIO — ஒலி வாசிப்பு</div>
+    <div class="atr" id="aref">—</div>
+    <div class="alng" id="alng">
+      <button id="lnen" onclick="AudioMgr.lang('en')">English</button>
+      <button id="lnta" onclick="AudioMgr.lang('ta')">Tamil தமிழ்</button>
     </div>
-    <div class="audio-controls">
-      <button id="audio-play-btn" onclick="Audio.play()" style="flex:2;background:#fff;color:#0078D7;">▶ PLAY</button>
-      <button onclick="Audio.pause()"  style="background:rgba(255,255,255,.2);color:#fff;">⏸</button>
-      <button onclick="Audio.resume()" style="background:rgba(255,255,255,.2);color:#fff;">▶</button>
-      <button onclick="Audio.stop()"   style="background:rgba(255,255,255,.15);color:#fff;">⏹</button>
+    <div class="actls">
+      <button id="playbtn" onclick="AudioMgr.play()" style="flex:2">▶ PLAY</button>
+      <button onclick="AudioMgr.pause()">⏸</button>
+      <button onclick="AudioMgr.resume()">▶▶</button>
+      <button onclick="AudioMgr.stop()">⏹</button>
     </div>
+    <div id="audmsg" style="margin-top:8px;font-size:9px;color:rgba(255,255,255,.5);display:none"></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════
-     DATA LAYER
-     ════════════════════════════════════ -->
+<!-- DATA -->
+<script src="bible_data.js"></script>
+
+<!-- APP -->
 <script>
-/* ─────────────────────────────────────
-   DATA.js — Single source of truth
-   ───────────────────────────────────── */
-var DATA = (function() {
+"use strict";
 
-  var VERSES = [
-    // OLD TESTAMENT
-    { id:1,  ref:"Genesis 1:1",      book:"Genesis",       testament:"OT", ch:1,  v:1,
-      ta:"ஆதியிலே தேவன் வானத்தையும் பூமியையும் சிருஷ்டித்தார்.",
-      en:"In the beginning God created the heaven and the earth.",
-      tags:["creation","god","beginning","power"] },
-    { id:2,  ref:"Exodus 20:3",      book:"Exodus",        testament:"OT", ch:20, v:3,
-      ta:"என்னையன்றி உனக்கு வேறே தேவர்கள் இருக்கலாகாது.",
-      en:"Thou shalt have no other gods before me.",
-      tags:["commandment","god","worship","obedience"] },
-    { id:3,  ref:"Psalm 23:1",       book:"Psalms",        testament:"OT", ch:23, v:1,
-      ta:"கர்த்தர் என் மேய்ப்பராயிருக்கிறார்; எனக்குக் குறைவு உண்டாகாது.",
-      en:"The Lord is my shepherd; I shall not want.",
-      tags:["shepherd","trust","lord","provision","protection"] },
-    { id:4,  ref:"Psalm 23:4",       book:"Psalms",        testament:"OT", ch:23, v:4,
-      ta:"நான் மரண இருளின் பள்ளத்தாக்கிலே நடந்தாலும் தீமைக்கு அஞ்சமாட்டேன்; தேவரீர் என்னோடிருக்கிறீர்.",
-      en:"Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me.",
-      tags:["fear","protection","god","death","comfort","courage"] },
-    { id:5,  ref:"Psalm 46:1",       book:"Psalms",        testament:"OT", ch:46, v:1,
-      ta:"தேவன் நமக்கு அடைக்கலமும் பெலனுமாயிருக்கிறார்; இக்கட்டுகளில் அவர் மிகவும் உதவியாயிருக்கிறார்.",
-      en:"God is our refuge and strength, a very present help in trouble.",
-      tags:["refuge","strength","help","trouble","protection","god"] },
-    { id:6,  ref:"Psalm 119:105",    book:"Psalms",        testament:"OT", ch:119,v:105,
-      ta:"உமது வார்த்தை என் பாதங்களுக்கு தீபமும் என் பாதையில் வெளிச்சமுமாயிருக்கிறது.",
-      en:"Thy word is a lamp unto my feet, and a light unto my path.",
-      tags:["word","light","path","guidance","bible"] },
-    { id:7,  ref:"Proverbs 3:5",     book:"Proverbs",      testament:"OT", ch:3,  v:5,
-      ta:"உன் சொந்த விவேகத்தின்மேல் சாயாமல், உன் முழு இருதயத்தோடும் கர்த்தரில் நம்பிக்கையாயிரு.",
-      en:"Trust in the Lord with all thine heart; and lean not unto thine own understanding.",
-      tags:["trust","wisdom","heart","lord","guidance","faith"] },
-    { id:8,  ref:"Proverbs 3:6",     book:"Proverbs",      testament:"OT", ch:3,  v:6,
-      ta:"உன் எல்லா வழிகளிலும் அவரை நினைத்துக்கொள், அவர் உன் பாதைகளை செவ்வைப்படுத்துவார்.",
-      en:"In all thy ways acknowledge him, and he shall direct thy paths.",
-      tags:["guidance","path","lord","direction","wisdom"] },
-    { id:9,  ref:"Proverbs 22:6",    book:"Proverbs",      testament:"OT", ch:22, v:6,
-      ta:"பிள்ளையானவன் போகவேண்டிய வழியிலே அவனை நடத்து; அவன் முதிர்வயதிலும் அதை விடான்.",
-      en:"Train up a child in the way he should go: and when he is old, he will not depart from it.",
-      tags:["children","family","parenting","upbringing","guidance"] },
-    { id:10, ref:"Isaiah 40:31",     book:"Isaiah",        testament:"OT", ch:40, v:31,
-      ta:"கர்த்தரை நம்பிக்கொண்டிருக்கிறவர்களோ புதுப்பிக்கப்பட்ட பெலத்தை அடைவார்கள்; கழுகுகளைப்போல செட்டைகளை அடித்து எழும்புவார்கள்.",
-      en:"But they that wait upon the Lord shall renew their strength; they shall mount up with wings as eagles.",
-      tags:["strength","hope","wait","renew","eagle","perseverance"] },
-    { id:11, ref:"Jeremiah 29:11",   book:"Jeremiah",      testament:"OT", ch:29, v:11,
-      ta:"நான் உங்களுக்காக நினைக்கிற நினைவுகளை நான் அறிவேன்; அவை தீமைக்கல்ல நன்மைக்கேதுவான நினைவுகளே; உங்களுக்கு நல்நம்பிக்கையான முன்னும் பின்னும் கொடுக்கவே.",
-      en:"For I know the thoughts that I think toward you, saith the Lord, thoughts of peace, and not of evil, to give you an expected end.",
-      tags:["hope","future","plan","peace","promise","purpose"] },
-    // NEW TESTAMENT
-    { id:12, ref:"Matthew 5:3",      book:"Matthew",       testament:"NT", ch:5,  v:3,
-      ta:"ஆவியில் எளிமையுள்ளவர்கள் பாக்கியவான்கள்; பரலோகராஜ்யம் அவர்களுடையது.",
-      en:"Blessed are the poor in spirit: for theirs is the kingdom of heaven.",
-      tags:["blessed","kingdom","heaven","humility","beatitudes"] },
-    { id:13, ref:"Matthew 5:9",      book:"Matthew",       testament:"NT", ch:5,  v:9,
-      ta:"சமாதானம்பண்ணுகிறவர்கள் பாக்கியவான்கள்; அவர்கள் தேவனுடைய புத்திரர் என்னப்படுவார்கள்.",
-      en:"Blessed are the peacemakers: for they shall be called the children of God.",
-      tags:["peace","blessed","peacemaker","children","beatitudes"] },
-    { id:14, ref:"Matthew 6:33",     book:"Matthew",       testament:"NT", ch:6,  v:33,
-      ta:"முதலாவது தேவனுடைய ராஜ்யத்தையும் அவருடைய நீதியையும் தேடுங்கள்; அப்பொழுது இவைகளெல்லாம் உங்களுக்குக் கூடக் கொடுக்கப்படும்.",
-      en:"But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you.",
-      tags:["seek","kingdom","righteousness","priority","provision"] },
-    { id:15, ref:"Matthew 11:28",    book:"Matthew",       testament:"NT", ch:11, v:28,
-      ta:"வருத்தப்பட்டுப் பாரஞ்சுமக்கிற எல்லாரும் என்னிடத்தில் வாருங்கள்; நான் உங்களுக்கு இளைப்பாறுதல் தருவேன்.",
-      en:"Come unto me, all ye that labour and are heavy laden, and I will give you rest.",
-      tags:["rest","burden","comfort","invitation","peace","relief"] },
-    { id:16, ref:"John 3:16",        book:"John",          testament:"NT", ch:3,  v:16,
-      ta:"தேவன், தம்முடைய ஒரே பேறான குமாரனை விசுவாசிக்கிறவன் எவனோ அவன் கெட்டுப்போகாமல் நித்தியஜீவனை அடையும்படிக்கு, அவரை தந்தருளி இவ்வளவாய் உலகத்தில் அன்பாயிருந்தார்.",
-      en:"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
-      tags:["love","salvation","eternal","god","jesus","gospel","gift"] },
-    { id:17, ref:"John 14:6",        book:"John",          testament:"NT", ch:14, v:6,
-      ta:"இயேசு அவனை நோக்கி: நானே வழியும் சத்தியமும் ஜீவனுமாயிருக்கிறேன்; என்னாலேயன்றி ஒருவனும் பிதாவினிடத்தில் வரான் என்றார்.",
-      en:"Jesus saith unto him, I am the way, the truth, and the life: no man cometh unto the Father, but by me.",
-      tags:["jesus","truth","life","way","salvation","gospel"] },
-    { id:18, ref:"John 15:13",       book:"John",          testament:"NT", ch:15, v:13,
-      ta:"ஒருவன் தன் சிநேகிதருக்காக தன் ஜீவனைக் கொடுப்பதிலும் அதிகமான அன்பு ஒருவனிடத்திலும் இல்லை.",
-      en:"Greater love hath no man than this, that a man lay down his life for his friends.",
-      tags:["love","sacrifice","friendship","selfless","jesus"] },
-    { id:19, ref:"Romans 3:23",      book:"Romans",        testament:"NT", ch:3,  v:23,
-      ta:"எல்லாரும் பாவஞ்செய்து தேவமகிமையற்றவர்களாகி இருக்கிறார்கள்.",
-      en:"For all have sinned, and come short of the glory of God.",
-      tags:["sin","glory","god","all","humanity","gospel"] },
-    { id:20, ref:"Romans 6:23",      book:"Romans",        testament:"NT", ch:6,  v:23,
-      ta:"பாவத்தின் சம்பளம் மரணம்; தேவனுடைய கிருபைவரமோ நம்முடைய கர்த்தராகிய இயேசுகிறிஸ்துவினால் உண்டான நித்தியஜீவன்.",
-      en:"For the wages of sin is death; but the gift of God is eternal life through Jesus Christ our Lord.",
-      tags:["sin","death","gift","eternal","salvation","grace","gospel"] },
-    { id:21, ref:"Romans 8:28",      book:"Romans",        testament:"NT", ch:8,  v:28,
-      ta:"தேவனிடத்தில் அன்பு கூர்ந்து, அவருடைய தீர்மானத்தின்படி அழைக்கப்பட்டவர்களுக்கு எல்லாவற்றிலும் நன்மையே உண்டாகும்.",
-      en:"And we know that all things work together for good to them that love God, to them who are the called according to his purpose.",
-      tags:["good","love","purpose","faith","promise","hope"] },
-    { id:22, ref:"Romans 10:9",      book:"Romans",        testament:"NT", ch:10, v:9,
-      ta:"இயேசுவை ஆண்டவர் என்று உன் வாயினால் அறிக்கையிட்டு, தேவன் அவரை மரித்தோரிலிருந்து எழுப்பினார் என்று உன் இருதயத்தில் விசுவாசித்தால் இரட்சிக்கப்படுவாய்.",
-      en:"That if thou shalt confess with thy mouth the Lord Jesus, and shalt believe in thine heart that God hath raised him from the dead, thou shalt be saved.",
-      tags:["salvation","confession","believe","jesus","resurrection","gospel"] },
-    { id:23, ref:"1 Cor 13:4",       book:"1 Corinthians", testament:"NT", ch:13, v:4,
-      ta:"அன்பு நீடிய பொறுமையுள்ளது; அன்பு தயவுள்ளது; அன்பு பொறாமைப்படாது; அன்பு தன்னை மேன்மைப்படுத்தாது; செருக்காது.",
-      en:"Charity suffereth long, and is kind; charity envieth not; charity vaunteth not itself, is not puffed up.",
-      tags:["love","patience","kindness","charity","marriage","relationship"] },
-    { id:24, ref:"1 Cor 13:13",      book:"1 Corinthians", testament:"NT", ch:13, v:13,
-      ta:"இப்பொழுதும் விசுவாசம், நம்பிக்கை, அன்பு இம்மூன்றும் நிலைத்திருக்கும்; இவைகளில் அன்பே சிறந்தது.",
-      en:"And now abideth faith, hope, charity, these three; but the greatest of these is charity.",
-      tags:["faith","hope","love","greatest","charity","abide"] },
-    { id:25, ref:"Philippians 4:6",  book:"Philippians",   testament:"NT", ch:4,  v:6,
-      ta:"எந்த காரியத்திலும் கவலைப்படாதிருங்கள்; எல்லாவற்றிலும் உங்கள் விண்ணப்பங்களை ஸ்தோத்திரத்தோடே கூடிய ஜெபத்தினாலும் வேண்டுதலினாலும் தேவனுக்கு அறிவியுங்கள்.",
-      en:"Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God.",
-      tags:["prayer","anxiety","peace","thanksgiving","worry","trust"] },
-    { id:26, ref:"Philippians 4:7",  book:"Philippians",   testament:"NT", ch:4,  v:7,
-      ta:"அப்பொழுது எல்லாவித சிந்தனைக்கும் மேலான தேவசமாதானம் உங்கள் இருதயங்களையும் சிந்தைகளையும் கிறிஸ்து இயேசுவுக்குள் காக்கும்.",
-      en:"And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus.",
-      tags:["peace","heart","mind","god","understanding","guard"] },
-    { id:27, ref:"Philippians 4:13", book:"Philippians",   testament:"NT", ch:4,  v:13,
-      ta:"என்னைப் பலப்படுத்துகிற கிறிஸ்துவினாலே எல்லாவற்றையும் செய்யக்கூடும்.",
-      en:"I can do all things through Christ which strengtheneth me.",
-      tags:["strength","christ","power","ability","all things"] },
-    { id:28, ref:"Hebrews 11:1",     book:"Hebrews",       testament:"NT", ch:11, v:1,
-      ta:"விசுவாசம் என்பது நம்பப்படுகிறவைகளின் நிச்சயமும் காணப்படாதவைகளின் நிரூபணமுமாயிருக்கிறது.",
-      en:"Now faith is the substance of things hoped for, the evidence of things not seen.",
-      tags:["faith","hope","substance","evidence","unseen","believe"] },
-    { id:29, ref:"1 John 4:8",       book:"1 John",        testament:"NT", ch:4,  v:8,
-      ta:"அன்பில்லாதவன் தேவனை அறியான்; ஏனெனில் தேவன் அன்பாகவே இருக்கிறார்.",
-      en:"He that loveth not knoweth not God; for God is love.",
-      tags:["love","god","know","nature","divine"] },
-    { id:30, ref:"Revelation 21:4",  book:"Revelation",    testament:"NT", ch:21, v:4,
-      ta:"தேவன் தாமே அவர்களோடிருந்து அவர்களுடைய தேவனாயிருப்பார்; அவர் அவர்களுடைய கண்களிலிருந்து கண்ணீரனைத்தையும் துடைப்பார்.",
-      en:"And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying, neither shall there be any more pain.",
-      tags:["heaven","comfort","eternal","tears","hope","no death","promise"] }
-  ];
-
-  var BOOKS = [
-    {en:"Genesis",      ta:"ஆதியாகமம்",     ch:50,  testament:"OT"},
-    {en:"Exodus",       ta:"யாத்திராகமம்",   ch:40,  testament:"OT"},
-    {en:"Leviticus",    ta:"லேவியராகமம்",    ch:27,  testament:"OT"},
-    {en:"Numbers",      ta:"எண்ணாகமம்",      ch:36,  testament:"OT"},
-    {en:"Deuteronomy",  ta:"உபாகமம்",        ch:34,  testament:"OT"},
-    {en:"Joshua",       ta:"யோசுவா",         ch:24,  testament:"OT"},
-    {en:"Judges",       ta:"நியாயாதிபதிகள்", ch:21,  testament:"OT"},
-    {en:"Ruth",         ta:"ரூத்",           ch:4,   testament:"OT"},
-    {en:"1 Samuel",     ta:"1 சாமுவேல்",     ch:31,  testament:"OT"},
-    {en:"2 Samuel",     ta:"2 சாமுவேல்",     ch:24,  testament:"OT"},
-    {en:"1 Kings",      ta:"1 இராஜாக்கள்",   ch:22,  testament:"OT"},
-    {en:"2 Kings",      ta:"2 இராஜாக்கள்",   ch:25,  testament:"OT"},
-    {en:"Psalms",       ta:"சங்கீதம்",        ch:150, testament:"OT"},
-    {en:"Proverbs",     ta:"நீதிமொழிகள்",    ch:31,  testament:"OT"},
-    {en:"Ecclesiastes", ta:"பிரசங்கி",        ch:12,  testament:"OT"},
-    {en:"Isaiah",       ta:"ஏசாயா",          ch:66,  testament:"OT"},
-    {en:"Jeremiah",     ta:"எரேமியா",         ch:52,  testament:"OT"},
-    {en:"Daniel",       ta:"தானியேல்",        ch:12,  testament:"OT"},
-    {en:"Matthew",      ta:"மத்தேயு",         ch:28,  testament:"NT"},
-    {en:"Mark",         ta:"மாற்கு",          ch:16,  testament:"NT"},
-    {en:"Luke",         ta:"லூக்கா",          ch:24,  testament:"NT"},
-    {en:"John",         ta:"யோவான்",          ch:21,  testament:"NT"},
-    {en:"Acts",         ta:"அப்போஸ்தலர்",     ch:28,  testament:"NT"},
-    {en:"Romans",       ta:"உரோமர்",          ch:16,  testament:"NT"},
-    {en:"1 Corinthians",ta:"1 கொரிந்தியர்",   ch:16,  testament:"NT"},
-    {en:"2 Corinthians",ta:"2 கொரிந்தியர்",   ch:13,  testament:"NT"},
-    {en:"Galatians",    ta:"கலாத்தியர்",      ch:6,   testament:"NT"},
-    {en:"Ephesians",    ta:"எபேசியர்",         ch:6,   testament:"NT"},
-    {en:"Philippians",  ta:"பிலிப்பியர்",      ch:4,   testament:"NT"},
-    {en:"Colossians",   ta:"கொலோசெயர்",       ch:4,   testament:"NT"},
-    {en:"1 Timothy",    ta:"1 தீமோத்தேயு",    ch:6,   testament:"NT"},
-    {en:"2 Timothy",    ta:"2 தீமோத்தேயு",    ch:4,   testament:"NT"},
-    {en:"Hebrews",      ta:"எபிரேயர்",         ch:13,  testament:"NT"},
-    {en:"James",        ta:"யாக்கோபு",         ch:5,   testament:"NT"},
-    {en:"1 Peter",      ta:"1 பேதுரு",         ch:5,   testament:"NT"},
-    {en:"1 John",       ta:"1 யோவான்",         ch:5,   testament:"NT"},
-    {en:"Revelation",   ta:"வெளிப்படுத்தல்",   ch:22,  testament:"NT"}
-  ];
-
-  // Color palette mapped to books
-  var PALETTE = ["#0078D7","#107C10","#E81123","#744DA9","#FF8C00","#008272","#00B4D8","#4C4C4C"];
-  function colorOf(book) {
-    var idx = BOOKS.findIndex(function(b){ return b.en === book; });
-    return PALETTE[(idx < 0 ? 0 : idx) % PALETTE.length];
-  }
-
-  // Expose public API
+/* ════════════════════════════════════
+   STATE — persisted preferences
+   ════════════════════════════════════ */
+var ST = (function(){
+  var d = {theme:'dark', saved:[], fs:18, notes:{}};
+  try{
+    var s=localStorage.getItem('vv2');
+    if(s) d=Object.assign(d,JSON.parse(s));
+  }catch(e){}
+  function save(){ try{ localStorage.setItem('vv2',JSON.stringify(d)); }catch(e){} }
   return {
-    verses:  VERSES,
-    books:   BOOKS,
-    colorOf: colorOf,
-    // Get verse by id
-    byId: function(id) { return VERSES.find(function(v){ return v.id === id; }); },
-    // Get daily verse (rotates by day)
-    daily: function() { return VERSES[new Date().getDay() % VERSES.length]; }
-  };
-})();
-</script>
-
-<!-- ════════════════════════════════════
-     LOGIC LAYER
-     ════════════════════════════════════ -->
-<script>
-/* ─────────────────────────────────────
-   SEARCH.js — Offline search engine
-   ───────────────────────────────────── */
-var Search = (function() {
-
-  // Topic → tag mapping (keyword synonyms)
-  var INDEX = {
-    // Love & Relationships
-    "love":["love","charity","selfless","marriage","relationship"],
-    "marriage":["love","charity","marriage","relationship","family"],
-    "family":["children","family","parenting","love"],
-    "children":["children","family","parenting"],
-    // Faith & Hope
-    "faith":["faith","believe","trust","hope","evidence"],
-    "hope":["hope","future","plan","promise","trust","renew"],
-    "trust":["trust","faith","hope","lord","guidance"],
-    "believe":["faith","believe","salvation","gospel"],
-    // Peace & Comfort
-    "peace":["peace","rest","comfort","relief","peacemaker"],
-    "comfort":["comfort","rest","relief","peace","eternal"],
-    "rest":["rest","comfort","relief","peace","burden"],
-    "anxiety":["prayer","anxiety","worry","trust","peace"],
-    "worry":["prayer","anxiety","worry","peace","trust"],
-    "depression":["comfort","hope","rest","peace","strength"],
-    "stress":["prayer","peace","rest","anxiety","trust"],
-    // Strength & Power
-    "strength":["strength","power","ability","renew","perseverance"],
-    "power":["strength","power","god","christ","ability"],
-    "perseverance":["strength","hope","perseverance","renew","eagle"],
-    // Prayer & Worship
-    "prayer":["prayer","thanksgiving","worship","supplication"],
-    "worship":["worship","god","commandment","obedience","thanksgiving"],
-    "thanksgiving":["thanksgiving","prayer","gratitude","worship"],
-    // Salvation & Gospel
-    "salvation":["salvation","gospel","eternal","grace","gift","jesus"],
-    "gospel":["gospel","salvation","jesus","love","gift","eternal"],
-    "eternal":["eternal","salvation","gospel","heaven","life"],
-    "grace":["grace","gift","salvation","mercy","gospel"],
-    "forgiveness":["forgiveness","salvation","grace","mercy","love"],
-    // God & Jesus
-    "god":["god","lord","divine","nature","power","creation"],
-    "jesus":["jesus","christ","lord","salvation","gospel","truth","way","life"],
-    "lord":["lord","god","shepherd","trust","provision"],
-    "christ":["christ","jesus","lord","strength","salvation"],
-    // Guidance & Wisdom
-    "guidance":["guidance","path","direction","wisdom","lord"],
-    "wisdom":["wisdom","guidance","trust","understanding","proverbs"],
-    "direction":["guidance","path","direction","lord","wisdom"],
-    // Heaven & Eternal
-    "heaven":["heaven","kingdom","eternal","blessed","promise","no death"],
-    "kingdom":["kingdom","heaven","seek","righteousness","blessed"],
-    // Protection & Refuge
-    "protection":["protection","refuge","shelter","god","guard","shepherd"],
-    "refuge":["refuge","protection","strength","help","god"],
-    "healing":["comfort","rest","hope","peace","strength","protection"],
-    // Sin & Redemption
-    "sin":["sin","death","all","humanity","gospel"],
-    "death":["death","sin","eternal","heaven","salvation","comfort"],
-    // Creation
-    "creation":["creation","god","beginning","power"],
-    // Misc
-    "money":["provision","trust","seek","guidance","priority"],
-    "anger":["peace","prayer","rest","patience","kindness"],
-    "courage":["courage","fear","protection","strength","trust"]
-  };
-
-  function search(query) {
-    if (!query || !query.trim()) return [];
-    var q   = query.toLowerCase().trim();
-    var words = q.split(/\s+/);
-
-    // Build tag set from keywords
-    var tagSet = {};
-    words.forEach(function(word) {
-      Object.keys(INDEX).forEach(function(key) {
-        if (word.indexOf(key) !== -1 || key.indexOf(word) !== -1) {
-          INDEX[key].forEach(function(tag) { tagSet[tag] = true; });
-        }
-      });
-    });
-
-    // Score every verse
-    var scored = DATA.verses.map(function(v) {
-      var score = 0;
-      var combined = (v.en + " " + v.ta + " " + v.ref + " " + v.book + " " + v.tags.join(" ")).toLowerCase();
-
-      // Tag match (high weight)
-      v.tags.forEach(function(tag) {
-        if (tagSet[tag]) score += 4;
-      });
-
-      // Direct text match (medium weight)
-      words.forEach(function(word) {
-        if (word.length < 2) return;
-        if (combined.indexOf(word) !== -1) score += 2;
-      });
-
-      // Book/ref match (bonus)
-      if (v.book.toLowerCase().indexOf(q) !== -1) score += 6;
-      if (v.ref.toLowerCase().indexOf(q) !== -1) score += 5;
-
-      return { verse: v, score: score };
-    });
-
-    return scored
-      .filter(function(x) { return x.score > 0; })
-      .sort(function(a, b) { return b.score - a.score; })
-      .slice(0, 8)
-      .map(function(x) { return x.verse; });
-  }
-
-  return { search: search };
-})();
-
-/* ─────────────────────────────────────
-   STATE.js — App state management
-   ───────────────────────────────────── */
-var State = (function() {
-  var _state = {
-    theme:    'dark',
-    screen:   'home',
-    saved:    [],
-    fontSize: 18
-  };
-
-  // Persist saved verses in localStorage
-  function load() {
-    try {
-      var s = localStorage.getItem('vv_saved');
-      if (s) _state.saved = JSON.parse(s);
-      var t = localStorage.getItem('vv_theme');
-      if (t) _state.theme = t;
-      var f = localStorage.getItem('vv_fontsize');
-      if (f) _state.fontSize = parseInt(f, 10);
-    } catch(e) {}
-  }
-
-  function persist() {
-    try {
-      localStorage.setItem('vv_saved',    JSON.stringify(_state.saved));
-      localStorage.setItem('vv_theme',    _state.theme);
-      localStorage.setItem('vv_fontsize', _state.fontSize);
-    } catch(e) {}
-  }
-
-  function isSaved(id) { return _state.saved.indexOf(id) !== -1; }
-
-  function toggleSave(id) {
-    var idx = _state.saved.indexOf(id);
-    if (idx === -1) _state.saved.push(id);
-    else            _state.saved.splice(idx, 1);
-    persist();
-    return isSaved(id);
-  }
-
-  function setFontSize(fs) {
-    _state.fontSize = Math.min(32, Math.max(12, fs));
-    persist();
-  }
-
-  function setTheme(t) { _state.theme = t; persist(); }
-
-  load();
-  return {
-    get: function(k) { return _state[k]; },
-    isSaved:    isSaved,
-    toggleSave: toggleSave,
-    setFontSize: setFontSize,
-    setTheme: setTheme
+    g:function(k){return d[k];},
+    saved:function(){return d.saved;},
+    isSaved:function(id){return d.saved.indexOf(id)!==-1;},
+    toggleSave:function(id){
+      var i=d.saved.indexOf(id);
+      if(i===-1) d.saved.push(id); else d.saved.splice(i,1);
+      save(); return i===-1;
+    },
+    setFs:function(n){ d.fs=Math.max(12,Math.min(32,n)); save(); },
+    setTheme:function(t){ d.theme=t; save(); },
+    setNote:function(id,txt){ d.notes[id]=txt; save(); },
+    getNote:function(id){ return d.notes[id]||''; }
   };
 })();
 
-/* ─────────────────────────────────────
-   AUDIO.js — TTS engine with guards
-   ───────────────────────────────────── */
-var Audio = (function() {
-  var TTS    = typeof window !== 'undefined' && 'speechSynthesis' in window;
+/* ════════════════════════════════════
+   AUDIO MANAGER
+   Fixed for Android WebView:
+   - Uses Web Speech API with proper Android detection
+   - Shows helpful message if TTS not available
+   ════════════════════════════════════ */
+var AudioMgr = (function(){
+  var _ok = false;
   var _verse = null;
-  var _lang  = 'en';
+  var _lang = 'en';
   var _voices = [];
+  var _utter = null;
 
-  if (TTS) {
-    function loadVoices() { _voices = window.speechSynthesis.getVoices(); }
-    loadVoices();
-    window.speechSynthesis.onvoiceschanged = loadVoices;
+  // Check TTS availability properly
+  function checkTTS(){
+    if(typeof window === 'undefined') return false;
+    if(!('speechSynthesis' in window)) return false;
+    // On Android WebView, speechSynthesis exists but getVoices may be empty
+    // We still try - Android has built-in TTS
+    return true;
   }
+  _ok = checkTTS();
 
-  function open(verse) {
-    _verse = verse;
-    if (!TTS) {
-      var panel = document.getElementById('audio-panel');
-      panel.classList.add('open');
-      document.getElementById('audio-ref').textContent = 'Audio not supported in this browser.';
-      return;
+  if(_ok){
+    // Load voices — must handle async loading on Android
+    function loadV(){
+      _voices = window.speechSynthesis.getVoices() || [];
     }
-    stop();
-    document.getElementById('audio-ref').textContent  = verse.ref;
-    document.getElementById('audio-panel').classList.add('open');
-  }
-
-  function close() {
-    stop();
-    document.getElementById('audio-panel').classList.remove('open');
-  }
-
-  function togglePanel() {
-    var panel = document.getElementById('audio-panel');
-    if (panel.classList.contains('open')) close();
-    else if (_verse) open(_verse);
-  }
-
-  function setLang(lang) {
-    _lang = lang;
-    document.getElementById('lang-en').style.background = lang === 'en' ? '#fff' : 'rgba(255,255,255,.15)';
-    document.getElementById('lang-en').style.color       = lang === 'en' ? '#0078D7' : '#fff';
-    document.getElementById('lang-ta').style.background = lang === 'ta' ? '#fff' : 'rgba(255,255,255,.15)';
-    document.getElementById('lang-ta').style.color       = lang === 'ta' ? '#0078D7' : '#fff';
-    stop();
-  }
-
-  function play() {
-    if (!TTS || !_verse) return;
-    stop();
-    var text = _lang === 'ta' ? _verse.ta : _verse.en;
-    var lc   = _lang === 'ta' ? 'ta-IN'   : 'en-US';
-    var u = new SpeechSynthesisUtterance(text);
-    u.lang = lc; u.rate = 0.85; u.pitch = 1;
-    var prefix = lc.split('-')[0];
-    for (var i = 0; i < _voices.length; i++) {
-      if (_voices[i].lang.indexOf(prefix) === 0) { u.voice = _voices[i]; break; }
+    loadV();
+    if(window.speechSynthesis.onvoiceschanged !== undefined){
+      window.speechSynthesis.onvoiceschanged = loadV;
     }
-    u.onstart = function() {
-      var btn = document.getElementById('audio-play-btn');
-      if (btn) { btn.textContent = '▶ PLAYING...'; btn.style.background = 'rgba(255,255,255,.2)'; btn.style.color = '#fff'; }
-    };
-    u.onend = u.onerror = function() {
-      var btn = document.getElementById('audio-play-btn');
-      if (btn) { btn.textContent = '▶ PLAY'; btn.style.background = '#fff'; btn.style.color = '#0078D7'; }
-    };
-    window.speechSynthesis.speak(u);
+    // Also retry after 1 second for Android
+    setTimeout(loadV, 1000);
+    setTimeout(loadV, 2000);
   }
 
-  function pause()  { if (TTS) window.speechSynthesis.pause(); }
-  function resume() { if (TTS) window.speechSynthesis.resume(); }
-  function stop()   { if (TTS) window.speechSynthesis.cancel(); }
-
-  return { open: open, close: close, togglePanel: togglePanel, setLang: setLang, play: play, pause: pause, resume: resume, stop: stop };
-})();
-</script>
-
-<!-- ════════════════════════════════════
-     UI LAYER
-     ════════════════════════════════════ -->
-<script>
-/* ─────────────────────────────────────
-   UI.js — Render helpers
-   ───────────────────────────────────── */
-var UI = (function() {
-
-  // Build a verse card HTML string
-  function verseCard(verse, opts) {
-    opts = opts || {};
-    var color   = DATA.colorOf(verse.book);
-    var saved   = State.isSaved(verse.id);
-    var showAll = opts.full !== false;
-
-    return '<div class="verse-card" id="vc-' + verse.id + '">' +
-      '<div class="verse-card-header" style="background:' + color + '">' +
-        '<span class="verse-ref">' + verse.ref + '</span>' +
-        '<span class="verse-book">' + verse.book + '</span>' +
-      '</div>' +
-      '<div class="verse-body">' +
-        '<div class="verse-ta">' + verse.ta + '</div>' +
-        '<div class="verse-en">"' + verse.en + '"</div>' +
-        '<div class="verse-actions">' +
-          '<button id="save-btn-' + verse.id + '" onclick="App.toggleSave(' + verse.id + ')" style="' + (saved ? 'background:' + color + ';color:#fff;' : '') + '">' + (saved ? 'SAVED' : 'SAVE') + '</button>' +
-          '<button onclick="App.copyVerse(' + verse.id + ')">COPY</button>' +
-          '<button onclick="Reading.open(' + verse.id + ')" style="background:' + color + '22;border-top:1px solid ' + color + '44;color:' + color + '">READ</button>' +
-          '<button onclick="App.openAudio(' + verse.id + ')" style="background:' + color + '22;border-top:1px solid ' + color + '44;color:' + color + '">AUDIO</button>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
-  }
-
-  // Render a list of verse cards into a container
-  function renderVerses(containerId, verses, emptyMsg) {
-    var el  = document.getElementById(containerId);
-    if (!el) return;
-    if (!verses || verses.length === 0) {
-      el.innerHTML = '<div class="empty"><div class="empty-icon">☰</div><div class="empty-text">' + (emptyMsg || 'NO VERSES') + '</div></div>';
-      return;
-    }
-    var html = '';
-    verses.forEach(function(v, i) {
-      html += verseCard(v);
-      if (i === 3) html += '<div class="ad-slot"><span class="ad-label">ADVERTISEMENT</span></div>';
-    });
-    el.innerHTML = html;
-  }
-
-  return { verseCard: verseCard, renderVerses: renderVerses };
-})();
-
-/* ─────────────────────────────────────
-   Reading.js — Reading mode controller
-   ───────────────────────────────────── */
-var Reading = (function() {
-  var _verse = null;
-
-  function open(id) {
-    var v     = DATA.byId(id);
-    if (!v) return;
-    _verse    = v;
-    var color = DATA.colorOf(v.book);
-    var fs    = State.get('fontSize');
-
-    document.getElementById('reading-overlay').style.background = State.get('theme') === 'dark' ? '#0a0a0a' : '#FFFEF7';
-    document.getElementById('reading-bar').style.background      = color;
-    document.getElementById('reading-ref').textContent           = v.ref;
-    document.getElementById('reading-ta').textContent            = v.ta;
-    document.getElementById('reading-ta').style.fontSize         = (fs + 4) + 'px';
-    document.getElementById('reading-en').textContent            = '"' + v.en + '"';
-    document.getElementById('reading-en').style.fontSize         = fs + 'px';
-    document.getElementById('reading-divider').style.background  = color;
-    document.getElementById('reading-badge').textContent         = v.ref;
-    document.getElementById('reading-badge').style.background    = color;
-    document.getElementById('reading-badge').style.color         = '#fff';
-
-    // Also prime audio
-    Audio.close();
-    document.getElementById('audio-ref').textContent = v.ref;
-
-    document.getElementById('reading-overlay').classList.add('open');
-    document.getElementById('audio-toggle-btn').style.background = 'rgba(255,255,255,.2)';
-    document.getElementById('audio-toggle-btn').style.color = '#fff';
-  }
-
-  function close() {
-    Audio.stop();
-    Audio.close();
-    document.getElementById('reading-overlay').classList.remove('open');
-    _verse = null;
-  }
-
-  function fontSize(delta) {
-    State.setFontSize(State.get('fontSize') + delta);
-    var fs = State.get('fontSize');
-    document.getElementById('reading-ta').style.fontSize = (fs + 4) + 'px';
-    document.getElementById('reading-en').style.fontSize = fs + 'px';
-  }
-
-  // When audio button pressed from reading mode, set verse first
-  document.getElementById('audio-toggle-btn').addEventListener('click', function() {
-    if (_verse) {
-      document.getElementById('audio-ref').textContent = _verse.ref;
-      Audio.open(_verse);
-      // Move audio panel inside reading overlay visually
-      var panel = document.getElementById('audio-panel');
-      panel.style.bottom = '0';
-    }
-  });
-
-  return { open: open, close: close, fontSize: fontSize };
-})();
-
-/* ─────────────────────────────────────
-   Verses.js — All verses screen
-   ───────────────────────────────────── */
-var Verses = (function() {
-  function init() {
-    UI.renderVerses('verses-list', DATA.verses);
-  }
-  function filter(q) {
-    if (!q.trim()) { UI.renderVerses('verses-list', DATA.verses); return; }
-    var ql = q.toLowerCase();
-    var filtered = DATA.verses.filter(function(v) {
-      return v.en.toLowerCase().indexOf(ql) !== -1 ||
-             v.ta.indexOf(q) !== -1 ||
-             v.ref.toLowerCase().indexOf(ql) !== -1 ||
-             v.book.toLowerCase().indexOf(ql) !== -1;
-    });
-    UI.renderVerses('verses-list', filtered, 'NO RESULTS FOR "' + q.toUpperCase() + '"');
-  }
-  return { init: init, filter: filter };
-})();
-
-/* ─────────────────────────────────────
-   AI.js — Search screen controller
-   ───────────────────────────────────── */
-var AI = (function() {
-  var TOPICS = [
-    "love","faith","hope","peace","strength","prayer",
-    "fear","salvation","comfort","guidance","wisdom",
-    "jesus","god","healing","family","marriage","heaven",
-    "forgiveness","anxiety","courage","protection","eternal"
-  ];
-
-  function initChips() {
-    var html = '';
-    TOPICS.forEach(function(t) {
-      html += '<button class="chip" onclick="AI.searchTopic(\'' + t + '\')">' + t + '</button>';
-    });
-    document.getElementById('ai-chips').innerHTML = html;
-  }
-
-  function search() {
-    var q = document.getElementById('ai-search').value;
-    doSearch(q);
-  }
-
-  function searchTopic(topic) {
-    document.getElementById('ai-search').value = topic;
-    doSearch(topic);
-  }
-
-  function doSearch(q) {
-    if (!q.trim()) return;
-    var results = Search.search(q);
-    // Update chip active state
-    document.querySelectorAll('#ai-chips .chip').forEach(function(c) {
-      c.classList.toggle('active', c.textContent === q.toLowerCase().trim());
-    });
-    UI.renderVerses('ai-results', results, 'NO RESULTS — Try: love, peace, fear, salvation, jesus');
-  }
-
-  return { initChips: initChips, search: search, searchTopic: searchTopic };
-})();
-
-/* ─────────────────────────────────────
-   Books.js — Books screen controller
-   ───────────────────────────────────── */
-var Books = (function() {
-  var _filter = 'ALL';
-
-  function init() {
-    // Filter buttons
-    var fhtml = '';
-    ['ALL','OT','NT'].forEach(function(f) {
-      fhtml += '<button class="' + (f === _filter ? 'active' : '') + '" onclick="Books.setFilter(\'' + f + '\')">' +
-        (f === 'ALL' ? 'All Books' : f === 'OT' ? 'Old Testament' : 'New Testament') +
-      '</button>';
-    });
-    document.getElementById('books-filter').innerHTML = fhtml;
-    render();
-  }
-
-  function setFilter(f) {
-    _filter = f;
-    document.querySelectorAll('#books-filter button').forEach(function(b) {
-      b.classList.toggle('active', b.textContent.indexOf(f === 'ALL' ? 'All' : f) !== -1);
-    });
-    render();
-  }
-
-  function render() {
-    var palette = ["#0078D7","#107C10","#E81123","#744DA9","#FF8C00","#008272","#00B4D8","#4C4C4C"];
-    var books = _filter === 'ALL' ? DATA.books : DATA.books.filter(function(b){ return b.testament === _filter; });
-    var html = '';
-    books.forEach(function(b, i) {
-      var col = palette[i % palette.length];
-      // Find a sample verse for this book
-      var sample = DATA.verses.find(function(v){ return v.book === b.en; });
-      html += '<div class="book-tile" style="background:' + col + '">' +
-        '<div>' +
-          '<div class="book-title">' + b.ta + '</div>' +
-          '<div class="book-meta">' + b.en + ' · ' + b.ch + ' chapters</div>' +
-        '</div>' +
-        (sample ? '<div class="book-actions">' +
-          '<button onclick="Reading.open(' + sample.id + ')">READ</button>' +
-          '<button onclick="App.openAudio(' + sample.id + ')">AUDIO</button>' +
-        '</div>' : '') +
-      '</div>';
-    });
-    document.getElementById('books-grid').innerHTML = html;
-  }
-
-  return { init: init, setFilter: setFilter };
-})();
-
-/* ─────────────────────────────────────
-   Home.js — Home screen controller
-   ───────────────────────────────────── */
-var Home = (function() {
-  var _clock = null;
-
-  function buildTiles() {
-    var daily  = DATA.daily();
-    var dcolor = DATA.colorOf(daily.book);
-    var saved  = State.get('saved').length;
-
-    var tiles = '';
-
-    // Clock tile
-    tiles += '<div class="tile clock" style="background:#0078D7;cursor:default;" id="clock-tile">' +
-      '<div class="clock-time" id="clock-time">--:--</div>' +
-      '<div class="clock-date" id="clock-date"></div>' +
-    '</div>';
-
-    // Daily verse tile
-    tiles += '<div class="tile wide" style="background:' + dcolor + ';" onclick="Reading.open(' + daily.id + ')">' +
-      '<div class="daily-tag">TODAY — DAILY VERSE</div>' +
-      '<div class="daily-text">' + (daily.ta.length > 100 ? daily.ta.slice(0,100) + '...' : daily.ta) + '</div>' +
-      '<div class="daily-ref">' + daily.ref + '</div>' +
-      '<div class="tile-actions">' +
-        '<button class="tile-btn" onclick="event.stopPropagation();App.openAudio(' + daily.id + ')">AUDIO</button>' +
-        '<button class="tile-btn" onclick="event.stopPropagation();Reading.open(' + daily.id + ')">READ</button>' +
-      '</div>' +
-    '</div>';
-
-    // Quick tiles
-    var qtiles = [
-      { label:'AI SEARCH',   sub:'Offline Verse Finder',         color:'#744DA9', screen:'ai' },
-      { label:'BOOKS',       sub:'66 Bible Books',                color:'#107C10', screen:'books' },
-      { label:'SAVED',       sub:saved + ' verses saved',         color:'#E81123', screen:'saved' },
-      { label:'ALL VERSES',  sub:DATA.verses.length + ' verses',  color:'#FF8C00', screen:'verses' }
-    ];
-    qtiles.forEach(function(t) {
-      tiles += '<div class="tile" style="background:' + t.color + ';" onclick="App.nav(\'' + t.screen + '\')">' +
-        '<div class="tile-label">' + t.label + '</div>' +
-        '<div class="tile-sub">' + t.sub + '</div>' +
-      '</div>';
-    });
-
-    document.getElementById('home-tiles').innerHTML = tiles;
-    document.getElementById('home-verse-count').textContent = DATA.verses.length + ' verses';
-    startClock();
-  }
-
-  function startClock() {
-    if (_clock) clearInterval(_clock);
-    function tick() {
-      var now  = new Date();
-      var t    = now.toLocaleTimeString('en', { hour:'2-digit', minute:'2-digit', hour12:true });
-      var d    = now.toLocaleDateString('en', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-      var te   = document.getElementById('clock-time');
-      var de   = document.getElementById('clock-date');
-      if (te) te.textContent = t;
-      if (de) de.textContent = d;
-    }
-    tick();
-    _clock = setInterval(tick, 1000);
-  }
-
-  return { buildTiles: buildTiles };
-})();
-</script>
-
-<!-- ════════════════════════════════════
-     APP CONTROLLER (router + init)
-     ════════════════════════════════════ -->
-<script>
-/* ─────────────────────────────────────
-   App.js — Root controller
-   ───────────────────────────────────── */
-var App = (function() {
-
-  function init() {
-    // Apply persisted theme
-    applyTheme(State.get('theme'));
-
-    // Build all screens
-    Home.buildTiles();
-    UI.renderVerses('home-verses', DATA.verses.slice(0, 8));
-    Verses.init();
-    AI.initChips();
-    Books.init();
-    renderSaved();
-  }
-
-  function nav(screenId) {
-    // Update screens
-    document.querySelectorAll('.screen').forEach(function(s) {
-      s.classList.toggle('active', s.id === 'screen-' + screenId);
-    });
-    // Update nav buttons
-    document.querySelectorAll('.nav-btn').forEach(function(b) {
-      b.classList.toggle('active', b.dataset.screen === screenId);
-    });
-    // Refresh saved screen when navigating to it
-    if (screenId === 'saved') renderSaved();
-    // Scroll to top
-    document.getElementById('content').scrollTop = 0;
-  }
-
-  function renderSaved() {
-    var ids   = State.get('saved');
-    var savedVerses = ids.map(function(id){ return DATA.byId(id); }).filter(Boolean);
-    document.getElementById('saved-count-label').textContent = ids.length + ' SAVED';
-    UI.renderVerses('saved-list', savedVerses, 'NO SAVED VERSES YET<br>TAP SAVE ON ANY VERSE');
-  }
-
-  function toggleSave(id) {
-    var nowSaved = State.toggleSave(id);
-    var btn = document.getElementById('save-btn-' + id);
-    if (btn) {
-      var color = DATA.colorOf(DATA.byId(id).book);
-      btn.textContent       = nowSaved ? 'SAVED' : 'SAVE';
-      btn.style.background  = nowSaved ? color : '';
-      btn.style.color       = nowSaved ? '#fff' : '';
-    }
-  }
-
-  function copyVerse(id) {
-    var v = DATA.byId(id);
-    if (!v) return;
-    var text = v.ta + '\n' + v.en + '\n— ' + v.ref;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).catch(function(){});
-    }
-    // Flash feedback
-    var btn = document.querySelector('#vc-' + id + ' button:nth-child(2)');
-    if (btn) {
-      var orig = btn.textContent;
-      btn.textContent = 'COPIED!';
-      setTimeout(function(){ btn.textContent = orig; }, 2000);
-    }
-  }
-
-  function openAudio(id) {
-    var v = DATA.byId(id);
-    if (!v) return;
-    Audio.open(v);
-    // If reading overlay is open, keep audio inside it
-    var overlay = document.getElementById('reading-overlay');
-    var panel   = document.getElementById('audio-panel');
-    if (overlay.classList.contains('open')) {
-      panel.style.bottom = '0';
-      panel.style.maxWidth = '480px';
+  function setUI(playing){
+    var btn = document.getElementById('playbtn');
+    if(!btn) return;
+    if(playing){
+      btn.textContent='▶ PLAYING...';
+      btn.style.background='rgba(255,255,255,.2)';
+      btn.style.color='#fff';
     } else {
-      panel.style.bottom = '';
+      btn.textContent='▶ PLAY';
+      btn.style.background='#fff';
+      btn.style.color='#0078D7';
     }
   }
 
-  function toggleTheme() {
-    var t = State.get('theme') === 'dark' ? 'light' : 'dark';
-    State.setTheme(t);
-    applyTheme(t);
+  function showMsg(txt){
+    var el=document.getElementById('audmsg');
+    if(el){ el.textContent=txt; el.style.display=txt?'block':'none'; }
   }
 
-  function applyTheme(t) {
-    document.documentElement.setAttribute('data-theme', t);
-    document.getElementById('theme-btn').textContent = t === 'dark' ? '☀' : '🌙';
-    // Reading overlay bg updates on open
+  function open(verse){
+    _verse = verse;
+    document.getElementById('aref').textContent = verse.ref;
+    document.getElementById('ap').classList.add('on');
+    showMsg('');
+    if(!_ok){
+      showMsg('⚠ Audio not supported in this browser. Works on Android device.');
+    }
+    setLangUI(_lang);
   }
 
-  return { init: init, nav: nav, toggleSave: toggleSave, copyVerse: copyVerse, openAudio: openAudio, toggleTheme: toggleTheme };
+  function close(){
+    stop();
+    document.getElementById('ap').classList.remove('on');
+  }
+
+  function toggle(){
+    var panel=document.getElementById('ap');
+    if(panel.classList.contains('on')){ close(); }
+    else if(_verse){ open(_verse); }
+  }
+
+  function lang(l){
+    _lang=l; stop(); setLangUI(l);
+  }
+
+  function setLangUI(l){
+    ['en','ta'].forEach(function(x){
+      var btn=document.getElementById('ln'+x);
+      if(btn){
+        btn.style.background = l===x ? '#fff' : 'rgba(255,255,255,.15)';
+        btn.style.color      = l===x ? '#0078D7' : '#fff';
+      }
+    });
+  }
+
+  function play(){
+    if(!_ok){
+      showMsg('⚠ Audio requires Android device with TTS engine installed.');
+      return;
+    }
+    if(!_verse) return;
+    stop();
+    // Reload voices (Android loads them lazily)
+    _voices = window.speechSynthesis.getVoices() || [];
+    var text = _lang==='ta' ? _verse.ta : _verse.en;
+    var lc   = _lang==='ta' ? 'ta-IN'  : 'en-US';
+    try{
+      _utter = new SpeechSynthesisUtterance(text);
+      _utter.lang  = lc;
+      _utter.rate  = 0.85;
+      _utter.pitch = 1.0;
+      _utter.volume= 1.0;
+      // Find best matching voice
+      var prefix = lc.split('-')[0];
+      var match = null;
+      for(var i=0;i<_voices.length;i++){
+        if(_voices[i].lang && _voices[i].lang.indexOf(prefix)===0){ match=_voices[i]; break; }
+      }
+      if(match) _utter.voice = match;
+      _utter.onstart = function(){ setUI(true); showMsg(''); };
+      _utter.onend   = function(){ setUI(false); };
+      _utter.onerror = function(e){
+        setUI(false);
+        var msg = '⚠ ';
+        if(_lang==='ta'){
+          msg += 'Tamil TTS: Install "Google Text-to-Speech" from Play Store and enable Tamil language.';
+        } else {
+          msg += 'Error: ' + (e.error||'TTS failed') + '. Check device TTS settings.';
+        }
+        showMsg(msg);
+      };
+      window.speechSynthesis.speak(_utter);
+      setUI(true);
+    }catch(e){
+      showMsg('⚠ TTS Error: '+e.message);
+      setUI(false);
+    }
+  }
+
+  function pause(){
+    if(_ok && window.speechSynthesis.speaking) window.speechSynthesis.pause();
+  }
+  function resume(){
+    if(_ok && window.speechSynthesis.paused) window.speechSynthesis.resume();
+  }
+  function stop(){
+    if(_ok){ window.speechSynthesis.cancel(); }
+    setUI(false);
+    _utter=null;
+  }
+
+  return { open:open, close:close, toggle:toggle, lang:lang, play:play, pause:pause, resume:resume, stop:stop };
+})();
+
+/* ════════════════════════════════════
+   RENDER HELPERS
+   ════════════════════════════════════ */
+var R = {
+  // Build verse card HTML
+  card: function(v, opts){
+    opts = opts||{};
+    var c   = BIBLE_DATA.colorOf(v.book);
+    var sav = ST.isSaved(v.id);
+    return '<div class="vc" id="vc'+v.id+'">' +
+      '<div class="vch" style="background:'+c+'">' +
+        '<span class="vr">'+v.ref+'</span>' +
+        '<span class="vb">'+v.book+'</span>' +
+      '</div>' +
+      '<div class="vbd">' +
+        '<div class="vta">'+v.ta+'</div>' +
+        '<div class="ven">"'+v.en+'"</div>' +
+        '<div class="va">' +
+          '<button id="sbtn'+v.id+'" onclick="App.save('+v.id+')" style="'+(sav?'background:'+c+';color:#fff':'')+'">'+( sav?'♥ SAVED':'♡ SAVE')+'</button>' +
+          '<button onclick="App.copy('+v.id+')" id="cbtn'+v.id+'">⎘ COPY</button>' +
+          '<button onclick="Reading.open('+v.id+')" style="background:'+c+'22;color:'+c+'">📖 READ</button>' +
+          '<button onclick="App.audio('+v.id+')" style="background:'+c+'22;color:'+c+'">🔊 AUDIO</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  },
+  // Render list into element
+  list: function(elId, verses, empty){
+    var el=document.getElementById(elId);
+    if(!el) return;
+    if(!verses||!verses.length){
+      el.innerHTML='<div class="emp"><div class="emico">☰</div><div class="emtxt">'+(empty||'NO VERSES')+'</div></div>';
+      return;
+    }
+    var h='';
+    verses.forEach(function(v,i){
+      h+=R.card(v);
+      if(i===3) h+='<div class="ad"><span class="adlbl">GOOGLE ADSENSE SLOT</span></div>';
+    });
+    el.innerHTML=h;
+  }
+};
+
+/* ════════════════════════════════════
+   READING MODE
+   ════════════════════════════════════ */
+var Reading = (function(){
+  var _v=null;
+  function open(id){
+    _v=BIBLE_DATA.byId(id);
+    if(!_v) return;
+    var c=BIBLE_DATA.colorOf(_v.book);
+    var fs=ST.g('fs');
+    var dark=ST.g('theme')==='dark';
+    document.getElementById('ro').style.background=dark?'#0a0a0a':'#FFFEF7';
+    document.getElementById('rbar').style.background=c;
+    document.getElementById('rref').textContent=_v.ref;
+    document.getElementById('rta').textContent=_v.ta;
+    document.getElementById('rta').style.fontSize=(fs+4)+'px';
+    document.getElementById('ren').textContent='"'+_v.en+'"';
+    document.getElementById('ren').style.fontSize=fs+'px';
+    document.getElementById('rdiv').style.background=c;
+    document.getElementById('rbadge').textContent=_v.ref;
+    document.getElementById('rbadge').style.cssText='background:'+c+';color:#fff';
+    // Prime audio
+    document.getElementById('aref').textContent=_v.ref;
+    document.getElementById('ro').classList.add('on');
+    // Position audio panel at bottom of reading overlay
+    document.getElementById('ap').style.bottom='0';
+  }
+  function close(){
+    AudioMgr.stop();
+    document.getElementById('ap').classList.remove('on');
+    document.getElementById('ro').classList.remove('on');
+    document.getElementById('ap').style.bottom='';
+    _v=null;
+  }
+  function fs(d){
+    ST.setFs(ST.g('fs')+d);
+    var f=ST.g('fs');
+    document.getElementById('rta').style.fontSize=(f+4)+'px';
+    document.getElementById('ren').style.fontSize=f+'px';
+  }
+  // Audio toggle from reading bar: open with current verse
+  document.getElementById('audtogbtn').addEventListener('click',function(){
+    if(_v) AudioMgr.open(_v);
+  });
+  return {open:open,close:close,fs:fs};
+})();
+
+/* ════════════════════════════════════
+   SCREENS
+   ════════════════════════════════════ */
+var Screens = {
+  home: {
+    build: function(){
+      var daily=BIBLE_DATA.daily();
+      var dc=BIBLE_DATA.colorOf(daily.book);
+      var sav=ST.saved().length;
+      var h='';
+      // Clock
+      h+='<div class="t clk" style="background:var(--acc)">'+
+           '<div class="ctime" id="ct">--:--</div>'+
+           '<div class="cdate" id="cd"></div>'+
+         '</div>';
+      // Daily verse
+      h+='<div class="t w2" style="background:'+dc+'" onclick="Reading.open('+daily.id+')">'+
+           '<div class="dtag">TODAY — DAILY VERSE · இன்றைய வசனம்</div>'+
+           '<div class="dta">'+(daily.ta.length>105?daily.ta.slice(0,105)+'…':daily.ta)+'</div>'+
+           '<div class="dref">'+daily.ref+'</div>'+
+           '<div class="tbtns">'+
+             '<button class="tbtn" onclick="event.stopPropagation();App.audio('+daily.id+')">🔊 AUDIO</button>'+
+             '<button class="tbtn" onclick="event.stopPropagation();Reading.open('+daily.id+')">📖 READ</button>'+
+           '</div>'+
+         '</div>';
+      // Quick tiles
+      var qtiles=[
+        {l:'AI SEARCH',    s:'search', c:'#744DA9', sub:'Offline Verse Finder'},
+        {l:'BOOKS',        s:'books',  c:'#107C10', sub:'66 Bible Books'},
+        {l:'STUDY',        s:'study',  c:'#FF8C00', sub:'Daily Plans & Topics'},
+        {l:'SAVED',        s:'saved',  c:'#E81123', sub:sav+' verses saved'}
+      ];
+      qtiles.forEach(function(t){
+        h+='<div class="t" style="background:'+t.c+'" onclick="App.nav(\''+t.s+'\')">'+
+             '<div class="tl">'+t.l+'</div>'+
+             '<div class="ts">'+t.sub+'</div>'+
+           '</div>';
+      });
+      document.getElementById('hometiles').innerHTML=h;
+      document.getElementById('hvc').textContent=BIBLE_DATA.verses.length+' verses';
+      R.list('homev', BIBLE_DATA.verses.slice(0,6));
+      this._clock();
+    },
+    _clkId:null,
+    _clock:function(){
+      if(this._clkId) clearInterval(this._clkId);
+      var tick=function(){
+        var n=new Date();
+        var te=document.getElementById('ct'); var de=document.getElementById('cd');
+        if(te) te.textContent=n.toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true});
+        if(de) de.textContent=n.toLocaleDateString('en',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+      };
+      tick();
+      this._clkId=setInterval(tick,1000);
+    }
+  },
+
+  verses: {
+    build:function(){
+      document.getElementById('vcount').textContent=BIBLE_DATA.verses.length+' total';
+      R.list('vlist',BIBLE_DATA.verses);
+    },
+    filter:function(q){
+      if(!q.trim()){ R.list('vlist',BIBLE_DATA.verses); return; }
+      var ql=q.toLowerCase();
+      var f=BIBLE_DATA.verses.filter(function(v){
+        return v.en.toLowerCase().indexOf(ql)!==-1||
+               v.ta.indexOf(q)!==-1||
+               v.ref.toLowerCase().indexOf(ql)!==-1||
+               v.book.toLowerCase().indexOf(ql)!==-1;
+      });
+      R.list('vlist',f,'NO RESULTS FOR "'+q.toUpperCase()+'"');
+    }
+  },
+
+  ai: {
+    build:function(){
+      var h=BIBLE_DATA.topics.slice(0,24).map(function(t){
+        return '<button class="chip" onclick="Screens.ai.chip(\''+t+'\')">'+t+'</button>';
+      }).join('');
+      document.getElementById('aichips').innerHTML=h;
+    },
+    run:function(){
+      var q=document.getElementById('aisrch').value;
+      if(!q.trim()) return;
+      var r=BIBLE_DATA.search(q);
+      // Update chips
+      document.querySelectorAll('#aichips .chip').forEach(function(c){
+        c.classList.toggle('on',c.textContent===q.trim().toLowerCase());
+      });
+      R.list('ailist',r,'NO RESULTS — Try: love, peace, fear, salvation, healing');
+    },
+    chip:function(t){
+      document.getElementById('aisrch').value=t;
+      this.run();
+    }
+  },
+
+  books: {
+    _f:'ALL',
+    build:function(){
+      this._f='ALL';
+      // Filter buttons
+      document.getElementById('bfilt').innerHTML=
+        [['ALL','All (66)'],['OT','Old Testament (39)'],['NT','New Testament (27)']].map(function(x){
+          return '<button class="'+(x[0]==='ALL'?'on':'')+'" onclick="Screens.books.filt(\''+x[0]+'\')">'+x[1]+'</button>';
+        }).join('');
+      this._render();
+    },
+    filt:function(f){
+      this._f=f;
+      document.querySelectorAll('#bfilt button').forEach(function(b,i){
+        b.classList.toggle('on',['ALL','OT','NT'][i]===f);
+      });
+      this._render();
+    },
+    _render:function(){
+      var f=this._f;
+      var books=f==='ALL'?BIBLE_DATA.books:BIBLE_DATA.books.filter(function(b){return b.t===f;});
+      var h='';
+      books.forEach(function(b,i){
+        // Find first verse in this book
+        var sv=BIBLE_DATA.byBook(b.name)[0];
+        h+='<div class="bt" style="background:'+b.color+'">'+
+             '<div>'+
+               '<div class="bn">'+b.name+'</div>'+
+               '<div class="bta">'+b.ta+'</div>'+
+               '<div class="bm">'+b.ch+' chapters</div>'+
+             '</div>'+
+             (sv?'<div class="ba">'+
+               '<button onclick="Reading.open('+sv.id+')">READ</button>'+
+               '<button onclick="App.audio('+sv.id+')">AUDIO</button>'+
+             '</div>':'<div class="bm" style="margin-top:8px;font-size:8px;opacity:.6">Load full bible.json<br>for all verses</div>')+
+           '</div>';
+      });
+      document.getElementById('bgrid').innerHTML=h;
+    }
+  },
+
+  study: {
+    build:function(){
+      var plans=[
+        {title:'30-Day New Believer Plan', days:30, color:'#0078D7', desc:'Essential verses for new Christians'},
+        {title:'Psalms Reading Plan',      days:30, color:'#107C10', desc:'All 150 Psalms in 30 days'},
+        {title:'Sermon on the Mount',      days:7,  color:'#E81123', desc:'Matthew 5-7 in one week'},
+        {title:'Promises of God',          days:21, color:'#744DA9', desc:'21 key promises from Scripture'},
+        {title:'Paul\'s Letters',          days:14, color:'#FF8C00', desc:'Romans through Colossians'},
+        {title:'Life of Jesus',            days:30, color:'#008272', desc:'The four Gospels overview'}
+      ];
+      var topics=[
+        {t:'Prayer',    v:4},  {t:'Salvation', v:8},  {t:'Love',     v:12},
+        {t:'Hope',      v:9},  {t:'Faith',     v:11}, {t:'Comfort',  v:6},
+        {t:'Strength',  v:7},  {t:'Wisdom',    v:8},  {t:'Family',   v:5},
+        {t:'Peace',     v:10}, {t:'Healing',   v:6},  {t:'Heaven',   v:7}
+      ];
+      var h='<div class="sh"><span class="stit">READING PLANS</span></div>';
+      plans.forEach(function(p){
+        h+='<div style="background:'+p.color+';padding:14px 16px;margin-bottom:2px;cursor:pointer" onclick="Screens.study.plan(\''+p.title+'\')">' +
+             '<div style="color:#fff;font-size:11px;font-weight:700;letter-spacing:1px">'+p.title+'</div>' +
+             '<div style="color:rgba(255,255,255,.6);font-size:9px;margin-top:3px">'+p.days+' days · '+p.desc+'</div>' +
+           '</div>';
+      });
+      h+='<div class="ad"><span class="adlbl">GOOGLE ADSENSE SLOT 5</span></div>';
+      h+='<div class="sh"><span class="stit">TOPIC STUDIES</span></div>';
+      h+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;padding:3px">';
+      topics.forEach(function(tp,i){
+        var c=['#0078D7','#107C10','#E81123','#744DA9','#FF8C00','#008272'][i%6];
+        h+='<div style="background:'+c+';padding:14px 10px;cursor:pointer;text-align:center" onclick="Screens.study.topic(\''+tp.t.toLowerCase()+'\')">' +
+             '<div style="color:#fff;font-size:11px;font-weight:700">'+tp.t+'</div>' +
+             '<div style="color:rgba(255,255,255,.55);font-size:8px">'+tp.v+' verses</div>' +
+           '</div>';
+      });
+      h+='</div>';
+      h+='<div class="sh"><span class="stit">TODAY\'S VERSE</span></div>';
+      h+=R.card(BIBLE_DATA.daily());
+      document.getElementById('studycont').innerHTML=h;
+    },
+    plan:function(title){
+      // Navigate to search with plan's first keyword
+      var kw=title.split(' ')[0].toLowerCase();
+      App.nav('search');
+      document.getElementById('aisrch').value=kw;
+      Screens.ai.run();
+    },
+    topic:function(t){
+      App.nav('search');
+      document.getElementById('aisrch').value=t;
+      Screens.ai.run();
+    }
+  },
+
+  saved: {
+    build:function(){
+      var ids=ST.saved();
+      var svd=ids.map(function(id){return BIBLE_DATA.byId(id);}).filter(Boolean);
+      document.getElementById('savedlbl').textContent=ids.length+' SAVED';
+      R.list('savedlist',svd,'NO SAVED VERSES YET\nTAP ♡ SAVE ON ANY VERSE');
+    }
+  }
+};
+
+/* ════════════════════════════════════
+   APP CONTROLLER
+   ════════════════════════════════════ */
+var App = {
+  _cur:'home',
+
+  init:function(){
+    this._applyTheme(ST.g('theme'));
+    Screens.home.build();
+    Screens.verses.build();
+    Screens.ai.build();
+    Screens.books.build();
+    Screens.study.build();
+    Screens.saved.build();
+  },
+
+  nav:function(s){
+    document.querySelectorAll('.scr').forEach(function(el){
+      el.classList.toggle('on',el.id==='s-'+s);
+    });
+    document.querySelectorAll('.nb').forEach(function(b){
+      b.classList.toggle('on',b.dataset.s===s);
+    });
+    if(s==='saved') Screens.saved.build();
+    document.getElementById('main').scrollTop=0;
+    this._cur=s;
+  },
+
+  save:function(id){
+    var now=ST.toggleSave(id);
+    var v=BIBLE_DATA.byId(id);
+    var c=BIBLE_DATA.colorOf(v.book);
+    var btn=document.getElementById('sbtn'+id);
+    if(btn){
+      btn.textContent=now?'♥ SAVED':'♡ SAVE';
+      btn.style.background=now?c:'';
+      btn.style.color=now?'#fff':'';
+    }
+  },
+
+  copy:function(id){
+    var v=BIBLE_DATA.byId(id);
+    if(!v) return;
+    var t=v.ta+'\n'+v.en+'\n— '+v.ref;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).catch(function(){});
+    }
+    var btn=document.getElementById('cbtn'+id);
+    if(btn){
+      var orig=btn.textContent;
+      btn.textContent='✓ COPIED';
+      setTimeout(function(){btn.textContent=orig;},2000);
+    }
+  },
+
+  audio:function(id){
+    var v=BIBLE_DATA.byId(id);
+    if(v) AudioMgr.open(v);
+  },
+
+  theme:function(){
+    var t=ST.g('theme')==='dark'?'light':'dark';
+    ST.setTheme(t);
+    this._applyTheme(t);
+  },
+
+  _applyTheme:function(t){
+    if(t==='light') document.documentElement.setAttribute('data-light','');
+    else            document.documentElement.removeAttribute('data-light');
+    document.getElementById('thbtn').textContent=t==='dark'?'☀':'🌙';
+  }
+};
+
+/* ════════════════════════════════════
+   AUTO DOWNLOAD FULL BIBLE
+   Shows a banner, downloads 31,102 verses,
+   caches in IndexedDB, refreshes screens.
+   ════════════════════════════════════ */
+var FullBibleLoader = (function(){
+
+  function showBanner(msg, pct, color){
+    var b=document.getElementById('dlbanner');
+    if(!b)return;
+    b.style.display='flex';
+    b.style.background=color||'#0078D7';
+    document.getElementById('dlmsg').textContent=msg;
+    var bar=document.getElementById('dlbar');
+    if(bar) bar.style.width=(pct||0)+'%';
+    if(pct>=100){
+      setTimeout(function(){
+        b.style.display='none';
+        // Refresh home and verses screens with full data
+        Screens.home.build();
+        Screens.verses.build();
+        Screens.ai.build();
+      },2000);
+    }
+  }
+
+  function hideBanner(){
+    var b=document.getElementById('dlbanner');
+    if(b) b.style.display='none';
+  }
+
+  function start(){
+    // Only try if we have network
+    if(!navigator.onLine){
+      // Try again when online
+      window.addEventListener('online',function onOnline(){
+        window.removeEventListener('online',onOnline);
+        start();
+      });
+      return;
+    }
+    BIBLE_DATA.loadFullBible(
+      function onProgress(pct, count){
+        if(pct<100){
+          showBanner('Downloading full Bible... '+pct+'%  ('+count+' verses so far)', pct);
+        } else {
+          showBanner('Full Bible loaded! '+count.toLocaleString()+' verses now available.', 100, '#107C10');
+          document.getElementById('hsubline').textContent=count.toLocaleString()+' VERSES · AUDIO · AI SEARCH';
+        }
+      },
+      function onDone(ok, info){
+        if(ok){
+          var n=typeof info==='number'?info:BIBLE_DATA.verseCount();
+          showBanner('Full Bible ready: '+n.toLocaleString()+' verses cached offline!', 100, '#107C10');
+          document.getElementById('hsubline').textContent=n.toLocaleString()+' VERSES · FULL BIBLE';
+        } else {
+          showBanner('Using 30 built-in verses. Connect to internet to download full Bible.', 100, '#FF8C00');
+          setTimeout(hideBanner, 4000);
+        }
+      }
+    );
+  }
+
+  return { start:start };
 })();
 
 // Boot
-document.addEventListener('DOMContentLoaded', function() { App.init(); });
+function _boot(){
+  App.init();
+  // Check if full Bible already cached — if yes silent, if no show download
+  if(!BIBLE_DATA.isFullLoaded()){
+    FullBibleLoader.start();
+  } else {
+    document.getElementById('hsubline').textContent=BIBLE_DATA.verseCount().toLocaleString()+' VERSES · FULL BIBLE';
+  }
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',_boot);
+} else {
+  _boot();
+}
 </script>
 
 </body>
