@@ -1,9 +1,0 @@
-{
-  "appId": "com.vedhavachanam.bible",
-  "appName": "வேத வசனம் Bible",
-  "webDir": "build",
-  "android": {
-    "minWebViewVersion": 60,
-    "backgroundColor": "#111111"
-  }
-}
