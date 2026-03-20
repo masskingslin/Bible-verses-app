@@ -1,0 +1,17 @@
+{
+  "appId": "com.vedhavachanam.bible",
+  "appName": "வேத வசனம் Bible",
+  "webDir": "public",
+  "android": {
+    "minWebViewVersion": 60,
+    "backgroundColor": "#0f0f0f",
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "backgroundColor": "#0078D7",
+      "showSpinner": false
+    }
+  }
+}
