@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#080810"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<title>&#2997;&#3015;&#2980; &#2997;&#2970;&#2985;&#2990;&#3021; Holy Bible</title>
+<title>வேத வசனம் Holy Bible</title>
 <link rel="manifest" href="manifest.json"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -170,9 +170,9 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 
 <!-- LOADING -->
 <div id="ls">
-  <div class="ls-cross">&#10013;</div>
-  <div class="ls-title">&#2997;&#3015;&#2980; &#2997;&#2970;&#2985;&#2990;&#3021;</div>
-  <div class="ls-msg" id="ls-msg">Loading Tamil + English Bible&#8230;</div>
+  <div class="ls-cross">✝</div>
+  <div class="ls-title">வேத வசனம்</div>
+  <div class="ls-msg" id="ls-msg">Loading Tamil + English Bible…</div>
   <div class="ls-track"><div class="ls-bar" id="ls-bar"></div></div>
   <div class="ls-cnt" id="ls-cnt"></div>
 </div>
@@ -180,53 +180,68 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 <!-- APP -->
 <div id="app" style="display:none">
   <header id="hdr">
-    <div class="h-brand"><span class="h-cross">&#10013;</span>
-      <div><div class="h-title">&#2997;&#3015;&#2980; &#2997;&#2970;&#2985;&#2990;&#3021;</div><div class="h-sub" id="h-sub">LOADING&#8230;</div></div>
+    <div class="h-brand"><span class="h-cross">✝</span>
+      <div><div class="h-title">வேத வசனம்</div><div class="h-sub" id="h-sub">LOADING…</div></div>
     </div>
     <div class="h-btns">
       <button class="h-btn" id="lang-btn" onclick="App.cycleLang()">BI</button>
-      <button class="h-btn" id="th-btn" onclick="App.theme()">&#9728;</button>
+      <button class="h-btn" id="th-btn" onclick="App.theme()">☀</button>
     </div>
   </header>
   <main id="main">
     <div class="scr on" id="s-home">
       <div class="tg" id="home-tiles"></div>
-      <div class="ad"><span class="adlbl">GOOGLE ADSENSE &#8212; SLOT 1</span></div>
-      <div class="sh"><span class="sht">TODAY'S READING &#183; &#2951;&#2985;&#3021;&#2993;&#3016;&#2991; &#2997;&#2970;&#2985;&#2990;&#3021;</span><span class="shc" id="home-cnt"></span></div>
+      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 1</span></div>
+      <div class="sh"><span class="sht">TODAY'S READING · இன்றைய வசனம்</span><span class="shc" id="home-cnt"></span></div>
       <div id="home-vv" class="pb"></div>
     </div>
     <div class="scr" id="s-verses">
       <div class="ltog" id="v-ltog">
-        <button onclick="SV.setLang('ta')">&#2980;&#2990;&#3007;&#2996;&#3021;</button>
+        <button onclick="SV.setLang('ta')">தமிழ்</button>
         <button onclick="SV.setLang('en')">English</button>
-        <button class="on" onclick="SV.setLang('both')">&#2951;&#2992;&#2979;&#3021;&#2975;&#3009;&#2990;&#3021;</button>
+        <button class="on" onclick="SV.setLang('both')">இரண்டும்</button>
       </div>
-      <div class="sbar"><input class="sinp" id="v-srch" placeholder="&#2980;&#2990;&#3007;&#2996;&#3021; / English &#2980;&#3015;&#2975;&#3009;&#8230;" oninput="SV.filter(this.value)"/></div>
+      <div class="sbar"><input class="sinp" id="v-srch" placeholder="தமிழ் / English தேடு…" oninput="SV.filter(this.value)"/></div>
       <div class="pgbar">
-        <button class="pgbtn" id="v-prev" onclick="SV.prev()">&#9664; Prev</button>
+        <button class="pgbtn" id="v-prev" onclick="SV.prev()">◀ Prev</button>
         <span class="pgi" id="v-pgi"></span>
-        <button class="pgbtn" id="v-next" onclick="SV.next()">Next &#9654;</button>
+        <button class="pgbtn" id="v-next" onclick="SV.next()">Next ▶</button>
       </div>
       <div id="v-list" class="pb"></div>
     </div>
     <div class="scr" id="s-search">
       <div style="background:#2d0a5e;padding:14px 16px 12px">
-        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">AI VERSE FINDER &#183; &#2997;&#2970;&#2985; &#2980;&#3015;&#2975;&#2994;&#3021;</div>
-        <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">31,102 VERSES &#183; TAMIL+ENGLISH &#183; OFFLINE</div>
+        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">AI VERSE FINDER · வசன தேடல்</div>
+        <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">31,102 VERSES · TAMIL+ENGLISH · OFFLINE</div>
       </div>
-      <div class="sbar"><input class="sinp" id="ai-srch" placeholder="love, &#2949;&#2985;&#3021;&#2986;&#3009;, peace, &#2970;&#2990;&#3006;&#2980;&#3006;&#2985;&#2990;&#3021;, Psalm 23&#8230;" onkeydown="if(event.key==='Enter')SA.run()"/><button class="sbtn" onclick="SA.run()">&#8594;</button></div>
+      <div class="sbar"><input class="sinp" id="ai-srch" placeholder="love, அன்பு, peace, சமாதானம், Psalm 23…" onkeydown="if(event.key==='Enter')SA.run()"/><button class="sbtn" onclick="SA.run()">→</button></div>
       <div class="chips" id="ai-chips"></div>
-      <div class="ad"><span class="adlbl">GOOGLE ADSENSE &#8212; SLOT 2</span></div>
-      <div id="ai-list" class="pb"><div class="empty"><div class="emico">&#10022;</div><div class="emtxt">SEARCH BY TOPIC &#183; KEYWORD &#183; REFERENCE<br>&#2980;&#2994;&#3016;&#2986;&#3021;&#2986;&#3009; &#183; &#2970;&#3018;&#2994;&#3021; &#183; &#2997;&#2970;&#2985; &#2965;&#3009;&#2993;&#3007;&#2986;&#3021;&#2986;&#3009;</div></div></div>
+      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 2</span></div>
+      <div id="ai-list" class="pb"><div class="empty"><div class="emico">✦</div><div class="emtxt">SEARCH BY TOPIC · KEYWORD · REFERENCE<br>தலைப்பு · சொல் · வசன குறிப்பு</div></div></div>
     </div>
     <div class="scr" id="s-books">
       <div style="background:#0d2e0d;padding:12px 16px 10px">
-        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">66 BOOKS &#183; &#2997;&#3015;&#2980; &#2986;&#3009;&#2980;&#3021;&#2980;&#2965;&#2969;&#3021;&#2965;&#2995;&#3021;</div>
-        <div style="color:rgba(255,255,255,.45);font-size:9px;font-family:var(--sans);margin-top:2px">ALL CHAPTERS &#183; READ &#183; AUDIO &#183; TA+EN</div>
+        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">66 BOOKS · வேத புத்தகங்கள்</div>
+        <div style="color:rgba(255,255,255,.45);font-size:9px;font-family:var(--sans);margin-top:2px">ALL CHAPTERS · READ · AUDIO · TA+EN</div>
       </div>
       <div class="bfilt" id="b-filt"></div>
       <div class="bgrid pb" id="b-grid"></div>
     </div>
     <div class="scr" id="s-chars">
       <div style="background:linear-gradient(135deg,#3a1a00,#5c2e00);padding:14px 16px 12px">
-        <div style="color:var(--gold);font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">&#10022; CHARACTER STORIES &#183; &#2997;&#3015
+        <div style="color:var(--gold);font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">✦ CHARACTER STORIES · வேத பாத்திரங்கள்</div>
+        <div style="color:rgba(201,168,76,.5);font-size:9px;font-family:var(--sans);margin-top:2px">STORIES · TIMELINE · KEY VERSES · LESSONS</div>
+      </div>
+      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 3</span></div>
+      <div class="cgrid pb" id="c-grid"></div>
+    </div>
+    <div class="scr" id="s-saved">
+      <div style="background:#3a0a0a;padding:12px 16px 10px">
+        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">SAVED · சேமிக்கப்பட்டவை</div>
+        <div style="color:rgba(255,255,255,.4);font-size:9px;font-family:var(--sans);margin-top:2px" id="saved-lbl">0 SAVED</div>
+      </div>
+      <div id="saved-list" class="pb"></div>
+      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 4</span></div>
+    </div>
+  </main>
+  <nav i
