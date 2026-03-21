@@ -1,0 +1,16 @@
+{
+  "Moses": {
+    "title_ta": "மோசே",
+    "title_en": "Moses",
+    "story_ta": "மோசே எகிப்தில் பிறந்தார்...",
+    "story_en": "Moses was born in Egypt...",
+    "verses": ["Exodus 2:1", "Exodus 3:1"]
+  },
+  "David": {
+    "title_ta": "தாவீது",
+    "title_en": "David",
+    "story_ta": "தாவீது ஒரு மேய்ப்பான்...",
+    "story_en": "David was a shepherd...",
+    "verses": ["1 Samuel 17:45"]
+  }
+}
