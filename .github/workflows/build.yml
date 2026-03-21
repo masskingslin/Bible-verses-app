@@ -10,24 +10,20 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      # ── 1. Checkout ───────────────────────────────────────────────────────
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ── 2. Node.js ────────────────────────────────────────────────────────
       - name: Setup Node.js 18
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      # ── 3. Java 17 ────────────────────────────────────────────────────────
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      # ── 4. Cache Gradle ───────────────────────────────────────────────────
       - name: Cache Gradle
         uses: actions/cache@v4
         with:
@@ -37,34 +33,38 @@ jobs:
           key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties') }}
           restore-keys: gradle-${{ runner.os }}-
 
-      # ── 5. Install npm packages ────────────────────────────────────────────
-      - name: Install npm packages
+      # FIX: install @capacitor/cli globally so 'cap' command works
+      - name: Install Capacitor CLI globally
+        run: npm install -g @capacitor/cli@5.7.0
+
+      # Install project dependencies
+      - name: Install project dependencies
         run: npm install
 
-      # ── 6. FIX: Add Android platform if not present ───────────────────────
+      # Add Android platform if missing
       - name: Add Android platform
         run: |
           if [ ! -d "android" ]; then
-            echo "android/ folder missing — running cap add android"
-            npx cap add android
+            echo "Adding Android platform..."
+            cap add android
           else
-            echo "android/ folder exists — skipping cap add"
+            echo "Android platform already exists"
           fi
 
-      # ── 7. Capacitor sync ─────────────────────────────────────────────────
-      - name: Capacitor sync
-        run: npx cap sync android
+      # Sync web assets into Android
+      - name: Sync Capacitor
+        run: cap sync android
 
-      # ── 8. Build APK ──────────────────────────────────────────────────────
+      # Build the APK
       - name: Build Debug APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
-          echo "=== APK output ==="
+          echo "=== APK files ==="
           find . -name "*.apk" | head -5
 
-      # ── 9. Upload APK ─────────────────────────────────────────────────────
+      # Upload APK artifact
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
