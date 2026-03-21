@@ -1,0 +1,36 @@
+<Root>:
+    Splash:
+    Home:
+
+<Splash>:
+    name: "splash"
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "✝ வேத வசனம்"
+        Label:
+            text: "Loading..."
+
+<Home>:
+    name: "home"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+
+        Label:
+            id: ta
+            font_name: "assets/fonts/NotoSansTamil-Regular.ttf"
+            text: "Tamil"
+
+        Label:
+            id: en
+            text: "English"
+
+        Button:
+            text: "Load Verse"
+            on_release: root.load_verse()
+
+        Button:
+            text: "Play Audio"
+            on_release: root.play_audio()
