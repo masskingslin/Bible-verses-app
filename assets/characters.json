@@ -1,16 +1,37 @@
 {
+  "Jesus": {
+    "title_ta": "இயேசு கிறிஸ்து",
+    "title_en": "Jesus Christ",
+    "story_ta": "இயேசு உலகத்தின் இரட்சகர்...",
+    "story_en": "Jesus is the Savior of the world...",
+    "verses": ["John 3:16"]
+  },
   "Moses": {
     "title_ta": "மோசே",
     "title_en": "Moses",
-    "story_ta": "மோசே எகிப்தில் பிறந்தார்...",
-    "story_en": "Moses was born in Egypt...",
-    "verses": ["Exodus 2:1", "Exodus 3:1"]
+    "story_ta": "மோசே இஸ்ரவேலை வழிநடத்தினார்...",
+    "story_en": "Moses led Israel...",
+    "verses": ["Exodus 3:10"]
   },
   "David": {
     "title_ta": "தாவீது",
     "title_en": "David",
-    "story_ta": "தாவீது ஒரு மேய்ப்பான்...",
-    "story_en": "David was a shepherd...",
+    "story_ta": "தாவீது ஒரு ராஜா...",
+    "story_en": "David was a king...",
     "verses": ["1 Samuel 17:45"]
+  },
+  "Abraham": {
+    "title_ta": "ஆபிரகாம்",
+    "title_en": "Abraham",
+    "story_ta": "ஆபிரகாம் விசுவாசத்தின் தந்தை...",
+    "story_en": "Abraham is the father of faith...",
+    "verses": ["Genesis 12:2"]
+  },
+  "Paul": {
+    "title_ta": "பவுல்",
+    "title_en": "Paul",
+    "story_ta": "பவுல் சுவிசேஷத்தைப் பிரசங்கித்தார்...",
+    "story_en": "Paul preached the gospel...",
+    "verses": ["Romans 1:16"]
   }
 }
