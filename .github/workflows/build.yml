@@ -1,4 +1,4 @@
-name: Build APK
+name: Build Crown Bible APK
 
 on:
   push:
@@ -7,39 +7,49 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Cache buildozer
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Cache Gradle
         uses: actions/cache@v4
         with:
           path: |
-            .buildozer
-            ~/.buildozer
-            ~/.gradle
-          key: buildozer-${{ runner.os }}
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: gradle-${{ runner.os }}-
 
-      - name: Install deps
-        run: |
-          sudo apt update
-          sudo apt install -y \
-            python3-pip openjdk-17-jdk \
-            git zip unzip \
-            autoconf libtool pkg-config \
-            zlib1g-dev libffi-dev libssl-dev
+      - name: Install dependencies
+        run: npm install
 
-      - name: Install Python tools
-        run: |
-          pip install buildozer cython
+      - name: Capacitor sync
+        run: npx cap sync android
 
-      - name: Build APK
+      - name: Build Debug APK
         run: |
-          buildozer android debug
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: apk
-          path: bin/*.apk
+          name: CrownBible-APK-${{ github.run_number }}
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30
