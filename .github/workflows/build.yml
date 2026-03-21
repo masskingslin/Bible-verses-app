@@ -33,38 +33,37 @@ jobs:
           key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties') }}
           restore-keys: gradle-${{ runner.os }}-
 
-      # FIX: install @capacitor/cli globally so 'cap' command works
-      - name: Install Capacitor CLI globally
-        run: npm install -g @capacitor/cli@5.7.0
+      # â”€â”€ FIX: Install everything explicitly â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      - name: Install Capacitor
+        run: |
+          npm install -g @capacitor/cli@5.7.0
+          npm install @capacitor/core@5.7.0 @capacitor/android@5.7.0
+          echo "Installed packages:"
+          ls node_modules/@capacitor/
 
-      # Install project dependencies
-      - name: Install project dependencies
-        run: npm install
-
-      # Add Android platform if missing
+      # â”€â”€ Add Android platform â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       - name: Add Android platform
         run: |
           if [ ! -d "android" ]; then
             echo "Adding Android platform..."
             cap add android
           else
-            echo "Android platform already exists"
+            echo "Android platform exists â€” skipping"
           fi
 
-      # Sync web assets into Android
+      # â”€â”€ Sync web assets â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       - name: Sync Capacitor
         run: cap sync android
 
-      # Build the APK
+      # â”€â”€ Build APK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       - name: Build Debug APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
-          echo "=== APK files ==="
           find . -name "*.apk" | head -5
 
-      # Upload APK artifact
+      # â”€â”€ Upload APK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
