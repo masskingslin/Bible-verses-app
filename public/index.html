@@ -679,81 +679,127 @@ input{font-family:inherit;outline:none;border:none}
   })();
 
   /* ── AUDIO TTS ENGINE ── */
+  /* Uses @capacitor-community/text-to-speech if available,
+     falls back to Web Speech API */
   var AU = (function(){
-    var TTS = 'speechSynthesis' in window;
-    var _v = null, _lang = 'ta', _voices = [], _reading = false;
-    var _storyText = null, _storyRef = '';
+    // Detect available TTS engine
+    var _capTTS = (window.Capacitor &&
+                   window.Capacitor.Plugins &&
+                   window.Capacitor.Plugins.TextToSpeech) || null;
+    var _webTTS = ('speechSynthesis' in window);
+    var _lang = 'ta';
+    var _v = null;
+    var _storyText = null;
+    var _speaking = false;
 
-    function loadVoices(){
-      _voices = window.speechSynthesis.getVoices() || [];
-    }
-    if (TTS) {
-      loadVoices();
-      if (window.speechSynthesis.onvoiceschanged !== undefined)
-        window.speechSynthesis.onvoiceschanged = loadVoices;
-      setTimeout(loadVoices, 500);
-      setTimeout(loadVoices, 1500);
-      setTimeout(loadVoices, 3000);
-    }
-
-    function setPlayUI(playing){
+    function setPlayUI(pl){
       var b = document.getElementById('au-play');
       if (!b) return;
-      b.textContent = playing ? '▶ PLAYING…' : '▶ PLAY';
-      b.style.background = playing ? 'rgba(255,255,255,.15)' : '#fff';
-      b.style.color = playing ? '#fff' : '#06060e';
+      b.textContent = pl ? '▶ PLAYING…' : '▶ PLAY';
+      b.style.background = pl ? 'rgba(255,255,255,.15)' : '#fff';
+      b.style.color = pl ? '#fff' : '#06060e';
     }
     function setMsg(t){ var e=document.getElementById('au-msg'); if(e) e.textContent=t||''; }
     function setProg(p){ var e=document.getElementById('au-prog'); if(e) e.style.width=(p||0)+'%'; }
-
-    function openPanel(ref){
-      document.getElementById('au-ref').textContent = ref || '';
-      document.getElementById('au-panel').classList.add('on');
-      setLangUI(_lang); setMsg(''); setProg(0);
-      if (!TTS) setMsg('⚠ TTS not available. Install Google Text-to-Speech from Play Store.');
-    }
-
-    function _speak(text, lc, onEnd){
-      if (!TTS){ setMsg('⚠ TTS not supported on this device.'); return; }
-      stop();
-      _voices = window.speechSynthesis.getVoices() || [];
-      try {
-        var u = new SpeechSynthesisUtterance(text);
-        u.lang = lc; u.rate = 0.85; u.pitch = 1; u.volume = 1;
-        var px = lc.split('-')[0], best = null;
-        for (var i=0; i<_voices.length; i++){
-          if (_voices[i].lang && _voices[i].lang.indexOf(px)===0){
-            best = _voices[i];
-            if (_voices[i].lang === lc) break;
-          }
-        }
-        if (best) u.voice = best;
-        u.onstart = function(){ setPlayUI(true); setProg(40); setMsg(''); };
-        u.onend = function(){
-          setPlayUI(false); setProg(100);
-          setTimeout(function(){ setProg(0); }, 800);
-          if (onEnd) onEnd();
-        };
-        u.onerror = function(e){
-          setPlayUI(false); setProg(0);
-          if (lc.indexOf('ta')===0)
-            setMsg('⚠ Tamil voice not found.\nGo to: Settings → Language → Text-to-Speech → Install Tamil');
-          else
-            setMsg('⚠ TTS error: ' + (e.error || ''));
-        };
-        window.speechSynthesis.speak(u);
-        setPlayUI(true);
-      } catch(e){ setPlayUI(false); setMsg('⚠ ' + e.message); }
-    }
 
     function setLangUI(l){
       ['ta','en'].forEach(function(x){
         var b = document.getElementById('au-' + x);
         if (!b) return;
         b.style.background = l===x ? '#fff' : 'rgba(255,255,255,.1)';
-        b.style.color = l===x ? '#06060e' : '#fff';
+        b.style.color       = l===x ? '#06060e' : '#fff';
       });
     }
+
+    function openPanel(ref){
+      document.getElementById('au-ref').textContent = ref || '';
+      document.getElementById('au-panel').classList.add('on');
+      setLangUI(_lang); setMsg(''); setProg(0);
+      if (!_capTTS && !_webTTS){
+        setMsg('⚠ Install Google Text-to-Speech from Play Store for audio.');
+      }
+    }
+
+    function _speak(text, lc, onEnd){
+      if (!text){ setMsg('No text to speak.'); return; }
+      stopAll();
+      _speaking = true;
+      setPlayUI(true); setProg(30);
+
+      // ── Try Capacitor native TTS first ──
+      if (_capTTS) {
+        _capTTS.speak({
+          text: text,
+          lang: lc || 'en-US',
+          rate: 0.85,
+          pitch: 1.0,
+          volume: 1.0
+        }).then(function(){
+          _speaking = false;
+          setPlayUI(false); setProg(100);
+          setTimeout(function(){ setProg(0); }, 800);
+          if (onEnd) onEnd();
+        }).catch(function(err){
+          _speaking = false;
+          setPlayUI(false); setProg(0);
+          setMsg('⚠ TTS error: ' + (err.message || err));
+          // Try Web Speech as fallback
+          if (_webTTS) _speakWeb(text, lc, onEnd);
+        });
+        return;
+      }
+
+      // ── Fallback: Web Speech API ──
+      if (_webTTS) {
+        _speakWeb(text, lc, onEnd);
+        return;
+      }
+
+      // ── No TTS available ──
+      setPlayUI(false); setProg(0);
+      setMsg('⚠ No TTS engine found.\nInstall Google Text-to-Speech from Play Store.');
+    }
+
+    function _speakWeb(text, lc, onEnd){
+      var voices = window.speechSynthesis.getVoices() || [];
+      try {
+        var u = new SpeechSynthesisUtterance(text);
+        u.lang = lc; u.rate = 0.85; u.pitch = 1; u.volume = 1;
+        var px = lc.split('-')[0], best = null;
+        for (var i=0; i<voices.length; i++){
+          if (voices[i].lang && voices[i].lang.indexOf(px)===0){
+            best = voices[i];
+            if (voices[i].lang === lc) break;
+          }
+        }
+        if (best) u.voice = best;
+        u.onstart  = function(){ setPlayUI(true); setProg(50); };
+        u.onend    = function(){ _speaking=false; setPlayUI(false); setProg(100); setTimeout(function(){setProg(0);},800); if(onEnd)onEnd(); };
+        u.onerror  = function(e){
+          _speaking=false; setPlayUI(false); setProg(0);
+          if (lc && lc.indexOf('ta')===0)
+            setMsg('⚠ Tamil voice not installed.\nSettings → Language → Text-to-Speech → Install Tamil');
+          else
+            setMsg('⚠ TTS error: ' + (e.error||''));
+        };
+        window.speechSynthesis.speak(u);
+      } catch(e){ _speaking=false; setPlayUI(false); setMsg('⚠ ' + e.message); }
+    }
+
+    function stopAll(){
+      _speaking = false;
+      if (_capTTS){ try{ _capTTS.stop(); }catch(e){} }
+      if (_webTTS){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+      setPlayUI(false); setProg(0);
+    }
+
+    // Global speak queue for onclick handlers (avoids escaping issues)
+    window._ttsSpeak = function(key, lc){
+      var text = window._ttsQueue && window._ttsQueue[key];
+      if (!text){ setMsg('No text found.'); return; }
+      openPanel(lc === 'ta-IN' ? 'Tamil Audio' : 'English Audio');
+      _speak(text, lc);
+    };
 
     return {
       open: function(v){
@@ -761,36 +807,42 @@ input{font-family:inherit;outline:none;border:none}
         openPanel(v.ref);
       },
       close: function(){
-        stop();
+        stopAll();
         document.getElementById('au-panel').classList.remove('on');
       },
       toggle: function(){
         var p = document.getElementById('au-panel');
-        if (p.classList.contains('on')) this.close(); else if (_v) this.open(_v);
+        if (p.classList.contains('on')) this.close();
+        else if (_v) this.open(_v);
       },
-      setLang: function(l){ _lang=l; stop(); setLangUI(l); },
+      setLang: function(l){
+        _lang = l;
+        stopAll();
+        setLangUI(l);
+      },
       play: function(){
-        if (_storyText) { _speak(_storyText, _lang==='ta'?'ta-IN':'en-US'); return; }
-        if (!_v) return;
-        var t = _lang==='ta' ? _v.ta : _v.en;
-        _speak(t, _lang==='ta'?'ta-IN':'en-US');
+        var text = _storyText || (_v ? (_lang==='ta' ? _v.ta : _v.en) : null);
+        if (!text){ setMsg('No content to play.'); return; }
+        _speak(text, _lang==='ta' ? 'ta-IN' : 'en-US');
       },
       readChapter: function(){
-        if (!CR._bk) return;
-        var vs = BD.byBookCh(CR._bk, CR._ch);
+        if (!window.CR || !window.CR._bk) return;
+        var vs = BD.byBookCh(window.CR._bk, window.CR._ch);
         if (!vs.length) return;
-        var ref = CR._bk + ' Chapter ' + CR._ch;
+        var ref = window.CR._bk + ' Chapter ' + window.CR._ch;
         _v = {ref:ref, ta:'', en:''};
-        _storyText = vs.map(function(v,i){ return (i+1)+'. '+(_lang==='ta'?v.ta:v.en); }).join(' ');
+        _storyText = vs.map(function(v,i){
+          return (i+1)+'. '+(_lang==='ta' ? v.ta : v.en);
+        }).join(' ');
         openPanel(ref);
         setMsg('Reading ' + vs.length + ' verses…');
-        _speak(_storyText, _lang==='ta'?'ta-IN':'en-US', function(){ setMsg('Chapter complete ✓'); });
+        _speak(_storyText, _lang==='ta' ? 'ta-IN' : 'en-US',
+               function(){ setMsg('Chapter complete ✓'); });
       },
       readStory: function(){
         var cid = document.getElementById('cd-name').getAttribute('data-cid');
-        if (!cid) return;
-        var ch = (typeof BIBLE_CHARACTERS !== 'undefined') ?
-          BIBLE_CHARACTERS.find(function(c){ return c.id===cid; }) : null;
+        if (!cid || typeof BIBLE_CHARACTERS === 'undefined') return;
+        var ch = BIBLE_CHARACTERS.find(function(c){ return c.id===cid; });
         if (!ch) return;
         var text = _lang==='ta' ?
           (ch.summary_ta + ' ' + ch.lessons_ta.join(' ')) :
@@ -799,19 +851,18 @@ input{font-family:inherit;outline:none;border:none}
         _storyText = text;
         openPanel(ch.name + ' — ' + ch.ta_name);
         setMsg('Reading story…');
-        _speak(text, _lang==='ta'?'ta-IN':'en-US', function(){ setMsg('Story complete ✓'); });
+        _speak(text, _lang==='ta' ? 'ta-IN' : 'en-US',
+               function(){ setMsg('Story complete ✓'); });
       },
-      speakText: function(text, lc){ _speak(text, lc||'en-US'); },
-      pause: function(){ if(TTS&&window.speechSynthesis.speaking) window.speechSynthesis.pause(); },
-      resume: function(){ if(TTS&&window.speechSynthesis.paused) window.speechSynthesis.resume(); },
-      stop: stop,
+      speakText: function(text, lc){
+        openPanel(lc==='ta-IN' ? 'Tamil Audio' : 'English Audio');
+        _speak(text, lc||'en-US');
+      },
+      pause:  function(){ if(_webTTS&&window.speechSynthesis.speaking) window.speechSynthesis.pause(); },
+      resume: function(){ if(_webTTS&&window.speechSynthesis.paused)  window.speechSynthesis.resume(); },
+      stop:   stopAll,
       get _lang(){ return _lang; }
     };
-
-    function stop(){
-      if (TTS) window.speechSynthesis.cancel();
-      setPlayUI(false); setProg(0);
-    }
   })();
 
   /* ── RENDERER ── */
@@ -980,60 +1031,85 @@ input{font-family:inherit;outline:none;border:none}
 
     function buildDetail(ch){
       var col = ch.color, h = '';
+      var cid = ch.id;
+
+      // Store texts in global queue so onclick can access without escaping
+      if (!window._ttsQueue) window._ttsQueue = {};
+      window._ttsQueue[cid+'_bio_ta']    = ch.summary_ta;
+      window._ttsQueue[cid+'_bio_en']    = ch.summary_en;
+      window._ttsQueue[cid+'_story_ta']  = ch.summary_ta+' '+ch.lessons_ta.join(' ');
+      window._ttsQueue[cid+'_story_en']  = ch.summary_en+' '+ch.lessons_en.join(' ');
+      ch.verses.forEach(function(v,i){
+        window._ttsQueue[cid+'_v'+i+'_ta'] = v.ta;
+        window._ttsQueue[cid+'_v'+i+'_en'] = v.en;
+      });
+
       // Biography
-      h += '<div class="csec">' +
-        '<div class="csl">BIOGRAPHY · சுயசரிதை</div>' +
-        '<div class="csen">'+ch.summary_en+'</div>' +
-        '<div class="csta">'+ch.summary_ta+'</div>' +
-        '<div style="display:flex;gap:5px;margin-top:12px">' +
-          '<button onclick="AU.speakText(\''+esc(ch.summary_ta)+'\',\'ta-IN\')" style="flex:1;padding:8px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:var(--gold);font-size:9px;font-weight:700;font-family:var(--sans);border-radius:4px">🔊 தமிழ்</button>' +
-          '<button onclick="AU.speakText(\''+esc(ch.summary_en)+'\',\'en-US\')" style="flex:1;padding:8px;background:var(--bg3);color:var(--text2);font-size:9px;font-weight:700;font-family:var(--sans);border-radius:4px">🔊 English</button>' +
-        '</div>' +
-      '</div>';
+      h += '<div class="csec">';
+      h +=   '<div class="csl">BIOGRAPHY \u00b7 \u0b9a\u0bc1\u0baf\u0b9a\u0bb0\u0bbf\u0ba4\u0bc8</div>';
+      h +=   '<div class="csen">'+ch.summary_en+'</div>';
+      h +=   '<div class="csta">'+ch.summary_ta+'</div>';
+      h +=   '<div style="display:flex;gap:5px;margin-top:12px">';
+      h +=     '<button onclick="_ttsSpeak(\''+cid+'_bio_ta\',\'ta-IN\')" style="flex:1;padding:8px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:var(--gold);font-size:9px;font-weight:700;font-family:var(--sans);border-radius:4px">\ud83d\udd0a \u0ba4\u0bae\u0bbf\u0bb4\u0bcd</button>';
+      h +=     '<button onclick="_ttsSpeak(\''+cid+'_bio_en\',\'en-US\')" style="flex:1;padding:8px;background:var(--bg3);color:var(--text2);font-size:9px;font-weight:700;font-family:var(--sans);border-radius:4px">\ud83d\udd0a English</button>';
+      h +=   '</div>';
+      h += '</div>';
 
       // Timeline
-      h += '<div class="csec"><div class="csl">LIFE TIMELINE · காலவரிசை</div>';
-      ch.timeline.forEach(function(t, i){
-        var last = i === ch.timeline.length - 1;
-        h += '<div class="tli">' +
-          '<div class="tlcol">' +
-            '<div class="tldot" style="background:'+col+'"></div>' +
-            (last ? '' : '<div class="tlline"></div>') +
-          '</div>' +
-          '<div style="flex:1;padding-bottom:'+(last?'0':'10px')+'">' +
-            '<div class="tlref">'+t.ref+'</div>' +
-            '<div class="tlen">'+t.en+'</div>' +
-            '<div class="tlta">'+t.ta+'</div>' +
-          '</div></div>';
+      h += '<div class="csec"><div class="csl">LIFE TIMELINE \u00b7 \u0b95\u0bbe\u0bb2\u0bb5\u0bb0\u0bbf\u0b9a\u0bc8</div>';
+      ch.timeline.forEach(function(t,i){
+        var last = i===ch.timeline.length-1;
+        h += '<div class="tli">';
+        h +=   '<div class="tlcol">';
+        h +=     '<div class="tldot" style="background:'+col+'"></div>';
+        h +=     (last ? '' : '<div class="tlline"></div>');
+        h +=   '</div>';
+        h +=   '<div style="flex:1;padding-bottom:'+(last?'0':'10px')+'">';
+        h +=     '<div class="tlref">'+t.ref+'</div>';
+        h +=     '<div class="tlen">'+t.en+'</div>';
+        h +=     '<div class="tlta">'+t.ta+'</div>';
+        h +=   '</div>';
+        h += '</div>';
       });
       h += '</div>';
 
       // Key verses
-      h += '<div class="csec"><div class="csl">KEY VERSES · முக்கிய வசனங்கள்</div>';
-      ch.verses.forEach(function(v){
-        h += '<div class="kv" style="border-left-color:'+col+'">' +
-          '<div class="kvref">'+v.ref+'</div>' +
-          '<div class="kvta">'+v.ta+'</div>' +
-          '<div class="kven">'+v.en+'</div>' +
-          '<div class="kvact">' +
-            '<button onclick="AU.speakText(\''+esc(v.ta)+'\',\'ta-IN\')" style="background:'+col+'33;color:'+col+'">🔊 தமிழ்</button>' +
-            '<button onclick="AU.speakText(\''+esc(v.en)+'\',\'en-US\')" style="background:var(--bg3);color:var(--text2)">🔊 English</button>' +
-          '</div>' +
-        '</div>';
+      h += '<div class="csec"><div class="csl">KEY VERSES \u00b7 \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf \u0bb5\u0b9a\u0ba9\u0b99\u0bcd\u0b95\u0bb3\u0bcd</div>';
+      ch.verses.forEach(function(v,i){
+        h += '<div class="kv" style="border-left-color:'+col+'">';
+        h +=   '<div class="kvref">'+v.ref+'</div>';
+        h +=   '<div class="kvta">'+v.ta+'</div>';
+        h +=   '<div class="kven">'+v.en+'</div>';
+        h +=   '<div class="kvact">';
+        h +=     '<button onclick="_ttsSpeak(\''+cid+'_v'+i+'_ta\',\'ta-IN\')" style="background:'+col+'33;color:'+col+'">\ud83d\udd0a \u0ba4\u0bae\u0bbf\u0bb4\u0bcd</button>';
+        h +=     '<button onclick="_ttsSpeak(\''+cid+'_v'+i+'_en\',\'en-US\')" style="background:var(--bg3);color:var(--text2)">\ud83d\udd0a English</button>';
+        h +=   '</div>';
+        h += '</div>';
       });
       h += '</div>';
 
-      // Lessons
-      h += '<div class="csec"><div class="csl">LIFE LESSONS · படிப்பினைகள்</div>';
-      ch.lessons_en.forEach(function(l, i){
-        h += '<div class="lesn">' +
-          '<div class="lesnn">'+(i+1)+'</div>' +
-          '<div>' +
-            '<div class="lesen">'+l+'</div>' +
-            '<div class="lesta">'+(ch.lessons_ta[i]||'')+'</div>' +
-          '</div></div>';
+      // Life lessons
+      h += '<div class="csec"><div class="csl">LIFE LESSONS \u00b7 \u0baa\u0b9f\u0bbf\u0baa\u0bcd\u0baa\u0bbf\u0ba9\u0bc8\u0b95\u0bb3\u0bcd</div>';
+      ch.lessons_en.forEach(function(l,i){
+        h += '<div class="lesn">';
+        h +=   '<div class="lesnn">'+(i+1)+'</div>';
+        h +=   '<div>';
+        h +=     '<div class="lesen">'+l+'</div>';
+        h +=     '<div class="lesta">'+(ch.lessons_ta[i]||'')+'</div>';
+        h +=   '</div>';
+        h += '</div>';
       });
       h += '</div>';
+
+      // Full story audio
+      h += '<div class="csec" style="background:var(--bg3)">';
+      h +=   '<div class="csl">FULL STORY AUDIO \u00b7 \u0bae\u0bc1\u0bb4\u0bc1 \u0b95\u0ba4\u0bc8</div>';
+      h +=   '<div style="display:flex;gap:6px">';
+      h +=     '<button onclick="_ttsSpeak(\''+cid+'_story_ta\',\'ta-IN\')" style="flex:1;padding:10px;background:rgba(201,168,76,.2);border:1px solid var(--gold);color:var(--gold);font-size:10px;font-weight:700;font-family:var(--sans);border-radius:4px">\ud83d\udd0a \u0ba4\u0bae\u0bbf\u0bb4\u0bbf\u0bb2\u0bcd \u0b95\u0bc7\u0bb3\u0bc1\u0b99\u0bcd\u0b95\u0bb3\u0bcd</button>';
+      h +=     '<button onclick="_ttsSpeak(\''+cid+'_story_en\',\'en-US\')" style="flex:1;padding:10px;background:var(--bg2);color:var(--text2);font-size:10px;font-weight:700;font-family:var(--sans);border-radius:4px">\ud83d\udd0a Listen in English</button>';
+      h +=   '</div>';
+      h += '</div>';
+
       h += '<div class="ad" style="height:70px"><span class="adlbl">ADVERTISEMENT</span></div>';
       return h;
     }
@@ -1247,6 +1323,12 @@ input{font-family:inherit;outline:none;border:none}
   window.AU  = AU;
   window.RM  = RM;
   window.CR  = CR;
+  // Global TTS shortcut for onclick handlers
+  window._ttsSpeak = function(key, lc){
+    var text = window._ttsQueue && window._ttsQueue[key];
+    if (!text){ return; }
+    window.AU.speakText(text, lc);
+  };
   window.CD  = CD;
   window.SV  = SV;
   window.SA  = SA;
