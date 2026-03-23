@@ -51,36 +51,38 @@ jobs:
       - name: Sync Capacitor
         run: cap sync android
 
-      # Inject AdMob App ID into AndroidManifest.xml
-      - name: Inject AdMob App ID into manifest
+      # ── Copy custom icons into all mipmap folders ──────────────────────
+      - name: Apply custom app icon
         run: |
-          MANIFEST="android/app/src/main/AndroidManifest.xml"
-          ADMOB_ID="ca-app-pub-9057426786910647~7730878522"
-          if ! grep -q "com.google.android.gms.ads.APPLICATION_ID" "$MANIFEST"; then
-            sed -i "s|<application|<application>\\n        <meta-data android:name=\"com.google.android.gms.ads.APPLICATION_ID\" android:value=\"$ADMOB_ID\"/>|" "$MANIFEST" || true
-            # Alternative approach if sed fails
-            python3 - << 'PYEOF'
+          for density in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            dir="android/app/src/main/res/mipmap-${density}-v4"
+            mkdir -p "$dir"
+            if [ -f "public/icons/ic_launcher_${density}.png" ]; then
+              cp "public/icons/ic_launcher_${density}.png" "$dir/ic_launcher.png"
+              cp "public/icons/ic_launcher_${density}.png" "$dir/ic_launcher_round.png"
+              cp "public/icons/ic_launcher_${density}.png" "$dir/ic_launcher_foreground.png"
+              echo "Icon applied: $density"
+            fi
+          done
+
+      # ── Inject AdMob App ID into AndroidManifest ───────────────────────
+      - name: Inject AdMob App ID
+        run: |
+          python3 << 'PYEOF'
           import re
           with open("android/app/src/main/AndroidManifest.xml","r") as f:
               content = f.read()
           if "APPLICATION_ID" not in content:
-              content = content.replace(
-                  '<application',
-                  '<application\n        android:usesCleartextTraffic="false"',
-                  1
-              )
-              # Insert meta-data after <application tag closes
               content = content.replace(
                   'android:theme="@style/AppTheme">',
                   'android:theme="@style/AppTheme">\n        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-9057426786910647~7730878522"/>'
               )
               with open("android/app/src/main/AndroidManifest.xml","w") as f:
                   f.write(content)
-              print("AdMob APP ID injected into manifest")
+              print("AdMob ID injected")
           else:
-              print("AdMob APP ID already in manifest")
+              print("AdMob ID already present")
           PYEOF
-          fi
 
       - name: Build Debug APK
         run: |
