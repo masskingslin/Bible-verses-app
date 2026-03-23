@@ -53,7 +53,7 @@ jobs:
 
       # Copy King Bible icons into Android mipmap folders
       - name: Install Pillow
-        run: pip install Pillow --break-system-packages
+        run: pip install Pillow
 
       - name: Apply custom app icon
         run: |
