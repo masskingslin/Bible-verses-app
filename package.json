@@ -1,0 +1,17 @@
+{
+  "name": "crown-bible-app",
+  "version": "2.0.0",
+  "description": "Crown Bible App — Tamil + English Bible",
+  "scripts": {
+    "build": "echo No build step needed"
+  },
+  "dependencies": {
+    "@capacitor/android": "6.2.0",
+    "@capacitor/core": "6.2.0",
+    "@capacitor-community/text-to-speech": "4.0.0",
+    "@capacitor-community/admob": "6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "6.2.0"
+  }
+}

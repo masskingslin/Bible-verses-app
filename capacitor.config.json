@@ -1,0 +1,22 @@
+{
+  "appId": "org.king.crownbible",
+  "appName": "Crown Bible",
+  "webDir": "public",
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false,
+    "backgroundColor": "#06060e"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0,
+      "backgroundColor": "#06060e",
+      "showSpinner": false
+    },
+    "AdMob": {
+      "appId": "ca-app-pub-9057426786910647~7730878522",
+      "isTesting": false
+    }
+  }
+}
