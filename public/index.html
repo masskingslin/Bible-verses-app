@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#06060e"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<title>Crown Bible — வேத வசனம்</title>
+<title>Holy Bible — வேத வசனம்</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Tamil:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet"/>
@@ -263,7 +263,7 @@ input{font-family:inherit;outline:none;border:none}
 <!-- ═══ LOADING SCREEN ═══ -->
 <div id="ls">
   <div class="ls-cross">✝</div>
-  <div class="ls-brand">CROWN BIBLE</div>
+  <div class="ls-brand">HOLY BIBLE</div>
   <div class="ls-sub">வேத வசனம் · TAMIL + ENGLISH</div>
   <div class="ls-msg" id="ls-msg">Initialising…</div>
   <div class="ls-track"><div class="ls-bar" id="ls-bar"></div></div>
@@ -278,7 +278,7 @@ input{font-family:inherit;outline:none;border:none}
     <div class="h-logo">
       <span class="h-cross">✝</span>
       <div>
-        <div class="h-title">CROWN BIBLE</div>
+        <div class="h-title">HOLY BIBLE</div>
         <div class="h-sub" id="h-sub">LOADING…</div>
       </div>
     </div>
@@ -455,7 +455,7 @@ input{font-family:inherit;outline:none;border:none}
       <!-- App Info -->
       <div style="margin:0 12px 80px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center">
         <div style="font-size:20px;color:var(--gold);margin-bottom:8px">✝</div>
-        <div style="font-size:13px;font-weight:700;letter-spacing:3px;color:var(--text);font-family:var(--sans)">CROWN BIBLE</div>
+        <div style="font-size:13px;font-weight:700;letter-spacing:3px;color:var(--text);font-family:var(--sans)">HOLY BIBLE</div>
         <div style="font-size:9px;color:var(--text2);font-family:var(--sans);margin-top:4px">VERSION 2.0 · 31,103 VERSES</div>
         <div style="font-size:9px;color:var(--text2);font-family:var(--sans);margin-top:2px">TAMIL + ENGLISH · OFFLINE</div>
       </div>
@@ -729,7 +729,7 @@ input{font-family:inherit;outline:none;border:none}
         return {v:v, s:s};
       }).filter(function(x){ return x.s > 0; });
       scored.sort(function(a,b){ return b.s - a.s; });
-      return scored.slice(0, 20).map(function(x){ return x.v; });
+      return scored.slice(0, 50).map(function(x){ return x.v; });
     }
 
     return {
@@ -925,6 +925,11 @@ input{font-family:inherit;outline:none;border:none}
       } else try{if(_web&&window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}
     },
     stop: stopAll,
+    _setVerseAndPlay: function(v){
+      stopAll(); _verses=[v]; _vIdx=0; _v=v;
+      openPanel(v.ref);
+      _playing=true; playNextVerse();
+    },
     isAvailable: function(){ return !!(_cap||_web); },
     checkStatus: function(){
       if(_cap) return 'Capacitor TTS ✓ Active';
@@ -1338,7 +1343,12 @@ input{font-family:inherit;outline:none;border:none}
       var btn = document.getElementById('cb'+id);
       if (btn){ var o=btn.textContent; btn.textContent='✓ COPIED'; setTimeout(function(){ btn.textContent=o; },2000); }
     },
-    audio: function(id){ var v=BD.byId(id); if(v) AU.open(v); },
+    audio: function(id){
+      var v=BD.byId(id); if(!v) return;
+      // Stop any existing audio, open panel, then play
+      AU.stop();
+      AU._setVerseAndPlay(v);
+    },
     cycleLang: function(){
       var ls=['both','ta','en'], cur=ST.g('lang'), ni=(ls.indexOf(cur)+1)%3;
       ST.setLang(ls[ni]);
