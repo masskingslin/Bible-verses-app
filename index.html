@@ -326,7 +326,7 @@ input{font-family:inherit;outline:none;border:none}
     <div class="scr" id="s-search">
       <div class="ai-hdr">
         <div class="ai-hdr-t">✦ AI VERSE FINDER · வசன தேடல்</div>
-        <div class="ai-hdr-s" id="ai-count">31,103 VERSES · TAMIL + ENGLISH · OFFLINE</div>
+        <div class="ai-hdr-s" id="ai-count">31,102 VERSES · TAMIL + ENGLISH · OFFLINE</div>
       </div>
       <div class="sbar">
         <input class="sinp" id="ai-srch" placeholder="love · அன்பு · Psalm 23 · John 3:16…" onkeydown="if(event.key==='Enter')SA.run()"/>
@@ -337,6 +337,7 @@ input{font-family:inherit;outline:none;border:none}
       <div id="ai-list" class="pb">
         <div class="empty">
           <div class="emico">✦</div>
+    <div id="ai-pagination" style="display:flex;gap:8px;padding:12px 0;justify-content:center"><button id="ai-prev" onclick="SA.prevPage()" disabled style="padding:8px 20px;background:var(--bg2);color:var(--text2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:11px;font-weight:700">&#9664; PREV</button><div id="ai-page-info" style="font-size:10px;color:var(--text2);font-family:var(--sans);text-align:center;flex:1;padding:0 8px"></div><button id="ai-next" onclick="SA.nextPage()" disabled style="padding:8px 20px;background:var(--gold);color:#06060e;border:none;border-radius:6px;font-family:var(--sans);font-size:11px;font-weight:700">NEXT &#9654;</button></div>
           <div class="emtxt">SEARCH BY TOPIC · KEYWORD · REFERENCE<br>தலைப்பு · சொல் · வசன குறிப்பு</div>
         </div>
       </div>
@@ -614,7 +615,7 @@ input{font-family:inherit;outline:none;border:none}
   }
 
   function onAllLoaded() {
-    sp(92, 'Building verse index…', '31,103 verse pairs');
+    sp(92, 'Building verse index…', '31,102 verse pairs');
     setTimeout(function(){
       try { bootApp(); }
       catch(e) { showError('Startup error: ' + (e.message || e)); }
@@ -729,7 +730,7 @@ input{font-family:inherit;outline:none;border:none}
         return {v:v, s:s};
       }).filter(function(x){ return x.s > 0; });
       scored.sort(function(a,b){ return b.s - a.s; });
-      return scored.map(function(x){ return x.v; }); // No limit - show all matches
+      return scored.map(function(x){ return x.v; });
     }
 
     return {
@@ -771,184 +772,155 @@ input{font-family:inherit;outline:none;border:none}
   /* ── AUDIO TTS ENGINE ── */
   var AU = (function(){
   var _cap = null, _web = ('speechSynthesis' in window);
+  var _vv = [], _verses = [], _vIdx = 0, _playing = false, _v = null;
   try {
     if (window.Capacitor && window.Capacitor.Plugins &&
         window.Capacitor.Plugins.TextToSpeech)
       _cap = window.Capacitor.Plugins.TextToSpeech;
-  } catch(e){}
-  var _vv = [];
+  } catch(e) {}
   if (_web) {
-    function _loadV(){ _vv = window.speechSynthesis.getVoices()||[]; }
+    function _loadV() { _vv = window.speechSynthesis.getVoices() || []; }
     _loadV();
     if (window.speechSynthesis.onvoiceschanged !== undefined)
       window.speechSynthesis.onvoiceschanged = _loadV;
-    setTimeout(_loadV,500); setTimeout(_loadV,2000); setTimeout(_loadV,4000);
+    setTimeout(_loadV, 500); setTimeout(_loadV, 2000); setTimeout(_loadV, 4000);
   }
-  function getLang(){ return ST.g('audioLang')||'ta'; }
-  function getLc()  { return getLang()==='ta'?'ta-IN':'en-US'; }
-  function getVText(v){ return getLang()==='ta'?(v.ta||v.en||''):(v.en||v.ta||''); }
+  function getLang() { return ST.g('audioLang') || 'ta'; }
+  function getLc()   { return getLang() === 'ta' ? 'ta-IN' : 'en-US'; }
+  function getVText(v) { return getLang()==='ta' ? (v.ta||v.en||'') : (v.en||v.ta||''); }
 
-  var _verses=[], _vIdx=0, _playing=false, _v=null;
-
-  function setPlayUI(on){
-    var b=document.getElementById('au-play'); if(!b) return;
+  function setPlayUI(on) {
+    var b = document.getElementById('au-play'); if (!b) return;
     b.textContent = on ? '▶ PLAYING...' : '▶ PLAY';
     b.style.background = on ? 'rgba(255,255,255,.15)' : '#fff';
     b.style.color = on ? '#fff' : '#06060e';
   }
   function setMsg(t)  { var e=document.getElementById('au-msg');  if(e) e.textContent=t||''; }
   function setProg(p) { var e=document.getElementById('au-prog'); if(e) e.style.width=(p||0)+'%'; }
-  function setLangDisp(){
+  function setLangDisp() {
     var el=document.getElementById('au-lang-show');
-    if(el) el.textContent = getLang()==='ta'?'LANGUAGE: TAMIL (தமிழ்)':'LANGUAGE: ENGLISH';
+    if(el) el.textContent = getLang()==='ta' ? 'LANGUAGE: TAMIL (தமிழ்)' : 'LANGUAGE: ENGLISH';
   }
-  function openPanel(ref){
+  function openPanel(ref) {
     var el=document.getElementById('au-ref'); if(el) el.textContent=ref||'';
-    document.getElementById('au-panel').classList.add('on');
+    var p=document.getElementById('au-panel'); if(p) p.classList.add('on');
     setLangDisp(); setMsg(''); setProg(0);
   }
-  function stopAll(){
+  function stopAll() {
     _playing=false; _verses=[]; _vIdx=0;
-    try{if(_cap)_cap.stop();}catch(e){}
-    try{if(_web)window.speechSynthesis.cancel();}catch(e){}
+    try { if(_cap) _cap.stop(); } catch(e) {}
+    try { if(_web) window.speechSynthesis.cancel(); } catch(e) {}
     setPlayUI(false); setProg(0);
   }
-  function speakChunkWeb(text, lc, onDone){
-    try{
+  function speakChunkWeb(text, lc, onDone) {
+    try {
       window.speechSynthesis.cancel();
-      if (_vv.length === 0) _vv = window.speechSynthesis.getVoices() || [];
+      if (_vv.length===0) _vv = window.speechSynthesis.getVoices()||[];
       var u = new SpeechSynthesisUtterance(text);
-      u.lang = lc; u.rate = 0.85; u.pitch = 1; u.volume = 1;
-      var px = lc.split('-')[0], best = null;
+      u.lang=lc; u.rate=0.85; u.pitch=1; u.volume=1;
+      var px=lc.split('-')[0], best=null;
       for (var i=0; i<_vv.length; i++) {
-        var vl = _vv[i].lang || '';
-        if (vl === lc) { best = _vv[i]; break; }
-        if (vl.indexOf(px) === 0 && !best) best = _vv[i];
+        var vl=_vv[i].lang||'';
+        if (vl===lc) { best=_vv[i]; break; }
+        if (vl.indexOf(px)===0 && !best) best=_vv[i];
       }
-      if (best) { u.voice = best; }
-      else if (lc === 'ta-IN') {
+      if (best) { u.voice=best; }
+      else if (lc==='ta-IN') {
         setPlayUI(false); setProg(0);
-        setMsg('⚠ Tamil voice not installed. → ⚙ SETTINGS tab > Open TTS Settings → Google TTS > Install Tamil');
+        setMsg('⚠ Tamil voice not installed. → ⚙ SETTINGS tab → Open TTS Settings → Google TTS → Install Tamil');
         if (onDone) onDone(); return;
       }
       u.onstart = function() { setPlayUI(true); setProg(40); };
-      u.onend   = function() { setPlayUI(false); setProg(100); setTimeout(function(){setProg(0);},500); if (onDone) onDone(); };
+      u.onend   = function() { setPlayUI(false); setProg(100); setTimeout(function(){setProg(0);},500); if(onDone) onDone(); };
       u.onerror = function(e) {
         setPlayUI(false); setProg(0);
-        if (lc.indexOf('ta')===0)
-          setMsg('⚠ Tamil voice missing. → ⚙ SETTINGS > Open TTS Settings > Install Tamil');
-        else
-          setMsg('⚠ TTS error: ' + (e.error||'unknown'));
+        setMsg('⚠ ' + (lc.indexOf('ta')===0 ? 'Tamil voice missing. ⚙ SETTINGS > Open TTS Settings > Install Tamil' : 'TTS error: '+(e.error||'')));
       };
-      window.speechSynthesis.speak(u);
-      setPlayUI(true); setProg(20);
+      window.speechSynthesis.speak(u); setPlayUI(true); setProg(20);
     } catch(e) { setPlayUI(false); setMsg('⚠ '+e.message); }
   }
-  function speakChunk(text, lc, onDone){
-    if(!text||!text.trim()){ if(onDone)onDone(); return; }
-    // Cap at 250 chars — avoids TTS engine silent-fail on long text
+  function speakChunk(text, lc, onDone) {
+    if (!text||!text.trim()) { if(onDone) onDone(); return; }
     var chunk = text.length>250 ? text.substr(0,250) : text;
-    if(_cap){
+    if (_cap) {
       _cap.speak({text:chunk, lang:lc, rate:0.95, pitch:1.0, volume:1.0})
-        .then(function(){ if(onDone)onDone(); })
-        .catch(function(){
-          if(_web) speakChunkWeb(chunk,lc,onDone);
-          else { setPlayUI(false); setMsg('⚠ TTS error. Check ⚙ SETTINGS tab.'); }
-        });
+        .then(function() { setPlayUI(false); setProg(100); setTimeout(function(){setProg(0);},500); if(onDone) onDone(); })
+        .catch(function() { if(_web) speakChunkWeb(chunk,lc,onDone); else { setPlayUI(false); setMsg('⚠ TTS failed. Check ⚙ SETTINGS.'); } });
       return;
     }
-    if(_web){ speakChunkWeb(chunk,lc,onDone); return; }
-    setPlayUI(false); setProg(0);
-    setMsg('⚠ Install Google Text-to-Speech from Play Store.');
+    if (_web) { speakChunkWeb(chunk,lc,onDone); return; }
+    setPlayUI(false); setMsg('⚠ Install Google Text-to-Speech from Play Store.');
   }
-  function playNextVerse(){
-    if(!_playing||_vIdx>=_verses.length){
+  function playNextVerse() {
+    if (!_playing||_vIdx>=_verses.length) {
       _playing=false; setPlayUI(false); setProg(100);
-      setMsg(_vIdx>=_verses.length?'Complete ✓ ('+_verses.length+' verses)':'Stopped.');
-      setTimeout(function(){setProg(0);},1500);
-      return;
+      setMsg(_vIdx>=_verses.length ? 'Complete ✓ ('+_verses.length+' verses)' : 'Stopped.');
+      setTimeout(function(){setProg(0);},1500); return;
     }
     var v=_verses[_vIdx], text=getVText(v);
-    var pct=Math.round((_vIdx/_verses.length)*100);
-    setProg(pct);
+    setProg(Math.round((_vIdx/_verses.length)*100));
     setMsg((_vIdx+1)+' / '+_verses.length+' — '+(v.ref||''));
     setPlayUI(true); _vIdx++;
-    speakChunk(text, getLc(), function(){ if(_playing) playNextVerse(); });
-  }
-  function speakOne(text){
-    stopAll(); setPlayUI(true); setProg(30);
-    speakChunk(text, getLc(), function(){ setPlayUI(false); setProg(0); });
+    speakChunk(text, getLc(), function() { if(_playing) playNextVerse(); });
   }
   return {
-    open: function(v){
+    open: function(v) {
       stopAll(); _v=v; _verses=[v]; _vIdx=0;
       openPanel(v.ref);
-      setTimeout(function(){ if(!_playing){ _playing=true; playNextVerse(); } },300);
+      setTimeout(function() { _playing=true; playNextVerse(); }, 200);
     },
-    close: function(){
-      stopAll(); document.getElementById('au-panel').classList.remove('on');
-    },
-    toggle: function(){
+    close: function() { stopAll(); var p=document.getElementById('au-panel'); if(p) p.classList.remove('on'); },
+    toggle: function() {
       var p=document.getElementById('au-panel');
-      if(p.classList.contains('on')) this.close(); else if(_v) this.open(_v);
+      if (p&&p.classList.contains('on')) this.close(); else if(_v) this.open(_v);
     },
-    play: function(){
-      if(_playing) return;
-      if(!_verses.length){ setMsg('Tap 🔊 on a chapter first.'); return; }
+    play: function() {
+      if (_playing) return;
+      if (!_verses.length) { setMsg('Tap 🔊 on a chapter or verse first.'); return; }
       _playing=true; _vIdx=0; playNextVerse();
     },
-    readChapter: function(){
-      if(!window.CR||!window.CR._bk) return;
+    readChapter: function() {
+      if (!window.CR||!window.CR._bk) return;
       var vs=BD.byBookCh(window.CR._bk,window.CR._ch);
-      if(!vs.length){ openPanel('No verses'); return; }
+      if (!vs.length) return;
       stopAll(); _verses=vs; _vIdx=0;
       openPanel(window.CR._bk+' Chapter '+window.CR._ch);
-      // Auto-play immediately
-      setMsg('Loading '+vs.length+' verses...');
-      setTimeout(function(){ _playing=true; playNextVerse(); },200);
+      setMsg(vs.length+' verses — starting...');
+      setTimeout(function() { _playing=true; playNextVerse(); }, 200);
     },
-    readStory: function(){
+    readStory: function() {
       var cid=document.getElementById('cd-name').getAttribute('data-cid');
-      if(!cid||typeof BIBLE_CHARACTERS==='undefined') return;
+      if (!cid||typeof BIBLE_CHARACTERS==='undefined') return;
       var ch=BIBLE_CHARACTERS.find(function(c){return c.id===cid;});
-      if(!ch) return;
+      if (!ch) return;
       var text=getLang()==='ta'?ch.summary_ta+' '+ch.lessons_ta.join(' '):ch.summary_en+' '+ch.lessons_en.join(' ');
       var words=text.split(' '), chunks=[], buf='';
-      words.forEach(function(w){
-        buf+=(buf?' ':'')+w;
-        if(buf.length>200){chunks.push({ta:buf,en:buf,ref:''});buf='';}
-      });
+      words.forEach(function(w){ buf+=(buf?' ':'')+w; if(buf.length>200){chunks.push({ta:buf,en:buf,ref:''});buf='';} });
       if(buf) chunks.push({ta:buf,en:buf,ref:''});
       stopAll(); _verses=chunks; _vIdx=0;
       openPanel(ch.name); _playing=true; playNextVerse();
     },
-    speakText: function(text){ openPanel(null); speakOne(text); },
-    pause: function(){
-      _playing=false;
-      try{if(_web&&window.speechSynthesis.speaking)window.speechSynthesis.pause();}catch(e){}
+    speakText: function(text) { openPanel(null); speakChunk(text,getLc(),function(){setPlayUI(false);});  },
+    _setVerseAndPlay: function(v) {
+      stopAll(); _v=v; _verses=[v]; _vIdx=0;
+      openPanel(v.ref); _playing=true; playNextVerse();
     },
-    resume: function(){
-      if(!_playing&&_verses.length&&_vIdx<_verses.length){
-        _playing=true; playNextVerse();
-      } else try{if(_web&&window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}
-    },
-    stop: stopAll,
-    _prepareVerse: function(v){
-      // Load verse into AU without playing - so toggle() works
+    _prepareVerse: function(v) {
       stopAll(); _v=v; _verses=[v]; _vIdx=0;
     },
-    _setVerseAndPlay: function(v){
-      stopAll(); _verses=[v]; _vIdx=0; _v=v;
-      openPanel(v.ref);
-      _playing=true; playNextVerse();
+    pause:  function() { _playing=false; try{if(_web&&window.speechSynthesis.speaking)window.speechSynthesis.pause();}catch(e){} },
+    resume: function() {
+      if (!_playing&&_verses.length&&_vIdx<_verses.length) { _playing=true; playNextVerse(); }
+      else try{if(_web&&window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}
     },
-    isAvailable: function(){ return !!(_cap||_web); },
-    checkStatus: function(){
+    stop: stopAll,
+    isAvailable: function() { return !!(_cap||_web); },
+    checkStatus: function() {
       if(_cap) return 'Capacitor TTS ✓ Active';
-      if(_web){ var n=_vv.length; return 'Web TTS ✓ '+n+' voice'+(n===1?'':'s')+' available'; }
-      return '⚠ No TTS engine found';
+      if(_web) { var n=_vv.length; return 'Web TTS ✓ '+n+' voice'+(n===1?'':'s')+' found'; }
+      return '⚠ No TTS engine. Install Google Text-to-Speech.';
     },
-    get _lang(){ return getLang(); }
+    get _lang() { return getLang(); }
   };
 })();
 
@@ -1019,8 +991,7 @@ input{font-family:inherit;outline:none;border:none}
         badge.textContent = _v.ref;
         badge.style.cssText = 'background:'+c+';color:#fff';
         document.getElementById('au-ref').textContent = _v.ref;
-        // Pre-load verse into AU so 🔊 button in reading mode works
-        if (window.AU) AU._prepareVerse(_v);
+        if(window.AU&&_v) AU._prepareVerse(_v);
         ov.classList.add('on');
       },
       close: function(){
@@ -1123,67 +1094,55 @@ input{font-family:inherit;outline:none;border:none}
       if (!window._ttsQueue) window._ttsQueue = {};
       window._ttsQueue[cid+'_bio_ta']   = ch.summary_ta;
       window._ttsQueue[cid+'_bio_en']   = ch.summary_en;
-      window._ttsQueue[cid+'_story_ta'] = ch.summary_ta+' '+ch.lessons_ta.join(' ');
-      window._ttsQueue[cid+'_story_en'] = ch.summary_en+' '+ch.lessons_en.join(' ');
+      window._ttsQueue[cid+'_story_ta'] = ch.summary_ta + ' ' + ch.lessons_ta.join(' ');
+      window._ttsQueue[cid+'_story_en'] = ch.summary_en + ' ' + ch.lessons_en.join(' ');
       ch.verses.forEach(function(v,i){
         window._ttsQueue[cid+'_v'+i+'_ta'] = v.ta;
         window._ttsQueue[cid+'_v'+i+'_en'] = v.en;
       });
 
-      // BIOGRAPHY - full text, no truncation
       h += '<div class="csec">';
       h += '<div class="csl" style="display:flex;justify-content:space-between;align-items:center">';
       h += '<span>BIOGRAPHY · சுயசரிதை</span>';
-      h += '<button onclick="window._ttsQ(\''+cid+'_bio\')" style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);color:var(--gold);font-size:9px;padding:3px 10px;border-radius:4px;font-family:var(--sans)">🔊 LISTEN</button>';
+      h += '<button onclick="window._ttsQ(\'' + cid + '_bio\')" style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:var(--gold);font-size:9px;font-weight:700;padding:3px 10px;border-radius:4px;font-family:var(--sans)">🔊 LISTEN</button>';
       h += '</div>';
-      h += '<div style="font-size:15px;line-height:1.8;color:var(--text);margin-bottom:10px">'+ch.summary_en+'</div>';
-      h += '<div style="font-size:14px;line-height:1.9;color:var(--text2);தமிழ்">'+ch.summary_ta+'</div>';
+      h += '<div class="csen">'+ch.summary_en+'</div>';
+      h += '<div class="csta">'+ch.summary_ta+'</div>';
       h += '</div>';
 
-      // LIFE TIMELINE
       h += '<div class="csec"><div class="csl">LIFE TIMELINE · காலவரிசை</div>';
       ch.timeline.forEach(function(t,i){
-        var last = i===ch.timeline.length-1;
+        var last = i === ch.timeline.length - 1;
         h += '<div class="tli"><div class="tlcol"><div class="tldot" style="background:'+col+'"></div>';
-        h += (last?'':'<div class="tlline"></div>')+'</div>';
-        h += '<div style="flex:1;padding-bottom:'+(last?'0':'12px')+'">';
-        h += '<div class="tlref" style="font-weight:700;color:var(--gold)">'+t.ref+'</div>';
-        h += '<div class="tlen" style="font-size:13px;color:var(--text)">'+t.en+'</div>';
-        h += '<div class="tlta" style="font-size:12px;color:var(--text2)">'+t.ta+'</div>';
-        h += '</div></div>';
+        h += (last ? '' : '<div class="tlline"></div>') + '</div>';
+        h += '<div style="flex:1;padding-bottom:'+(last?'0':'10px')+'"><div class="tlref">'+t.ref+'</div>';
+        h += '<div class="tlen">'+t.en+'</div><div class="tlta">'+t.ta+'</div></div></div>';
       });
       h += '</div>';
 
-      // KEY VERSES with audio
       h += '<div class="csec"><div class="csl">KEY VERSES · முக்கிய வசனங்கள்</div>';
       ch.verses.forEach(function(v,i){
-        h += '<div class="kv" style="border-left:3px solid '+col+';padding:10px 12px;margin-bottom:10px;background:var(--bg3);border-radius:0 6px 6px 0">';
-        h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">';
-        h += '<span style="font-size:11px;font-weight:700;color:var(--gold)">'+v.ref+'</span>';
-        h += '<button onclick="window._ttsQ(\''+cid+'_v'+i+'\')" style="background:'+col+'22;border:1px solid '+col+'55;color:'+col+';font-size:8px;padding:2px 8px;border-radius:3px">🔊</button>';
+        h += '<div class="kv" style="border-left-color:'+col+'">';
+        h += '<div class="kvref" style="display:flex;justify-content:space-between;align-items:center">';
+        h += '<span>'+v.ref+'</span>';
+        h += '<button onclick="window._ttsQ(\'' + cid + '_v'+i+'\')" style="background:'+col+'22;border:1px solid '+col+'55;color:'+col+';font-size:8px;font-weight:700;padding:2px 8px;border-radius:3px;font-family:var(--sans)">🔊</button>';
         h += '</div>';
-        h += '<div style="font-size:14px;line-height:1.8;color:var(--text);margin-bottom:6px">'+v.ta+'</div>';
-        h += '<div style="font-size:13px;line-height:1.7;color:var(--text2);font-style:italic">'+v.en+'</div>';
+        h += '<div class="kvta">'+v.ta+'</div>';
+        h += '<div class="kven">'+v.en+'</div>';
         h += '</div>';
       });
       h += '</div>';
 
-      // LIFE LESSONS - show all as full paragraphs
       h += '<div class="csec"><div class="csl">LIFE LESSONS · படிப்பினைகள்</div>';
       ch.lessons_en.forEach(function(l,i){
-        h += '<div style="display:flex;gap:10px;margin-bottom:14px;padding:12px;background:var(--bg3);border-radius:6px">';
-        h += '<div style="min-width:28px;height:28px;border-radius:50%;background:'+col+';color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">'+(i+1)+'</div>';
-        h += '<div>';
-        h += '<div style="font-size:13px;line-height:1.7;color:var(--text);margin-bottom:4px">'+l+'</div>';
-        h += '<div style="font-size:12px;line-height:1.7;color:var(--text2)">'+(ch.lessons_ta[i]||'')+'</div>';
-        h += '</div></div>';
+        h += '<div class="lesn"><div class="lesnn">'+(i+1)+'</div>';
+        h += '<div><div class="lesen">'+l+'</div><div class="lesta">'+(ch.lessons_ta[i]||'')+'</div></div></div>';
       });
       h += '</div>';
 
-      // FULL STORY AUDIO
       h += '<div class="csec" style="background:var(--bg3);text-align:center">';
-      h += '<div class="csl" style="justify-content:center">FULL STORY AUDIO · முழு கதை</div>';
-      h += '<button onclick="window._ttsQ(\''+cid+'_story\')" style="width:100%;padding:14px;background:var(--gold);color:#06060e;font-size:14px;font-weight:700;border:none;border-radius:6px;font-family:var(--sans);margin-top:4px">🔊 READ FULL STORY</button>';
+      h += '<div class="csl" style="text-align:center;justify-content:center">FULL STORY AUDIO · முழு கதை</div>';
+      h += '<button onclick="window._ttsQ(\'' + cid + '_story\')" style="width:100%;padding:14px;background:var(--gold);color:#06060e;font-size:13px;font-weight:700;border:none;border-radius:6px;font-family:var(--sans)">🔊 READ FULL STORY</button>';
       h += '</div>';
 
       h += '<div class="ad" style="height:70px"><span class="adlbl">ADVERTISEMENT</span></div>';
@@ -1244,27 +1203,61 @@ input{font-family:inherit;outline:none;border:none}
              'grace·கிருபை','mercy·இரக்கம்','forgiveness·மன்னிப்பு','heaven·பரலோகம்',
              'jesus·இயேசு','god·தேவன்','wisdom·ஞானம்','comfort·ஆறுதல்',
              'healing·சுகம்','joy·சந்தோஷம்','truth·சத்தியம்','eternal·நித்தியம்',
-             'sin·பாவம்','repentance·மனஸ்தாபம்','holy spirit·பரிசுத்த ஆவி',
-             'resurrection·உயிர்த்தெழுதல்','trust·நம்பிக்கை','light·வெளிச்சம்'],
+             'sin·பாவம்','repentance·மனஞ்சதாபம்','holy spirit·பரிசுத்த ஆவி',
+             'resurrection·உயிர்தெழுதல்','trust·நம்பிக்கை','light·வெளிச்சம்'],
+    _results: [],  // all matching verses
+    _page: 0,
+    _pageSize: 30, // 30 verses per page
+
     build: function(){
       document.getElementById('ai-chips').innerHTML = this.TOPICS.map(function(t){
         var q = t.split('·')[0];
-        return '<button class="chip" onclick="SA.chip(\''+q+'\')">'+t+'</button>';
+        return '<button class="chip" onclick="SA.chip(\''+q+'\')" >'+t+'</button>';
       }).join('');
+      this._renderPage();
+    },
+    _renderPage: function(){
+      var pg = this._page, ps = this._pageSize;
+      var total = this._results.length;
+      var slice = this._results.slice(pg*ps, (pg+1)*ps);
+      var info = document.getElementById('ai-page-info');
+      var prev = document.getElementById('ai-prev');
+      var next = document.getElementById('ai-next');
+      if (info) {
+        if (total > 0)
+          info.textContent = 'Page '+(pg+1)+' of '+Math.ceil(total/ps)+' — '+total.toLocaleString()+' verses found';
+        else
+          info.textContent = '';
+      }
+      if (prev) prev.disabled = pg===0;
+      if (next) next.disabled = (pg+1)*ps >= total;
+      R.list('ai-list', slice, 'NO RESULTS — Try: love, அன்பு, Psalm 23, John 3:16');
     },
     run: function(){
       var q = document.getElementById('ai-srch').value;
       if (!q.trim()) return;
-      var results = BD.search(q);
+      this._results = BD.search(q);
+      this._page = 0;
       document.querySelectorAll('#ai-chips .chip').forEach(function(c){
         c.classList.toggle('on', c.textContent.indexOf(q)===0);
       });
-      R.list('ai-list', results, 'NO RESULTS — Try: love, அன்பு, Psalm 23, John 3:16');
+      this._renderPage();
     },
-    chip: function(t){ document.getElementById('ai-srch').value=t; this.run(); }
-  };
-
-  /* ── BOOKS SCREEN ── */
+    chip: function(t){
+      document.getElementById('ai-srch').value = t;
+      this.run();
+    },
+    prevPage: function(){
+      if (this._page > 0){ this._page--; this._renderPage();
+        document.getElementById('s-search').scrollTop=0; }
+    },
+    nextPage: function(){
+      if ((this._page+1)*this._pageSize < this._results.length){
+        this._page++; this._renderPage();
+        document.getElementById('s-search').scrollTop=0;
+      }
+    }
+  }
   var SB = {
     _f: 'ALL',
     build: function(){
@@ -1370,10 +1363,9 @@ input{font-family:inherit;outline:none;border:none}
       if (btn){ var o=btn.textContent; btn.textContent='✓ COPIED'; setTimeout(function(){ btn.textContent=o; },2000); }
     },
     audio: function(id){
-      var v=BD.byId(id); if(!v){ console.log('verse not found:',id); return; }
+      var v=BD.byId(id); if(!v) return;
       AU.stop();
-      // Small delay ensures UI updates before TTS starts
-      setTimeout(function(){ AU._setVerseAndPlay(v); }, 100);
+      setTimeout(function(){ AU._setVerseAndPlay(v); }, 150);
     },
     cycleLang: function(){
       var ls=['both','ta','en'], cur=ST.g('lang'), ni=(ls.indexOf(cur)+1)%3;
@@ -1508,7 +1500,7 @@ input{font-family:inherit;outline:none;border:none}
     '</div>';
     // Quick nav tiles
     [
-      {l:'✦ AI SEARCH', s:'search', c:'#2d0a5e', sub:'31,103 verses · Tamil+English'},
+      {l:'✦ AI SEARCH', s:'search', c:'#2d0a5e', sub:'31,102 verses · Tamil+English'},
       {l:'👤 CHARACTERS', s:'chars', c:'#3a1a00', sub:(typeof BIBLE_CHARACTERS!=='undefined'?BIBLE_CHARACTERS.length:11)+' Bible stories'},
       {l:'📖 66 BOOKS', s:'books', c:'#0d2e0d', sub:'All chapters · Audio'},
       {l:'♥ SAVED', s:'saved', c:'#3a0a0a', sub:ST.saved().length+' saved'}
