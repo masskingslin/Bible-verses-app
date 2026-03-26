@@ -1,132 +1,96 @@
-name: Build Crown Bible APK
+name: Build Holy Bible APK v6
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'debug or release'
+        required: true
+        default: 'debug'
+        type: choice
+        options: [ debug, release ]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
 
     steps:
-      - name: Checkout
+
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 18
+      - name: Setup Node 18
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
+      - name: Install Capacitor
+        run: npm install
+
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
           java-version: '17'
+          distribution: 'temurin'
 
-      - name: Cache Gradle
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties') }}
-          restore-keys: gradle-${{ runner.os }}-
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Install packages
+      - name: Accept Android Licenses
+        run: yes | sdkmanager --licenses || true
+
+      - name: Install Capacitor CLI
+        run: npm install -g @capacitor/cli@5
+
+      - name: Add Android Platform
+        run: npx cap add android || true
+
+      - name: Sync web files to Android
+        run: npx cap sync android
+
+      - name: Inject App Icons into Android
         run: |
-          npm install -g @capacitor/cli@6.2.0
-          npm install \
-            @capacitor/core@6.2.0 \
-            @capacitor/android@6.2.0 \
-            @capacitor-community/text-to-speech@4.0.0 \
-            @capacitor-community/admob@6.0.0
+          ICON_SRC="android-icons"
+          ICON_DST="android/app/src/main/res"
+          for DENSITY in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            mkdir -p "$ICON_DST/mipmap-$DENSITY"
+            [ -f "$ICON_SRC/mipmap-$DENSITY/ic_launcher.png" ] && \
+              cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher.png" "$ICON_DST/mipmap-$DENSITY/ic_launcher.png" && \
+              echo "Copied ic_launcher $DENSITY"
+            [ -f "$ICON_SRC/mipmap-$DENSITY/ic_launcher_round.png" ] && \
+              cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher_round.png" "$ICON_DST/mipmap-$DENSITY/ic_launcher_round.png" && \
+              echo "Copied ic_launcher_round $DENSITY"
+          done
+          echo "All icons injected!"
 
-      - name: Add Android platform
-        run: |
-          if [ ! -d "android" ]; then
-            cap add android
-          fi
-
-      - name: Sync Capacitor
-        run: cap sync android
-
-      # Copy King Bible icons into Android mipmap folders
-      - name: Install Pillow
-        run: pip install Pillow
-
-      - name: Apply custom app icon
-        run: |
-          python3 << 'PYEOF'
-          import os, shutil
-          from PIL import Image
-
-          # Source icon - user's King Bible logo
-          src = None
-          for p in [
-            'public/icons/ic_launcher_xxxhdpi.png',
-            'public/icons/icon_xxxhdpi.png',
-            'public/icons/icon_xxhdpi.png',
-          ]:
-            if os.path.exists(p):
-              src = p
-              break
-
-          if not src:
-            print("No icon found in public/icons/ - using default")
-            exit(0)
-
-          print(f"Using icon: {src}")
-          img = Image.open(src).convert('RGBA')
-          w, h = img.size
-          side = min(w,h)
-          img = img.crop(((w-side)//2, (h-side)//2, (w+side)//2, (h+side)//2))
-
-          sizes = {'mdpi':48,'hdpi':72,'xhdpi':96,'xxhdpi':144,'xxxhdpi':192}
-
-          for density, size in sizes.items():
-            resized = img.resize((size,size), Image.LANCZOS)
-            for folder in [
-              f'android/app/src/main/res/mipmap-{density}',
-              f'android/app/src/main/res/mipmap-{density}-v4',
-            ]:
-              if os.path.isdir(folder):
-                for name in ['ic_launcher.png','ic_launcher_round.png','ic_launcher_foreground.png']:
-                  out = os.path.join(folder, name)
-                  resized.save(out,'PNG')
-                print(f"  Applied {density} ({size}x{size}) -> {folder}")
-          print("Icons applied.")
-          PYEOF
-
-      # Inject AdMob App ID into AndroidManifest
-      - name: Inject AdMob App ID
-        run: |
-          python3 << 'PYEOF'
-          with open("android/app/src/main/AndroidManifest.xml","r") as f:
-              c = f.read()
-          if "APPLICATION_ID" not in c:
-              c = c.replace(
-                  'android:theme="@style/AppTheme">',
-                  'android:theme="@style/AppTheme">\n        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-9057426786910647~7730878522"/>'
-              )
-              with open("android/app/src/main/AndroidManifest.xml","w") as f:
-                  f.write(c)
-              print("AdMob ID injected")
-          else:
-              print("AdMob ID already present")
-          PYEOF
+      - name: Fix Gradlew Permission
+        run: chmod +x android/gradlew
 
       - name: Build Debug APK
+        if: ${{ github.event.inputs.build_type != 'release' }}
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Build Release APK
+        if: ${{ github.event.inputs.build_type == 'release' }}
+        working-directory: android
         run: |
-          cd android
-          chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
-          find . -name "*.apk" | head -3
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > ../bible.keystore
+          ./gradlew assembleRelease \
+            -Pandroid.injected.signing.store.file=$(pwd)/../bible.keystore \
+            -Pandroid.injected.signing.store.password="${{ secrets.STORE_PASSWORD }}" \
+            -Pandroid.injected.signing.key.alias="${{ secrets.KEY_ALIAS }}" \
+            -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD }}" \
+            --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: CrownBible-APK-${{ github.run_number }}
-          path: android/app/build/outputs/apk/debug/app-debug.apk
-          if-no-files-found: error
+          name: HolyBible-APK-${{ github.run_number }}
+          path: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android/app/build/outputs/apk/release/app-release*.apk
           retention-days: 30
