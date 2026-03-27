@@ -3,243 +3,317 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-<meta name="theme-color" content="#080810"/>
+<meta name="theme-color" content="#06060e"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<title>வேத வசனம் Holy Bible</title>
-<link rel="manifest" href="manifest.json"/>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Tamil:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
+<title>Holy Bible — வேத வசனம்</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Tamil:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --bg:#08080f;--bg2:#111120;--bg3:#1a1a2e;--bg4:#24243c;
-  --border:rgba(200,180,130,.1);--text:#e8dcc8;--text2:rgba(232,220,200,.5);
-  --text3:rgba(232,220,200,.18);--gold:#c9a84c;--acc:#0066cc;
+  --bg:#06060e;--bg2:#0f0f1e;--bg3:#181830;--bg4:#20203a;
+  --border:rgba(201,168,76,.12);--text:#ede0c4;--text2:rgba(237,224,196,.55);--text3:rgba(237,224,196,.2);
+  --gold:#c9a84c;--gold2:#e8c060;--acc:#1a5eff;--red:#c0392b;
   --ta:'Noto Serif Tamil',serif;--ta2:'Noto Sans Tamil',sans-serif;
   --en:'EB Garamond','Georgia',serif;--sans:'Barlow Condensed','Arial Narrow',sans-serif;
-  --nav:58px;--hdr:50px;
+  --nav:60px;--hdr:52px;--r:8px;
 }
-[data-light]{--bg:#f0ead8;--bg2:#f8f4e8;--bg3:#ede4cc;--bg4:#e0d5b8;--border:rgba(100,80,40,.15);--text:#1a1005;--text2:rgba(26,16,5,.5);--text3:rgba(26,16,5,.2);}
+[data-light]{
+  --bg:#f5f0e6;--bg2:#faf6ec;--bg3:#ede6d4;--bg4:#e2d8c4;
+  --border:rgba(100,80,40,.15);--text:#1a0e00;--text2:rgba(26,14,0,.5);--text3:rgba(26,14,0,.18);
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden}
+html,body{height:100%;overflow:hidden;-webkit-tap-highlight-color:transparent}
 body{font-family:var(--ta2);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
-button{font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
-button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scrollbar{display:none}
-#app{display:flex;flex-direction:column;height:100vh;max-width:480px;margin:0 auto;overflow:hidden}
-#hdr{flex-shrink:0;height:var(--hdr);background:var(--bg2);border-bottom:1px solid var(--gold);display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:50}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+button:active{opacity:.7}
+input{font-family:inherit;outline:none;border:none}
+::-webkit-scrollbar{display:none}
+
+/* ── LAYOUT ── */
+#app{display:flex;flex-direction:column;height:100vh;max-width:500px;margin:0 auto;overflow:hidden;position:relative}
+#hdr{flex-shrink:0;height:var(--hdr);background:var(--bg2);border-bottom:2px solid var(--gold);display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:50}
 #main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
-#nav{flex-shrink:0;height:var(--nav);background:var(--bg2);border-top:1px solid var(--gold);display:flex}
-#ls{position:fixed;inset:0;z-index:999;background:#040408;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
-.ls-cross{font-size:52px;color:var(--gold)}
-.ls-title{font-size:20px;letter-spacing:6px;color:#e8dcc8;font-family:var(--sans);font-weight:700}
-.ls-msg{font-size:10px;color:rgba(232,220,200,.4);letter-spacing:2px;font-family:var(--sans);text-align:center;padding:0 20px}
-.ls-track{width:200px;height:3px;background:rgba(201,168,76,.15);overflow:hidden;border-radius:2px}
-.ls-bar{height:100%;background:var(--gold);width:0%;transition:width .4s ease;border-radius:2px}
+#nav{flex-shrink:0;height:var(--nav);background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:50}
+
+/* ── LOADER ── */
+#ls{position:fixed;inset:0;z-index:9999;background:#030308;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;cursor:pointer}
+.ls-cross{font-size:56px;color:var(--gold);text-shadow:0 0 30px rgba(201,168,76,.4)}
+.ls-brand{font-size:22px;letter-spacing:8px;color:var(--text);font-family:var(--sans);font-weight:700}
+.ls-sub{font-size:9px;letter-spacing:3px;color:var(--gold);font-family:var(--sans);opacity:.7}
+.ls-msg{font-size:10px;color:var(--text3);letter-spacing:2px;font-family:var(--sans);text-align:center;padding:0 30px;min-height:16px}
+.ls-track{width:220px;height:3px;background:rgba(201,168,76,.15);overflow:hidden;border-radius:2px}
+.ls-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;transition:width .5s ease;border-radius:2px}
 .ls-cnt{font-size:10px;color:rgba(201,168,76,.5);letter-spacing:1px;font-family:var(--sans)}
-.h-brand{display:flex;align-items:center;gap:10px}
-.h-cross{font-size:22px;color:var(--gold)}
-.h-title{font-size:13px;letter-spacing:3px;font-weight:700;color:var(--text);font-family:var(--sans)}
-.h-sub{font-size:7px;letter-spacing:1px;color:var(--text3);margin-top:1px;font-family:var(--sans)}
+
+/* ── HEADER ── */
+.h-logo{display:flex;align-items:center;gap:10px}
+.h-cross{font-size:24px;color:var(--gold)}
+.h-title{font-size:14px;letter-spacing:3px;font-weight:700;color:var(--text);font-family:var(--sans)}
+.h-sub{font-size:7px;letter-spacing:1px;color:var(--text3);font-family:var(--sans);margin-top:1px}
 .h-btns{display:flex;gap:6px}
-.h-btn{background:transparent;border:1px solid var(--border);color:var(--text2);width:34px;height:28px;font-size:11px;font-weight:700;font-family:var(--sans)}
-.nb{flex:1;border:none;background:transparent;color:var(--text3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all .15s}
+.h-btn{background:rgba(201,168,76,.08);border:1px solid var(--border);color:var(--text2);width:36px;height:30px;font-size:12px;font-weight:700;font-family:var(--sans);border-radius:4px}
+.h-btn:active{background:rgba(201,168,76,.2)}
+
+/* ── NAV ── */
+.nb{flex:1;background:none;border:none;color:var(--text3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:all .15s;padding:6px 0}
 .nb.on{color:var(--gold);border-top:2px solid var(--gold);background:rgba(201,168,76,.05)}
-.ni{font-size:17px;line-height:1}.nl{font-size:7px;font-weight:700;letter-spacing:.5px;font-family:var(--sans)}
-.scr{display:none}.scr.on{display:block;animation:fu .2s ease}
-@keyframes fu{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.tg{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:3px}
-.tile{padding:14px;display:flex;flex-direction:column;justify-content:space-between;min-height:88px;cursor:pointer;overflow:hidden;position:relative}
-.tile.w2{grid-column:1/3;min-height:130px}.tile.clk{grid-column:1/3;min-height:100px;cursor:default}
-.tile::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.1);opacity:0;transition:opacity .2s}.tile:hover::after{opacity:1}
-.ct{font-size:40px;font-weight:200;color:#fff;letter-spacing:-3px;line-height:1;font-family:var(--sans)}
-.cd{font-size:10px;color:rgba(255,255,255,.6);margin-top:6px;font-family:var(--sans)}
-.d-tag{font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.4);margin-bottom:6px;font-family:var(--sans)}
-.d-ta{font-size:13px;color:#fff;line-height:1.85;font-family:var(--ta);margin-bottom:4px}
-.d-en{font-size:12px;color:rgba(255,255,255,.75);line-height:1.7;font-family:var(--en);font-style:italic;margin-bottom:8px}
-.d-ref{font-size:9px;color:rgba(255,255,255,.55);font-weight:700;margin-bottom:10px;font-family:var(--sans)}
-.d-btns{display:flex;gap:5px}.d-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:5px 10px;font-size:8px;font-weight:700;font-family:var(--sans)}
-.tl{font-size:13px;font-weight:700;color:#fff;font-family:var(--sans)}.ts{font-size:9px;color:rgba(255,255,255,.5);margin-top:3px;font-family:var(--sans)}
+.ni{font-size:18px;line-height:1}
+.nl{font-size:7px;font-weight:700;letter-spacing:.5px;font-family:var(--sans)}
+
+/* ── SCREENS ── */
+.scr{display:none}.scr.on{display:block;animation:fadeUp .2s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HOME ── */
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px}
+.tile{padding:16px;display:flex;flex-direction:column;justify-content:space-between;min-height:90px;cursor:pointer;overflow:hidden;position:relative;border-radius:var(--r)}
+.tile::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0);transition:.2s}.tile:active::after{background:rgba(0,0,0,.15)}
+.tile.w2{grid-column:1/3;min-height:140px}
+.tile.clk{grid-column:1/3;min-height:80px;cursor:default}
+.clk-t{font-size:42px;font-weight:300;color:#fff;letter-spacing:-2px;font-family:var(--sans)}
+.clk-d{font-size:10px;color:rgba(255,255,255,.55);margin-top:4px;font-family:var(--ta2)}
+.d-tag{font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.45);margin-bottom:8px;font-family:var(--sans)}
+.d-ta{font-size:14px;color:#fff;line-height:1.9;font-family:var(--ta);margin-bottom:6px}
+.d-en{font-size:12px;color:rgba(255,255,255,.8);line-height:1.7;font-family:var(--en);font-style:italic;margin-bottom:8px}
+.d-ref{font-size:9px;color:rgba(255,255,255,.6);font-weight:700;margin-bottom:10px;font-family:var(--sans)}
+.d-btns{display:flex;gap:5px}
+.d-btn{background:rgba(255,255,255,.18);border:none;color:#fff;padding:6px 12px;font-size:9px;font-weight:700;font-family:var(--sans);border-radius:4px}
+.tl{font-size:14px;font-weight:700;color:#fff;font-family:var(--sans)}
+.ts{font-size:9px;color:rgba(255,255,255,.55);margin-top:4px;font-family:var(--sans)}
+.t-arr{font-size:18px;color:rgba(255,255,255,.3);align-self:flex-end}
+
+/* ── HIGHLIGHTED VERSE (Day verse with glow) ── */
+.highlight-card{margin:4px;border-radius:var(--r);background:linear-gradient(135deg,#1a0a3e,#2d1060);border:1px solid rgba(201,168,76,.3);padding:18px;position:relative;overflow:hidden;cursor:pointer}
+.highlight-card::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(201,168,76,.15),transparent);pointer-events:none}
+.hc-tag{font-size:8px;letter-spacing:4px;color:var(--gold);font-family:var(--sans);margin-bottom:12px;font-weight:700}
+.hc-ta{font-size:16px;line-height:2;color:#fff;font-family:var(--ta);margin-bottom:10px}
+.hc-en{font-size:14px;line-height:1.8;color:rgba(255,255,255,.8);font-family:var(--en);font-style:italic;margin-bottom:12px}
+.hc-ref{font-size:10px;color:var(--gold);font-weight:700;font-family:var(--sans);margin-bottom:12px}
+.hc-btns{display:flex;gap:6px;flex-wrap:wrap}
+.hc-btn{background:rgba(201,168,76,.2);border:1px solid rgba(201,168,76,.3);color:var(--gold);padding:7px 14px;font-size:9px;font-weight:700;font-family:var(--sans);border-radius:4px}
+.hc-btn.primary{background:var(--gold);color:#06060e}
+
+/* ── SECTION HEADER ── */
 .sh{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-.sht{font-size:8px;letter-spacing:3px;font-weight:700;color:var(--text2);font-family:var(--sans)}.shc{font-size:9px;color:var(--text3);font-family:var(--sans)}
+.sht{font-size:8px;letter-spacing:3px;font-weight:700;color:var(--text2);font-family:var(--sans)}
+.shc{font-size:9px;color:var(--text3);font-family:var(--sans)}
+
+/* ── VERSE CARDS ── */
 .vc{background:var(--bg2);border-bottom:1px solid var(--border)}
-.vch{padding:7px 14px;display:flex;align-items:center;justify-content:space-between}
-.vr{font-size:10px;font-weight:700;color:#fff;letter-spacing:.5px;font-family:var(--sans)}.vbk{font-size:9px;color:rgba(255,255,255,.5);font-family:var(--ta2)}
-.vbd{padding:11px 14px}
-.vta{font-size:15px;line-height:2.0;color:var(--text);font-family:var(--ta);margin-bottom:8px}
-.ven{font-size:15px;line-height:1.85;color:var(--text);font-family:var(--en);font-style:italic}
-.va{display:flex;gap:2px;margin-top:10px}
-.va button{flex:1;padding:7px 2px;border:none;background:var(--bg3);color:var(--text2);font-size:8px;font-weight:700;border-top:1px solid var(--border);font-family:var(--sans)}
-.ltog{display:flex;gap:2px;padding:5px 14px;background:var(--bg2);border-bottom:1px solid var(--border)}
-.ltog button{flex:1;padding:7px;border:none;background:var(--bg3);color:var(--text2);font-size:9px;font-weight:700;font-family:var(--sans)}
-.ltog button.on{background:var(--acc);color:#fff}
-.sbar{display:flex;border-bottom:1px solid var(--gold)}
-.sinp{flex:1;background:var(--bg2);border:none;padding:12px 14px;color:var(--text);font-size:15px;font-family:var(--en)}
+.vc.saved-highlight{border-left:3px solid var(--gold)}
+.vch{padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-radius:var(--r) var(--r) 0 0}
+.vr{font-size:11px;font-weight:700;color:#fff;letter-spacing:.5px;font-family:var(--sans)}
+.vbk{font-size:9px;color:rgba(255,255,255,.55);font-family:var(--ta2)}
+.vbd{padding:12px 14px}
+.vta{font-size:16px;line-height:2.1;color:var(--text);font-family:var(--ta);margin-bottom:8px}
+.ven{font-size:15px;line-height:1.9;color:var(--text);font-family:var(--en);font-style:italic}
+.va{display:flex;gap:2px;margin-top:10px;flex-wrap:wrap}
+.va button{flex:1;min-width:60px;padding:7px 4px;background:var(--bg3);color:var(--text2);font-size:8px;font-weight:700;border-top:1px solid var(--border);font-family:var(--sans);border-radius:0 0 4px 4px}
+.va button:active{background:var(--bg4)}
+
+/* ── SEARCH BAR ── */
+.sbar{display:flex;border-bottom:2px solid var(--gold);background:var(--bg2)}
+.sinp{flex:1;background:transparent;padding:13px 14px;color:var(--text);font-size:15px;font-family:var(--en)}
 .sinp::placeholder{color:var(--text3);font-style:italic}
-.sbtn{background:var(--gold);border:none;color:#080810;width:44px;font-size:16px;font-weight:700}
-.chips{display:flex;gap:4px;overflow-x:auto;padding:8px 14px;border-bottom:1px solid var(--border)}
-.chip{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:5px 12px;font-size:9px;white-space:nowrap;font-family:var(--sans)}
-.chip.on{background:var(--gold);border-color:var(--gold);color:#080810}
-.bfilt{display:flex;gap:3px;padding:3px}.bfilt button{flex:1;padding:8px;border:none;background:var(--bg3);color:var(--text2);font-size:9px;font-weight:700;font-family:var(--sans)}
+.sbtn{background:var(--gold);color:#06060e;width:48px;font-size:18px;font-weight:700}
+
+/* ── CHIPS ── */
+.chips{display:flex;gap:5px;overflow-x:auto;padding:10px 14px;border-bottom:1px solid var(--border)}
+.chip{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:6px 14px;font-size:9px;white-space:nowrap;font-family:var(--sans);border-radius:20px;cursor:pointer}
+.chip.on{background:var(--gold);border-color:var(--gold);color:#06060e}
+
+/* ── LANG TOGGLE ── */
+.ltog{display:flex;gap:2px;padding:6px 14px;background:var(--bg2);border-bottom:1px solid var(--border)}
+.ltog button{flex:1;padding:8px;background:var(--bg3);color:var(--text2);font-size:9px;font-weight:700;font-family:var(--sans);border-radius:4px}
+.ltog button.on{background:var(--acc);color:#fff}
+
+/* ── PAGINATION ── */
+.pgbar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--bg2);border-bottom:1px solid var(--border)}
+.pgbtn{background:var(--gold);color:#06060e;padding:7px 18px;font-size:9px;font-weight:700;font-family:var(--sans);border-radius:4px}
+.pgbtn:disabled{background:var(--bg3);color:var(--text3)}
+.pgi{font-size:9px;color:var(--text2);font-family:var(--sans)}
+
+/* ── BOOKS GRID ── */
+.bfilt{display:flex;gap:3px;padding:4px 4px 0}
+.bfilt button{flex:1;padding:9px;background:var(--bg3);color:var(--text2);font-size:9px;font-weight:700;font-family:var(--sans);border-radius:var(--r)}
 .bfilt button.on{background:#0d4a1a;color:#fff}
-.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:0 3px 3px}
-.btile{padding:13px 12px;min-height:90px;display:flex;flex-direction:column;justify-content:space-between}
-.bne{font-size:12px;color:#fff;font-weight:700;font-family:var(--sans)}.bnt{font-size:12px;color:rgba(255,255,255,.8);font-family:var(--ta2);margin-top:2px}
-.bm{font-size:8px;color:rgba(255,255,255,.45);font-family:var(--sans)}
-.bb{display:flex;gap:3px;margin-top:8px}.bb button{flex:1;background:rgba(255,255,255,.18);border:none;color:#fff;padding:5px 0;font-size:8px;font-weight:700;font-family:var(--sans)}
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:3px}
+.btile{padding:14px 12px;min-height:100px;display:flex;flex-direction:column;justify-content:space-between;border-radius:var(--r);cursor:pointer}
+.bne{font-size:13px;color:#fff;font-weight:700;font-family:var(--sans)}
+.bnt{font-size:12px;color:rgba(255,255,255,.75);font-family:var(--ta2);margin-top:3px}
+.bm{font-size:8px;color:rgba(255,255,255,.45);font-family:var(--sans);margin-top:3px}
+.bb{display:flex;gap:3px;margin-top:10px}
+.bb button{flex:1;background:rgba(255,255,255,.18);color:#fff;padding:6px 0;font-size:8px;font-weight:700;font-family:var(--sans);border-radius:4px}
+
+/* ── CHARACTERS GRID ── */
 .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:3px}
-.ctile{padding:14px;min-height:108px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;position:relative;overflow:hidden}
-.cemi{position:absolute;right:8px;top:8px;font-size:32px;opacity:.22}
-.cn{font-size:13px;font-weight:700;color:#fff;font-family:var(--sans)}.cnt{font-size:12px;color:rgba(255,255,255,.75);font-family:var(--ta2);margin-top:2px}
+.ctile{padding:14px;min-height:120px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;position:relative;overflow:hidden;border-radius:var(--r)}
+.cemi{position:absolute;right:10px;top:10px;font-size:36px;opacity:.2}
+.cn{font-size:14px;font-weight:700;color:#fff;font-family:var(--sans)}
+.cnt{font-size:12px;color:rgba(255,255,255,.75);font-family:var(--ta2);margin-top:3px}
 .ce{font-size:8px;color:rgba(255,255,255,.45);font-family:var(--sans);margin-top:3px}
-.ctl{font-size:11px;color:rgba(255,255,255,.65);font-family:var(--en);font-style:italic;margin-top:4px;line-height:1.4}
-.cbtn{background:rgba(255,255,255,.18);border:none;color:#fff;padding:6px;font-size:8px;font-weight:700;font-family:var(--sans);width:100%;margin-top:7px}
-#char-ov{display:none;position:fixed;inset:0;z-index:400;flex-direction:column;max-width:480px;margin:0 auto;background:var(--bg)}
-#char-ov.on{display:flex;animation:fu .2s ease}
-.charbar{flex-shrink:0;padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
-.cbl{display:flex;align-items:center;gap:10px}.cbig{font-size:30px}
-.cbn{font-size:15px;font-weight:700;color:#fff;font-family:var(--sans)}.cbta{font-size:12px;color:rgba(255,255,255,.65);font-family:var(--ta2);margin-top:2px}
+.ctl{font-size:11px;color:rgba(255,255,255,.65);font-family:var(--en);font-style:italic;margin-top:5px;line-height:1.4}
+.cbtn{background:rgba(255,255,255,.2);color:#fff;padding:7px;font-size:8px;font-weight:700;font-family:var(--sans);width:100%;margin-top:8px;border-radius:4px;text-align:center}
+
+/* ── SAVED ── */
+.empty{text-align:center;padding:60px 20px}
+.emico{font-size:48px;margin-bottom:16px;opacity:.15}
+.emtxt{font-size:9px;letter-spacing:2px;color:var(--text3);line-height:2.4;font-family:var(--sans)}
+
+/* ── AD SLOTS ── */
+.ad{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;justify-content:center}
+.adlbl{font-size:8px;color:var(--text3);letter-spacing:2px;font-family:var(--sans)}
+
+/* ── READING MODE ── */
+#read-ov{display:none;position:fixed;inset:0;z-index:300;flex-direction:column;max-width:500px;margin:0 auto}
+#read-ov.on{display:flex;animation:fadeUp .2s ease}
+.rbar{flex-shrink:0;padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
+.rbody{flex:1;overflow-y:auto;padding:36px 24px 80px}
+.rta{font-family:var(--ta);line-height:2.3;margin-bottom:28px;color:var(--text)}
+.rdiv{height:1px;width:50px;margin-bottom:28px;opacity:.5}
+.ren{line-height:2;font-style:italic;color:var(--text);font-family:var(--en)}
+.rbadge{display:inline-block;padding:6px 20px;font-size:9px;font-weight:700;letter-spacing:3px;margin-top:24px;font-family:var(--sans);border-radius:4px}
+.rctls{display:flex;gap:5px;align-items:center}
+.rcbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;font-family:var(--sans);border-radius:4px;display:flex;align-items:center;justify-content:center}
+
+/* ── CHAPTER READER ── */
+#ch-ov{display:none;position:fixed;inset:0;z-index:300;flex-direction:column;max-width:500px;margin:0 auto}
+#ch-ov.on{display:flex;animation:fadeUp .2s ease}
+.chbar{flex-shrink:0;padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
+.chbody{flex:1;overflow-y:auto;padding:12px 14px;background:var(--bg)}
+.chv{padding:10px 0;border-bottom:1px solid var(--border);display:flex;gap:12px}
+.chvn{font-size:10px;font-weight:700;color:var(--gold);font-family:var(--sans);flex-shrink:0;padding-top:4px;width:30px;text-align:right}
+.chvcol{flex:1}
+.chvta{font-size:16px;line-height:2.1;color:var(--text);font-family:var(--ta);margin-bottom:6px}
+.chven{font-size:15px;line-height:1.9;color:var(--text2);font-family:var(--en);font-style:italic}
+.chnav{display:flex;gap:3px;padding:8px;flex-shrink:0;background:var(--bg2);border-top:1px solid var(--border)}
+.chnav button{flex:1;padding:10px;background:var(--bg3);color:var(--text2);font-size:9px;font-weight:700;font-family:var(--sans);border-radius:4px}
+.chnav button.on{background:var(--gold);color:#06060e}
+.chlb{display:flex;gap:3px;margin-right:5px}
+.chlb button{padding:0 10px;height:30px;background:var(--bg3);color:var(--text2);font-size:8px;font-weight:700;font-family:var(--sans);border-radius:4px}
+.chlb button.on{background:var(--acc);color:#fff}
+
+/* ── CHARACTER DETAIL ── */
+#char-ov{display:none;position:fixed;inset:0;z-index:400;flex-direction:column;max-width:500px;margin:0 auto;background:var(--bg)}
+#char-ov.on{display:flex;animation:fadeUp .2s ease}
+.charbar{flex-shrink:0;padding:12px 14px;display:flex;align-items:center;justify-content:space-between}
+.cbl{display:flex;align-items:center;gap:10px}
+.cbig{font-size:32px}
+.cbn{font-size:16px;font-weight:700;color:#fff;font-family:var(--sans)}
+.cbta{font-size:12px;color:rgba(255,255,255,.65);font-family:var(--ta2);margin-top:3px}
 .cbera{font-size:8px;color:rgba(255,255,255,.4);font-family:var(--sans)}
 .cbody{flex:1;overflow-y:auto}
-.csec{padding:15px 15px;border-bottom:1px solid var(--border)}
-.csl{font-size:8px;letter-spacing:3px;font-weight:700;color:var(--text3);font-family:var(--sans);margin-bottom:11px}
-.csen{font-size:15px;line-height:1.9;color:var(--text);font-family:var(--en)}
-.csta{font-size:14px;line-height:2.0;color:var(--text2);font-family:var(--ta2);margin-top:11px}
-.tli{display:flex;gap:13px;padding:9px 0;border-bottom:1px solid var(--border)}.tli:last-child{border-bottom:none}
+.csec{padding:16px;border-bottom:1px solid var(--border)}
+.csl{font-size:8px;letter-spacing:4px;font-weight:700;color:var(--text3);font-family:var(--sans);margin-bottom:12px}
+.csen{font-size:15px;line-height:1.95;color:var(--text);font-family:var(--en)}
+.csta{font-size:14px;line-height:2.1;color:var(--text2);font-family:var(--ta);margin-top:12px}
+.tli{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)}.tli:last-child{border-bottom:none}
 .tlcol{display:flex;flex-direction:column;align-items:center;gap:4px}
-.tldot{width:9px;height:9px;border-radius:50%;flex-shrink:0}.tlline{width:1px;background:var(--border);flex:1}
-.tlref{font-size:9px;font-weight:700;font-family:var(--sans);color:rgba(255,255,255,.55);margin-bottom:3px}
-.tlen{font-size:14px;line-height:1.6;color:var(--text);font-family:var(--en)}
-.tlta{font-size:13px;line-height:1.8;color:var(--text2);font-family:var(--ta2);margin-top:3px}
-.kv{background:var(--bg3);border-left:3px solid var(--gold);padding:13px 14px;margin-bottom:8px}
-.kvref{font-size:9px;font-weight:700;color:var(--gold);font-family:var(--sans);margin-bottom:7px}
-.kven{font-size:15px;line-height:1.85;color:var(--text);font-family:var(--en);font-style:italic}
-.kvta{font-size:14px;line-height:2.0;color:var(--text2);font-family:var(--ta2);margin-top:8px}
-.kvact{display:flex;gap:4px;margin-top:10px}
-.kvact button{flex:1;padding:7px;border:none;font-size:8px;font-weight:700;font-family:var(--sans)}
-.lesn{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}.lesn:last-child{border-bottom:none}
-.lesnn{font-size:24px;font-weight:700;color:var(--gold);font-family:var(--sans);opacity:.4;flex-shrink:0;line-height:1;margin-top:2px}
-.lesen{font-size:15px;line-height:1.8;color:var(--text);font-family:var(--en)}
-.lesta{font-size:13px;line-height:1.9;color:var(--text2);font-family:var(--ta2);margin-top:5px}
-#read-ov{display:none;position:fixed;inset:0;z-index:300;flex-direction:column;max-width:480px;margin:0 auto}
-#read-ov.on{display:flex;animation:fu .2s ease}
-.rbar{flex-shrink:0;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
-.rbody{flex:1;overflow-y:auto;padding:32px 22px}
-.rta{font-family:var(--ta);line-height:2.2;margin-bottom:24px;color:var(--text)}
-.rdiv{height:1px;width:40px;margin-bottom:24px}
-.ren{line-height:1.9;font-style:italic;color:var(--text);font-family:var(--en)}
-.rbadge{display:inline-block;padding:5px 18px;font-size:9px;font-weight:700;letter-spacing:3px;margin-top:20px;font-family:var(--sans)}
-.rctls{display:flex;gap:6px}.rcbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.15);color:#fff;font-family:var(--sans)}
-#ch-ov{display:none;position:fixed;inset:0;z-index:300;flex-direction:column;max-width:480px;margin:0 auto}
-#ch-ov.on{display:flex;animation:fu .2s ease}
-.chbar{flex-shrink:0;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
-.chbody{flex:1;overflow-y:auto;padding:12px 14px;background:var(--bg)}
-.chv{padding:9px 0;border-bottom:1px solid var(--border);display:flex;gap:12px}
-.chvn{font-size:10px;font-weight:700;color:var(--gold);font-family:var(--sans);flex-shrink:0;padding-top:3px;width:28px;text-align:right}
-.chvcol{flex:1}
-.chvta{font-size:15px;line-height:2.0;color:var(--text);font-family:var(--ta);margin-bottom:5px}
-.chven{font-size:15px;line-height:1.85;color:var(--text);font-family:var(--en);font-style:italic}
-.chnav{display:flex;gap:2px;padding:6px;flex-shrink:0;background:var(--bg2);border-top:1px solid var(--border)}
-.chnav button{flex:1;padding:9px;border:none;background:var(--bg3);color:var(--text2);font-size:9px;font-weight:700;font-family:var(--sans)}
-.chnav button.on{background:var(--gold);color:#080810}
-.chlb{display:flex;gap:3px;margin-right:4px}
-.chlb button{padding:0 8px;height:28px;border:none;background:var(--bg3);color:var(--text2);font-size:8px;font-weight:700;font-family:var(--sans)}
-.chlb button.on{background:var(--acc);color:#fff}
-#au-panel{display:none;position:fixed;bottom:var(--nav);left:0;right:0;z-index:200;max-width:480px;margin:0 auto}
+.tldot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.tlline{width:1px;background:var(--border);flex:1}
+.tlref{font-size:9px;font-weight:700;font-family:var(--sans);color:rgba(255,255,255,.55);margin-bottom:4px}
+.tlen{font-size:14px;line-height:1.7;color:var(--text);font-family:var(--en)}
+.tlta{font-size:13px;line-height:1.9;color:var(--text2);font-family:var(--ta);margin-top:4px}
+.kv{background:var(--bg3);border-left:3px solid var(--gold);padding:14px;margin-bottom:10px;border-radius:0 var(--r) var(--r) 0}
+.kvref{font-size:9px;font-weight:700;color:var(--gold);font-family:var(--sans);margin-bottom:8px}
+.kvta{font-size:15px;line-height:2.1;color:var(--text);font-family:var(--ta);margin-bottom:6px}
+.kven{font-size:14px;line-height:1.9;color:var(--text2);font-family:var(--en);font-style:italic}
+.kvact{display:flex;gap:4px;margin-top:10px;flex-wrap:wrap}
+.kvact button{flex:1;min-width:80px;padding:8px;font-size:8px;font-weight:700;font-family:var(--sans);border-radius:4px}
+.lesn{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}.lesn:last-child{border-bottom:none}
+.lesnn{font-size:26px;font-weight:700;color:var(--gold);font-family:var(--sans);opacity:.4;flex-shrink:0;line-height:1;margin-top:2px}
+.lesen{font-size:15px;line-height:1.85;color:var(--text);font-family:var(--en)}
+.lesta{font-size:13px;line-height:2;color:var(--text2);font-family:var(--ta);margin-top:6px}
+
+/* ── AUDIO PANEL ── */
+#au-panel{display:none;position:fixed;bottom:var(--nav);left:0;right:0;z-index:200;max-width:500px;margin:0 auto}
 #au-panel.on{display:block}
-.auinner{background:linear-gradient(135deg,#030818,#0a1835);padding:14px;box-shadow:0 -4px 20px rgba(0,0,0,.6);position:relative;border-top:1px solid rgba(100,150,255,.2)}
+.auinner{background:linear-gradient(135deg,#020c20,#081430);padding:15px;box-shadow:0 -6px 24px rgba(0,0,0,.7);position:relative;border-top:1px solid rgba(100,150,255,.25)}
 .aut{font-size:10px;font-weight:700;color:#fff;letter-spacing:2px;font-family:var(--sans);margin-bottom:3px}
 .aur{font-size:9px;color:rgba(255,255,255,.4);font-family:var(--sans);margin-bottom:10px}
-.aulng{display:flex;gap:3px;margin-bottom:10px}.aulng button{flex:1;padding:6px;border:none;font-size:9px;font-weight:700;font-family:var(--sans)}
-.auctls{display:flex;gap:4px}.auctls button{flex:1;padding:9px 4px;border:none;font-size:9px;font-weight:700;font-family:var(--sans)}
-.aucls{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.1);border:none;color:#fff;width:26px;height:26px;font-size:13px}
-.aumsg{margin-top:6px;font-size:9px;color:rgba(255,255,255,.4);font-family:var(--sans);line-height:1.5}
-.auprog{height:2px;background:rgba(255,255,255,.1);margin-top:8px;overflow:hidden}
-.aubar{height:100%;background:linear-gradient(90deg,var(--gold),#e8c060);width:0%;transition:width .3s ease}
-.pgbar{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:var(--bg2);border-bottom:1px solid var(--border)}
-.pgbtn{background:var(--gold);border:none;color:#080810;padding:6px 16px;font-size:9px;font-weight:700;font-family:var(--sans)}
-.pgbtn:disabled{background:var(--bg3);color:var(--text3)}.pgi{font-size:9px;color:var(--text2);font-family:var(--sans)}
-.empty{text-align:center;padding:52px 20px}.emico{font-size:44px;margin-bottom:14px;opacity:.18}
-.emtxt{font-size:9px;letter-spacing:2px;color:var(--text3);line-height:2.2;font-family:var(--sans)}
-.ad{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);height:50px;display:flex;align-items:center;justify-content:center}
-.adlbl{font-size:8px;color:var(--text3);letter-spacing:2px;font-family:var(--sans)}
-.pb{padding-bottom:calc(var(--nav)+12px)}
+.aulng{display:flex;gap:3px;margin-bottom:10px}
+.aulng button{flex:1;padding:7px;font-size:9px;font-weight:700;font-family:var(--sans);border-radius:4px}
+.auctls{display:flex;gap:4px}
+.auctls button{flex:1;padding:10px 4px;font-size:9px;font-weight:700;font-family:var(--sans);border-radius:4px}
+.aucls{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.1);color:#fff;width:28px;height:28px;font-size:14px;border-radius:50%}
+.aumsg{margin-top:6px;font-size:9px;color:rgba(255,255,255,.4);font-family:var(--sans);line-height:1.6}
+.auprog{height:3px;background:rgba(255,255,255,.1);margin-top:10px;overflow:hidden;border-radius:2px}
+.aubar{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;transition:width .3s ease}
 
-/* ── STORY DETAIL OVERLAY ── */
-#story-ov{display:none;position:fixed;inset:0;z-index:400;flex-direction:column;max-width:480px;margin:0 auto;background:var(--bg)}
-#story-ov.on{display:flex;animation:fu .2s ease}
-.stbar{flex-shrink:0;padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
-.stbody{flex:1;overflow-y:auto;padding:0 0 20px}
-.stsec{padding:16px 15px;border-bottom:1px solid var(--border)}
-.stlbl{font-size:8px;letter-spacing:3px;font-weight:700;color:var(--text3);font-family:var(--sans);margin-bottom:10px}
-.stverse{background:var(--bg3);border-left:3px solid var(--gold);padding:13px 14px;margin-bottom:12px}
-.stver-ref{font-size:9px;font-weight:700;color:var(--gold);font-family:var(--sans);margin-bottom:6px}
-.stver-ta{font-size:14px;line-height:2.0;color:var(--text);font-family:var(--ta)}
-.stver-en{font-size:15px;line-height:1.85;color:var(--text2);font-family:var(--en);font-style:italic;margin-top:6px}
-.sttxt-en{font-size:15px;line-height:1.95;color:var(--text);font-family:var(--en)}
-.sttxt-ta{font-size:14px;line-height:2.1;color:var(--text2);font-family:var(--ta2);margin-top:12px}
-.st-lesn{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
-.st-lesn:last-child{border-bottom:none}
-.st-lesnn{font-size:20px;font-weight:700;color:var(--gold);font-family:var(--sans);opacity:.4;flex-shrink:0;line-height:1;margin-top:2px}
-.st-lesen{font-size:14px;line-height:1.8;color:var(--text);font-family:var(--en)}
-.st-lesta{font-size:13px;line-height:1.9;color:var(--text2);font-family:var(--ta2);margin-top:4px}
-/* ── SONG ITEMS ── */
-.song-cat-hdr{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
-.song-cat-title{font-size:13px;font-weight:700;color:#fff;font-family:var(--sans)}
-.song-cat-en{font-size:10px;color:rgba(255,255,255,.6);font-family:var(--sans);margin-top:2px}
-.song-cat-arrow{font-size:16px;color:rgba(255,255,255,.6);transition:transform .2s}
-.song-cat-arrow.open{transform:rotate(180deg)}
-.song-cat-body{display:none}
-.song-cat-body.open{display:block}
-.song-item{padding:12px 14px;border-bottom:1px solid var(--border);background:var(--bg2);cursor:pointer;display:flex;align-items:center;justify-content:space-between}
-.song-item:hover{background:var(--bg3)}
-.song-num{font-size:10px;color:var(--text3);font-family:var(--sans);width:22px;flex-shrink:0}
-.song-title-ta{font-size:14px;color:var(--text);font-family:var(--ta2);flex:1}
-.song-title-en{font-size:11px;color:var(--text2);font-family:var(--en);font-style:italic}
-.song-arrow{font-size:14px;color:var(--text3)}
-/* ── SONG DETAIL ── */
-#song-ov{display:none;position:fixed;inset:0;z-index:400;flex-direction:column;max-width:480px;margin:0 auto;background:var(--bg)}
-#song-ov.on{display:flex;animation:fu .2s ease}
-.songbar{flex-shrink:0;padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
-.songbody{flex:1;overflow-y:auto;padding:20px 18px}
-.song-lyrics{font-size:16px;line-height:2.2;color:var(--text);font-family:var(--ta2);white-space:pre-line}
-.song-chorus-lbl{font-size:8px;letter-spacing:3px;font-weight:700;color:var(--gold);font-family:var(--sans);margin:16px 0 8px}
+/* ── DAILY VERSE STRIP ── */
+.dv-strip{margin:4px;border-radius:var(--r);background:linear-gradient(135deg,#0d3a1a,#1a5c2e);padding:14px;cursor:pointer}
+.dv-tag{font-size:8px;letter-spacing:4px;color:rgba(255,255,255,.5);font-family:var(--sans);margin-bottom:8px}
+.dv-ta{font-size:14px;color:#fff;line-height:1.9;font-family:var(--ta)}
+.dv-ref{font-size:9px;color:rgba(255,255,255,.5);font-family:var(--sans);margin-top:6px}
+
+/* ── AI SEARCH ── */
+.ai-hdr{background:linear-gradient(135deg,#2d0a5e,#4a1080);padding:16px 16px 12px}
+.ai-hdr-t{color:#fff;font-size:15px;font-weight:700;letter-spacing:2px;font-family:var(--sans)}
+.ai-hdr-s{color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:3px}
+
+/* ── MISC ── */
+.pb{padding-bottom:calc(var(--nav)+12px)}
+.sep{height:8px;background:transparent}
 </style>
 </head>
 <body>
 
-<!-- LOADING -->
+<!-- ═══ LOADING SCREEN ═══ -->
 <div id="ls">
   <div class="ls-cross">✝</div>
-  <div class="ls-title">வேத வசனம்</div>
-  <div class="ls-msg" id="ls-msg">Loading Tamil + English Bible…</div>
+  <div class="ls-brand">HOLY BIBLE</div>
+  <div class="ls-sub">வேத வசனம் · TAMIL + ENGLISH</div>
+  <div class="ls-msg" id="ls-msg">Initialising…</div>
   <div class="ls-track"><div class="ls-bar" id="ls-bar"></div></div>
   <div class="ls-cnt" id="ls-cnt"></div>
 </div>
 
-<!-- APP -->
+<!-- ═══ APP SHELL ═══ -->
 <div id="app" style="display:none">
+
+  <!-- HEADER -->
   <header id="hdr">
-    <div class="h-brand"><span class="h-cross">✝</span>
-      <div><div class="h-title">வேத வசனம்</div><div class="h-sub" id="h-sub">LOADING…</div></div>
+    <div class="h-logo">
+      <span class="h-cross">✝</span>
+      <div>
+        <div class="h-title">HOLY BIBLE</div>
+        <div class="h-sub" id="h-sub">LOADING…</div>
+      </div>
     </div>
     <div class="h-btns">
       <button class="h-btn" id="lang-btn" onclick="App.cycleLang()">BI</button>
       <button class="h-btn" id="th-btn" onclick="App.theme()">☀</button>
     </div>
   </header>
+
+  <!-- MAIN CONTENT -->
   <main id="main">
+
+    <!-- HOME -->
     <div class="scr on" id="s-home">
-      <div class="tg" id="home-tiles"></div>
+      <div class="home-grid" id="home-tiles"></div>
+      <div class="sep"></div>
+      <div id="home-highlight"></div>
       <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 1</span></div>
-      <div class="sh"><span class="sht">TODAY'S READING · இன்றைய வசனம்</span><span class="shc" id="home-cnt"></span></div>
+      <div class="sh">
+        <span class="sht">TODAY'S READING · இன்றைய வசனங்கள்</span>
+        <span class="shc" id="home-cnt"></span>
+      </div>
       <div id="home-vv" class="pb"></div>
     </div>
+
+    <!-- VERSES -->
     <div class="scr" id="s-verses">
       <div class="ltog" id="v-ltog">
         <button onclick="SV.setLang('ta')">தமிழ்</button>
         <button onclick="SV.setLang('en')">English</button>
         <button class="on" onclick="SV.setLang('both')">இரண்டும்</button>
       </div>
-      <div class="sbar"><input class="sinp" id="v-srch" placeholder="தமிழ் / English தேடு…" oninput="SV.filter(this.value)"/></div>
+      <div class="sbar">
+        <input class="sinp" id="v-srch" placeholder="தமிழ் / English / Gen 1:1…" oninput="SV.filter(this.value)"/>
+      </div>
       <div class="pgbar">
         <button class="pgbtn" id="v-prev" onclick="SV.prev()">◀ Prev</button>
         <span class="pgi" id="v-pgi"></span>
@@ -247,114 +321,202 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
       </div>
       <div id="v-list" class="pb"></div>
     </div>
+
+    <!-- AI SEARCH -->
     <div class="scr" id="s-search">
-      <div style="background:#2d0a5e;padding:14px 16px 12px">
-        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">AI VERSE FINDER · வசன தேடல்</div>
-        <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">31,102 VERSES · TAMIL+ENGLISH · OFFLINE</div>
+      <div class="ai-hdr">
+        <div class="ai-hdr-t">✦ AI VERSE FINDER · வசன தேடல்</div>
+        <div class="ai-hdr-s" id="ai-count">31,102 VERSES · TAMIL + ENGLISH · OFFLINE</div>
       </div>
-      <div class="sbar"><input class="sinp" id="ai-srch" placeholder="love, அன்பு, peace, சமாதானம், Psalm 23…" onkeydown="if(event.key==='Enter')SA.run()"/><button class="sbtn" onclick="SA.run()">→</button></div>
+      <div class="sbar">
+        <input class="sinp" id="ai-srch" placeholder="love · அன்பு · Psalm 23 · John 3:16…" onkeydown="if(event.key==='Enter')SA.run()"/>
+        <button class="sbtn" onclick="SA.run()">→</button>
+      </div>
       <div class="chips" id="ai-chips"></div>
       <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 2</span></div>
-      <div id="ai-list" class="pb"><div class="empty"><div class="emico">✦</div><div class="emtxt">SEARCH BY TOPIC · KEYWORD · REFERENCE<br>தலைப்பு · சொல் · வசன குறிப்பு</div></div></div>
+      <div id="ai-list" class="pb">
+        <div class="empty">
+          <div class="emico">✦</div>
+    <div id="ai-pagination" style="display:flex;gap:8px;padding:12px 0;justify-content:center"><button id="ai-prev" onclick="SA.prevPage()" disabled style="padding:8px 20px;background:var(--bg2);color:var(--text2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:11px;font-weight:700">&#9664; PREV</button><div id="ai-page-info" style="font-size:10px;color:var(--text2);font-family:var(--sans);text-align:center;flex:1;padding:0 8px"></div><button id="ai-next" onclick="SA.nextPage()" disabled style="padding:8px 20px;background:var(--gold);color:#06060e;border:none;border-radius:6px;font-family:var(--sans);font-size:11px;font-weight:700">NEXT &#9654;</button></div>
+          <div class="emtxt">SEARCH BY TOPIC · KEYWORD · REFERENCE<br>தலைப்பு · சொல் · வசன குறிப்பு</div>
+        </div>
+      </div>
     </div>
+
+    <!-- BOOKS -->
     <div class="scr" id="s-books">
-      <div style="background:#0d2e0d;padding:12px 16px 10px">
+      <div style="background:#0d2e0d;padding:14px 16px 10px;border-radius:0">
         <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">66 BOOKS · வேத புத்தகங்கள்</div>
-        <div style="color:rgba(255,255,255,.45);font-size:9px;font-family:var(--sans);margin-top:2px">ALL CHAPTERS · READ · AUDIO · TA+EN</div>
+        <div style="color:rgba(255,255,255,.45);font-size:9px;font-family:var(--sans);margin-top:3px">ALL CHAPTERS · READ · AUDIO · TA + EN</div>
       </div>
       <div class="bfilt" id="b-filt"></div>
       <div class="bgrid pb" id="b-grid"></div>
     </div>
+
+    <!-- CHARACTERS -->
     <div class="scr" id="s-chars">
-      <div style="background:linear-gradient(135deg,#3a1a00,#5c2e00);padding:14px 16px 12px">
-        <div style="color:var(--gold);font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">✦ CHARACTER STORIES · வேத பாத்திரங்கள்</div>
-        <div style="color:rgba(201,168,76,.5);font-size:9px;font-family:var(--sans);margin-top:2px">STORIES · TIMELINE · KEY VERSES · LESSONS</div>
+      <div style="background:linear-gradient(135deg,#3a1a00,#5c2e00);padding:14px 16px 10px">
+        <div style="color:var(--gold);font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">✦ BIBLE CHARACTERS · வேத பாத்திரங்கள்</div>
+        <div style="color:rgba(201,168,76,.5);font-size:9px;font-family:var(--sans);margin-top:3px">STORIES · TIMELINE · KEY VERSES · AUDIO · TA + EN</div>
       </div>
       <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 3</span></div>
       <div class="cgrid pb" id="c-grid"></div>
     </div>
-    <!-- KIDS STORIES -->
-    <div class="scr" id="s-stories">
-      <div style="background:linear-gradient(135deg,#0d3a5c,#1a5276);padding:14px 16px 12px">
-        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">📚 KIDS STORIES · குழந்தைகள் கதைகள்</div>
-        <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">15 BIBLE STORIES · TAMIL+ENGLISH · AUDIO</div>
-      </div>
-      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 5</span></div>
-      <!-- Filter buttons -->
-      <div class="bfilt" id="stor-filt"></div>
-      <div class="cgrid pb" id="stor-grid"></div>
-    </div>
-
-    <!-- SONGS -->
-    <div class="scr" id="s-songs">
-      <div style="background:linear-gradient(135deg,#1a0038,#3d1a6e);padding:14px 16px 12px">
-        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">🎵 SONGS · பாடல்கள்</div>
-        <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">TAMIL CHRISTIAN SONGS · SEARCH · LYRICS</div>
-      </div>
-      <div class="sbar"><input class="sinp" id="song-srch" placeholder="Search songs · பாடல் தேடு…" oninput="SS_Songs.filter(this.value)"/></div>
-      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 6</span></div>
-      <div id="songs-list" class="pb"></div>
-    </div>
 
     <!-- SAVED -->
     <div class="scr" id="s-saved">
-      <div style="background:#3a0a0a;padding:12px 16px 10px">
-        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">SAVED · சேமிக்கப்பட்டவை</div>
-        <div style="color:rgba(255,255,255,.4);font-size:9px;font-family:var(--sans);margin-top:2px" id="saved-lbl">0 SAVED</div>
+      <div style="background:#3a0a0a;padding:14px 16px 10px">
+        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">♥ SAVED · சேமிக்கப்பட்டவை</div>
+        <div style="color:rgba(255,255,255,.4);font-size:9px;font-family:var(--sans);margin-top:3px" id="saved-lbl">0 SAVED</div>
       </div>
       <div id="saved-list" class="pb"></div>
       <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 4</span></div>
     </div>
+
+
+    <!-- SETTINGS -->
+    <div class="scr" id="s-settings">
+      <div style="background:linear-gradient(135deg,#1a1a2e,#2a2a4e);padding:16px 16px 12px">
+        <div style="color:var(--gold);font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">⚙ SETTINGS · அமைப்புகள்</div>
+        <div style="color:rgba(201,168,76,.5);font-size:9px;font-family:var(--sans);margin-top:3px">APP PREFERENCES · ஆப் விருப்பங்கள்</div>
+      </div>
+
+      <!-- Audio Language Setting -->
+      <div style="margin:12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--text);font-family:var(--sans)">🔊 AUDIO LANGUAGE · ஒலி மொழி</div>
+          <div style="font-size:9px;color:var(--text2);margin-top:4px;font-family:var(--sans)">Choose language for all audio reading</div>
+        </div>
+        <div style="padding:12px 16px">
+          <div style="display:flex;gap:8px">
+            <button id="set-lang-ta" onclick="Settings.setAudioLang('ta')"
+              style="flex:1;padding:14px;border:2px solid var(--gold);background:rgba(201,168,76,.15);color:var(--gold);font-size:12px;font-weight:700;font-family:var(--sans);border-radius:6px">
+              தமிழ்<br><span style="font-size:9px;opacity:.7">TAMIL</span>
+            </button>
+            <button id="set-lang-en" onclick="Settings.setAudioLang('en')"
+              style="flex:1;padding:14px;border:2px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;font-weight:700;font-family:var(--sans);border-radius:6px">
+              English<br><span style="font-size:9px;opacity:.7">ENGLISH</span>
+            </button>
+          </div>
+          <div id="set-lang-status" style="text-align:center;margin-top:10px;font-size:10px;color:var(--gold);font-family:var(--sans);letter-spacing:1px"></div>
+        </div>
+      </div>
+
+      <!-- TTS Info -->
+      <div style="margin:0 12px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--text);font-family:var(--sans)">📱 TEXT-TO-SPEECH ENGINE</div>
+          <div style="font-size:9px;color:var(--text2);margin-top:4px;font-family:var(--sans)">Required for audio reading to work</div>
+        </div>
+        <div style="padding:14px 16px">
+          <div id="tts-status-box" style="padding:12px;background:var(--bg3);border-radius:6px;margin-bottom:12px">
+            <div id="tts-status-text" style="font-size:10px;font-family:var(--sans);color:var(--text2);line-height:1.7"></div>
+          </div>
+          <div style="font-size:9px;color:var(--text2);font-family:var(--sans);line-height:1.8">
+            <div style="color:var(--gold);font-weight:700;margin-bottom:6px;letter-spacing:1px">TO ENABLE TAMIL AUDIO:</div>
+            1. Open Android Settings<br>
+            2. General Management → Language<br>
+            3. Text-to-Speech Output<br>
+            4. Google TTS → Settings (gear icon)<br>
+            5. Install voice data → Tamil<br>
+            6. Come back and tap Test Audio below
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button onclick="Settings.testAudio()"
+              style="flex:1;padding:10px;background:var(--gold);color:#06060e;font-size:10px;font-weight:700;font-family:var(--sans);border:none;border-radius:4px">
+              🔊 TEST AUDIO
+            </button>
+            <button onclick="Settings.openTTSSettings()"
+              style="flex:1;padding:10px;background:var(--bg3);color:var(--text2);font-size:10px;font-weight:700;font-family:var(--sans);border:1px solid var(--border);border-radius:4px">
+              ⚙ OPEN TTS SETTINGS
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme Setting -->
+      <div style="margin:0 12px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--text);font-family:var(--sans)">🎨 THEME · தீம்</div>
+        </div>
+        <div style="padding:12px 16px">
+          <div style="display:flex;gap:8px">
+            <button onclick="App.setTheme('dark')" id="set-dark"
+              style="flex:1;padding:12px;border:2px solid var(--border);background:var(--bg3);color:var(--text2);font-size:11px;font-weight:700;font-family:var(--sans);border-radius:6px">
+              🌙 Dark
+            </button>
+            <button onclick="App.setTheme('light')" id="set-light"
+              style="flex:1;padding:12px;border:2px solid var(--border);background:var(--bg3);color:var(--text2);font-size:11px;font-weight:700;font-family:var(--sans);border-radius:6px">
+              ☀ Light
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- App Info -->
+      <div style="margin:0 12px 80px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center">
+        <div style="font-size:20px;color:var(--gold);margin-bottom:8px">✝</div>
+        <div style="font-size:13px;font-weight:700;letter-spacing:3px;color:var(--text);font-family:var(--sans)">HOLY BIBLE</div>
+        <div style="font-size:9px;color:var(--text2);font-family:var(--sans);margin-top:4px">VERSION 2.0 · 31,103 VERSES</div>
+        <div style="font-size:9px;color:var(--text2);font-family:var(--sans);margin-top:2px">TAMIL + ENGLISH · OFFLINE</div>
+      </div>
+    </div>
   </main>
-  <nav id="nav" style="overflow-x:auto">
-    <button class="nb on" data-s="home"    onclick="App.nav('home')">   <span class="ni">⊞</span><span class="nl">HOME</span>    </button>
-    <button class="nb"    data-s="verses"  onclick="App.nav('verses')"> <span class="ni">☰</span><span class="nl">VERSES</span>  </button>
-    <button class="nb"    data-s="search"  onclick="App.nav('search')"> <span class="ni">✦</span><span class="nl">SEARCH</span>  </button>
-    <button class="nb"    data-s="books"   onclick="App.nav('books')">  <span class="ni">📖</span><span class="nl">BOOKS</span>   </button>
-    <button class="nb"    data-s="stories" onclick="App.nav('stories')"><span class="ni">📚</span><span class="nl">STORIES</span> </button>
-    <button class="nb"    data-s="songs"   onclick="App.nav('songs')">  <span class="ni">🎵</span><span class="nl">SONGS</span>   </button>
-    <button class="nb"    data-s="saved"   onclick="App.nav('saved')">  <span class="ni">♥</span><span class="nl">SAVED</span>   </button>
+
+  <!-- BOTTOM NAV -->
+  <nav id="nav">
+    <button class="nb on" data-s="home"   onclick="App.nav('home')">  <span class="ni">⊞</span><span class="nl">HOME</span>   </button>
+    <button class="nb"    data-s="verses" onclick="App.nav('verses')"><span class="ni">☰</span><span class="nl">VERSES</span>  </button>
+    <button class="nb"    data-s="search" onclick="App.nav('search')"><span class="ni">✦</span><span class="nl">SEARCH</span>  </button>
+    <button class="nb"    data-s="books"  onclick="App.nav('books')"> <span class="ni">📖</span><span class="nl">BOOKS</span>   </button>
+    <button class="nb"    data-s="chars"  onclick="App.nav('chars')"> <span class="ni">👤</span><span class="nl">PEOPLE</span>  </button>
+    <button class="nb"    data-s="saved"  onclick="App.nav('saved')"> <span class="ni">♥</span><span class="nl">SAVED</span>   </button>
+    <button class="nb"    data-s="settings" onclick="App.nav('settings')"><span class="ni">⚙</span><span class="nl">SETTINGS</span></button>
   </nav>
 </div>
 
-<!-- READING MODE -->
+<!-- ═══ READING MODE ═══ -->
 <div id="read-ov">
   <div class="rbar" id="read-bar">
     <div style="display:flex;align-items:center;gap:10px">
-      <button class="rcbtn" style="width:32px;height:32px;font-size:14px" onclick="RM.close()">←</button>
-      <div><div id="read-ref" style="font-size:11px;font-weight:700;color:#fff;font-family:var(--sans)"></div>
-      <div style="font-size:8px;color:rgba(255,255,255,.45);font-family:var(--sans)">READING MODE · வாசிப்பு</div></div>
+      <button class="rcbtn" style="width:34px;height:34px;font-size:16px;border-radius:50%" onclick="RM.close()">←</button>
+      <div>
+        <div id="read-ref" style="font-size:12px;font-weight:700;color:#fff;font-family:var(--sans)"></div>
+        <div style="font-size:8px;color:rgba(255,255,255,.45);font-family:var(--sans)">READING MODE · வாசிப்பு</div>
+      </div>
     </div>
     <div class="rctls">
-      <button class="rcbtn" style="width:32px;height:32px;font-size:14px;border-radius:50%" onclick="AU.toggle()">🔊</button>
-      <button class="rcbtn" style="width:28px;height:30px;font-size:11px;font-weight:700" onclick="RM.fs(-2)">A-</button>
-      <button class="rcbtn" style="width:28px;height:30px;font-size:14px;font-weight:700" onclick="RM.fs(+2)">A+</button>
+      <button class="rcbtn" style="width:34px;height:34px;font-size:16px;border-radius:50%" onclick="AU.toggle()">🔊</button>
+      <button class="rcbtn" style="width:30px;height:32px;font-size:12px;font-weight:700" onclick="RM.fs(-2)">A-</button>
+      <button class="rcbtn" style="width:30px;height:32px;font-size:15px;font-weight:700" onclick="RM.fs(+2)">A+</button>
     </div>
   </div>
   <div class="rbody" id="read-body">
     <div class="rta" id="read-ta"></div>
     <div class="rdiv" id="read-div"></div>
     <div class="ren" id="read-en"></div>
-    <div style="text-align:center;margin-top:20px"><span class="rbadge" id="read-badge"></span></div>
-    <div class="ad" style="margin-top:28px;height:130px"><span class="adlbl">GOOGLE ADSENSE</span></div>
+    <div style="text-align:center;margin-top:24px"><span class="rbadge" id="read-badge"></span></div>
+    <div class="ad" style="margin-top:30px;height:140px"><span class="adlbl">GOOGLE ADSENSE</span></div>
   </div>
 </div>
 
-<!-- CHAPTER READER -->
+<!-- ═══ CHAPTER READER ═══ -->
 <div id="ch-ov">
   <div class="chbar" id="ch-bar">
     <div style="display:flex;align-items:center;gap:10px">
-      <button class="rcbtn" style="width:32px;height:32px;font-size:14px" onclick="CR.close()">←</button>
-      <div><div id="ch-title" style="font-size:12px;font-weight:700;color:#fff;font-family:var(--sans)"></div>
-      <div id="ch-sub" style="font-size:9px;color:rgba(255,255,255,.45);font-family:var(--sans)"></div></div>
+      <button class="rcbtn" style="width:34px;height:34px;font-size:16px;border-radius:50%" onclick="CR.close()">←</button>
+      <div>
+        <div id="ch-title" style="font-size:13px;font-weight:700;color:#fff;font-family:var(--sans)"></div>
+        <div id="ch-sub" style="font-size:9px;color:rgba(255,255,255,.45);font-family:var(--sans)"></div>
+      </div>
     </div>
-    <div style="display:flex;gap:3px;align-items:center">
+    <div style="display:flex;gap:4px;align-items:center">
       <div class="chlb">
-        <button class="on" id="ch-ta-btn" onclick="CR.showLang('ta')">TA</button>
-        <button id="ch-en-btn" onclick="CR.showLang('en')">EN</button>
+        <button class="on" id="ch-ta-btn" onclick="CR.showLang('ta');AU.setLang('ta')">TA</button>
+        <button id="ch-en-btn" onclick="CR.showLang('en');AU.setLang('en')">EN</button>
         <button id="ch-bo-btn" onclick="CR.showLang('both')">BI</button>
       </div>
-      <button class="rcbtn" style="padding:0 10px;height:28px;font-size:9px;font-weight:700;font-family:var(--sans)" onclick="AU.readCh()">🔊</button>
+      <button class="rcbtn" style="padding:0 12px;height:30px;font-size:9px;font-weight:700;font-family:var(--sans)" onclick="AU.readChapter()">🔊</button>
     </div>
   </div>
   <div class="chbody pb" id="ch-body"></div>
@@ -365,610 +527,1048 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
   </div>
 </div>
 
-<!-- CHARACTER DETAIL -->
+<!-- ═══ CHARACTER DETAIL ═══ -->
 <div id="char-ov">
   <div class="charbar" id="char-bar">
     <div class="cbl">
-      <button class="rcbtn" style="width:32px;height:32px;font-size:14px;flex-shrink:0" onclick="CD.close()">←</button>
-      <div><div class="cbn" id="cd-name"></div><div class="cbta" id="cd-ta-name"></div><div class="cbera" id="cd-era"></div></div>
+      <button class="rcbtn" style="width:34px;height:34px;font-size:16px;flex-shrink:0;border-radius:50%" onclick="CD.close()">←</button>
+      <div>
+        <div class="cbn" id="cd-name"></div>
+        <div class="cbta" id="cd-ta-name"></div>
+        <div class="cbera" id="cd-era"></div>
+      </div>
     </div>
-    <div id="cd-emi" class="cbig"></div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <button class="rcbtn" style="padding:0 12px;height:30px;font-size:9px;font-weight:700;font-family:var(--sans)" onclick="AU.readStory()">🔊 STORY</button>
+      <div id="cd-emi" class="cbig"></div>
+    </div>
   </div>
   <div class="cbody" id="cd-body"></div>
 </div>
 
-<!-- AUDIO PANEL -->
+<!-- ═══ AUDIO PANEL ═══ -->
 <div id="au-panel">
   <div class="auinner">
     <button class="aucls" onclick="AU.close()">✕</button>
     <div class="aut">🔊 AUDIO · ஒலி வாசிப்பு</div>
     <div class="aur" id="au-ref">—</div>
-    <div class="aulng">
-      <button id="au-ta" onclick="AU.lang('ta')" style="background:#fff;color:#080810">தமிழ் Tamil</button>
-      <button id="au-en" onclick="AU.lang('en')" style="background:rgba(255,255,255,.1);color:#fff">English</button>
-    </div>
+    <div id="au-lang-show" style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--sans);margin-bottom:10px;letter-spacing:1px"></div>
     <div class="auctls">
-      <button id="au-play" onclick="AU.play()" style="flex:2;background:#fff;color:#080810">▶ PLAY</button>
+      <button id="au-play" onclick="AU.play()" style="flex:2;background:#fff;color:#06060e">▶ PLAY</button>
       <button onclick="AU.pause()"  style="background:rgba(255,255,255,.1);color:#fff">⏸</button>
       <button onclick="AU.resume()" style="background:rgba(255,255,255,.1);color:#fff">▶▶</button>
       <button onclick="AU.stop()"   style="background:rgba(255,255,255,.08);color:#fff">⏹</button>
     </div>
     <div class="auprog"><div class="aubar" id="au-prog"></div></div>
     <div class="aumsg" id="au-msg"></div>
+    <div style="margin-top:8px;text-align:center">
+      <button onclick="App.nav('settings')" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);border:none;font-size:8px;font-family:var(--sans);padding:4px 10px;border-radius:3px;letter-spacing:1px">⚙ CHANGE LANGUAGE IN SETTINGS</button>
+    </div>
   </div>
 </div>
 
-<!-- ═══ DATA: 6 split JS files loaded as script tags (reliable on Android) ═══ -->
-<script src="data/bd_a.js"></script>
-<script src="data/bd_b.js"></script>
-<script src="data/bd_c.js"></script>
-<script src="data/bd_d.js"></script>
-<script src="data/bd_e.js"></script>
-<script src="data/bd_f.js"></script>
-<script src="characters.js"></script>
-<script src="kids_stories.js"></script>
-<script src="songs.js"></script>
-
+<!-- ═══ DATA FILES (loaded async) ═══ -->
 <script>
 "use strict";
-/* ═══ PROGRESS during script load ═══ */
-(function(){var b=document.getElementById('ls-bar');if(b)b.style.width='40%';
-  document.getElementById('ls-msg').textContent='Loading Bible data…';})();
-
-/* ═══ BD — Bible Data from global JS vars ═══ */
-var BD=(function(){
-  var BEN=['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation'];
-  var BTA=['ஆதியாகமம்','யாத்திராகமம்','லேவியராகமம்','எண்ணாகமம்','உபாகமம்','யோசுவா','நியாயாதிபதிகள்','ரூத்','1 சாமுவேல்','2 சாமுவேல்','1 இராஜாக்கள்','2 இராஜாக்கள்','1 நாளாகமம்','2 நாளாகமம்','எஸ்றா','நெகேமியா','எஸ்தர்','யோபு','சங்கீதம்','நீதிமொழிகள்','பிரசங்கி','உன்னதப்பாட்டு','ஏசாயா','எரேமியா','புலம்பல்','எசேக்கியேல்','தானியேல்','ஓசியா','யோவேல்','ஆமோஸ்','ஒபதியா','யோனா','மீகா','நாகூம்','ஆபகூக்','செப்பனியா','ஆகாய்','சகரியா','மல்கியா','மத்தேயு','மாற்கு','லூக்கா','யோவான்','அப்போஸ்தலர்','ரோமர்','1 கொரிந்தியர்','2 கொரிந்தியர்','கலாத்தியர்','எபேசியர்','பிலிப்பியர்','கொலோசெயர்','1 தெசலோனிக்கேயர்','2 தெசலோனிக்கேயர்','1 தீமோத்தேயு','2 தீமோத்தேயு','தீத்து','பிலேமோன்','எபிரேயர்','யாக்கோபு','1 பேதுரு','2 பேதுரு','1 யோவான்','2 யோவான்','3 யோவான்','யூதா','வெளிப்படுத்தல்'];
-  var CLR=['#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a','#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a','#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a','#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a','#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#2a3a6a','#1a4a2a','#6a1a1a','#2a1a5c','#5c3a10','#105c3a','#003a6a','#4a3a10','#2a3a6a','#1a4a2a','#6a1a1a','#2a1a5c','#5c3a10','#105c3a','#003a6a','#4a3a10','#2a3a6a','#1a4a2a','#6a1a1a','#2a1a5c','#5c3a10','#105c3a','#003a6a','#4a3a10','#2a3a6a','#1a4a2a'];
-
-  // Merge all 6 script-loaded parts into verse objects
-  var _vv=[],_map={},_bb={};
-
-  function build(){
-    // BD_A, BD_B, BD_C, BD_D, BD_E, BD_F are global vars from the 6 script files
-    var all=(typeof BD_A!=='undefined'?BD_A:[]).concat(
-             typeof BD_B!=='undefined'?BD_B:[]).concat(
-             typeof BD_C!=='undefined'?BD_C:[]).concat(
-             typeof BD_D!=='undefined'?BD_D:[]).concat(
-             typeof BD_E!=='undefined'?BD_E:[]).concat(
-             typeof BD_F!=='undefined'?BD_F:[]);
-    _vv=all.map(function(r){
-      return{id:r[0]*100000+r[1]*1000+r[2],bi:r[0],book:BEN[r[0]],bookTa:BTA[r[0]],ch:r[1],v:r[2],
-             ref:BEN[r[0]]+' '+r[1]+':'+r[2],ta:r[3]||'',en:r[4]||'',color:CLR[r[0]%CLR.length]};
-    });
-    _vv.forEach(function(v){
-      _map[v.bi+'_'+v.ch+'_'+v.v]=v;
-      if(!_bb[v.book])_bb[v.book]=[];
-      _bb[v.book].push(v);
-    });
-    return _vv.length;
-  }
-
-  function colorOf(b){var i=BEN.indexOf(b);return CLR[(i<0?0:i)%CLR.length];}
-  function daily(){if(!_vv.length)return null;var d=new Date(),n=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000);return _vv[n%_vv.length];}
-  function search(q){
-    if(!q||!q.trim())return[];
-    var q2=q.trim(),ql=q2.toLowerCase(),words=ql.split(/\s+/);
-    var sc=_vv.map(function(v){
-      var s=0,hay=(v.en+' '+v.ta+' '+v.ref+' '+v.book).toLowerCase();
-      words.forEach(function(w){if(w.length>1&&hay.indexOf(w)!==-1)s+=2;});
-      if(v.ta.indexOf(q2)!==-1)s+=3;
-      if(v.book.toLowerCase().indexOf(ql)!==-1)s+=5;
-      if(v.ref.toLowerCase().indexOf(ql)!==-1)s+=8;
-      return{v:v,s:s};
-    }).filter(function(x){return x.s>0;});
-    sc.sort(function(a,b){return b.s-a.s;});
-    return sc.slice(0,15).map(function(x){return x.v;});
-  }
-  return{BEN:BEN,BTA:BTA,CLR:CLR,build:build,
-    count:function(){return _vv.length;},all:function(){return _vv;},
-    byId:function(id){return _vv.find(function(v){return v.id===id;})||null;},
-    byBook:function(n){return _bb[n]||[];},
-    byBookCh:function(n,c){return(_bb[n]||[]).filter(function(v){return v.ch===c;});},
-    colorOf:colorOf,daily:daily,search:search};
-})();
-
-/* ═══ STATE ═══ */
-var ST=(function(){
-  var d={theme:'dark',saved:[],fs:18,lang:'both'};
-  try{var s=localStorage.getItem('vv_v9');if(s)d=Object.assign(d,JSON.parse(s));}catch(e){}
-  function sv(){try{localStorage.setItem('vv_v9',JSON.stringify(d));}catch(e){}}
-  return{g:function(k){return d[k];},saved:function(){return d.saved.slice();},
-    isSaved:function(id){return d.saved.indexOf(id)!==-1;},
-    toggleSave:function(id){var i=d.saved.indexOf(id);if(i===-1)d.saved.push(id);else d.saved.splice(i,1);sv();return i===-1;},
-    setFs:function(n){d.fs=Math.max(13,Math.min(30,n));sv();},setTheme:function(t){d.theme=t;sv();},setLang:function(l){d.lang=l;sv();}};
-})();
-
-/* ═══ AUDIO (Inbuilt TTS) ═══ */
-var AU=(function(){
-  var TTS=typeof window!=='undefined'&&'speechSynthesis'in window;
-  var _v=null,_lang='ta',_voices=[];
-  if(TTS){function lv(){_voices=window.speechSynthesis.getVoices()||[];}lv();
-    if(window.speechSynthesis.onvoiceschanged!==undefined)window.speechSynthesis.onvoiceschanged=lv;
-    setTimeout(lv,800);setTimeout(lv,2000);setTimeout(lv,4000);}
-  function sui(pl){var b=document.getElementById('au-play');if(!b)return;
-    if(pl){b.textContent='▶ PLAYING…';b.style.background='rgba(255,255,255,.15)';b.style.color='#fff';}
-    else{b.textContent='▶ PLAY';b.style.background='#fff';b.style.color='#080810';}}
-  function msg(t){var e=document.getElementById('au-msg');if(e)e.textContent=t||'';}
-  function prog(p){var e=document.getElementById('au-prog');if(e)e.style.width=(p||0)+'%';}
-  // Warm up TTS on first open (required for Android WebView)
-  var _warmedUp=false;
-  function _warmUp(){
-    if(_warmedUp||!TTS)return;
-    try{var u=new SpeechSynthesisUtterance('');window.speechSynthesis.speak(u);window.speechSynthesis.cancel();}catch(e){}
-    _warmedUp=true;
-    _voices=window.speechSynthesis.getVoices()||[];
-  }
-  function open(v){_v=v;
-    _warmUp();
-    document.getElementById('au-ref').textContent=v.ref||'';
-    document.getElementById('au-panel').classList.add('on');setLUI(_lang);msg('');prog(0);
-    if(!TTS){msg('⚠ TTS not available. Install Google Text-to-Speech from Play Store.');return;}
-    msg('Tamil: tap PLAY ▶  |  Switch: EN/Tamil buttons above');}
-  function close(){stop();document.getElementById('au-panel').classList.remove('on');}
-  function toggle(){var p=document.getElementById('au-panel');if(p.classList.contains('on'))close();else if(_v)open(_v);}
-  function lang(l){_lang=l;stop();setLUI(l);}
-  function setLUI(l){['ta','en'].forEach(function(x){var b=document.getElementById('au-'+x);if(!b)return;
-    b.style.background=l===x?'#fff':'rgba(255,255,255,.1)';b.style.color=l===x?'#080810':'#fff';});}
-  function _speak(text,lc,onEnd){
-    if(!TTS){msg('⚠ TTS not available on this device.');return;}
-    stop();_voices=window.speechSynthesis.getVoices()||[];
-    try{var u=new SpeechSynthesisUtterance(text);u.lang=lc;u.rate=0.82;u.pitch=1;u.volume=1;
-      var px=lc.split('-')[0],best=null;
-      for(var i=0;i<_voices.length;i++){if(_voices[i].lang&&_voices[i].lang.indexOf(px)===0){best=_voices[i];if(_voices[i].lang===lc)break;}}
-      if(best)u.voice=best;
-      u.onstart=function(){sui(true);msg('');prog(50);};
-      u.onend=function(){sui(false);prog(100);setTimeout(function(){prog(0);},800);if(onEnd)onEnd();};
-      u.onerror=function(e){sui(false);prog(0);
-        if(lc.indexOf('ta')===0)msg('⚠ Tamil TTS missing.\nPlay Store → Google Text-to-Speech → Install Tamil language');
-        else msg('⚠ TTS error: '+(e.error||''));};
-      window.speechSynthesis.speak(u);sui(true);}
-    catch(e){sui(false);msg('⚠ '+e.message);}
-  }
-  function play(){if(!_v)return;var t=_lang==='ta'?_v.ta:_v.en;_speak(t,_lang==='ta'?'ta-IN':'en-US');}
-  function readCh(){
-    if(!CR._bk)return;var vs=BD.byBookCh(CR._bk,CR._ch);if(!vs.length)return;
-    if(!document.getElementById('au-panel').classList.contains('on')){
-      _v={ref:CR._bk+' Ch '+CR._ch,ta:'',en:''};
-      document.getElementById('au-ref').textContent=CR._bk+' Chapter '+CR._ch;
-      document.getElementById('au-panel').classList.add('on');setLUI(_lang);}
-    var t=vs.map(function(v,i){return (i+1)+'. '+(_lang==='ta'?v.ta:v.en);}).join(' ');
-    msg('Reading '+vs.length+' verses…');
-    _speak(t,_lang==='ta'?'ta-IN':'en-US',function(){msg('Chapter complete. ✓');});}
-  function speakText(text,lc){_speak(text,lc||'en-US');}
-  function pause(){if(TTS&&window.speechSynthesis.speaking&&!window.speechSynthesis.paused)window.speechSynthesis.pause();}
-  function resume(){if(TTS&&window.speechSynthesis.paused)window.speechSynthesis.resume();}
-  function stop(){if(TTS)window.speechSynthesis.cancel();sui(false);prog(0);}
-  return{open:open,close:close,toggle:toggle,lang:lang,play:play,pause:pause,resume:resume,stop:stop,readCh:readCh,speakText:speakText};
-})();
-
-/* ═══ RENDER ═══ */
-var R={
-  card:function(v){
-    var c=v.color||BD.colorOf(v.book),sv=ST.isSaved(v.id);
-    var l=ST.g('lang'),sTA=(l==='ta'||l==='both')&&v.ta,sEN=(l==='en'||l==='both')&&v.en;
-    return '<div class="vc" id="vc'+v.id+'">'+
-      '<div class="vch" style="background:'+c+'"><span class="vr">'+v.ref+'</span><span class="vbk">'+v.bookTa+'</span></div>'+
-      '<div class="vbd">'+(sTA?'<div class="vta">'+v.ta+'</div>':'')+(sEN?'<div class="ven">'+v.en+'</div>':'')+
-      '<div class="va"><button id="sb'+v.id+'" onclick="App.save('+v.id+')" style="'+(sv?'background:'+c+';color:#fff':'')+'">'+(sv?'♥ சேமித்தது':'♡ SAVE')+'</button>'+
-      '<button onclick="App.copy('+v.id+')" id="cb'+v.id+'">⎘ COPY</button>'+
-      '<button onclick="RM.open('+v.id+')" style="background:'+c+'22;color:'+c+'">📖 READ</button>'+
-      '<button onclick="App.audio('+v.id+')" style="background:'+c+'22;color:'+c+'">🔊 AUDIO</button>'+
-      '</div></div></div>';},
-  list:function(el,vs,empty){
-    var e=document.getElementById(el);if(!e)return;
-    if(!vs||!vs.length){e.innerHTML='<div class="empty"><div class="emico">✝</div><div class="emtxt">'+(empty||'NO VERSES')+'</div></div>';return;}
-    var h='';vs.forEach(function(v,i){h+=R.card(v);if(i===4)h+='<div class="ad"><span class="adlbl">ADVERTISEMENT</span></div>';});
-    e.innerHTML=h;}
-};
-
-/* ═══ READING MODE ═══ */
-var RM=(function(){
-  var _v=null;
-  function open(id){_v=BD.byId(id);if(!_v)return;
-    var c=_v.color||BD.colorOf(_v.book),fs=ST.g('fs'),dk=ST.g('theme')==='dark';
-    document.getElementById('read-ov').style.background=dk?'#06060e':'#f5f0e2';
-    document.getElementById('read-bar').style.background=c;
-    document.getElementById('read-ref').textContent=_v.ref;
-    document.getElementById('read-ta').textContent=_v.ta;
-    document.getElementById('read-ta').style.fontSize=(fs+3)+'px';
-    document.getElementById('read-ta').style.display=_v.ta?'block':'none';
-    document.getElementById('read-en').textContent=_v.en?'"'+_v.en+'"':'';
-    document.getElementById('read-en').style.fontSize=fs+'px';
-    document.getElementById('read-div').style.background=c;
-    document.getElementById('read-badge').textContent=_v.ref;
-    document.getElementById('read-badge').style.cssText='background:'+c+';color:#fff';
-    document.getElementById('au-ref').textContent=_v.ref;
-    document.getElementById('au-panel').style.bottom='0';
-    document.getElementById('read-ov').classList.add('on');}
-  function close(){AU.stop();document.getElementById('au-panel').classList.remove('on');document.getElementById('au-panel').style.bottom='';document.getElementById('read-ov').classList.remove('on');_v=null;}
-  function fs(d){ST.setFs(ST.g('fs')+d);var f=ST.g('fs');document.getElementById('read-ta').style.fontSize=(f+3)+'px';document.getElementById('read-en').style.fontSize=f+'px';}
-  return{open:open,close:close,fs:fs};
-})();
-
-/* ═══ CHAPTER READER ═══ */
-var CR=(function(){
-  var _bk='',_ch=1,_mx=1,_sl='both';
-  function open(bk,ch){
-    _bk=bk;var vs=BD.byBook(bk);
-    _mx=vs.reduce(function(m,v){return Math.max(m,v.ch);},1);
-    _ch=parseInt(ch,10)||1;
-    var dk=ST.g('theme')==='dark';
-    document.getElementById('ch-ov').style.background=dk?'#06060e':'#f5f0e2';
-    _render();document.getElementById('ch-ov').classList.add('on');}
-  function _render(){
-    var vs=BD.byBookCh(_bk,_ch),c=BD.colorOf(_bk),bi=BD.BEN.indexOf(_bk);
-    document.getElementById('ch-bar').style.background=c;
-    document.getElementById('ch-title').textContent=(BD.BTA[bi]||_bk)+' — Chapter '+_ch;
-    document.getElementById('ch-sub').textContent=_bk+' · '+vs.length+' verses';
-    document.getElementById('ch-jump').textContent='Ch '+_ch+'/'+_mx;
-    var sTA=_sl==='ta'||_sl==='both',sEN=_sl==='en'||_sl==='both';
-    var h='';
-    vs.forEach(function(v){
-      h+='<div class="chv"><div class="chvn">'+_ch+':'+v.v+'</div><div class="chvcol">'+
-         (sTA&&v.ta?'<div class="chvta">'+v.ta+'</div>':'')+
-         (sEN&&v.en?'<div class="chven">'+v.en+'</div>':'')+
-         '</div></div>';
-    });
-    document.getElementById('ch-body').innerHTML=h||'<div class="empty"><div class="emtxt">No verses found</div></div>';
-    document.getElementById('ch-body').scrollTop=0;
-    document.getElementById('ch-prev').disabled=_ch<=1;document.getElementById('ch-next').disabled=_ch>=_mx;
-    ['ta','en','both'].forEach(function(l){var b=document.getElementById('ch-'+l+'-btn');if(b)b.classList.toggle('on',_sl===l);});}
-  function showLang(l){_sl=l;_render();}
-  function close(){AU.stop();document.getElementById('ch-ov').classList.remove('on');}
-  function prev(){if(_ch>1){_ch--;_render();}}
-  function next(){if(_ch<_mx){_ch++;_render();}}
-  function jump(){var n=parseInt(prompt('Chapter (1–'+_mx+'):',''),10);if(n>=1&&n<=_mx){_ch=n;_render();}}
-  return{open:open,close:close,prev:prev,next:next,jump:jump,showLang:showLang,get _bk(){return _bk;},get _ch(){return _ch;}};
-})();
-
-/* ═══ CHARACTER DETAIL ═══ */
-var CD=(function(){
-  function open(cid){
-    var ch=BIBLE_CHARACTERS.find(function(c){return c.id===cid;});if(!ch)return;
-    var dk=ST.g('theme')==='dark';
-    document.getElementById('char-ov').style.background=dk?'#06060e':'#f5f0e2';
-    document.getElementById('char-bar').style.background=ch.color;
-    document.getElementById('cd-name').textContent=ch.name;
-    document.getElementById('cd-ta-name').textContent=ch.ta_name;
-    document.getElementById('cd-era').textContent=ch.era+' · '+ch.testament;
-    document.getElementById('cd-emi').textContent=ch.emoji;
-    document.getElementById('cd-body').innerHTML=_build(ch);
-    document.getElementById('char-ov').classList.add('on');}
-  function _build(ch){
-    var col=ch.color,h='';
-    h+='<div class="csec"><div class="csl">BIOGRAPHY · சுயசரிதை</div>'+
-       '<div class="csen">'+ch.summary_en+'</div><div class="csta">'+ch.summary_ta+'</div></div>';
-    h+='<div class="csec"><div class="csl">LIFE TIMELINE · காலவரிசை</div>';
-    ch.timeline.forEach(function(t,i){var last=i===ch.timeline.length-1;
-      h+='<div class="tli"><div class="tlcol"><div class="tldot" style="background:'+col+'"></div>'+(last?'':'<div class="tlline"></div>')+'</div>'+
-         '<div style="flex:1;padding-bottom:'+(last?'0':'8px')+'"><div class="tlref">'+t.ref+'</div>'+
-         '<div class="tlen">'+t.en+'</div><div class="tlta">'+t.ta+'</div></div></div>';});
-    h+='</div><div class="csec"><div class="csl">KEY VERSES · முக்கிய வசனங்கள்</div>';
-    ch.verses.forEach(function(v){
-      var e=function(s){return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'");};
-      h+='<div class="kv" style="border-left-color:'+col+'"><div class="kvref">'+v.ref+'</div>'+
-         '<div class="kvta">'+v.ta+'</div><div class="kven">'+v.en+'</div>'+
-         '<div class="kvact">'+
-           '<button onclick="AU.speakText(\''+e(v.ta)+'\',\'ta-IN\')" style="background:'+col+'33;color:'+col+'">🔊 தமிழ்</button>'+
-           '<button onclick="AU.speakText(\''+e(v.en)+'\',\'en-US\')" style="background:var(--bg3);color:var(--text2)">🔊 English</button>'+
-           '<button onclick="cpTxt(\''+e(v.ta+'\\n'+v.en+'\\n— '+v.ref)+'\')" style="background:var(--bg3);color:var(--text2)">⎘ COPY</button>'+
-         '</div></div>';});
-    h+='</div><div class="csec"><div class="csl">LIFE LESSONS · படிப்பினைகள்</div>';
-    ch.lessons_en.forEach(function(l,i){
-      h+='<div class="lesn"><div class="lesnn">'+(i+1)+'</div>'+
-         '<div><div class="lesen">'+l+'</div><div class="lesta">'+(ch.lessons_ta[i]||'')+'</div></div></div>';});
-    h+='</div><div class="ad" style="height:70px"><span class="adlbl">ADVERTISEMENT</span></div>';
-    return h;}
-  function close(){document.getElementById('char-ov').classList.remove('on');}
-  return{open:open,close:close};
-})();
-
-/* ═══ SCREENS ═══ */
-var SV={_pg:0,_ps:30,_fl:null,_lang:'both',
-  build:function(){this._fl=null;this._pg=0;this._rlb();this._render();},
-  setLang:function(l){this._lang=l;ST.setLang(l);this._rlb();this._render();},
-  _rlb:function(){document.querySelectorAll('#v-ltog button').forEach(function(b,i){b.classList.toggle('on',['ta','en','both'][i]===SV._lang);});},
-  filter:function(q){this._pg=0;
-    if(!q.trim()){this._fl=null;}else{var ql=q.toLowerCase();
-      this._fl=BD.all().filter(function(v){return v.ta.indexOf(q)!==-1||v.en.toLowerCase().indexOf(ql)!==-1||v.ref.toLowerCase().indexOf(ql)!==-1||v.book.toLowerCase().indexOf(ql)!==-1||v.bookTa.indexOf(q)!==-1;});}
-    this._render();},
-  _render:function(){var all=this._fl||BD.all(),tp=all.length,pg=this._pg,ps=this._ps;
-    var sl=all.slice(pg*ps,(pg+1)*ps),tpg=Math.ceil(tp/ps);
-    document.getElementById('v-pgi').textContent=(pg+1)+'/'+tpg+' — '+tp.toLocaleString();
-    document.getElementById('v-prev').disabled=pg===0;document.getElementById('v-next').disabled=pg>=tpg-1;
-    var pl=ST.g('lang');ST.setLang(this._lang);R.list('v-list',sl,'No verses found');ST.setLang(pl);},
-  prev:function(){if(this._pg>0){this._pg--;this._render();document.getElementById('main').scrollTop=0;}},
-  next:function(){var all=this._fl||BD.all(),mx=Math.ceil(all.length/this._ps)-1;if(this._pg<mx){this._pg++;this._render();document.getElementById('main').scrollTop=0;}}
-};
-var SA={
-  TOPICS:['love·அன்பு','faith·விசுவாசம்','hope·நம்பிக்கை','peace·சமாதானம்','strength·வலிமை','prayer·ஜெபம்','fear·பயம்','salvation·இரட்சிப்பு','grace·கிருபை','mercy·இரக்கம்','forgiveness·மன்னிப்பு','heaven·பரலோகம்','jesus·இயேசு','god·தேவன்','wisdom·ஞானம்','comfort·ஆறுதல்','healing·சுகம்','joy·சந்தோஷம்','truth·சத்தியம்','eternal·நித்தியம்','sin·பாவம்','repentance·மனஸ்தாபம்','holy spirit·பரிசுத்த ஆவி','resurrection·உயிர்த்தெழுதல்'],
-  build:function(){document.getElementById('ai-chips').innerHTML=this.TOPICS.map(function(t){var q=t.split('·')[0];return '<button class="chip" onclick="SA.chip(\''+q+'\')">'+t+'</button>';}).join('');},
-  run:function(){var q=document.getElementById('ai-srch').value;if(!q.trim())return;var r=BD.search(q);
-    document.querySelectorAll('#ai-chips .chip').forEach(function(c){c.classList.toggle('on',c.textContent.indexOf(q)===0);});
-    R.list('ai-list',r,'NO RESULTS — Try: love, அன்பு, Psalm 23, John 3:16');},
-  chip:function(t){document.getElementById('ai-srch').value=t;this.run();}
-};
-var SB={_f:'ALL',
-  build:function(){this._f='ALL';document.getElementById('b-filt').innerHTML=[['ALL','All (66)'],['OT','Old (39)'],['NT','New (27)']].map(function(x,i){return '<button class="'+(i===0?'on':'')+'" onclick="SB.filt(\''+x[0]+'\')">'+x[1]+'</button>';}).join('');this._render();},
-  filt:function(f){this._f=f;document.querySelectorAll('#b-filt button').forEach(function(b,i){b.classList.toggle('on',['ALL','OT','NT'][i]===f);});this._render();},
-  _render:function(){var f=this._f,h='';BD.BEN.forEach(function(nm,bi){var t=bi<39?'OT':'NT';if(f!=='ALL'&&t!==f)return;
-    var c=BD.CLR[bi%BD.CLR.length],vs=BD.byBook(nm),mx=vs.reduce(function(m,v){return Math.max(m,v.ch);},1);
-    h+='<div class="btile" style="background:'+c+'"><div><div class="bne">'+nm+'</div><div class="bnt">'+BD.BTA[bi]+'</div><div class="bm">'+mx+' ch · '+vs.length+' v</div></div>'+
-       '<div class="bb"><button onclick="CR.open(\''+nm+'\',1)">📖 Ch 1</button><button onclick="CR.open(\''+nm+'\','+mx+')">Ch '+mx+' ▶</button></div></div>';});
-    document.getElementById('b-grid').innerHTML=h;}
-};
-var SC={build:function(){var h='';BIBLE_CHARACTERS.forEach(function(c){
-  h+='<div class="ctile" style="background:'+c.color+'" onclick="CD.open(\''+c.id+'\')">'+
-     '<div class="cemi">'+c.emoji+'</div><div>'+
-     '<div class="cn">'+c.name+'</div><div class="cnt">'+c.ta_name+'</div>'+
-     '<div class="ce">'+c.era+'</div><div class="ctl">'+c.tagline_en+'</div></div>'+
-     '<button class="cbtn">READ STORY ▶</button></div>';});
-  document.getElementById('c-grid').innerHTML=h;}
-};
-var SS={build:function(){var ids=ST.saved(),vs=ids.map(function(id){return BD.byId(id);}).filter(Boolean);
-  document.getElementById('saved-lbl').textContent=ids.length+' SAVED';
-  R.list('saved-list',vs,'TAP ♡ ON ANY VERSE TO SAVE');}
-};
-
-var App={
-  nav:function(s){document.querySelectorAll('.scr').forEach(function(e){e.classList.toggle('on',e.id==='s-'+s);});document.querySelectorAll('.nb').forEach(function(b){b.classList.toggle('on',b.dataset.s===s);});if(s==='saved')SS.build();document.getElementById('main').scrollTop=0;},
-  save:function(id){var now=ST.toggleSave(id);var v=BD.byId(id);if(!v)return;var c=BD.colorOf(v.book);var btn=document.getElementById('sb'+id);if(btn){btn.textContent=now?'♥ சேமித்தது':'♡ SAVE';btn.style.background=now?c:'';btn.style.color=now?'#fff';}},
-  copy:function(id){var v=BD.byId(id);if(!v)return;cpTxt(v.ta+'\n'+v.en+'\n— '+v.ref);var btn=document.getElementById('cb'+id);if(btn){var o=btn.textContent;btn.textContent='✓ COPIED';setTimeout(function(){btn.textContent=o;},2000);}},
-  audio:function(id){var v=BD.byId(id);if(v)AU.open(v);},
-  cycleLang:function(){var ls=['both','ta','en'],cur=ST.g('lang'),ni=(ls.indexOf(cur)+1)%3;ST.setLang(ls[ni]);document.getElementById('lang-btn').textContent=ls[ni].toUpperCase();},
-  theme:function(){var t=ST.g('theme')==='dark'?'light':'dark';ST.setTheme(t);if(t==='light')document.documentElement.setAttribute('data-light','');else document.documentElement.removeAttribute('data-light');document.getElementById('th-btn').textContent=t==='dark'?'☀':'🌙';}
-};
-function cpTxt(t){if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).catch(function(){});}
-
-/* ═══ BOOT — Data is already in memory from script tags ═══ */
 (function(){
-  if(ST.g('theme')==='light')document.documentElement.setAttribute('data-light','');
-  document.getElementById('th-btn').textContent=ST.g('theme')==='dark'?'☀':'🌙';
-  document.getElementById('lang-btn').textContent=ST.g('lang').toUpperCase();
+  var FILES = [
+    'data/bd_a.js','data/bd_b.js','data/bd_c.js',
+    'data/bd_d.js','data/bd_e.js','data/bd_f.js',
+    'characters.js'
+  ];
+  var LABELS = [
+    'Loading Genesis – Psalms…',
+    'Loading Proverbs – Malachi…',
+    'Loading Acts – Romans…',
+    'Loading Corinthians – Timothy…',
+    'Loading Hebrews – Revelation…',
+    'Loading final data…',
+    'Loading character stories…'
+  ];
+  var lbar = document.getElementById('ls-bar');
+  var lmsg = document.getElementById('ls-msg');
+  var lcnt = document.getElementById('ls-cnt');
 
-  document.getElementById('ls-bar').style.width='80%';
-  document.getElementById('ls-msg').textContent='Building verse index…';
+  function sp(p, m, c) {
+    if (lbar) lbar.style.width = p + '%';
+    if (lmsg) lmsg.textContent = m || '';
+    if (lcnt && c !== undefined) lcnt.textContent = c;
+  }
 
-  // Use setTimeout to allow loading screen to render first
-  setTimeout(function(){
-    var cnt=BD.build();
-    document.getElementById('ls-bar').style.width='100%';
-    document.getElementById('ls-cnt').textContent=cnt.toLocaleString()+' verse pairs ready';
+  function showError(m) {
+    sp(100, '⚠ ' + m, 'Tap to retry');
+    if (lbar) lbar.style.background = '#c0392b';
+    var ls = document.getElementById('ls');
+    if (ls) ls.onclick = function(){ location.reload(); };
+  }
 
+  var _wd = setTimeout(function(){ showError('Load timeout. Tap to retry.'); }, 35000);
+
+  function loadNext(i) {
+    if (i >= FILES.length) { clearTimeout(_wd); onAllLoaded(); return; }
+    sp(Math.round((i / FILES.length) * 82) + 5, LABELS[i], (i + 1) + '/' + FILES.length);
+    var s = document.createElement('script');
+    s.src = FILES[i];
+    s.onload = function(){ loadNext(i + 1); };
+    s.onerror = function(){ clearTimeout(_wd); showError('Failed: ' + FILES[i]); };
+    document.head.appendChild(s);
+  }
+
+  function onAllLoaded() {
+    sp(92, 'Building verse index…', '31,102 verse pairs');
     setTimeout(function(){
-      document.getElementById('h-sub').textContent=cnt.toLocaleString()+' VERSES · TAMIL+ENGLISH · '+BIBLE_CHARACTERS.length+' CHARACTERS';
-      document.getElementById('ls').style.display='none';
-      document.getElementById('app').style.display='flex';
+      try { bootApp(); }
+      catch(e) { showError('Startup error: ' + (e.message || e)); }
+    }, 60);
+  }
 
-      // Clock
-      setInterval(function(){var n=new Date(),te=document.getElementById('clk-t'),de=document.getElementById('clk-d');
-        if(te)te.textContent=n.toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true});
-        if(de)de.textContent=n.toLocaleDateString('ta',{weekday:'long',day:'numeric',month:'long'});},1000);
+  /* ═══════════════════════════════════════════════════════════
+     APP — runs after all data files loaded
+  ═══════════════════════════════════════════════════════════ */
+  function bootApp() {
 
-      // Build home
-      var daily=BD.daily();
-      if(daily){
-        var dc=daily.color;
-        var h='<div class="tile clk" style="background:#0a0a1e"><div class="ct" id="clk-t">--:--</div><div class="cd" id="clk-d"></div></div>';
-        h+='<div class="tile w2" style="background:'+dc+'" onclick="RM.open('+daily.id+')">'+
-           '<div class="d-tag">TODAY · இன்றைய வசனம்</div>'+
-           '<div class="d-ta">'+(daily.ta.length>100?daily.ta.slice(0,100)+'…':daily.ta)+'</div>'+
-           '<div class="d-en">'+(daily.en.length>90?daily.en.slice(0,90)+'…':daily.en)+'</div>'+
-           '<div class="d-ref">'+daily.ref+'</div>'+
-           '<div class="d-btns">'+
-             '<button class="d-btn" onclick="event.stopPropagation();App.audio('+daily.id+')">🔊 AUDIO</button>'+
-             '<button class="d-btn" onclick="event.stopPropagation();RM.open('+daily.id+')">📖 READ</button>'+
-             '<button class="d-btn" onclick="event.stopPropagation();CR.open(\''+daily.book+'\','+daily.ch+')">📖 CHAPTER</button>'+
-           '</div></div>';
-        [{l:'AI SEARCH',s:'search',c:'#2d0a5e',sub:'31,102 verses · Tamil+English'},
-         {l:'✦ CHARACTERS',s:'chars',c:'#3a1a00',sub:BIBLE_CHARACTERS.length+' Bible stories'},
-         {l:'66 BOOKS',s:'books',c:'#0d2e0d',sub:'All chapters · Audio'},
-         {l:'♥ SAVED',s:'saved',c:'#3a0a0a',sub:ST.saved().length+' saved'}
-        ].forEach(function(t){h+='<div class="tile" style="background:'+t.c+'" onclick="App.nav(\''+t.s+'\')"><div class="tl">'+t.l+'</div><div class="ts">'+t.sub+'</div></div>';});
-        document.getElementById('home-tiles').innerHTML=h;
-        document.getElementById('home-cnt').textContent=cnt.toLocaleString()+' verses';
-        R.list('home-vv',BD.all().slice(0,8));
+  /* ── BIBLE DATA ── */
+  var BD = (function(){
+    var BEN = ['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth',
+               '1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra',
+               'Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon',
+               'Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos',
+               'Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah',
+               'Malachi','Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians',
+               '2 Corinthians','Galatians','Ephesians','Philippians','Colossians',
+               '1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon',
+               'Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation'];
+    var BTA = ['ஆதியாகமம்','யாத்திராகமம்','லேவியராகமம்','எண்ணாகமம்','உபாகமம்','யோசுவா',
+               'நியாயாதிபதிகள்','ரூத்','1 சாமுவேல்','2 சாமுவேல்','1 இராஜாக்கள்','2 இராஜாக்கள்',
+               '1 நாளாகமம்','2 நாளாகமம்','எஸ்றா','நெகேமியா','எஸ்தர்','யோபு','சங்கீதம்',
+               'நீதிமொழிகள்','பிரசங்கி','உன்னதப்பாட்டு','ஏசாயா','எரேமியா','புலம்பல்',
+               'எசேக்கியேல்','தானியேல்','ஓசியா','யோவேல்','ஆமோஸ்','ஒபதியா','யோனா','மீகா',
+               'நாகூம்','ஆபகூக்','செப்பனியா','ஆகாய்','சகரியா','மல்கியா','மத்தேயு','மாற்கு',
+               'லூக்கா','யோவான்','அப்போஸ்தலர்','ரோமர்','1 கொரிந்தியர்','2 கொரிந்தியர்',
+               'கலாத்தியர்','எபேசியர்','பிலிப்பியர்','கொலோசெயர்','1 தெசலோனிக்கேயர்',
+               '2 தெசலோனிக்கேயர்','1 தீமோத்தேயு','2 தீமோத்தேயு','தீத்து','பிலேமோன்',
+               'எபிரேயர்','யாக்கோபு','1 பேதுரு','2 பேதுரு','1 யோவான்','2 யோவான்',
+               '3 யோவான்','யூதா','வெளிப்படுத்தல்'];
+    var CLR = ['#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a',
+               '#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a',
+               '#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a',
+               '#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a',
+               '#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c',
+               '#2a3a6a','#1a4a2a','#6a1a1a','#2a1a5c','#5c3a10','#105c3a','#003a6a','#4a3a10',
+               '#2a3a6a','#1a4a2a','#6a1a1a','#2a1a5c','#5c3a10','#105c3a','#003a6a','#4a3a10',
+               '#2a3a6a','#1a4a2a','#6a1a1a','#2a1a5c','#5c3a10','#105c3a','#003a6a','#4a3a10',
+               '#2a3a6a','#1a4a2a'];
+    var _vv = [], _map = {}, _bb = {};
+
+    function build() {
+      var all = [].concat(
+        typeof BD_A!=='undefined'?BD_A:[],
+        typeof BD_B!=='undefined'?BD_B:[],
+        typeof BD_C!=='undefined'?BD_C:[],
+        typeof BD_D!=='undefined'?BD_D:[],
+        typeof BD_E!=='undefined'?BD_E:[],
+        typeof BD_F!=='undefined'?BD_F:[]
+      );
+      _vv = all.map(function(r){
+        var bi = r[0];
+        return {
+          id: bi*100000 + r[1]*1000 + r[2],
+          bi: bi, book: BEN[bi], bookTa: BTA[bi],
+          ch: r[1], v: r[2],
+          ref: BEN[bi] + ' ' + r[1] + ':' + r[2],
+          ta: r[3] || '', en: r[4] || '',
+          color: CLR[bi % CLR.length]
+        };
+      });
+      _vv.forEach(function(v){
+        _map[v.bi + '_' + v.ch + '_' + v.v] = v;
+        if (!_bb[v.book]) _bb[v.book] = [];
+        _bb[v.book].push(v);
+      });
+      return _vv.length;
+    }
+
+    function daily() {
+      if (!_vv.length) return null;
+      var d = new Date();
+      var n = Math.floor((d - new Date(d.getFullYear(),0,0)) / 86400000);
+      return _vv[n % _vv.length];
+    }
+
+    // Highlighted verse of the week (famous verses)
+    var HIGHLIGHTS = [
+      'John 3:16','Psalms 23:1','Romans 8:28','Philippians 4:13',
+      'Jeremiah 29:11','Proverbs 3:5','Isaiah 40:31','Matthew 11:28',
+      'Romans 10:9','Galatians 2:20','Ephesians 2:8','James 1:5',
+      'Hebrews 11:1','1 Corinthians 13:4','Romans 5:8','John 14:6',
+      'Matthew 6:33','Psalms 46:10','Isaiah 41:10','Luke 1:37'
+    ];
+    function highlighted() {
+      var d = new Date();
+      var wk = Math.floor(d.getDate() / 7);
+      var ref = HIGHLIGHTS[(d.getMonth() * 4 + wk) % HIGHLIGHTS.length];
+      var parts = ref.split(' ');
+      var cv = parts[parts.length-1].split(':');
+      var bk = parts.slice(0,-1).join(' ');
+      var bi = BEN.indexOf(bk);
+      if (bi < 0) return _vv[777 % _vv.length];
+      var key = bi + '_' + cv[0] + '_' + cv[1];
+      return _map[key] || _vv[777 % _vv.length];
+    }
+
+    function search(q) {
+      if (!q || !q.trim()) return [];
+      var q2 = q.trim(), ql = q2.toLowerCase();
+      var words = ql.split(/\s+/);
+      var scored = _vv.map(function(v){
+        var s = 0;
+        var hay = (v.en + ' ' + v.ta + ' ' + v.ref + ' ' + v.book).toLowerCase();
+        words.forEach(function(w){ if (w.length > 1 && hay.indexOf(w) !== -1) s += 2; });
+        if (v.ta.indexOf(q2) !== -1) s += 3;
+        if (v.book.toLowerCase().indexOf(ql) !== -1) s += 5;
+        if (v.ref.toLowerCase().indexOf(ql) !== -1) s += 8;
+        return {v:v, s:s};
+      }).filter(function(x){ return x.s > 0; });
+      scored.sort(function(a,b){ return b.s - a.s; });
+      return scored.map(function(x){ return x.v; });
+    }
+
+    return {
+      BEN:BEN, BTA:BTA, CLR:CLR,
+      build: build,
+      count: function(){ return _vv.length; },
+      all: function(){ return _vv; },
+      byId: function(id){ return _vv.find(function(v){ return v.id===id; })||null; },
+      byBook: function(n){ return _bb[n]||[]; },
+      byBookCh: function(n,c){ return (_bb[n]||[]).filter(function(v){ return v.ch===c; }); },
+      colorOf: function(b){ var i=BEN.indexOf(b); return CLR[(i<0?0:i)%CLR.length]; },
+      daily: daily,
+      highlighted: highlighted,
+      search: search
+    };
+  })();
+
+  /* ── STATE ── */
+  var ST = (function(){
+    var d = {theme:'dark', saved:[], fs:17, lang:'both', audioLang:'ta'};
+    try { var s = localStorage.getItem('crownbible_v1'); if(s) d = Object.assign(d, JSON.parse(s)); } catch(e){}
+    function sv(){ try{ localStorage.setItem('crownbible_v1', JSON.stringify(d)); }catch(e){} }
+    return {
+      g: function(k){ return d[k]; },
+      saved: function(){ return d.saved.slice(); },
+      isSaved: function(id){ return d.saved.indexOf(id) !== -1; },
+      toggleSave: function(id){
+        var i = d.saved.indexOf(id);
+        if (i===-1) d.saved.push(id); else d.saved.splice(i,1);
+        sv(); return i===-1;
+      },
+      setFs: function(n){ d.fs = Math.max(13,Math.min(28,n)); sv(); },
+      setTheme: function(t){ d.theme = t; sv(); },
+      setLang: function(l){ d.lang = l; sv(); },
+      setAudioLang: function(l){ d.audioLang = l; sv(); }
+    };
+  })();
+
+  /* ── AUDIO TTS ENGINE ── */
+  var AU = (function(){
+  var _cap = null, _web = ('speechSynthesis' in window);
+  var _vv = [], _verses = [], _vIdx = 0, _playing = false, _v = null;
+  try {
+    if (window.Capacitor && window.Capacitor.Plugins &&
+        window.Capacitor.Plugins.TextToSpeech)
+      _cap = window.Capacitor.Plugins.TextToSpeech;
+  } catch(e) {}
+  if (_web) {
+    function _loadV() { _vv = window.speechSynthesis.getVoices() || []; }
+    _loadV();
+    if (window.speechSynthesis.onvoiceschanged !== undefined)
+      window.speechSynthesis.onvoiceschanged = _loadV;
+    setTimeout(_loadV, 500); setTimeout(_loadV, 2000); setTimeout(_loadV, 4000);
+  }
+  function getLang() { return ST.g('audioLang') || 'ta'; }
+  function getLc()   { return getLang() === 'ta' ? 'ta-IN' : 'en-US'; }
+  function getVText(v) { return getLang()==='ta' ? (v.ta||v.en||'') : (v.en||v.ta||''); }
+
+  function setPlayUI(on) {
+    var b = document.getElementById('au-play'); if (!b) return;
+    b.textContent = on ? '▶ PLAYING...' : '▶ PLAY';
+    b.style.background = on ? 'rgba(255,255,255,.15)' : '#fff';
+    b.style.color = on ? '#fff' : '#06060e';
+  }
+  function setMsg(t)  { var e=document.getElementById('au-msg');  if(e) e.textContent=t||''; }
+  function setProg(p) { var e=document.getElementById('au-prog'); if(e) e.style.width=(p||0)+'%'; }
+  function setLangDisp() {
+    var el=document.getElementById('au-lang-show');
+    if(el) el.textContent = getLang()==='ta' ? 'LANGUAGE: TAMIL (தமிழ்)' : 'LANGUAGE: ENGLISH';
+  }
+  function openPanel(ref) {
+    var el=document.getElementById('au-ref'); if(el) el.textContent=ref||'';
+    var p=document.getElementById('au-panel'); if(p) p.classList.add('on');
+    setLangDisp(); setMsg(''); setProg(0);
+  }
+  function stopAll() {
+    _playing=false; _verses=[]; _vIdx=0;
+    try { if(_cap) _cap.stop(); } catch(e) {}
+    try { if(_web) window.speechSynthesis.cancel(); } catch(e) {}
+    setPlayUI(false); setProg(0);
+  }
+  function speakChunkWeb(text, lc, onDone) {
+    try {
+      window.speechSynthesis.cancel();
+      if (_vv.length===0) _vv = window.speechSynthesis.getVoices()||[];
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang=lc; u.rate=0.85; u.pitch=1; u.volume=1;
+      var px=lc.split('-')[0], best=null;
+      for (var i=0; i<_vv.length; i++) {
+        var vl=_vv[i].lang||'';
+        if (vl===lc) { best=_vv[i]; break; }
+        if (vl.indexOf(px)===0 && !best) best=_vv[i];
       }
-      SV.build();SA.build();SB.build();SC.build();SK.build();SS_Songs.build();
-    },100);
-  },50);
-})();
-
-/* ═══ STORY DETAIL ═══ */
-var StD=(function(){
-  function open(sid){
-    var s=KIDS_STORIES.find(function(x){return x.id===sid;});if(!s)return;
-    var dk=ST.g('theme')==='dark';
-    document.getElementById('story-ov').style.background=dk?'#06060e':'#f5f0e2';
-    document.getElementById('stbar').style.background=s.color;
-    document.getElementById('st-name').textContent=s.title_en;
-    document.getElementById('st-ta-name').textContent=s.title_ta;
-    document.getElementById('story-ov').classList.add('on');
-    // Build body
-    var h='';
-    h+='<div class="stsec"><div class="stlbl">KEY VERSE · முக்கிய வசனம்</div>'+
-       '<div class="stverse" style="border-left-color:'+s.color+'">'+
-       '<div class="stver-ref">'+s.verse_ref+'</div>'+
-       '<div class="stver-ta">'+s.verse_ta+'</div>'+
-       '<div class="stver-en">'+s.verse_en+'</div>'+
-       '<div style="display:flex;gap:4px;margin-top:10px">'+
-         '<button onclick="AU.speakText(''+esc(s.verse_ta)+'','ta-IN')" style="flex:1;padding:6px;border:none;background:'+s.color+'33;color:'+s.color+';font-size:8px;font-weight:700;font-family:var(--sans)">🔊 தமிழ்</button>'+
-         '<button onclick="AU.speakText(''+esc(s.verse_en)+'','en-US')" style="flex:1;padding:6px;border:none;background:var(--bg3);color:var(--text2);font-size:8px;font-weight:700;font-family:var(--sans)">🔊 English</button>'+
-       '</div></div></div>';
-    h+='<div class="stsec"><div class="stlbl">THE STORY · கதை</div>'+
-       '<div style="display:flex;gap:4px;margin-bottom:12px">'+
-         '<button onclick="AU.speakText(''+esc(s.story_ta)+'','ta-IN')" style="flex:1;padding:7px;border:none;background:'+s.color+'33;color:'+s.color+';font-size:9px;font-weight:700;font-family:var(--sans)">🔊 தமிழில் கேள்</button>'+
-         '<button onclick="AU.speakText(''+esc(s.story_en)+'','en-US')" style="flex:1;padding:7px;border:none;background:var(--bg3);color:var(--text2);font-size:9px;font-weight:700;font-family:var(--sans)">🔊 Hear in English</button>'+
-       '</div>'+
-       '<div class="sttxt-en">'+s.story_en+'</div>'+
-       '<div class="sttxt-ta">'+s.story_ta+'</div>'+
-       '</div>';
-    h+='<div class="stsec"><div class="stlbl">LESSONS · படிப்பினைகள்</div>';
-    s.lessons.forEach(function(l,i){
-      h+='<div class="st-lesn"><div class="st-lesnn">'+(i+1)+'</div>'+
-         '<div><div class="st-lesen">'+l+'</div>'+
-         '<div class="st-lesta">'+(s.lessons_ta[i]||'')+'</div></div></div>';
-    });
-    h+='</div>';
-    h+='<div class="ad" style="height:60px"><span class="adlbl">ADVERTISEMENT</span></div>';
-    document.getElementById('st-body').innerHTML=h;
+      if (best) { u.voice=best; }
+      else if (lc==='ta-IN') {
+        setPlayUI(false); setProg(0);
+        setMsg('⚠ Tamil voice not installed. → ⚙ SETTINGS tab → Open TTS Settings → Google TTS → Install Tamil');
+        if (onDone) onDone(); return;
+      }
+      u.onstart = function() { setPlayUI(true); setProg(40); };
+      u.onend   = function() { setPlayUI(false); setProg(100); setTimeout(function(){setProg(0);},500); if(onDone) onDone(); };
+      u.onerror = function(e) {
+        setPlayUI(false); setProg(0);
+        setMsg('⚠ ' + (lc.indexOf('ta')===0 ? 'Tamil voice missing. ⚙ SETTINGS > Open TTS Settings > Install Tamil' : 'TTS error: '+(e.error||'')));
+      };
+      window.speechSynthesis.speak(u); setPlayUI(true); setProg(20);
+    } catch(e) { setPlayUI(false); setMsg('⚠ '+e.message); }
   }
-  function esc(s){return s.replace(/\\/g,'\\\\').replace(/'/g,"\'").replace(/"/g,'&quot;').replace(/\n/g,' ');}
-  function close(){document.getElementById('story-ov').classList.remove('on');}
-  return{open:open,close:close};
+  function speakChunk(text, lc, onDone) {
+    if (!text||!text.trim()) { if(onDone) onDone(); return; }
+    var chunk = text.length>250 ? text.substr(0,250) : text;
+    if (_cap) {
+      _cap.speak({text:chunk, lang:lc, rate:0.95, pitch:1.0, volume:1.0})
+        .then(function() { setPlayUI(false); setProg(100); setTimeout(function(){setProg(0);},500); if(onDone) onDone(); })
+        .catch(function() { if(_web) speakChunkWeb(chunk,lc,onDone); else { setPlayUI(false); setMsg('⚠ TTS failed. Check ⚙ SETTINGS.'); } });
+      return;
+    }
+    if (_web) { speakChunkWeb(chunk,lc,onDone); return; }
+    setPlayUI(false); setMsg('⚠ Install Google Text-to-Speech from Play Store.');
+  }
+  function playNextVerse() {
+    if (!_playing||_vIdx>=_verses.length) {
+      _playing=false; setPlayUI(false); setProg(100);
+      setMsg(_vIdx>=_verses.length ? 'Complete ✓ ('+_verses.length+' verses)' : 'Stopped.');
+      setTimeout(function(){setProg(0);},1500); return;
+    }
+    var v=_verses[_vIdx], text=getVText(v);
+    setProg(Math.round((_vIdx/_verses.length)*100));
+    setMsg((_vIdx+1)+' / '+_verses.length+' — '+(v.ref||''));
+    setPlayUI(true); _vIdx++;
+    speakChunk(text, getLc(), function() { if(_playing) playNextVerse(); });
+  }
+  return {
+    open: function(v) {
+      stopAll(); _v=v; _verses=[v]; _vIdx=0;
+      openPanel(v.ref);
+      setTimeout(function() { _playing=true; playNextVerse(); }, 200);
+    },
+    close: function() { stopAll(); var p=document.getElementById('au-panel'); if(p) p.classList.remove('on'); },
+    toggle: function() {
+      var p=document.getElementById('au-panel');
+      if (p&&p.classList.contains('on')) this.close(); else if(_v) this.open(_v);
+    },
+    play: function() {
+      if (_playing) return;
+      if (!_verses.length) { setMsg('Tap 🔊 on a chapter or verse first.'); return; }
+      _playing=true; _vIdx=0; playNextVerse();
+    },
+    readChapter: function() {
+      if (!window.CR||!window.CR._bk) return;
+      var vs=BD.byBookCh(window.CR._bk,window.CR._ch);
+      if (!vs.length) return;
+      stopAll(); _verses=vs; _vIdx=0;
+      openPanel(window.CR._bk+' Chapter '+window.CR._ch);
+      setMsg(vs.length+' verses — starting...');
+      setTimeout(function() { _playing=true; playNextVerse(); }, 200);
+    },
+    readStory: function() {
+      var cid=document.getElementById('cd-name').getAttribute('data-cid');
+      if (!cid||typeof BIBLE_CHARACTERS==='undefined') return;
+      var ch=BIBLE_CHARACTERS.find(function(c){return c.id===cid;});
+      if (!ch) return;
+      var text=getLang()==='ta'?ch.summary_ta+' '+ch.lessons_ta.join(' '):ch.summary_en+' '+ch.lessons_en.join(' ');
+      var words=text.split(' '), chunks=[], buf='';
+      words.forEach(function(w){ buf+=(buf?' ':'')+w; if(buf.length>200){chunks.push({ta:buf,en:buf,ref:''});buf='';} });
+      if(buf) chunks.push({ta:buf,en:buf,ref:''});
+      stopAll(); _verses=chunks; _vIdx=0;
+      openPanel(ch.name); _playing=true; playNextVerse();
+    },
+    speakText: function(text) { openPanel(null); speakChunk(text,getLc(),function(){setPlayUI(false);});  },
+    _setVerseAndPlay: function(v) {
+      stopAll(); _v=v; _verses=[v]; _vIdx=0;
+      openPanel(v.ref); _playing=true; playNextVerse();
+    },
+    _prepareVerse: function(v) {
+      stopAll(); _v=v; _verses=[v]; _vIdx=0;
+    },
+    pause:  function() { _playing=false; try{if(_web&&window.speechSynthesis.speaking)window.speechSynthesis.pause();}catch(e){} },
+    resume: function() {
+      if (!_playing&&_verses.length&&_vIdx<_verses.length) { _playing=true; playNextVerse(); }
+      else try{if(_web&&window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}
+    },
+    stop: stopAll,
+    isAvailable: function() { return !!(_cap||_web); },
+    checkStatus: function() {
+      if(_cap) return 'Capacitor TTS ✓ Active';
+      if(_web) { var n=_vv.length; return 'Web TTS ✓ '+n+' voice'+(n===1?'':'s')+' found'; }
+      return '⚠ No TTS engine. Install Google Text-to-Speech.';
+    },
+    get _lang() { return getLang(); }
+  };
 })();
 
-/* ═══ SONGS SCREEN ═══ */
-var SS_Songs={
-  _filter:'',
-  build:function(){this._filter='';this._render();},
-  filter:function(q){this._filter=q.toLowerCase().trim();this._render();},
-  _render:function(){
-    var q=this._filter;
-    var el=document.getElementById('songs-list');if(!el)return;
-    if(q){
-      // Show filtered flat list
-      var filtered=TAMIL_SONGS.allSongs.filter(function(s){
-        return s.title_ta.indexOf(q)!==-1||s.title_en.toLowerCase().indexOf(q)!==-1||
-               (s.lyrics_ta||'').indexOf(q)!==-1;
+  /* ── RENDERER ── */
+  var R = {
+    card: function(v){
+      var c = v.color || BD.colorOf(v.book);
+      var sv = ST.isSaved(v.id);
+      var l = ST.g('lang');
+      var sTA = (l==='ta'||l==='both') && v.ta;
+      var sEN = (l==='en'||l==='both') && v.en;
+      return '<div class="vc' + (sv?' saved-highlight':'') + '" id="vc'+v.id+'">' +
+        '<div class="vch" style="background:'+c+'">' +
+          '<span class="vr">'+v.ref+'</span>' +
+          '<span class="vbk">'+v.bookTa+'</span>' +
+        '</div>' +
+        '<div class="vbd">' +
+          (sTA ? '<div class="vta">'+v.ta+'</div>' : '') +
+          (sEN ? '<div class="ven">'+v.en+'</div>' : '') +
+          '<div class="va">' +
+            '<button id="sb'+v.id+'" onclick="App.save('+v.id+')" style="'+(sv?'background:'+c+';color:#fff':'')+'">'+
+              (sv?'♥ சேமித்தது':'♡ SAVE')+'</button>' +
+            '<button onclick="App.copy('+v.id+')" id="cb'+v.id+'">⎘ COPY</button>' +
+            '<button onclick="RM.open('+v.id+')" style="color:'+c+'">📖 READ</button>' +
+            '<button onclick="App.audio('+v.id+')" style="color:'+c+'">🔊 AUDIO</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    },
+    list: function(elId, vs, emptyMsg){
+      var el = document.getElementById(elId);
+      if (!el) return;
+      if (!vs || !vs.length){
+        el.innerHTML = '<div class="empty"><div class="emico">✝</div><div class="emtxt">'+(emptyMsg||'NO VERSES')+'</div></div>';
+        return;
+      }
+      var h = '';
+      vs.forEach(function(v, i){
+        h += R.card(v);
+        if (i === 5) h += '<div class="ad"><span class="adlbl">ADVERTISEMENT</span></div>';
       });
-      if(!filtered.length){el.innerHTML='<div class="empty"><div class="emico">🎵</div><div class="emtxt">NO SONGS FOUND</div></div>';return;}
-      var h='';
-      filtered.forEach(function(s){
-        h+='<div class="song-item" onclick="SongD.open(''+s.catId+'_'+s.no+'')" style="border-left:3px solid '+s.catColor+'">'+
-           '<span class="song-num">'+s.no+'</span>'+
-           '<div style="flex:1"><div class="song-title-ta">'+s.title_ta+'</div><div class="song-title-en">'+s.title_en+'</div></div>'+
-           '<span class="song-arrow">›</span></div>';
+      el.innerHTML = h;
+    }
+  };
+
+  /* ── READING MODE ── */
+  var RM = (function(){
+    var _v = null;
+    return {
+      open: function(id){
+        _v = BD.byId(id); if (!_v) return;
+        var c = _v.color || BD.colorOf(_v.book);
+        var dk = ST.g('theme') === 'dark';
+        var fs = ST.g('fs');
+        var ov = document.getElementById('read-ov');
+        ov.style.background = dk ? '#06060e' : '#f5f0e6';
+        document.getElementById('read-bar').style.background = c;
+        document.getElementById('read-ref').textContent = _v.ref;
+        var ta = document.getElementById('read-ta');
+        ta.textContent = _v.ta;
+        ta.style.fontSize = (fs+3) + 'px';
+        ta.style.display = _v.ta ? 'block' : 'none';
+        var en = document.getElementById('read-en');
+        en.textContent = _v.en ? '"' + _v.en + '"' : '';
+        en.style.fontSize = fs + 'px';
+        document.getElementById('read-div').style.background = c;
+        var badge = document.getElementById('read-badge');
+        badge.textContent = _v.ref;
+        badge.style.cssText = 'background:'+c+';color:#fff';
+        document.getElementById('au-ref').textContent = _v.ref;
+        if(window.AU&&_v) AU._prepareVerse(_v);
+        ov.classList.add('on');
+      },
+      close: function(){
+        AU.stop();
+        document.getElementById('read-ov').classList.remove('on');
+        _v = null;
+      },
+      fs: function(d){
+        ST.setFs(ST.g('fs') + d);
+        var f = ST.g('fs');
+        document.getElementById('read-ta').style.fontSize = (f+3) + 'px';
+        document.getElementById('read-en').style.fontSize = f + 'px';
+      }
+    };
+  })();
+
+  /* ── CHAPTER READER ── */
+  var CR = (function(){
+    var _bk = '', _ch = 1, _mx = 1, _sl = 'both';
+    function render(){
+      var vs = BD.byBookCh(_bk, _ch);
+      var c = BD.colorOf(_bk);
+      var bi = BD.BEN.indexOf(_bk);
+      document.getElementById('ch-bar').style.background = c;
+      document.getElementById('ch-title').textContent = (BD.BTA[bi]||_bk) + ' — Chapter ' + _ch;
+      document.getElementById('ch-sub').textContent = _bk + ' · ' + vs.length + ' verses';
+      document.getElementById('ch-jump').textContent = 'Ch ' + _ch + '/' + _mx;
+      var sTA = _sl==='ta'||_sl==='both', sEN = _sl==='en'||_sl==='both';
+      var h = '';
+      vs.forEach(function(v){
+        h += '<div class="chv">' +
+          '<div class="chvn">' + _ch + ':' + v.v + '</div>' +
+          '<div class="chvcol">' +
+            (sTA&&v.ta ? '<div class="chvta">'+v.ta+'</div>' : '') +
+            (sEN&&v.en ? '<div class="chven">'+v.en+'</div>' : '') +
+          '</div></div>';
       });
-      el.innerHTML=h;
-    } else {
-      // Show accordion by category
-      var h='';
-      TAMIL_SONGS.categories.forEach(function(cat){
-        h+='<div style="border-bottom:1px solid var(--border)">'+
-           '<div class="song-cat-hdr" style="background:'+cat.color+'" onclick="SS_Songs.toggle(''+cat.id+'')">'+
-             '<div><div class="song-cat-title">'+cat.icon+' '+cat.title_ta+'</div>'+
-             '<div class="song-cat-en">'+cat.title_en+' · '+cat.songs.length+' songs</div></div>'+
-             '<div class="song-cat-arrow" id="arr-'+cat.id+'">∨</div>'+
-           '</div>'+
-           '<div class="song-cat-body" id="cat-'+cat.id+'">';
-        cat.songs.forEach(function(s){
-          h+='<div class="song-item" onclick="SongD.open(''+cat.id+'_'+s.no+'')">'+
-             '<span class="song-num">'+s.no+'</span>'+
-             '<div style="flex:1"><div class="song-title-ta">'+s.title_ta+'</div><div class="song-title-en">'+s.title_en+'</div></div>'+
-             '<span class="song-arrow">›</span></div>';
+      document.getElementById('ch-body').innerHTML = h ||
+        '<div class="empty"><div class="emtxt">No verses found</div></div>';
+      document.getElementById('ch-body').scrollTop = 0;
+      document.getElementById('ch-prev').disabled = _ch <= 1;
+      document.getElementById('ch-next').disabled = _ch >= _mx;
+      ['ta','en','both'].forEach(function(l){
+        var b = document.getElementById('ch-'+l+'-btn');
+        if (b) b.classList.toggle('on', _sl===l);
+      });
+    }
+    return {
+      open: function(bk, ch){
+        _bk = bk;
+        var vs = BD.byBook(bk);
+        _mx = vs.reduce(function(m,v){ return Math.max(m,v.ch); }, 1);
+        _ch = parseInt(ch,10) || 1;
+        var dk = ST.g('theme')==='dark';
+        document.getElementById('ch-ov').style.background = dk?'#06060e':'#f5f0e6';
+        render();
+        document.getElementById('ch-ov').classList.add('on');
+      },
+      close: function(){ AU.stop(); document.getElementById('ch-ov').classList.remove('on'); },
+      prev: function(){ if(_ch>1){ _ch--; render(); } },
+      next: function(){ if(_ch<_mx){ _ch++; render(); } },
+      jump: function(){
+        var n = parseInt(prompt('Chapter (1–'+_mx+'):',''),10);
+        if (n>=1 && n<=_mx){ _ch=n; render(); }
+      },
+      showLang: function(l){ _sl=l; render(); },
+      get _bk(){ return _bk; },
+      get _ch(){ return _ch; }
+    };
+  })();
+
+  /* ── CHARACTER DETAIL ── */
+  var CD = (function(){
+    return {
+      open: function(cid){
+        if (typeof BIBLE_CHARACTERS === 'undefined') return;
+        var ch = BIBLE_CHARACTERS.find(function(c){ return c.id===cid; });
+        if (!ch) return;
+        var dk = ST.g('theme')==='dark';
+        document.getElementById('char-ov').style.background = dk?'#06060e':'#f5f0e6';
+        document.getElementById('char-bar').style.background = ch.color;
+        var nameEl = document.getElementById('cd-name');
+        nameEl.textContent = ch.name;
+        nameEl.setAttribute('data-cid', cid);
+        document.getElementById('cd-ta-name').textContent = ch.ta_name;
+        document.getElementById('cd-era').textContent = ch.era + ' · ' + ch.testament;
+        document.getElementById('cd-emi').textContent = ch.emoji;
+        document.getElementById('cd-body').innerHTML = buildDetail(ch);
+        document.getElementById('char-ov').classList.add('on');
+      },
+      close: function(){ AU.stop(); document.getElementById('char-ov').classList.remove('on'); }
+    };
+
+    function esc(s){
+      return JSON.stringify(s).slice(1,-1).replace(/'/g,"\\'");
+    }
+
+    function buildDetail(ch){
+      var col = ch.color, h = '', cid = ch.id;
+      if (!window._ttsQueue) window._ttsQueue = {};
+      window._ttsQueue[cid+'_bio_ta']   = ch.summary_ta;
+      window._ttsQueue[cid+'_bio_en']   = ch.summary_en;
+      window._ttsQueue[cid+'_story_ta'] = ch.summary_ta + ' ' + ch.lessons_ta.join(' ');
+      window._ttsQueue[cid+'_story_en'] = ch.summary_en + ' ' + ch.lessons_en.join(' ');
+      ch.verses.forEach(function(v,i){
+        window._ttsQueue[cid+'_v'+i+'_ta'] = v.ta;
+        window._ttsQueue[cid+'_v'+i+'_en'] = v.en;
+      });
+
+      h += '<div class="csec">';
+      h += '<div class="csl" style="display:flex;justify-content:space-between;align-items:center">';
+      h += '<span>BIOGRAPHY · சுயசரிதை</span>';
+      h += '<button onclick="window._ttsQ(\'' + cid + '_bio\')" style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:var(--gold);font-size:9px;font-weight:700;padding:3px 10px;border-radius:4px;font-family:var(--sans)">🔊 LISTEN</button>';
+      h += '</div>';
+      h += '<div class="csen">'+ch.summary_en+'</div>';
+      h += '<div class="csta">'+ch.summary_ta+'</div>';
+      h += '</div>';
+
+      h += '<div class="csec"><div class="csl">LIFE TIMELINE · காலவரிசை</div>';
+      ch.timeline.forEach(function(t,i){
+        var last = i === ch.timeline.length - 1;
+        h += '<div class="tli"><div class="tlcol"><div class="tldot" style="background:'+col+'"></div>';
+        h += (last ? '' : '<div class="tlline"></div>') + '</div>';
+        h += '<div style="flex:1;padding-bottom:'+(last?'0':'10px')+'"><div class="tlref">'+t.ref+'</div>';
+        h += '<div class="tlen">'+t.en+'</div><div class="tlta">'+t.ta+'</div></div></div>';
+      });
+      h += '</div>';
+
+      h += '<div class="csec"><div class="csl">KEY VERSES · முக்கிய வசனங்கள்</div>';
+      ch.verses.forEach(function(v,i){
+        h += '<div class="kv" style="border-left-color:'+col+'">';
+        h += '<div class="kvref" style="display:flex;justify-content:space-between;align-items:center">';
+        h += '<span>'+v.ref+'</span>';
+        h += '<button onclick="window._ttsQ(\'' + cid + '_v'+i+'\')" style="background:'+col+'22;border:1px solid '+col+'55;color:'+col+';font-size:8px;font-weight:700;padding:2px 8px;border-radius:3px;font-family:var(--sans)">🔊</button>';
+        h += '</div>';
+        h += '<div class="kvta">'+v.ta+'</div>';
+        h += '<div class="kven">'+v.en+'</div>';
+        h += '</div>';
+      });
+      h += '</div>';
+
+      h += '<div class="csec"><div class="csl">LIFE LESSONS · படிப்பினைகள்</div>';
+      ch.lessons_en.forEach(function(l,i){
+        h += '<div class="lesn"><div class="lesnn">'+(i+1)+'</div>';
+        h += '<div><div class="lesen">'+l+'</div><div class="lesta">'+(ch.lessons_ta[i]||'')+'</div></div></div>';
+      });
+      h += '</div>';
+
+      h += '<div class="csec" style="background:var(--bg3);text-align:center">';
+      h += '<div class="csl" style="text-align:center;justify-content:center">FULL STORY AUDIO · முழு கதை</div>';
+      h += '<button onclick="window._ttsQ(\'' + cid + '_story\')" style="width:100%;padding:14px;background:var(--gold);color:#06060e;font-size:13px;font-weight:700;border:none;border-radius:6px;font-family:var(--sans)">🔊 READ FULL STORY</button>';
+      h += '</div>';
+
+      h += '<div class="ad" style="height:70px"><span class="adlbl">ADVERTISEMENT</span></div>';
+      return h;
+    }
+  })();
+
+  /* ── VERSES SCREEN ── */
+  var SV = {
+    _pg: 0, _ps: 25, _fl: null, _lang: 'both',
+    build: function(){ this._fl=null; this._pg=0; this._rlb(); this._render(); },
+    setLang: function(l){ this._lang=l; ST.setLang(l); this._rlb(); this._render(); },
+    _rlb: function(){
+      document.querySelectorAll('#v-ltog button').forEach(function(b,i){
+        b.classList.toggle('on', ['ta','en','both'][i]===SV._lang);
+      });
+    },
+    filter: function(q){
+      this._pg = 0;
+      if (!q.trim()){ this._fl=null; }
+      else {
+        var ql = q.toLowerCase();
+        this._fl = BD.all().filter(function(v){
+          return v.ta.indexOf(q)!==-1 ||
+                 v.en.toLowerCase().indexOf(ql)!==-1 ||
+                 v.ref.toLowerCase().indexOf(ql)!==-1 ||
+                 v.book.toLowerCase().indexOf(ql)!==-1 ||
+                 v.bookTa.indexOf(q)!==-1;
         });
-        h+='</div></div>';
-      });
-      el.innerHTML=h;
+      }
+      this._render();
+    },
+    _render: function(){
+      var all = this._fl || BD.all();
+      var tp = all.length, pg = this._pg, ps = this._ps;
+      var sl = all.slice(pg*ps, (pg+1)*ps);
+      var tpg = Math.ceil(tp/ps);
+      document.getElementById('v-pgi').textContent = (pg+1)+'/'+tpg+' — '+tp.toLocaleString()+' verses';
+      document.getElementById('v-prev').disabled = pg===0;
+      document.getElementById('v-next').disabled = pg>=tpg-1;
+      var prev = ST.g('lang'); ST.setLang(this._lang);
+      R.list('v-list', sl, 'No verses found');
+      ST.setLang(prev);
+    },
+    prev: function(){
+      if (this._pg>0){ this._pg--; this._render(); document.getElementById('main').scrollTop=0; }
+    },
+    next: function(){
+      var all=this._fl||BD.all(), mx=Math.ceil(all.length/this._ps)-1;
+      if (this._pg<mx){ this._pg++; this._render(); document.getElementById('main').scrollTop=0; }
     }
-  },
-  toggle:function(catId){
-    var body=document.getElementById('cat-'+catId);
-    var arr=document.getElementById('arr-'+catId);
-    if(!body)return;
-    var isOpen=body.classList.contains('open');
-    body.classList.toggle('open',!isOpen);
-    if(arr)arr.textContent=isOpen?'∨':'∧';
-    if(arr)arr.classList.toggle('open',!isOpen);
-  }
-};
+  };
 
-/* ═══ SONG DETAIL ═══ */
-var SongD=(function(){
-  function open(key){
-    var parts=key.split('_');
-    var catId=parts.slice(0,-1).join('_');
-    var no=parseInt(parts[parts.length-1]);
-    var cat=TAMIL_SONGS.categories.find(function(c){return c.id===catId;});
-    if(!cat)return;
-    var s=cat.songs.find(function(x){return x.no===no;});
-    if(!s)return;
-    var dk=ST.g('theme')==='dark';
-    document.getElementById('song-ov').style.background=dk?'#06060e':'#f5f0e2';
-    document.getElementById('songbar').style.background=cat.color;
-    document.getElementById('sg-name').textContent=s.title_ta;
-    document.getElementById('sg-en').textContent=s.title_en;
-    document.getElementById('sg-cat').textContent=cat.title_ta+' · '+cat.title_en;
-    // Format lyrics
-    var lyrics=s.lyrics_ta||'';
-    var h='<div style="display:flex;gap:4px;margin-bottom:16px">'+
-          '<button onclick="AU.speakText(''+lyrics.replace(/\n/g,' ').replace(/'/g,"\\'")+'','ta-IN')" style="flex:1;padding:8px;border:none;background:'+cat.color+';color:#fff;font-size:9px;font-weight:700;font-family:var(--sans)">🔊 கேள் · HEAR</button>'+
-          '</div>';
-    // Split by chorus marker
-    var parts2=lyrics.split(/க்ரஃபை:|chorus:/i);
-    h+='<div class="song-lyrics">'+parts2[0].trim()+'</div>';
-    if(parts2[1]){
-      h+='<div class="song-chorus-lbl">CHORUS · க்ரஃபை</div>';
-      h+='<div class="song-lyrics" style="background:var(--bg3);padding:12px;border-radius:4px">'+parts2[1].trim()+'</div>';
-    }
-    document.getElementById('sg-body').innerHTML=h;
-    document.getElementById('song-ov').classList.add('on');
-  }
-  function close(){document.getElementById('song-ov').classList.remove('on');}
-  return{open:open,close:close};
-})();
+  /* ── AI SEARCH SCREEN ── */
+  var SA = {
+    TOPICS: ['love·அன்பு','faith·விசுவாசம்','hope·நம்பிக்கை','peace·சமாதானம்',
+             'strength·வலிமை','prayer·ஜெபம்','fear·பயம்','salvation·இரட்சிப்பு',
+             'grace·கிருபை','mercy·இரக்கம்','forgiveness·மன்னிப்பு','heaven·பரலோகம்',
+             'jesus·இயேசு','god·தேவன்','wisdom·ஞானம்','comfort·ஆறுதல்',
+             'healing·சுகம்','joy·சந்தோஷம்','truth·சத்தியம்','eternal·நித்தியம்',
+             'sin·பாவம்','repentance·மனஞ்சதாபம்','holy spirit·பரிசுத்த ஆவி',
+             'resurrection·உயிர்தெழுதல்','trust·நம்பிக்கை','light·வெளிச்சம்'],
+    _results: [],  // all matching verses
+    _page: 0,
+    _pageSize: 30, // 30 verses per page
 
-/* ═══ STORIES SCREEN ═══ */
-var SK={
-  _f:'All',
-  build:function(){
-    this._f='All';
-    document.getElementById('stor-filt').innerHTML=
-      [['All','All Stories'],['Old Testament','Old Testament'],['New Testament','New Testament']].map(function(x,i){
-        return '<button class="'+(i===0?'on':'')+'" onclick="SK.filt(''+x[0]+'')">'+x[1]+'</button>';
+    build: function(){
+      document.getElementById('ai-chips').innerHTML = this.TOPICS.map(function(t){
+        var q = t.split('·')[0];
+        return '<button class="chip" onclick="SA.chip(\''+q+'\')" >'+t+'</button>';
       }).join('');
-    this._render();
-  },
-  filt:function(f){this._f=f;document.querySelectorAll('#stor-filt button').forEach(function(b,i){b.classList.toggle('on',['All','Old Testament','New Testament'][i]===f);});this._render();},
-  _render:function(){
-    var f=this._f;
-    var stories=KIDS_STORIES.filter(function(s){return f==='All'||s.category===f;});
-    var h='';
-    stories.forEach(function(s){
-      h+='<div class="ctile" style="background:'+s.color+'" onclick="StD.open(''+s.id+'')">'+
-         '<div class="cemi">'+s.icon+'</div>'+
-         '<div><div class="cn">'+s.title_en+'</div><div class="cnt">'+s.title_ta+'</div>'+
-         '<div class="ce">'+s.category+' · '+s.verse_ref+'</div></div>'+
-         '<button class="cbtn">READ & HEAR ▶</button></div>';
-    });
-    document.getElementById('stor-grid').innerHTML=h;
+      this._renderPage();
+    },
+    _renderPage: function(){
+      var pg = this._page, ps = this._pageSize;
+      var total = this._results.length;
+      var slice = this._results.slice(pg*ps, (pg+1)*ps);
+      var info = document.getElementById('ai-page-info');
+      var prev = document.getElementById('ai-prev');
+      var next = document.getElementById('ai-next');
+      if (info) {
+        if (total > 0)
+          info.textContent = 'Page '+(pg+1)+' of '+Math.ceil(total/ps)+' — '+total.toLocaleString()+' verses found';
+        else
+          info.textContent = '';
+      }
+      if (prev) prev.disabled = pg===0;
+      if (next) next.disabled = (pg+1)*ps >= total;
+      R.list('ai-list', slice, 'NO RESULTS — Try: love, அன்பு, Psalm 23, John 3:16');
+    },
+    run: function(){
+      var q = document.getElementById('ai-srch').value;
+      if (!q.trim()) return;
+      this._results = BD.search(q);
+      this._page = 0;
+      document.querySelectorAll('#ai-chips .chip').forEach(function(c){
+        c.classList.toggle('on', c.textContent.indexOf(q)===0);
+      });
+      this._renderPage();
+    },
+    chip: function(t){
+      document.getElementById('ai-srch').value = t;
+      this.run();
+    },
+    prevPage: function(){
+      if (this._page > 0){ this._page--; this._renderPage();
+        document.getElementById('s-search').scrollTop=0; }
+    },
+    nextPage: function(){
+      if ((this._page+1)*this._pageSize < this._results.length){
+        this._page++; this._renderPage();
+        document.getElementById('s-search').scrollTop=0;
+      }
+    }
   }
-};
+  var SB = {
+    _f: 'ALL',
+    build: function(){
+      this._f = 'ALL';
+      document.getElementById('b-filt').innerHTML = [['ALL','All (66)'],['OT','Old (39)'],['NT','New (27)']].map(function(x,i){
+        return '<button class="'+(i===0?'on':'')+'" onclick="SB.filt(\''+x[0]+'\')">'+x[1]+'</button>';
+      }).join('');
+      this._render();
+    },
+    filt: function(f){
+      this._f = f;
+      document.querySelectorAll('#b-filt button').forEach(function(b,i){
+        b.classList.toggle('on', ['ALL','OT','NT'][i]===f);
+      });
+      this._render();
+    },
+    _render: function(){
+      var f = this._f, h = '';
+      BD.BEN.forEach(function(nm, bi){
+        var t = bi<39?'OT':'NT';
+        if (f!=='ALL' && t!==f) return;
+        var c = BD.CLR[bi%BD.CLR.length];
+        var vs = BD.byBook(nm);
+        var mx = vs.reduce(function(m,v){ return Math.max(m,v.ch); }, 1);
+        h += '<div class="btile" style="background:'+c+'" onclick="CR.open(\''+nm+'\',1)">' +
+          '<div>' +
+            '<div class="bne">'+nm+'</div>' +
+            '<div class="bnt">'+BD.BTA[bi]+'</div>' +
+            '<div class="bm">'+mx+' ch · '+vs.length+' verses</div>' +
+          '</div>' +
+          '<div class="bb">' +
+            '<button onclick="event.stopPropagation();CR.open(\''+nm+'\',1)">📖 Ch 1</button>' +
+            '<button onclick="event.stopPropagation();CR.open(\''+nm+'\','+mx+')">Ch '+mx+' ▶</button>' +
+          '</div>' +
+        '</div>';
+      });
+      document.getElementById('b-grid').innerHTML = h;
+    }
+  };
 
+  /* ── CHARACTERS SCREEN ── */
+  var SC = {
+    build: function(){
+      if (typeof BIBLE_CHARACTERS === 'undefined'){ return; }
+      var h = '';
+      BIBLE_CHARACTERS.forEach(function(c){
+        h += '<div class="ctile" style="background:'+c.color+'" onclick="CD.open(\''+c.id+'\')">'+
+          '<div class="cemi">'+c.emoji+'</div>'+
+          '<div>'+
+            '<div class="cn">'+c.name+'</div>'+
+            '<div class="cnt">'+c.ta_name+'</div>'+
+            '<div class="ce">'+c.era+'</div>'+
+            '<div class="ctl">'+c.tagline_en+'</div>'+
+          '</div>'+
+          '<div class="cbtn">READ STORY ▶</div>'+
+        '</div>';
+      });
+      document.getElementById('c-grid').innerHTML = h;
+    }
+  };
+
+  /* ── SAVED SCREEN ── */
+  var SS = {
+    build: function(){
+      var ids = ST.saved();
+      var vs = ids.map(function(id){ return BD.byId(id); }).filter(Boolean);
+      document.getElementById('saved-lbl').textContent = ids.length + ' SAVED';
+      R.list('saved-list', vs, 'TAP ♡ ON ANY VERSE TO SAVE');
+    }
+  };
+
+  /* ── APP CONTROLLER ── */
+  var App = {
+    nav: function(s){
+      document.querySelectorAll('.scr').forEach(function(e){
+        e.classList.toggle('on', e.id==='s-'+s);
+      });
+      document.querySelectorAll('.nb').forEach(function(b){
+        b.classList.toggle('on', b.dataset.s===s);
+      });
+      if (s==='saved') SS.build();
+      document.getElementById('main').scrollTop = 0;
+    },
+    save: function(id){
+      var now = ST.toggleSave(id);
+      var v = BD.byId(id); if (!v) return;
+      var c = BD.colorOf(v.book);
+      var btn = document.getElementById('sb'+id);
+      if (btn){
+        btn.textContent = now ? '♥ சேமித்தது' : '♡ SAVE';
+        btn.style.background = now ? c : '';
+        btn.style.color = now ? '#fff' : '';
+      }
+      var vc = document.getElementById('vc'+id);
+      if (vc) vc.classList.toggle('saved-highlight', now);
+    },
+    copy: function(id){
+      var v = BD.byId(id); if (!v) return;
+      var text = v.ta + '\n' + v.en + '\n— ' + v.ref;
+      if (navigator.clipboard && navigator.clipboard.writeText)
+        navigator.clipboard.writeText(text).catch(function(){});
+      var btn = document.getElementById('cb'+id);
+      if (btn){ var o=btn.textContent; btn.textContent='✓ COPIED'; setTimeout(function(){ btn.textContent=o; },2000); }
+    },
+    audio: function(id){
+      var v=BD.byId(id); if(!v) return;
+      AU.stop();
+      setTimeout(function(){ AU._setVerseAndPlay(v); }, 150);
+    },
+    cycleLang: function(){
+      var ls=['both','ta','en'], cur=ST.g('lang'), ni=(ls.indexOf(cur)+1)%3;
+      ST.setLang(ls[ni]);
+      document.getElementById('lang-btn').textContent = ls[ni].toUpperCase();
+    },
+    setTheme: function(t){
+      var cur = ST.g('theme'); if (t === cur) return;
+      ST.setTheme(t);
+      if (t==='light') document.documentElement.setAttribute('data-light','');
+      else document.documentElement.removeAttribute('data-light');
+      document.getElementById('th-btn').textContent = t==='dark' ? '☀' : '🌙';
+    },
+    theme: function(){
+      var t = ST.g('theme')==='dark' ? 'light' : 'dark';
+      ST.setTheme(t);
+      if (t==='light') document.documentElement.setAttribute('data-light','');
+      else document.documentElement.removeAttribute('data-light');
+      document.getElementById('th-btn').textContent = t==='dark' ? '☀' : '🌙';
+    }
+  };
+
+  /* ── BOOT ── */
+  // Apply saved theme
+  if (ST.g('theme')==='light') document.documentElement.setAttribute('data-light','');
+  document.getElementById('th-btn').textContent = ST.g('theme')==='dark' ? '☀' : '🌙';
+  document.getElementById('lang-btn').textContent = ST.g('lang').toUpperCase();
+
+  // Build Bible index
+  var cnt = BD.build();
+  document.getElementById('ai-count').textContent = cnt.toLocaleString() + ' VERSES · TAMIL + ENGLISH · OFFLINE';
+
+  // Expose all modules to global scope for onclick handlers
+  window.App = App;
+  window.AU  = AU;
+  window.RM  = RM;
+  window.CR  = CR;
+  window.CD  = CD;
+  window.SV  = SV;
+  window.SA  = SA;
+  window.SB  = SB;
+  window.SC  = SC;
+  window.SS  = SS;
+  window.BD  = BD;
+
+  // Build all screens
+
+  /* == SETTINGS == */
+  var Settings = {
+    init: function(){ this.updateUI(); this.updateTTSStatus(); },
+    setAudioLang: function(l){
+      ST.setAudioLang(l); this.updateUI();
+      var test = l==='ta' ? 'தமிழ் தேர்ந்தெடுக்கப்பட்டது' : 'English selected';
+      AU.speakText(test);
+    },
+    updateUI: function(){
+      var l = ST.g('audioLang') || 'ta';
+      ['ta','en'].forEach(function(x){
+        var b = document.getElementById('set-lang-'+x);
+        if (!b) return;
+        b.style.border = l===x ? '2px solid var(--gold)' : '2px solid var(--border)';
+        b.style.background = l===x ? 'rgba(201,168,76,.2)' : 'var(--bg3)';
+        b.style.color = l===x ? 'var(--gold)' : 'var(--text2)';
+      });
+      var st = document.getElementById('set-lang-status');
+      if (st) st.textContent = l==='ta' ? '✓ Tamil audio active for all 🔊 buttons' : '✓ English audio active for all 🔊 buttons';
+    },
+    updateTTSStatus: function(){
+      var el = document.getElementById('tts-status-text'); if (!el) return;
+      var s = AU.checkStatus();
+      el.textContent = s;
+      el.style.color = s.indexOf('✓') >= 0 ? '#5fcc80' : 'rgba(255,100,100,.8)';
+    },
+    testAudio: function(){
+      var l = ST.g('audioLang') || 'ta';
+      var t = l==='ta' ? 'ஆதியிலே தேவன் வானத்தையும் பூமியையும் சிருஷ்டித்தார்' : 'In the beginning God created the heaven and the earth.';
+      AU.speakText(t);
+      setTimeout(function(){ Settings.updateTTSStatus(); }, 2000);
+    },
+    openTTSSettings: function(){
+      try{ if(window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App)
+        window.Capacitor.Plugins.App.openUrl({url:'com.android.settings.TTS_SETTINGS'}).catch(function(){});
+      }catch(e){}
+      var el = document.getElementById('tts-status-text');
+      if (el) el.textContent = 'Go to: Settings > General Management > Language > TTS > Google TTS > Install Tamil';
+    }
+  };
+
+  /* == _ttsQ: global single-button audio helper == */
+  window._ttsQ = function(key){
+    if (!window._ttsQueue) return;
+    var l  = ST.g('audioLang') || 'ta';
+    var ta = window._ttsQueue[key + '_ta'];
+    var en = window._ttsQueue[key + '_en'];
+    var text = l === 'ta' ? (ta || en) : (en || ta);
+    if (!text) return;
+    AU.speakText(text);
+  };
+
+  window.App=App;window.AU=AU;window.RM=RM;window.CR=CR;window.Settings=Settings;
+  window.CD=CD;window.SV=SV;window.SA=SA;window.SB=SB;
+  window.SC=SC;window.SS=SS;window.BD=BD;
+  window._ttsSpeak=function(key,lc){
+    var t=window._ttsQueue&&window._ttsQueue[key];
+    if(t)window.AU.speakText(t,lc);
+  };
+  SV.build(); SA.build(); SB.build(); SC.build(); Settings.init();
+
+  // Build home screen
+  var daily = BD.daily();
+  var highlight = BD.highlighted();
+
+  if (daily) {
+    var dc = daily.color;
+    var h = '';
+    // Clock tile
+    h += '<div class="tile clk" style="background:#0a0a1e">' +
+      '<div class="clk-t" id="clk-t">--:--</div>' +
+      '<div class="clk-d" id="clk-d"></div>' +
+    '</div>';
+    // Daily verse tile
+    h += '<div class="tile w2" style="background:'+dc+'" onclick="RM.open('+daily.id+')">' +
+      '<div class="d-tag">TODAY · இன்றைய வசனம்</div>' +
+      '<div class="d-ta">'+(daily.ta.length>100?daily.ta.slice(0,100)+'…':daily.ta)+'</div>' +
+      '<div class="d-en">'+(daily.en.length>90?daily.en.slice(0,90)+'…':daily.en)+'</div>' +
+      '<div class="d-ref">'+daily.ref+'</div>' +
+      '<div class="d-btns">' +
+        '<button class="d-btn" onclick="event.stopPropagation();App.audio('+daily.id+')">🔊 AUDIO</button>' +
+        '<button class="d-btn" onclick="event.stopPropagation();RM.open('+daily.id+')">📖 READ</button>' +
+        '<button class="d-btn" onclick="event.stopPropagation();CR.open(\''+daily.book+'\','+daily.ch+')">📖 CHAPTER</button>' +
+      '</div>' +
+    '</div>';
+    // Quick nav tiles
+    [
+      {l:'✦ AI SEARCH', s:'search', c:'#2d0a5e', sub:'31,102 verses · Tamil+English'},
+      {l:'👤 CHARACTERS', s:'chars', c:'#3a1a00', sub:(typeof BIBLE_CHARACTERS!=='undefined'?BIBLE_CHARACTERS.length:11)+' Bible stories'},
+      {l:'📖 66 BOOKS', s:'books', c:'#0d2e0d', sub:'All chapters · Audio'},
+      {l:'♥ SAVED', s:'saved', c:'#3a0a0a', sub:ST.saved().length+' saved'}
+    ].forEach(function(t){
+      h += '<div class="tile" style="background:'+t.c+'" onclick="App.nav(\''+t.s+'\')">' +
+        '<div class="tl">'+t.l+'</div>' +
+        '<div class="ts">'+t.sub+'</div>' +
+        '<div class="t-arr">›</div>' +
+      '</div>';
+    });
+    document.getElementById('home-tiles').innerHTML = h;
+    document.getElementById('home-cnt').textContent = cnt.toLocaleString() + ' verses';
+  }
+
+  // Highlighted verse card
+  if (highlight) {
+    var hc = highlight;
+    document.getElementById('home-highlight').innerHTML =
+      '<div class="highlight-card" onclick="RM.open('+hc.id+')">' +
+        '<div class="hc-tag">✦ VERSE OF THE WEEK · இந்த வார வசனம்</div>' +
+        '<div class="hc-ta">'+hc.ta+'</div>' +
+        '<div class="hc-en">'+hc.en+'</div>' +
+        '<div class="hc-ref">'+hc.ref+'</div>' +
+        '<div class="hc-btns">' +
+          '<button class="hc-btn primary" onclick="event.stopPropagation();RM.open('+hc.id+')">📖 READ</button>' +
+          '<button class="hc-btn" onclick="event.stopPropagation();App.audio('+hc.id+')">🔊 AUDIO</button>' +
+          '<button class="hc-btn" onclick="event.stopPropagation();App.save('+hc.id+')">♡ SAVE</button>' +
+          '<button class="hc-btn" onclick="event.stopPropagation();CR.open(\''+hc.book+'\','+hc.ch+')">📖 CHAPTER</button>' +
+        '</div>' +
+      '</div>';
+  }
+
+  // Show first 8 verses on home
+  R.list('home-vv', BD.all().slice(0, 8));
+
+  // Live clock
+  function tick(){
+    var n = new Date();
+    var te = document.getElementById('clk-t');
+    var de = document.getElementById('clk-d');
+    if (te) te.textContent = n.toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true});
+    if (de) de.textContent = n.toLocaleDateString('ta',{weekday:'long',day:'numeric',month:'long'});
+  }
+  tick(); setInterval(tick, 1000);
+
+  // Show app, hide loader
+  // AdMob init (3s delay prevents crash)
+  setTimeout(function(){try{
+    var am=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.AdMob;
+    if(!am)return;
+    am.initialize({initializeForTesting:false}).then(function(){
+      am.showBanner({adId:'ca-app-pub-9057426786910647/4989165114',adSize:'BANNER',position:'BOTTOM_CENTER',margin:0,isTesting:false}).catch(function(){});
+      am.prepareInterstitial({adId:'ca-app-pub-9057426786910647/4989165114',isTesting:false}).catch(function(){});
+    }).catch(function(){});
+  }catch(e){}},3000);
+
+  document.getElementById('h-sub').textContent = cnt.toLocaleString() + ' VERSES · TAMIL+ENGLISH · ' +
+    (typeof BIBLE_CHARACTERS!=='undefined'?BIBLE_CHARACTERS.length:11) + ' CHARACTERS';
+  document.getElementById('ls').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+
+  } // end bootApp
+
+  // Start loading
+  sp(3, 'Initialising…', '');
+  loadNext(0);
+
+})();
 </script>
-
-<!-- STORY DETAIL OVERLAY -->
-<div id="story-ov">
-  <div class="stbar" id="stbar">
-    <div style="display:flex;align-items:center;gap:10px">
-      <button class="rcbtn" style="width:32px;height:32px;font-size:14px;flex-shrink:0" onclick="StD.close()">←</button>
-      <div>
-        <div id="st-name" style="font-size:14px;font-weight:700;color:#fff;font-family:var(--sans)"></div>
-        <div id="st-ta-name" style="font-size:12px;color:rgba(255,255,255,.7);font-family:var(--ta2)"></div>
-      </div>
-    </div>
-    <div id="st-emi" style="font-size:28px"></div>
-  </div>
-  <div class="stbody" id="st-body"></div>
-</div>
-
-<!-- SONG DETAIL OVERLAY -->
-<div id="song-ov">
-  <div class="songbar" id="songbar">
-    <div style="display:flex;align-items:center;gap:10px">
-      <button class="rcbtn" style="width:32px;height:32px;font-size:14px;flex-shrink:0" onclick="SongD.close()">←</button>
-      <div>
-        <div id="sg-name" style="font-size:14px;font-weight:700;color:#fff;font-family:var(--ta2)"></div>
-        <div id="sg-en" style="font-size:10px;color:rgba(255,255,255,.65);font-family:var(--sans)"></div>
-        <div id="sg-cat" style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--sans)"></div>
-      </div>
-    </div>
-    <button class="rcbtn" style="padding:0 10px;height:28px;font-size:9px;font-weight:700;font-family:var(--sans)" onclick="AU.speakText(document.getElementById('sg-body').textContent,'ta-IN')">🔊</button>
-  </div>
-  <div class="songbody" id="sg-body"></div>
-</div>
-
 </body>
 </html>
