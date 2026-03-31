@@ -1,0 +1,167 @@
+<!-- ═══════════════════════════════════════════════════════════
+     INTEGRATION GUIDE — Add these to your index.html
+     ═══════════════════════════════════════════════════════════ -->
+
+<!-- ─────────────────────────────────────────────────
+     STEP 1: Add in <head> section
+     ───────────────────────────────────────────────── -->
+<head>
+  <!-- ...your existing head content... -->
+
+  <!-- NEW: Add this CSS link -->
+  <link rel="stylesheet" href="css/songs-fixes.css">
+</head>
+
+
+<!-- ─────────────────────────────────────────────────
+     STEP 2: Add inside <body> at the very top
+     (before <div id="app">)
+     ───────────────────────────────────────────────── -->
+<body>
+  <!-- NEW: Offline indicator bar -->
+  <div class="offline-bar" id="offlineBar" style="display:none">
+    <span>📶 Offline mode — showing cached data</span>
+    <button onclick="OfflineFallback.retry()">Retry</button>
+  </div>
+
+  <div id="app">
+    <!-- your existing app content -->
+  </div>
+
+
+<!-- ─────────────────────────────────────────────────
+     STEP 3: Add BEFORE </body> closing tag
+     (in correct order)
+     ───────────────────────────────────────────────── -->
+
+  <!-- Existing scripts keep running... -->
+
+  <!-- NEW: Add these 3 scripts at the bottom -->
+  <script src="js/songs-data.js"></script>
+  <script src="js/songs.js"></script>
+  <script src="js/fixes.js"></script>
+
+  <script>
+    // ── App Start ────────────────────────────────────
+    // Your existing deviceready or DOMContentLoaded:
+
+    document.addEventListener('deviceready', function() {
+      // NEW: Initialize all fixes
+      initAllFixes();
+
+      // Your existing init code continues below...
+      // initBibleApp();  ← keep your existing code
+    });
+  </script>
+
+</body>
+
+
+<!-- ─────────────────────────────────────────────────
+     STEP 4: Update your existing Songs button
+     Find your existing songs button and change it to:
+     ───────────────────────────────────────────────── -->
+
+<!-- OLD (your existing button — find and update onclick): -->
+<div class="menu-item" onclick="showSongsOld()">
+  <span>🎵</span><span>பாடல்கள்</span>
+</div>
+
+<!-- NEW (replace onclick with SongsScreen.render): -->
+<div class="menu-item" onclick="SongsScreen.render()">
+  <span>🎵</span><span>பாடல்கள்</span>
+</div>
+
+
+<!-- ─────────────────────────────────────────────────
+     STEP 5: Add Bookmark button to each verse
+     Find your verse rendering code and add this icon:
+     ───────────────────────────────────────────────── -->
+
+<!-- Inside your verse render function, add bookmark button: -->
+<script>
+function renderVerseWithBookmark(verse) {
+  const ref = `${verse.book_name_en} ${verse.chapter}:${verse.verse_num}`;
+  const isBookmarked = Bookmarks.isBookmarked(ref);
+  return `
+    <div class="verse-block">
+      <div class="verse-num">${verse.verse_num}</div>
+      <div class="verse-text-ta" style="font-size: var(--verse-ta-font-size)">${verse.text_ta}</div>
+      <div class="verse-text-en" style="font-size: var(--verse-font-size)">${verse.text_en}</div>
+      <div class="verse-actions">
+        <button class="verse-action-btn" id="bm_${verse.verse_num}"
+          onclick="toggleVerseBookmark('${ref}', ${JSON.stringify(verse).replace(/'/g,'\\'')})">
+          ${isBookmarked ? '🔖' : '🏷️'}
+        </button>
+        <button class="verse-action-btn" onclick="shareVerse('${ref}', '${verse.text_en.replace(/'/g,"\\'")}')">
+          📤
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function toggleVerseBookmark(ref, verse) {
+  const saved = Bookmarks.save(verse);
+  if (saved) {
+    showToast('🔖 Bookmarked!');
+  } else {
+    Bookmarks.remove(ref);
+    showToast('🗑 Bookmark removed');
+  }
+  // Refresh icon
+  const btn = document.getElementById(`bm_${verse.verse_num}`);
+  if (btn) btn.innerHTML = Bookmarks.isBookmarked(ref) ? '🔖' : '🏷️';
+}
+</script>
+
+
+<!-- ─────────────────────────────────────────────────
+     STEP 6: Add Bookmarks + Settings to home menu
+     Find your home screen menu items and add:
+     ───────────────────────────────────────────────── -->
+
+<!-- Add these to your home screen grid/menu -->
+<div class="menu-item" onclick="Bookmarks.renderScreen()">
+  <span>🔖</span><span>Bookmarks</span>
+</div>
+
+<div class="menu-item" onclick="showSettings()">
+  <span>⚙️</span><span>Settings</span>
+</div>
+
+
+<!-- ─────────────────────────────────────────────────
+     STEP 7: Audio Files — Add your MP3 files
+     Create this folder structure in www/:
+     ───────────────────────────────────────────────── -->
+<!--
+  www/
+  └── audio/
+      ├── hymns/
+      │   ├── h001.mp3   ← பாமாலைகள் songs
+      │   ├── h002.mp3
+      │   └── ...
+      ├── keerthanai/
+      │   ├── k001.mp3   ← கீர்த்தனைகள் 1
+      │   └── ...
+      ├── keerthanai2/   ← கீர்த்தனைகள் 2
+      ├── praise1/       ← துதிப் பாடல்கள் 1
+      ├── praise2/       ← துதிப் பாடல்கள் 2
+      ├── praise3/       ← துதிப் பாடல்கள் 3
+      ├── new/           ← Praise and Worship NEW
+      ├── chorus/        ← சரணங்கள்
+      └── christmas/     ← கிறிஸ்து பிறப்பு
+-->
+
+<!--
+  AUDIO FILE SOURCES (Free Tamil Christian MP3):
+  1. https://www.tamilchristiansongs.com
+  2. https://www.saathiyam.net
+  3. YouTube → convert via yt-dlp (personal use only)
+  4. Record your own with phone mic
+
+  To download via Termux:
+    pkg install yt-dlp ffmpeg
+    yt-dlp -x --audio-format mp3 "YouTube_URL" -o "www/audio/hymns/h001.mp3"
+-->
