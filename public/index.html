@@ -1,161 +1,40 @@
-    </div>
-  </header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bible Verses App</title>
+    <script src="data/characters.js"></script>
+    <script src="fixes.js"></script>
+    <script src="songs.js"></script>
+</head>
+<body>
+    <h1>Bible Verses App</h1>
+    <div id="app"></div>
+    <script>
+        const App = {
+            init() {
+                // Initialization logic here
+                console.log('App initialized');
+            },
+            fetchData() {
+                // Fetch data logic here
+                console.log('Fetching data...');
+            },
+            handleError(error) {
+                console.error('An error occurred:', error);
+                alert('Something went wrong!');
+            }
+        };
 
-  <main id="main">
-    
-    <section id="scr-home" class="scr on pb">
-      <div class="highlight-card" onclick="App.openHighlight()">
-        <div class="hc-tag">✦ VERSE OF THE WEEK</div>
-        <div class="hc-ta" id="hw-ta">கர்த்தர் என் மேய்ப்பராயிருக்கிறார்; நான் தாழ்ச்சியடையேன்.</div>
-        <div class="hc-en" id="hw-en">Yahweh is my shepherd: I shall lack nothing.</div>
-        <div class="hc-ref" id="hw-ref">சங்கீதம் (Psalms) 23:1</div>
-        <div class="hc-btns">
-          <button class="hc-btn primary">READ CHAPTER</button>
-          <button class="hc-btn">LISTEN 🔊</button>
-        </div>
-      </div>
-
-      <div class="dv-strip" onclick="App.openDaily()">
-        <div class="dv-tag">📅 DAILY VERSE</div>
-        <div class="dv-ta" id="hd-ta">தேவன் ஒளியாயிருக்கிறார், அவரில் எவ்வளவேனும் இருளில்லை...</div>
-        <div class="dv-ref" id="hd-ref">1 யோவான் 1:5</div>
-      </div>
-
-      <div class="home-grid">
-        <div class="tile" style="background:#181830; border:1px solid rgba(201,168,76,.12)" onclick="App.nav('search')">
-          <div class="tl">AI Search ✦</div>
-          <div class="ts">Topics & Keywords</div>
-          <div class="t-arr">→</div>
-        </div>
-        <div class="tile" style="background:#1a0a2e; border:1px solid rgba(201,168,76,.12)" onclick="App.nav('books')">
-          <div class="tl">Read Bible 📖</div>
-          <div class="ts">All 66 Books</div>
-          <div class="t-arr">→</div>
-        </div>
-      </div>
-
-      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 1</span></div>
-    </section>
-
-    <section id="scr-search" class="scr pb">
-      <div class="ai-hdr">
-        <div class="ai-hdr-t">AI SEARCH ✦</div>
-        <div class="ai-hdr-s">Find verses instantly offline</div>
-      </div>
-      <div class="sbar">
-        <input type="text" class="sinp" id="s-inp" placeholder="Search keyword or topic..."/>
-        <button class="sbtn" onclick="App.search()">⌕</button>
-      </div>
-      <div class="chips" id="s-chips">
-        <button class="chip on">Faith</button>
-        <button class="chip">Love</button>
-        <button class="chip">Healing</button>
-        <button class="chip">Forgiveness</button>
-      </div>
-      <div id="s-res">
-        </div>
-      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 2</span></div>
-    </section>
-
-    <section id="scr-books" class="scr pb">
-      <div class="bfilt">
-        <button class="on" onclick="App.filterBooks('all')">ALL</button>
-        <button onclick="App.filterBooks('ot')">OLD</button>
-        <button onclick="App.filterBooks('nt')">NEW</button>
-      </div>
-      <div class="bgrid" id="b-grid">
-        </div>
-    </section>
-
-    <section id="scr-chars" class="scr pb">
-      <div class="sh">
-        <div class="sht">BIBLE CHARACTERS</div>
-        <div class="shc">11 Stories</div>
-      </div>
-      <div class="cgrid" id="c-grid">
-        </div>
-      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 3</span></div>
-    </section>
-
-    <section id="scr-saved" class="scr pb">
-      <div class="sh">
-        <div class="sht">BOOKMARKS</div>
-        <div class="shc" id="sv-cnt">0 Verses</div>
-      </div>
-      <div id="sv-list">
-        <div class="empty">
-          <div class="emico">♥</div>
-          <div class="emtxt">NO VERSES SAVED YET</div>
-        </div>
-      </div>
-      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 4</span></div>
-    </section>
-
-  </main>
-
-  <nav id="nav">
-    <button class="nb on" onclick="App.nav('home')">
-      <span class="ni">⌂</span><span class="nl">HOME</span>
-    </button>
-    <button class="nb" onclick="App.nav('search')">
-      <span class="ni">⌕</span><span class="nl">SEARCH</span>
-    </button>
-    <button class="nb" onclick="App.nav('books')">
-      <span class="ni">📖</span><span class="nl">READ</span>
-    </button>
-    <button class="nb" onclick="App.nav('chars')">
-      <span class="ni">👤</span><span class="nl">PEOPLE</span>
-    </button>
-    <button class="nb" onclick="App.nav('saved')">
-      <span class="ni">♥</span><span class="nl">SAVED</span>
-    </button>
-  </nav>
-
-  <div id="au-panel">
-    <div class="auinner">
-      <button class="aucls" onclick="App.closeAudio()">×</button>
-      <div class="aut" id="au-t">READING...</div>
-      <div class="aur" id="au-r">Psalms 23</div>
-      <div class="aulng">
-        <button style="background:rgba(255,255,255,.1);color:#fff" onclick="App.setAudioLang('ta')">TAMIL</button>
-        <button style="background:rgba(255,255,255,.1);color:#fff" onclick="App.setAudioLang('en')">ENGLISH</button>
-      </div>
-      <div class="auctls">
-        <button style="background:rgba(255,255,255,.1);color:#fff" onclick="App.pauseAudio()">⏸ PAUSE</button>
-        <button style="background:rgba(201,168,76,.3);color:var(--gold)" onclick="App.stopAudio()">⏹ STOP</button>
-      </div>
-      <div class="auprog"><div class="aubar" id="au-bar"></div></div>
-    </div>
-  </div>
-
-  <div id="read-ov">
-    </div>
-
-  <div id="ch-ov">
-    </div>
-
-  <div id="char-ov">
-    </div>
-
-</div>
-
-<script src="public/data/characters.js"></script>
-<script>
-  // Shell Logic Placeholder
-  const App = {
-    cycleLang: () => console.log('Toggling Default Language'),
-    theme: () => document.body.toggleAttribute('data-light'),
-    nav: (screen) => {
-      document.querySelectorAll('.scr').forEach(el => el.classList.remove('on'));
-      document.querySelectorAll('.nb').forEach(el => el.classList.remove('on'));
-      document.getElementById('scr-' + screen).classList.add('on');
-      event.currentTarget.classList.add('on');
-    },
-    filterBooks: (type) => console.log('Filtering books by', type),
-    search: () => console.log('Running AI Search...'),
-    closeAudio: () => document.getElementById('au-panel').classList.remove('on')
-  };
-</script>
-
+        window.onload = () => {
+            try {
+                App.init();
+                App.fetchData();
+            } catch (error) {
+                App.handleError(error);
+            }
+        };
+    </script>
 </body>
 </html>
