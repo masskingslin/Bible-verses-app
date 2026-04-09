@@ -1,28 +1,101 @@
-name: Build
+name: Build Holy Bible APK v7
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type'
+        required: true
+        default: 'debug'
+        type: choice
+        options: [ debug, release ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 40
+
     steps:
+
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Build
-        run: echo "Building..."
+      - name: Setup Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
-      - name: Upload Artifact
+      - name: Install packages
+        run: npm install
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Android licenses
+        run: yes | sdkmanager --licenses || true
+
+      - name: Install Capacitor CLI
+        run: npm install -g @capacitor/cli@5
+
+      # FIX 5a: Copy icon.png into public/ BEFORE cap sync
+      - name: Copy icon to public folder
+        run: |
+          cp android-icons/mipmap-xxxhdpi/ic_launcher.png public/icon.png
+          cp android-icons/mipmap-xxxhdpi/ic_launcher.png public/icon-512.png
+          echo "icon.png ready in public/"
+
+      - name: Add Android platform
+        run: npx cap add android || true
+
+      - name: Sync web app to Android
+        run: npx cap sync android
+
+      # FIX 5b: Inject correct icon into every mipmap density folder
+      - name: Inject app icons into Android
+        run: |
+          ICON_SRC="android-icons"
+          ICON_DST="android/app/src/main/res"
+          for DENSITY in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            mkdir -p "$ICON_DST/mipmap-$DENSITY"
+            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher.png"       "$ICON_DST/mipmap-$DENSITY/ic_launcher.png"
+            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher_round.png"  "$ICON_DST/mipmap-$DENSITY/ic_launcher_round.png"
+            echo "  Injected: mipmap-$DENSITY"
+          done
+          echo "All icons injected!"
+
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
+
+      - name: Build Debug APK
+        if: ${{ github.event.inputs.build_type != 'release' }}
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Build Release APK
+        if: ${{ github.event.inputs.build_type == 'release' }}
+        working-directory: android
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > ../bible.keystore
+          ./gradlew assembleRelease \
+            -Pandroid.injected.signing.store.file=$(pwd)/../bible.keystore \
+            -Pandroid.injected.signing.store.password="${{ secrets.STORE_PASSWORD }}" \
+            -Pandroid.injected.signing.key.alias="${{ secrets.KEY_ALIAS }}" \
+            -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD }}" \
+            --no-daemon
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: my-artifact
-          path: ./build
-
-      - name: Another Step
-        uses: actions/upload-artifact@v4
-        with:
-          name: another-artifact
-          path: ./other-build
+          name: HolyBible-APK-${{ github.run_number }}
+          path: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android/app/build/outputs/apk/release/app-release*.apk
+          retention-days: 30
