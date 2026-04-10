@@ -1,0 +1,15 @@
+{
+  "name": "வேத வசனம் Holy Bible",
+  "short_name": "Holy Bible",
+  "description": "Tamil + English Bible - 31,102 verses, Stories, Songs, Audio",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#080810",
+  "theme_color": "#c9a84c",
+  "orientation": "portrait",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon.png",     "sizes": "1024x1024","type": "image/png"}
+  ]
+}
