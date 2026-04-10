@@ -1,4 +1,4 @@
-name: Build Holy Bible APK v7
+name: Build Holy Bible APK
 
 on:
   push:
@@ -12,6 +12,10 @@ on:
         type: choice
         options: [ debug, release ]
 
+env:
+  # Fix Node.js 20 deprecation warning
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,10 +26,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node 18
+      - name: Setup Node 20
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install packages
         run: npm install
@@ -45,12 +49,11 @@ jobs:
       - name: Install Capacitor CLI
         run: npm install -g @capacitor/cli@5
 
-      # FIX 5a: Copy icon.png into public/ BEFORE cap sync
-      - name: Copy icon to public folder
+      # FIX: Copy icon.png to public/ BEFORE cap sync
+      - name: Prepare icons in public folder
         run: |
           cp android-icons/mipmap-xxxhdpi/ic_launcher.png public/icon.png
-          cp android-icons/mipmap-xxxhdpi/ic_launcher.png public/icon-512.png
-          echo "icon.png ready in public/"
+          echo "icon.png ready"
 
       - name: Add Android platform
         run: npx cap add android || true
@@ -58,18 +61,75 @@ jobs:
       - name: Sync web app to Android
         run: npx cap sync android
 
-      # FIX 5b: Inject correct icon into every mipmap density folder
+      # FIX: Set app name to "Holy Bible" in Android strings.xml
+      - name: Set app name to Holy Bible
+        run: |
+          STRINGS_FILE="android/app/src/main/res/values/strings.xml"
+          if [ -f "$STRINGS_FILE" ]; then
+            sed -i 's|<string name="app_name">.*</string>|<string name="app_name">Holy Bible</string>|g' "$STRINGS_FILE"
+            echo "strings.xml updated:"
+            grep app_name "$STRINGS_FILE"
+          else
+            echo "Creating strings.xml"
+            mkdir -p android/app/src/main/res/values
+            cat > "$STRINGS_FILE" << 'XML'
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Holy Bible</string>
+    <string name="title_activity_main">Holy Bible</string>
+    <string name="package_name">com.vedavachanam.holybible</string>
+    <string name="custom_url_scheme">com.vedavachanam.holybible</string>
+</resources>
+XML
+          fi
+
+      # FIX: Inject ALL icon types into Android (ic_launcher + ic_launcher_round + ic_launcher_foreground)
       - name: Inject app icons into Android
         run: |
           ICON_SRC="android-icons"
           ICON_DST="android/app/src/main/res"
           for DENSITY in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
             mkdir -p "$ICON_DST/mipmap-$DENSITY"
-            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher.png"       "$ICON_DST/mipmap-$DENSITY/ic_launcher.png"
-            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher_round.png"  "$ICON_DST/mipmap-$DENSITY/ic_launcher_round.png"
-            echo "  Injected: mipmap-$DENSITY"
+            # Square icon
+            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher.png" \
+               "$ICON_DST/mipmap-$DENSITY/ic_launcher.png"
+            # Round icon
+            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher_round.png" \
+               "$ICON_DST/mipmap-$DENSITY/ic_launcher_round.png"
+            # Foreground icon (used by Android 8+ adaptive icons)
+            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher_foreground.png" \
+               "$ICON_DST/mipmap-$DENSITY/ic_launcher_foreground.png"
+            echo "  Injected all icons for $DENSITY"
           done
           echo "All icons injected!"
+
+      # FIX: Override adaptive icon XML to use a plain color background + our foreground
+      - name: Fix adaptive icon XML
+        run: |
+          mkdir -p android/app/src/main/res/mipmap-anydpi-v26
+          cat > android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml << 'XML'
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+</adaptive-icon>
+XML
+          cat > android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml << 'XML'
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+</adaptive-icon>
+XML
+          # Create color resource
+          mkdir -p android/app/src/main/res/values
+          cat > android/app/src/main/res/values/ic_launcher_background.xml << 'XML'
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#080810</color>
+</resources>
+XML
+          echo "Adaptive icon XML fixed"
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
@@ -91,7 +151,7 @@ jobs:
             -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD }}" \
             --no-daemon
 
-      - name: Upload APK artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: HolyBible-APK-${{ github.run_number }}
