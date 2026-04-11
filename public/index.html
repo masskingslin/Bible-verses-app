@@ -271,4 +271,1040 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
         <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">31,102 VERSES · TAMIL+ENGLISH · OFFLINE</div>
       </div>
       <div class="sbar"><input class="sinp" id="ai-srch" placeholder="love, அன்பு, peace, John 3:16…" onkeydown="if(event.key==='Enter')SA.run()"/><button class="sbtn" onclick="SA.run()">→</button></div>
-      <div class="chips" id="ai-c
+      <div class="chips" id="ai-chips"></div>
+      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 2</span></div>
+      <div id="ai-list" class="pb"><div class="empty"><div class="emico">✦</div><div class="emtxt">SEARCH TOPIC · KEYWORD · REFERENCE</div></div></div>
+    </div>
+    <!-- BOOKS -->
+    <div class="scr" id="s-books">
+      <div style="background:#0d2e0d;padding:12px 16px 10px">
+        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">66 BOOKS · வேத புத்தகங்கள்</div>
+        <div style="color:rgba(255,255,255,.45);font-size:9px;font-family:var(--sans);margin-top:2px">ALL CHAPTERS · READ · AUDIO</div>
+      </div>
+      <div class="bfilt" id="b-filt"></div>
+      <div class="bgrid pb" id="b-grid"></div>
+    </div>
+    <!-- CHARACTERS -->
+    <div class="scr" id="s-chars">
+      <div style="background:linear-gradient(135deg,#3a1a00,#5c2e00);padding:14px 16px 12px">
+        <div style="color:var(--gold);font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">✦ CHARACTERS · வேத பாத்திரங்கள்</div>
+        <div style="color:rgba(201,168,76,.5);font-size:9px;font-family:var(--sans);margin-top:2px">STORIES · TIMELINE · KEY VERSES · LESSONS</div>
+      </div>
+      <div class="cgrid pb" id="c-grid"></div>
+    </div>
+    <!-- KIDS STORIES -->
+    <div class="scr" id="s-stories">
+      <div style="background:linear-gradient(135deg,#0d3a5c,#1a5276);padding:14px 16px 12px">
+        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">📚 KIDS STORIES · குழந்தைகள் கதைகள்</div>
+        <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">15 BIBLE STORIES · TAMIL+ENGLISH · AUDIO</div>
+      </div>
+      <div class="bfilt" id="stor-filt"></div>
+      <div class="cgrid pb" id="stor-grid"></div>
+    </div>
+    <!-- SONGS -->
+    <div class="scr" id="s-songs">
+      <div style="background:linear-gradient(135deg,#1a0038,#3d1a6e);padding:14px 16px 12px">
+        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">🎵 SONGS · பாடல்கள்</div>
+        <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">TAMIL CHRISTIAN SONGS · LYRICS · AUDIO</div>
+      </div>
+      <div class="sbar"><input class="sinp" id="song-srch" placeholder="பாடல் தேடு · Search songs…" oninput="SSONGS.filter(this.value)"/></div>
+      <div id="songs-list" class="pb"></div>
+    </div>
+    <!-- SAVED -->
+    <div class="scr" id="s-saved">
+      <div style="background:#3a0a0a;padding:12px 16px 10px">
+        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">SAVED · சேமிக்கப்பட்டவை</div>
+        <div style="color:rgba(255,255,255,.4);font-size:9px;font-family:var(--sans);margin-top:2px" id="saved-lbl">0 SAVED</div>
+      </div>
+      <div id="saved-list" class="pb"></div>
+      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 3</span></div>
+    </div>
+  </main>
+
+  <nav id="nav">
+    <button class="nb on" data-s="home"    onclick="App.nav('home')">   <span class="ni">⊞</span><span class="nl">HOME</span>    </button>
+    <button class="nb"    data-s="verses"  onclick="App.nav('verses')"> <span class="ni">☰</span><span class="nl">VERSES</span>  </button>
+    <button class="nb"    data-s="search"  onclick="App.nav('search')"> <span class="ni">✦</span><span class="nl">SEARCH</span>  </button>
+    <button class="nb"    data-s="books"   onclick="App.nav('books')">  <span class="ni">📖</span><span class="nl">BOOKS</span>   </button>
+    <button class="nb"    data-s="chars"   onclick="App.nav('chars')">  <span class="ni">👤</span><span class="nl">PEOPLE</span>  </button>
+    <button class="nb"    data-s="stories" onclick="App.nav('stories')"><span class="ni">📚</span><span class="nl">STORIES</span> </button>
+    <button class="nb"    data-s="songs"   onclick="App.nav('songs')">  <span class="ni">🎵</span><span class="nl">SONGS</span>   </button>
+    <button class="nb"    data-s="saved"   onclick="App.nav('saved')">  <span class="ni">♥</span><span class="nl">SAVED</span>   </button>
+  </nav>
+</div>
+
+<!-- OVERLAYS -->
+<div class="ov" id="read-ov">
+  <div class="rbar" id="read-bar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="rcbtn" style="width:32px;height:32px;font-size:14px" onclick="RM.close()">←</button>
+      <div><div id="read-ref" style="font-size:11px;font-weight:700;color:#fff;font-family:var(--sans)"></div>
+      <div style="font-size:8px;color:rgba(255,255,255,.4);font-family:var(--sans)">READING MODE</div></div>
+    </div>
+    <div class="rctls">
+      <button class="rcbtn" style="width:32px;height:32px;font-size:14px;border-radius:50%" onclick="AU.toggle()">🔊</button>
+      <button class="rcbtn" style="width:28px;height:28px;font-size:11px;font-weight:700" onclick="RM.fs(-2)">A-</button>
+      <button class="rcbtn" style="width:28px;height:28px;font-size:14px;font-weight:700" onclick="RM.fs(+2)">A+</button>
+    </div>
+  </div>
+  <div class="rbody">
+    <div class="rta" id="read-ta"></div><div class="rdiv" id="read-div"></div>
+    <div class="ren" id="read-en"></div>
+    <div style="text-align:center;margin-top:20px"><span class="rbadge" id="read-badge"></span></div>
+    <div class="ad" style="margin-top:28px;height:120px"><span class="adlbl">GOOGLE ADSENSE</span></div>
+  </div>
+</div>
+
+<div class="ov" id="ch-ov">
+  <div class="rbar" id="ch-bar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="rcbtn" style="width:32px;height:32px;font-size:14px" onclick="CR.close()">←</button>
+      <div><div id="ch-title" style="font-size:12px;font-weight:700;color:#fff;font-family:var(--sans)"></div>
+      <div id="ch-sub" style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--sans)"></div></div>
+    </div>
+    <div style="display:flex;gap:3px;align-items:center">
+      <div class="chlb">
+        <button class="on" id="ch-ta-btn" onclick="CR.showLang('ta')">TA</button>
+        <button id="ch-en-btn" onclick="CR.showLang('en')">EN</button>
+        <button id="ch-bo-btn" onclick="CR.showLang('both')">BI</button>
+      </div>
+      <button class="rcbtn" style="padding:0 10px;height:28px;font-size:9px;font-weight:700;font-family:var(--sans)" onclick="AU.readCh()">🔊</button>
+    </div>
+  </div>
+  <div class="chbody pb" id="ch-body"></div>
+  <div class="chnav">
+    <button id="ch-prev" onclick="CR.prev()">◀ Prev</button>
+    <button id="ch-jump" class="on" onclick="CR.jump()">Ch 1</button>
+    <button id="ch-next" onclick="CR.next()">Next ▶</button>
+  </div>
+</div>
+
+<div class="ov" id="char-ov">
+  <div class="ovbar" id="char-bar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="rcbtn" style="width:32px;height:32px;font-size:14px;flex-shrink:0" onclick="CD.close()">←</button>
+      <div><div id="cd-name" style="font-size:15px;font-weight:700;color:#fff;font-family:var(--sans)"></div>
+      <div id="cd-ta-name" style="font-size:12px;color:rgba(255,255,255,.7);font-family:var(--ta2)"></div>
+      <div id="cd-era" style="font-size:8px;color:rgba(255,255,255,.4);font-family:var(--sans)"></div></div>
+    </div>
+    <div id="cd-emi" style="font-size:28px"></div>
+  </div>
+  <div class="ovbody" id="cd-body"></div>
+</div>
+
+<div class="ov" id="story-ov">
+  <div class="ovbar" id="stbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="rcbtn" style="width:32px;height:32px;font-size:14px;flex-shrink:0" onclick="StD.close()">←</button>
+      <div><div id="st-name" style="font-size:14px;font-weight:700;color:#fff;font-family:var(--sans)"></div>
+      <div id="st-ta-name" style="font-size:12px;color:rgba(255,255,255,.7);font-family:var(--ta2)"></div></div>
+    </div>
+    <span id="st-emi" style="font-size:28px"></span>
+  </div>
+  <div class="ovbody" id="st-body"></div>
+</div>
+
+<div class="ov" id="song-ov">
+  <div class="ovbar" id="songbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="rcbtn" style="width:32px;height:32px;font-size:14px;flex-shrink:0" onclick="SongD.close()">←</button>
+      <div><div id="sg-name" style="font-size:14px;font-weight:700;color:#fff;font-family:var(--ta2)"></div>
+      <div id="sg-en" style="font-size:10px;color:rgba(255,255,255,.6);font-family:var(--sans)"></div></div>
+    </div>
+    <button class="rcbtn" style="padding:0 10px;height:30px;font-size:9px;font-weight:700;font-family:var(--sans)" onclick="AU.speakText(document.getElementById('sg-lyrics').textContent,'ta-IN')">🔊 HEAR</button>
+  </div>
+  <div class="ovbody" style="padding:18px">
+    <div class="song-lyrics" id="sg-lyrics"></div>
+  </div>
+</div>
+
+<!-- AUDIO PANEL (Fix 3 — Inbuilt TTS with warmup) -->
+<div id="au-panel">
+  <div class="auinner">
+    <button class="aucls" onclick="AU.close()">✕</button>
+    <div class="aut">🔊 AUDIO PLAYER · ஒலி வாசிப்பு</div>
+    <div class="aur" id="au-ref">—</div>
+    <div class="aulng">
+      <button id="au-ta" onclick="AU.lang('ta')" style="background:#fff;color:#080810">🇮🇳 Tamil தமிழ்</button>
+      <button id="au-en" onclick="AU.lang('en')" style="background:rgba(255,255,255,.1);color:#fff">🇬🇧 English</button>
+    </div>
+    <div class="auctls">
+      <button id="au-play"   onclick="AU.play()"   style="flex:2;background:#fff;color:#080810">▶ PLAY</button>
+      <button onclick="AU.pause()"  style="background:rgba(255,255,255,.1);color:#fff">⏸</button>
+      <button onclick="AU.resume()" style="background:rgba(255,255,255,.1);color:#fff">▶▶</button>
+      <button onclick="AU.stop()"   style="background:rgba(255,255,255,.07);color:#fff">⏹</button>
+    </div>
+    <div class="aumsg" id="au-msg"></div>
+  </div>
+</div>
+
+<!-- DATA: Script tags (no fetch — reliable on Android) -->
+<script src="data/bd_a.js"></script>
+<script src="data/bd_b.js"></script>
+<script src="data/bd_c.js"></script>
+<script src="data/bd_d.js"></script>
+<script src="data/bd_e.js"></script>
+<script src="data/bd_f.js"></script>
+<script src="characters.js"></script>
+<script src="kids_stories.js"></script>
+<script src="songs.js"></script>
+
+<script>
+"use strict";
+/* ═══════════════════════════════════════
+   BIBLE DATA
+═══════════════════════════════════════ */
+var BD=(function(){
+  var BEN=['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation'];
+  var BTA=['ஆதியாகமம்','யாத்திராகமம்','லேவியராகமம்','எண்ணாகமம்','உபாகமம்','யோசுவா','நியாயாதிபதிகள்','ரூத்','1 சாமுவேல்','2 சாமுவேல்','1 இராஜாக்கள்','2 இராஜாக்கள்','1 நாளாகமம்','2 நாளாகமம்','எஸ்றா','நெகேமியா','எஸ்தர்','யோபு','சங்கீதம்','நீதிமொழிகள்','பிரசங்கி','உன்னதப்பாட்டு','ஏசாயா','எரேமியா','புலம்பல்','எசேக்கியேல்','தானியேல்','ஓசியா','யோவேல்','ஆமோஸ்','ஒபதியா','யோனா','மீகா','நாகூம்','ஆபகூக்','செப்பனியா','ஆகாய்','சகரியா','மல்கியா','மத்தேயு','மாற்கு','லூக்கா','யோவான்','அப்போஸ்தலர்','ரோமர்','1 கொரிந்தியர்','2 கொரிந்தியர்','கலாத்தியர்','எபேசியர்','பிலிப்பியர்','கொலோசெயர்','1 தெசலோனிக்கேயர்','2 தெசலோனிக்கேயர்','1 தீமோத்தேயு','2 தீமோத்தேயு','தீத்து','பிலேமோன்','எபிரேயர்','யாக்கோபு','1 பேதுரு','2 பேதுரு','1 யோவான்','2 யோவான்','3 யோவான்','யூதா','வெளிப்படுத்தல்'];
+  var CLR=['#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a','#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a','#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a','#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a','#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#2a3a6a','#1a4a2a','#6a1a1a','#2a1a5c','#5c3a10','#105c3a','#003a6a','#4a3a10','#2a3a6a','#1a4a2a','#6a1a1a','#2a1a5c','#5c3a10','#105c3a','#003a6a','#4a3a10','#2a3a6a','#1a4a2a','#6a1a1a','#2a1a5c','#5c3a10','#105c3a','#003a6a','#4a3a10','#2a3a6a','#1a4a2a'];
+  var _vv=[],_map={},_bb={};
+  function build(){
+    try{
+      var all=[].concat(
+        typeof BD_A!=='undefined'?BD_A:[],typeof BD_B!=='undefined'?BD_B:[],
+        typeof BD_C!=='undefined'?BD_C:[],typeof BD_D!=='undefined'?BD_D:[],
+        typeof BD_E!=='undefined'?BD_E:[],typeof BD_F!=='undefined'?BD_F:[]);
+      _vv=all.map(function(r){
+        return{id:r[0]*100000+r[1]*1000+r[2],bi:r[0],book:BEN[r[0]],bookTa:BTA[r[0]],
+               ch:r[1],v:r[2],ref:BEN[r[0]]+' '+r[1]+':'+r[2],
+               ta:r[3]||'',en:r[4]||'',color:CLR[r[0]%CLR.length]};
+      });
+      _map={};_bb={};
+      _vv.forEach(function(v){
+        _map[v.bi+'_'+v.ch+'_'+v.v]=v;
+        if(!_bb[v.book])_bb[v.book]=[];
+        _bb[v.book].push(v);
+      });
+      return _vv.length;
+    }catch(e){console.error('BD.build:',e);return 0;}
+  }
+  function cof(b){var i=BEN.indexOf(b);return CLR[(i<0?0:i)%CLR.length];}
+  function daily(){if(!_vv.length)return null;var d=new Date(),n=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000);return _vv[n%_vv.length];}
+  function search(q){
+    if(!q||!q.trim())return[];
+    var q2=q.trim(),ql=q2.toLowerCase(),words=ql.split(/\s+/);
+    var sc=_vv.map(function(v){
+      var s=0,hay=(v.en+' '+v.ta+' '+v.ref+' '+v.book).toLowerCase();
+      words.forEach(function(w){if(w.length>1&&hay.indexOf(w)!==-1)s+=2;});
+      if(v.ta.indexOf(q2)!==-1)s+=3;
+      if(v.book.toLowerCase().indexOf(ql)!==-1)s+=5;
+      if(v.ref.toLowerCase().indexOf(ql)!==-1)s+=8;
+      return{v:v,s:s};
+    }).filter(function(x){return x.s>0;});
+    sc.sort(function(a,b){return b.s-a.s;});
+    return sc.slice(0,15).map(function(x){return x.v;});
+  }
+  return{BEN:BEN,BTA:BTA,CLR:CLR,build:build,count:function(){return _vv.length;},all:function(){return _vv;},
+    byId:function(id){return _vv.find(function(v){return v.id===id;})||null;},
+    byBook:function(n){return _bb[n]||[];},
+    byBookCh:function(n,c){return(_bb[n]||[]).filter(function(v){return v.ch===c;});},
+    colorOf:cof,daily:daily,search:search};
+})();
+
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+var ST=(function(){
+  var d={theme:'dark',saved:[],fs:18,lang:'both'};
+  try{var s=localStorage.getItem('vv_v11');if(s)d=Object.assign(d,JSON.parse(s));}catch(e){}
+  function sv(){try{localStorage.setItem('vv_v11',JSON.stringify(d));}catch(e){}}
+  return{g:function(k){return d[k];},saved:function(){return d.saved.slice();},
+    isSaved:function(id){return d.saved.indexOf(id)!==-1;},
+    toggleSave:function(id){var i=d.saved.indexOf(id);if(i===-1)d.saved.push(id);else d.saved.splice(i,1);sv();return i===-1;},
+    setFs:function(n){d.fs=Math.max(13,Math.min(30,n));sv();},
+    setTheme:function(t){d.theme=t;sv();},setLang:function(l){d.lang=l;sv();}};
+})();
+
+/* ═══════════════════════════════════════
+   AUDIO ENGINE — FIX 3 (TTS Warmup)
+═══════════════════════════════════════ */
+var AU=(function(){
+  var _ok=typeof window!=='undefined'&&'speechSynthesis'in window;
+  var _v=null,_lang='ta',_vs=[],_warm=false,_ut=null;
+
+  /* Load voices — Android loads them async, retry several times */
+  function _lv(){if(_ok)_vs=window.speechSynthesis.getVoices()||[];}
+  if(_ok){
+    _lv();
+    if(window.speechSynthesis.onvoiceschanged!==undefined)
+      window.speechSynthesis.onvoiceschanged=_lv;
+    setTimeout(_lv,500);setTimeout(_lv,1500);setTimeout(_lv,3500);setTimeout(_lv,7000);
+  }
+
+  /* ── FIX 3: Warm-up call required by Android WebView before TTS works ── */
+  function _warmup(){
+    if(_warm||!_ok)return;
+    try{
+      var u=new SpeechSynthesisUtterance(' ');
+      u.volume=0;u.rate=1;
+      window.speechSynthesis.speak(u);
+      setTimeout(function(){if(_ok)window.speechSynthesis.cancel();},300);
+      _warm=true;
+      setTimeout(_lv,400); /* reload voices after warmup */
+    }catch(e){console.log('warmup error:',e);}
+  }
+
+  function sui(pl){
+    var b=document.getElementById('au-play');if(!b)return;
+    if(pl){b.textContent='▶ PLAYING…';b.style.background='rgba(255,255,255,.15)';b.style.color='#fff';}
+    else{b.textContent='▶ PLAY';b.style.background='#fff';b.style.color='#080810';}
+  }
+  function msg(t){var e=document.getElementById('au-msg');if(e)e.textContent=t||'';}
+
+  function open(v){
+    _warmup(); /* ← Key fix: warm up on first user tap */
+    _v=v;
+    document.getElementById('au-ref').textContent=v.ref||'';
+    document.getElementById('au-panel').classList.add('on');
+    _setLUI(_lang);msg('');
+    if(!_ok){msg('⚠ TTS not supported on this device.');return;}
+    _lv();
+    msg(_lang==='ta'?'Tap ▶ PLAY to hear Tamil · Switch language above':'Tap ▶ PLAY to hear English');
+  }
+  function close(){stop();document.getElementById('au-panel').classList.remove('on');}
+  function toggle(){
+    var p=document.getElementById('au-panel');
+    if(p.classList.contains('on'))close();
+    else if(_v)open(_v);
+  }
+  function lang(l){_lang=l;stop();_setLUI(l);}
+  function _setLUI(l){
+    ['ta','en'].forEach(function(x){
+      var b=document.getElementById('au-'+x);if(!b)return;
+      b.style.background=l===x?'#fff':'rgba(255,255,255,.1)';
+      b.style.color=l===x?'#080810':'#fff';
+    });
+  }
+  function _speak(text,lc,onEnd){
+    if(!_ok){msg('⚠ Speech not available.');return;}
+    if(!text||!text.trim()){msg('⚠ No text.');return;}
+    stop();_lv();
+    try{
+      _ut=new SpeechSynthesisUtterance(text);
+      _ut.lang=lc;
+      _ut.rate=lc.indexOf('ta')===0?0.80:0.85;
+      _ut.pitch=1.0;_ut.volume=1.0;
+      /* Find best matching voice */
+      var px=lc.split('-')[0],best=null;
+      for(var i=0;i<_vs.length;i++){
+        if(_vs[i].lang&&_vs[i].lang.toLowerCase().indexOf(px)===0){
+          best=_vs[i];
+          if(_vs[i].lang.toLowerCase()===lc.toLowerCase())break;
+        }
+      }
+      if(best)_ut.voice=best;
+      _ut.onstart=function(){sui(true);msg('');};
+      _ut.onend=function(){sui(false);msg('');if(onEnd)onEnd();};
+      _ut.onerror=function(e){
+        sui(false);
+        if(lc.indexOf('ta')===0)
+          msg('⚠ Tamil voice not found.\nInstall: Play Store → Google Text-to-Speech\n→ Language → Download Tamil');
+        else
+          msg('⚠ TTS error: '+(e.error||''));
+      };
+      window.speechSynthesis.speak(_ut);
+      sui(true);
+    }catch(e){sui(false);msg('⚠ '+e.message);}
+  }
+  function play(){
+    if(!_v)return;
+    _warmup();
+    var t=(_lang==='ta'&&_v.ta)?_v.ta:_v.en;
+    _speak(t,_lang==='ta'?'ta-IN':'en-US');
+  }
+  function readCh(){
+    var bk=CR?CR._bk:'',ch=CR?CR._ch:1;
+    if(!bk)return;
+    var vs=BD.byBookCh(bk,ch);if(!vs.length)return;
+    _warmup();
+    if(!document.getElementById('au-panel').classList.contains('on')){
+      _v={ref:bk+' Ch '+ch,ta:'',en:''};
+      document.getElementById('au-ref').textContent=bk+' Chapter '+ch;
+      document.getElementById('au-panel').classList.add('on');_setLUI(_lang);
+    }
+    var t=vs.map(function(v,i){return (i+1)+'. '+(_lang==='ta'?v.ta:v.en);}).join(' ');
+    msg('Reading '+vs.length+' verses…');
+    _speak(t,_lang==='ta'?'ta-IN':'en-US',function(){msg('Chapter complete ✓');});
+  }
+  function speakText(t,lc){_warmup();if(t&&t.trim())_speak(t,lc||'ta-IN');}
+  function pause(){if(_ok&&window.speechSynthesis.speaking&&!window.speechSynthesis.paused)window.speechSynthesis.pause();}
+  function resume(){if(_ok&&window.speechSynthesis.paused)window.speechSynthesis.resume();}
+  function stop(){if(_ok)window.speechSynthesis.cancel();sui(false);_ut=null;}
+  return{open:open,close:close,toggle:toggle,lang:lang,
+         play:play,pause:pause,resume:resume,stop:stop,readCh:readCh,speakText:speakText};
+})();
+
+/* ═══════════════════════════════════════
+   IN-APP NOTIFICATIONS (No Firebase needed)
+   Admin sends message via localStorage ADMIN_MSG
+   Users see it as a banner notification
+═══════════════════════════════════════ */
+var PN=(function(){
+  var _dismissed=false;
+  function checkLocal(){
+    /* Check for admin message stored in localStorage */
+    try{
+      var raw=localStorage.getItem('ADMIN_MSG');
+      if(!raw)return;
+      var m=JSON.parse(raw);
+      var seen=localStorage.getItem('PN_SEEN')||'';
+      if(m.id&&m.id!==seen&&m.title){
+        show(m.title,m.body||'');
+        localStorage.setItem('PN_SEEN',m.id);
+      }
+    }catch(e){}
+  }
+  function show(title,body){
+    document.getElementById('pn-title').textContent=title;
+    document.getElementById('pn-body').textContent=body;
+    document.getElementById('pn-banner').style.display='block';
+    _dismissed=false;
+    setTimeout(function(){if(!_dismissed)dismiss();},9000);
+  }
+  function dismiss(){
+    document.getElementById('pn-banner').style.display='none';
+    _dismissed=true;
+  }
+  return{checkLocal:checkLocal,show:show,dismiss:dismiss};
+})();
+
+
+
+<script>
+
+/* ═══════════════════════════════════════
+   UTILS
+═══════════════════════════════════════ */
+function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''}
+function toggleSave(id,btn){
+  var s=ST.toggleSave(id);
+  if(btn)btn.textContent=s?'♥ SAVED':'♡ SAVE';
+  SSAVED.render();
+}
+function shareV(v){
+  if(!v)return;
+  var txt=v.ref+'\n'+v.ta+'\n'+v.en;
+  if(navigator.share){navigator.share({title:'வேத வசனம் · '+v.ref,text:txt}).catch(function(){});}
+  else if(navigator.clipboard){navigator.clipboard.writeText(txt);}
+}
+function mkVC(v,lang){
+  var id=v.id,saved=ST.isSaved(id);
+  var showTa=lang!=='en',showEn=lang!=='ta';
+  return '<div class="vc" data-id="'+id+'">'+
+    '<div class="vch" style="background:'+v.color+'33;border-left:3px solid '+v.color+'">'+
+      '<div><div class="vr">'+esc(v.ref)+'</div><div class="vbk">'+esc(v.bookTa)+'</div></div>'+
+      '<button onclick="RM.open(BD.byId('+id+'))" style="background:transparent;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.65);padding:4px 10px;font-size:8px;font-weight:700;font-family:var(--sans)">READ</button>'+
+    '</div>'+
+    '<div class="vbd">'+
+      (showTa?'<div class="vta">'+esc(v.ta)+'</div>':'')+
+      (showEn?'<div class="ven">'+esc(v.en)+'</div>':'')+
+    '</div>'+
+    '<div class="va">'+
+      '<button onclick="AU.open(BD.byId('+id+'))">🔊 HEAR</button>'+
+      '<button id="sv-'+id+'" onclick="toggleSave('+id+',this)">'+(saved?'♥ SAVED':'♡ SAVE')+'</button>'+
+      '<button onclick="shareV(BD.byId('+id+'))">⇧ SHARE</button>'+
+    '</div>'+
+  '</div>';
+}
+
+/* ═══════════════════════════════════════
+   READING MODE OVERLAY
+═══════════════════════════════════════ */
+var RM=(function(){
+  function open(v){
+    if(!v)return;
+    var fs=ST.g('fs')||18;
+    document.getElementById('read-ref').textContent=v.ref||'';
+    document.getElementById('read-ta').innerHTML='<span style="font-size:'+fs+'px">'+esc(v.ta)+'</span>';
+    var div=document.getElementById('read-div');
+    div.style.background=v.color||'var(--gold)';div.style.height='2px';div.style.margin='20px 0';
+    document.getElementById('read-en').innerHTML='<span style="font-size:'+fs+'px">'+esc(v.en)+'</span>';
+    var badge=document.getElementById('read-badge');
+    badge.textContent=v.ref;badge.style.background=v.color||'#333';badge.style.color='#fff';badge.style.borderRadius='2px';
+    AU.open(v);
+    document.getElementById('read-ov').classList.add('on');
+  }
+  function close(){document.getElementById('read-ov').classList.remove('on');AU.close();}
+  function fs(d){
+    var cur=ST.g('fs')||18;
+    var nfs=Math.max(13,Math.min(30,cur+d));
+    ST.setFs(nfs);
+    ['read-ta','read-en'].forEach(function(eid){
+      var span=document.querySelector('#'+eid+' span');
+      if(span)span.style.fontSize=nfs+'px';
+    });
+  }
+  return{open:open,close:close,fs:fs};
+})();
+
+/* ═══════════════════════════════════════
+   CHAPTER READER OVERLAY
+═══════════════════════════════════════ */
+var CR=(function(){
+  var pub={_bk:'',_ch:1};
+  var _maxCh=1,_lang='both';
+  function open(bk,ch){
+    pub._bk=bk;pub._ch=ch||1;
+    var all=BD.byBook(bk);
+    _maxCh=all.reduce(function(m,v){return Math.max(m,v.ch);},1);
+    _render();
+    document.getElementById('ch-ov').classList.add('on');
+    setTimeout(function(){document.getElementById('ch-body').scrollTop=0;},50);
+  }
+  function _render(){
+    var vs=BD.byBookCh(pub._bk,pub._ch);
+    var bi=BD.BEN.indexOf(pub._bk);
+    document.getElementById('ch-title').textContent=pub._bk+' · Chapter '+pub._ch;
+    document.getElementById('ch-sub').textContent=(BD.BTA[bi]||'')+' · '+vs.length+' verses';
+    document.getElementById('ch-jump').textContent='Ch '+pub._ch;
+    document.getElementById('ch-prev').disabled=pub._ch<=1;
+    document.getElementById('ch-next').disabled=pub._ch>=_maxCh;
+    var showTa=_lang!=='en',showEn=_lang!=='ta';
+    var html=vs.map(function(v){
+      return '<div class="chv" onclick="RM.open(BD.byId('+v.id+'))" style="cursor:pointer">'+
+        '<div class="chvn">'+v.v+'</div>'+
+        '<div class="chvcol">'+
+          (showTa?'<div class="chvta">'+esc(v.ta)+'</div>':'')+
+          (showEn?'<div class="chven">'+esc(v.en)+'</div>':'')+
+        '</div>'+
+      '</div>';
+    }).join('');
+    document.getElementById('ch-body').innerHTML=html||'<div class="empty"><div class="emico">📖</div><div class="emtxt">NO VERSES FOUND</div></div>';
+  }
+  function showLang(l){
+    _lang=l;
+    var map={ta:'ta',en:'en',both:'bo'};
+    ['ta','en','bo'].forEach(function(x){
+      var btn=document.getElementById('ch-'+x+'-btn');
+      if(btn)btn.classList.toggle('on',map[l]===x);
+    });
+    _render();
+  }
+  function prev(){if(pub._ch>1){pub._ch--;_render();document.getElementById('ch-body').scrollTop=0;}}
+  function next(){if(pub._ch<_maxCh){pub._ch++;_render();document.getElementById('ch-body').scrollTop=0;}}
+  function jump(){
+    var n=parseInt(prompt('Go to chapter (1–'+_maxCh+'):'),10);
+    if(!isNaN(n)&&n>=1&&n<=_maxCh){pub._ch=n;_render();document.getElementById('ch-body').scrollTop=0;}
+  }
+  function close(){document.getElementById('ch-ov').classList.remove('on');}
+  pub.open=open;pub.close=close;pub.prev=prev;pub.next=next;pub.jump=jump;pub.showLang=showLang;
+  return pub;
+})();
+
+/* ═══════════════════════════════════════
+   CHARACTER DETAIL OVERLAY
+═══════════════════════════════════════ */
+var CD=(function(){
+  function open(c){
+    if(!c)return;
+    document.getElementById('cd-name').textContent=c.en||c.name||'';
+    document.getElementById('cd-ta-name').textContent=c.ta||c.nameTa||'';
+    document.getElementById('cd-era').textContent=c.era||'';
+    document.getElementById('cd-emi').textContent=c.emoji||'👤';
+    var html='';
+    if(c.story_en||c.story){
+      html+='<div class="csec"><div class="csl">STORY · கதை</div>'+
+        '<div class="csen">'+esc(c.story_en||c.story||'')+'</div>'+
+        (c.story_ta?'<div class="csta">'+esc(c.story_ta)+'</div>':'')+
+      '</div>';
+    }
+    if(c.verses&&c.verses.length){
+      html+='<div class="csec"><div class="csl">KEY VERSES · முக்கிய வசனங்கள்</div>';
+      c.verses.forEach(function(vref){
+        var vobj=BD.search(String(vref))[0];
+        if(vobj){
+          html+='<div class="kv">'+
+            '<div class="kvref">'+esc(vobj.ref)+'</div>'+
+            '<div class="kven">'+esc(vobj.en)+'</div>'+
+            '<div class="kvta">'+esc(vobj.ta)+'</div>'+
+            '<div class="kvact">'+
+              '<button onclick="AU.open(BD.byId('+vobj.id+'))" style="background:rgba(255,255,255,.1);color:#fff">🔊 HEAR</button>'+
+              '<button onclick="RM.open(BD.byId('+vobj.id+'))" style="background:var(--gold);color:#080810">READ</button>'+
+            '</div>'+
+          '</div>';
+        } else {
+          html+='<div class="kv"><div class="kvref">'+esc(String(vref))+'</div></div>';
+        }
+      });
+      html+='</div>';
+    }
+    if(c.timeline&&c.timeline.length){
+      html+='<div class="csec"><div class="csl">TIMELINE · காலவரிசை</div>';
+      c.timeline.forEach(function(t,i){
+        var last=i===c.timeline.length-1;
+        html+='<div class="tli">'+
+          '<div class="tlcol">'+
+            '<div class="tldot" style="background:var(--gold);margin-top:3px"></div>'+
+            (!last?'<div class="tlline"></div>':'')+
+          '</div>'+
+          '<div style="flex:1;padding-bottom:10px">'+
+            '<div class="tlref">'+esc(t.ref||t.year||t.label||'')+'</div>'+
+            '<div class="tlen">'+esc(t.en||t.text||t.desc||'')+'</div>'+
+            (t.ta?'<div class="tlta">'+esc(t.ta)+'</div>':'')+
+          '</div>'+
+        '</div>';
+      });
+      html+='</div>';
+    }
+    if(c.lessons&&c.lessons.length){
+      html+='<div class="csec"><div class="csl">LESSONS · படிப்பினைகள்</div>';
+      c.lessons.forEach(function(l,i){
+        var en=typeof l==='string'?l:(l.en||'');
+        var ta=typeof l==='object'?l.ta:'';
+        html+='<div class="lesn">'+
+          '<div class="lesnn">'+(i+1)+'</div>'+
+          '<div><div class="lesen">'+esc(en)+'</div>'+(ta?'<div class="lesta">'+esc(ta)+'</div>':'')+
+          '</div>'+
+        '</div>';
+      });
+      html+='</div>';
+    }
+    document.getElementById('cd-body').innerHTML=html||'<div class="empty"><div class="emico">👤</div><div class="emtxt">NO DETAILS AVAILABLE</div></div>';
+    document.getElementById('char-ov').classList.add('on');
+    document.getElementById('cd-body').scrollTop=0;
+  }
+  function close(){document.getElementById('char-ov').classList.remove('on');}
+  return{open:open,close:close};
+})();
+
+/* ═══════════════════════════════════════
+   STORY DETAIL OVERLAY
+═══════════════════════════════════════ */
+var StD=(function(){
+  function open(s){
+    if(!s)return;
+    document.getElementById('st-name').textContent=s.en||s.title||'';
+    document.getElementById('st-ta-name').textContent=s.ta||s.titleTa||'';
+    document.getElementById('st-emi').textContent=s.emoji||'📚';
+    var html='';
+    if(s.body_en||s.body){
+      html+='<div class="csec"><div class="csl">STORY · கதை</div>'+
+        '<div class="csen">'+esc(s.body_en||s.body||'')+'</div>'+
+        (s.body_ta?'<div class="csta">'+esc(s.body_ta)+'</div>':'')+
+      '</div>';
+    }
+    if(s.moral_en||s.moral){
+      html+='<div class="csec" style="background:var(--bg3);border-left:3px solid var(--gold);padding:14px">'+
+        '<div class="csl">MORAL · நீதி</div>'+
+        '<div class="csen">'+esc(s.moral_en||s.moral||'')+'</div>'+
+        (s.moral_ta?'<div class="csta">'+esc(s.moral_ta)+'</div>':'')+
+      '</div>';
+    }
+    if(s.verses&&s.verses.length){
+      html+='<div class="csec"><div class="csl">KEY VERSES · முக்கிய வசனங்கள்</div>';
+      s.verses.forEach(function(vref){
+        var vobj=BD.search(String(vref))[0];
+        if(vobj){
+          html+='<div class="kv"><div class="kvref">'+esc(vobj.ref)+'</div><div class="kven">'+esc(vobj.en)+'</div><div class="kvta">'+esc(vobj.ta)+'</div></div>';
+        }
+      });
+      html+='</div>';
+    }
+    document.getElementById('st-body').innerHTML=html||'<div class="empty"><div class="emico">📚</div><div class="emtxt">STORY CONTENT UNAVAILABLE</div></div>';
+    document.getElementById('story-ov').classList.add('on');
+    document.getElementById('st-body').scrollTop=0;
+  }
+  function close(){document.getElementById('story-ov').classList.remove('on');}
+  return{open:open,close:close};
+})();
+
+/* ═══════════════════════════════════════
+   SONG DETAIL OVERLAY
+═══════════════════════════════════════ */
+var SongD=(function(){
+  function open(s){
+    if(!s)return;
+    document.getElementById('sg-name').textContent=s.ta||s.title||'';
+    document.getElementById('sg-en').textContent=s.en||'';
+    document.getElementById('sg-lyrics').textContent=s.lyrics||s.words||'';
+    document.getElementById('song-ov').classList.add('on');
+    document.querySelector('#song-ov .ovbody').scrollTop=0;
+  }
+  function close(){document.getElementById('song-ov').classList.remove('on');}
+  return{open:open,close:close};
+})();
+
+/* ═══════════════════════════════════════
+   VERSES SCREEN
+═══════════════════════════════════════ */
+var SV=(function(){
+  var _lang='both',_q='',_page=0,_PER=20,_filtered=[];
+  function _load(){_filtered=_q.trim()?BD.search(_q):BD.all().slice();}
+  function render(){
+    var start=_page*_PER,end=start+_PER;
+    var pageData=_filtered.slice(start,end);
+    document.getElementById('v-list').innerHTML=pageData.map(function(v){return mkVC(v,_lang);}).join('');
+    var total=Math.ceil(_filtered.length/_PER)||1;
+    document.getElementById('v-pgi').textContent='Page '+(_page+1)+'/'+total+' ('+_filtered.length+')';
+    document.getElementById('v-prev').disabled=_page===0;
+    document.getElementById('v-next').disabled=end>=_filtered.length;
+    var btns=document.querySelectorAll('#v-ltog button');
+    ['ta','en','both'].forEach(function(l,i){if(btns[i])btns[i].classList.toggle('on',l===_lang);});
+  }
+  function setLang(l){_lang=l;render();}
+  function filter(q){_q=q;_page=0;_load();render();}
+  function prev(){if(_page>0){_page--;render();document.getElementById('main').scrollTop=0;}}
+  function next(){var mx=Math.ceil(_filtered.length/_PER)-1;if(_page<mx){_page++;render();document.getElementById('main').scrollTop=0;}}
+  function init(){_lang=ST.g('lang')||'both';_load();render();}
+  return{setLang:setLang,filter:filter,prev:prev,next:next,init:init,render:render};
+})();
+
+/* ═══════════════════════════════════════
+   SEARCH SCREEN
+═══════════════════════════════════════ */
+var SA=(function(){
+  var CHIPS=[
+    {ta:'அன்பு',en:'Love'},        {ta:'விசுவாசம்',en:'Faith'},
+    {ta:'நம்பிக்கை',en:'Hope'},    {ta:'சமாதானம்',en:'Peace'},
+    {ta:'சந்தோஷம்',en:'Joy'},      {ta:'பலன்',en:'Strength'},
+    {ta:'கிருபை',en:'Grace'},       {ta:'ஜெபம்',en:'Prayer'},
+    {ta:'இரட்சிப்பு',en:'Salvation'},{ta:'பயப்படாதே',en:'Fear Not'}
+  ];
+  function init(){
+    var html=CHIPS.map(function(c){
+      return '<button class="chip" onclick="SA.chip(\''+c.en+'\')">'+c.en+' · '+c.ta+'</button>';
+    }).join('');
+    document.getElementById('ai-chips').innerHTML=html;
+  }
+  function chip(q){document.getElementById('ai-srch').value=q;run();}
+  function run(){
+    var q=document.getElementById('ai-srch').value.trim();
+    if(!q)return;
+    var results=BD.search(q);
+    var lang=App.getLang();
+    if(!results.length){
+      document.getElementById('ai-list').innerHTML='<div class="empty"><div class="emico">✦</div><div class="emtxt">NO RESULTS FOR "'+esc(q)+'"<br/>Try English or Tamil keywords</div></div>';
+      return;
+    }
+    document.getElementById('ai-list').innerHTML=
+      '<div class="sh"><span class="sht">'+results.length+' RESULTS · '+esc(q)+'</span></div>'+
+      results.map(function(v){return mkVC(v,lang);}).join('');
+  }
+  return{init:init,chip:chip,run:run};
+})();
+
+/* ═══════════════════════════════════════
+   SONGS SCREEN
+═══════════════════════════════════════ */
+var SSONGS=(function(){
+  var _q='';
+  function _all(){return typeof SONGS!=='undefined'?SONGS:[];}
+  function render(){
+    var all=_all();
+    if(!all.length){
+      document.getElementById('songs-list').innerHTML='<div class="empty"><div class="emico">🎵</div><div class="emtxt">SONGS DATA NOT LOADED<br/>Check songs.js file</div></div>';
+      return;
+    }
+    var list=_q?all.filter(function(s){
+      return (s.ta||'').indexOf(_q)!==-1||(s.en||'').toLowerCase().indexOf(_q.toLowerCase())!==-1;
+    }):all;
+    var cats={};
+    list.forEach(function(s){
+      var c=s.cat||s.category||'General';
+      if(!cats[c])cats[c]=[];
+      cats[c].push(s);
+    });
+    var html='';
+    Object.keys(cats).forEach(function(cat){
+      var items=cats[cat];
+      html+='<div style="border-bottom:1px solid var(--brd)">'+
+        '<div class="song-cat-hdr" onclick="this.nextElementSibling.classList.toggle(\'open\')">'+
+          '<div><div class="song-cat-t">'+esc(cat)+'</div><div class="song-cat-e">'+items.length+' songs</div></div>'+
+          '<span style="color:var(--txt2);font-size:16px">▾</span>'+
+        '</div>'+
+        '<div class="song-cat-body open">'+
+          items.map(function(s){
+            var sj=encodeURIComponent(JSON.stringify(s));
+            return '<div class="song-item" onclick="SongD.open(JSON.parse(decodeURIComponent(\''+sj+'\')))">'+
+              '<div class="song-num">'+(s.num||'')+'</div>'+
+              '<div style="flex:1">'+
+                '<div class="song-tita">'+esc(s.ta||s.title||'')+'</div>'+
+                (s.en?'<div class="song-tite">'+esc(s.en)+'</div>':'')+
+              '</div>'+
+              '<span style="color:var(--txt3);font-size:16px">›</span>'+
+            '</div>';
+          }).join('')+
+        '</div>'+
+      '</div>';
+    });
+    document.getElementById('songs-list').innerHTML=html;
+  }
+  function filter(q){_q=q;render();}
+  function init(){render();}
+  return{filter:filter,init:init};
+})();
+
+/* ═══════════════════════════════════════
+   SAVED SCREEN
+═══════════════════════════════════════ */
+var SSAVED=(function(){
+  function render(){
+    var ids=ST.saved();
+    document.getElementById('saved-lbl').textContent=ids.length+' SAVED';
+    if(!ids.length){
+      document.getElementById('saved-list').innerHTML='<div class="empty"><div class="emico">♡</div><div class="emtxt">NO SAVED VERSES YET<br/>Tap ♡ SAVE on any verse</div></div>';
+      return;
+    }
+    var lang=App?App.getLang():'both';
+    var html=ids.map(function(id){var v=BD.byId(id);return v?mkVC(v,lang):'';}).join('');
+    document.getElementById('saved-list').innerHTML=html;
+  }
+  return{render:render};
+})();
+
+/* ═══════════════════════════════════════
+   BOOKS SCREEN
+═══════════════════════════════════════ */
+var SB=(function(){
+  var _f='all';
+  function _renderFilter(){
+    var btns=[['all','ALL'],['ot','OLD TEST.'],['nt','NEW TEST.']];
+    document.getElementById('b-filt').innerHTML=btns.map(function(b){
+      return '<button'+(b[0]===_f?' class="on"':'')+' onclick="SB.filter(\''+b[0]+'\')">'+b[1]+'</button>';
+    }).join('');
+  }
+  function render(){
+    var books=_f==='ot'?BD.BEN.slice(0,39):_f==='nt'?BD.BEN.slice(39):BD.BEN;
+    var html=books.map(function(bk){
+      var bi=BD.BEN.indexOf(bk);
+      var all=BD.byBook(bk);
+      var maxCh=all.reduce(function(m,v){return Math.max(m,v.ch);},0);
+      var col=BD.CLR[bi%BD.CLR.length];
+      var bkQ=bk.replace(/'/g,"\\'");
+      return '<div class="btile" style="background:'+col+';cursor:pointer" onclick="CR.open(\''+bkQ+'\',1)">'+
+        '<div>'+
+          '<div class="bne">'+esc(bk)+'</div>'+
+          '<div class="bnt">'+esc(BD.BTA[bi]||'')+'</div>'+
+          '<div class="bm">'+maxCh+' CH · '+all.length+' V</div>'+
+        '</div>'+
+        '<div class="bbtns">'+
+          '<button onclick="event.stopPropagation();CR.open(\''+bkQ+'\',1)">READ</button>'+
+          '<button onclick="event.stopPropagation();App.nav(\'search\');document.getElementById(\'ai-srch\').value=\''+bkQ+'\';SA.run()">SEARCH</button>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+    document.getElementById('b-grid').innerHTML=html;
+  }
+  function filter(f){
+    _f=f;
+    _renderFilter();
+    render();
+  }
+  function init(){_renderFilter();render();}
+  return{filter:filter,init:init};
+})();
+
+/* ═══════════════════════════════════════
+   CHARACTERS SCREEN
+═══════════════════════════════════════ */
+var SC=(function(){
+  function init(){
+    var chars=typeof CHARS!=='undefined'?CHARS:[];
+    if(!chars.length){
+      document.getElementById('c-grid').innerHTML='<div style="grid-column:1/3;padding:40px;text-align:center"><div class="emico">👤</div><div class="emtxt">CHARACTERS DATA NOT LOADED<br/>Check characters.js</div></div>';
+      return;
+    }
+    var html=chars.map(function(c,i){
+      var col=c.color||BD.CLR[i%BD.CLR.length];
+      return '<div class="ctile" style="background:'+col+'" onclick="CD.open(CHARS['+i+'])">'+
+        '<div class="cemi">'+esc(c.emoji||'👤')+'</div>'+
+        '<div>'+
+          '<div class="cn">'+esc(c.en||c.name||'')+'</div>'+
+          '<div class="cnt">'+esc(c.ta||c.nameTa||'')+'</div>'+
+          '<div class="ce">'+esc(c.era||'')+'</div>'+
+          (c.quote?'<div class="ctl">'+esc(c.quote)+'</div>':'')+
+        '</div>'+
+        '<button class="cbtn" onclick="event.stopPropagation();CD.open(CHARS['+i+'])">VIEW STORY ›</button>'+
+      '</div>';
+    }).join('');
+    document.getElementById('c-grid').innerHTML=html;
+  }
+  return{init:init};
+})();
+
+/* ═══════════════════════════════════════
+   STORIES SCREEN
+═══════════════════════════════════════ */
+var SSTORIES=(function(){
+  var _f='ALL';
+  function _data(){return typeof KIDS_STORIES!=='undefined'?KIDS_STORIES:[];}
+  function _renderFilter(cats){
+    document.getElementById('stor-filt').innerHTML=cats.map(function(c){
+      return '<button'+(c===_f?' class="on"':'')+' onclick="SSTORIES.filter(\''+c+'\')">'+c+'</button>';
+    }).join('');
+  }
+  function render(){
+    var all=_data();
+    if(!all.length){
+      document.getElementById('stor-grid').innerHTML='<div style="grid-column:1/3;padding:40px;text-align:center"><div class="emico">📚</div><div class="emtxt">STORIES NOT LOADED<br/>Check kids_stories.js</div></div>';
+      return;
+    }
+    var cats=['ALL'];
+    all.forEach(function(s){var c=s.cat||s.category;if(c&&cats.indexOf(c)===-1)cats.push(c);});
+    _renderFilter(cats);
+    var list=_f==='ALL'?all:all.filter(function(s){return (s.cat||s.category)===_f;});
+    var html=list.map(function(s,i){
+      var col=s.color||BD.CLR[i%BD.CLR.length];
+      return '<div class="ctile" style="background:'+col+'" onclick="StD.open(KIDS_STORIES['+i+'])">'+
+        '<div class="cemi">'+esc(s.emoji||'📖')+'</div>'+
+        '<div>'+
+          '<div class="cn">'+esc(s.en||s.title||'')+'</div>'+
+          '<div class="cnt">'+esc(s.ta||s.titleTa||'')+'</div>'+
+          (s.age?'<div class="ce">Age: '+esc(s.age)+'</div>':'')+
+        '</div>'+
+        '<button class="cbtn" onclick="event.stopPropagation();StD.open(KIDS_STORIES['+i+'])">READ STORY ›</button>'+
+      '</div>';
+    }).join('');
+    document.getElementById('stor-grid').innerHTML=html;
+  }
+  function filter(f){_f=f;render();}
+  function init(){render();}
+  return{filter:filter,init:init};
+})();
+
+/* ═══════════════════════════════════════
+   HOME SCREEN
+═══════════════════════════════════════ */
+var SH=(function(){
+  function buildTiles(count){
+    var daily=BD.daily();
+    var d=new Date();
+    var days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    var months=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    var lang=App.getLang();
+    var html='';
+    /* Clock tile */
+    html+='<div class="tile clk" style="background:linear-gradient(135deg,#0d1a3a,#1a2d5a)">'+
+      '<div class="dtag">'+days[d.getDay()]+' · '+months[d.getMonth()]+' '+d.getDate()+'</div>'+
+      (daily?'<div class="dta">'+(lang!=='en'?esc(daily.ta):'')+'</div>'+
+      (lang!=='ta'?'<div class="den">'+esc(daily.en)+'</div>':'')+
+      '<div class="dref">'+esc(daily.ref)+'</div>'+
+      '<div class="dbtns">'+
+        '<button class="dbtn" onclick="RM.open(BD.byId('+daily.id+'))">READ</button>'+
+        '<button class="dbtn" onclick="AU.open(BD.byId('+daily.id+'))">HEAR</button>'+
+        '<button class="dbtn" onclick="shareV(BD.byId('+daily.id+'))">SHARE</button>'+
+      '</div>':'<div class="dta">Loading verse…</div>')+
+    '</div>';
+    /* Stats tiles */
+    html+='<div class="tile" style="background:linear-gradient(135deg,#1a3a1a,#2a5a2a)" onclick="App.nav(\'books\')">'+
+      '<div class="ct">66</div><div class="ttl">Books</div><div class="tts">புத்தகங்கள்</div>'+
+    '</div>';
+    html+='<div class="tile" style="background:linear-gradient(135deg,#3a1a1a,#5a2a2a)" onclick="App.nav(\'verses\')">'+
+      '<div class="ct">'+Math.floor(count/1000)+'K</div><div class="ttl">Verses</div><div class="tts">வசனங்கள்</div>'+
+    '</div>';
+    html+='<div class="tile" style="background:linear-gradient(135deg,#3a2a00,#5a4000)" onclick="App.nav(\'chars\')">'+
+      '<div class="ct">'+(typeof CHARS!=='undefined'?CHARS.length:'—')+'</div><div class="ttl">Characters</div><div class="tts">பாத்திரங்கள்</div>'+
+    '</div>';
+    html+='<div class="tile" style="background:linear-gradient(135deg,#1a1a3a,#2a2a5a)" onclick="App.nav(\'stories\')">'+
+      '<div class="ct">'+(typeof KIDS_STORIES!=='undefined'?KIDS_STORIES.length:'—')+'</div><div class="ttl">Kid Stories</div><div class="tts">குழந்தை கதைகள்</div>'+
+    '</div>';
+    document.getElementById('home-tiles').innerHTML=html;
+    /* Today\'s verses (random 5) */
+    if(count>0){
+      var all=BD.all();
+      var seed=d.getDate()+d.getMonth()*31;
+      var sample=[];
+      for(var i=0;i<5;i++){sample.push(all[(seed*7919+i*3571)%all.length]);}
+      document.getElementById('home-vv').innerHTML=
+        '<div class="sh"><span class="sht">TODAY\'S READING · இன்றைய வசனங்கள்</span></div>'+
+        sample.map(function(v){return mkVC(v,lang);}).join('');
+    }
+  }
+  return{build:buildTiles};
+})();
+
+/* ═══════════════════════════════════════
+   APP — MAIN CONTROLLER
+═══════════════════════════════════════ */
+var App=(function(){
+  var _lang=ST.g('lang')||'both';
+  var _scr='home';
+  var _LANGS=['both','ta','en'];
+  var _LBLS=['BI','TA','EN'];
+  function nav(s){
+    _scr=s;
+    document.querySelectorAll('.scr').forEach(function(el){el.classList.toggle('on',el.id==='s-'+s);});
+    document.querySelectorAll('.nb').forEach(function(btn){btn.classList.toggle('on',btn.dataset.s===s);});
+    if(s==='saved')SSAVED.render();
+  }
+  function cycleLang(){
+    var i=(_LANGS.indexOf(_lang)+1)%_LANGS.length;
+    _lang=_LANGS[i];
+    ST.setLang(_lang);
+    document.getElementById('lang-btn').textContent=_LBLS[i];
+    SV.render();
+    SSAVED.render();
+    SH.build(BD.count());
+  }
+  function theme(){
+    var isLight=document.documentElement.hasAttribute('data-light');
+    if(isLight){document.documentElement.removeAttribute('data-light');document.getElementById('th-btn').textContent='☀';}
+    else{document.documentElement.setAttribute('data-light','');document.getElementById('th-btn').textContent='🌙';}
+    var t=isLight?'dark':'light';ST.setTheme(t);
+  }
+  function getLang(){return _lang;}
+  /* restore theme */
+  if(ST.g('theme')==='light'){document.documentElement.setAttribute('data-light','');document.getElementById('th-btn').textContent='🌙';}
+  /* restore lang label */
+  var li=_LANGS.indexOf(_lang);
+  if(li>=0)document.getElementById('lang-btn').textContent=_LBLS[li];
+  return{nav:nav,cycleLang:cycleLang,theme:theme,getLang:getLang};
+})();
+
+/* ═══════════════════════════════════════
+   BOOT SEQUENCE
+═══════════════════════════════════════ */
+(function boot(){
+  var bar=document.getElementById('ls-bar');
+  var msg=document.getElementById('ls-msg');
+  var err=document.getElementById('ls-err');
+  function setBar(pct,txt){
+    if(bar)bar.style.width=pct+'%';
+    if(msg)msg.textContent=txt||'';
+  }
+  function showApp(){
+    document.getElementById('ls').style.display='none';
+    document.getElementById('app').style.display='flex';
+    App.nav('home');
+    PN.checkLocal();
+  }
+  function showError(){
+    if(err)err.style.display='block';
+    if(msg)msg.textContent='';
+    if(bar)bar.style.background='#ff6b6b';
+    bar.style.width='100%';
+  }
+
+  setBar(10,'Initializing…');
+
+  setTimeout(function(){
+    try{
+      setBar(30,'Loading Bible data…');
+      var count=BD.build();
+      if(!count){showError();return;}
+      setBar(60,'Building index…');
+      document.getElementById('h-sub').textContent=count.toLocaleString()+' VERSES · TAMIL + ENGLISH';
+      setBar(75,'Loading screens…');
+      SV.init();
+      SA.init();
+      SB.init();
+      SC.init();
+      SSTORIES.init();
+      SSONGS.init();
+      SH.build(count);
+      setBar(95,'Ready…');
+      setTimeout(function(){
+        setBar(100,'');
+        setTimeout(showApp,200);
+      },200);
+    }catch(e){
+      console.error('Boot error:',e);
+      if(msg)msg.textContent='Error: '+e.message;
+      showError();
+    }
+  },100);
+})();
+</script>
+</body>
+</html>
