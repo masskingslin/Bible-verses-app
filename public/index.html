@@ -449,6 +449,61 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 <script src="kids_stories.js"></script>
 <script src="songs.js"></script>
 
+<!-- DATA ADAPTERS: normalize external JS files to app format -->
+<script>
+"use strict";
+/* ── 1. CHARS: BIBLE_CHARACTERS → normalized CHARS ── */
+var CHARS=[];
+(function(){
+  if(typeof BIBLE_CHARACTERS==='undefined')return;
+  CHARS=BIBLE_CHARACTERS.map(function(c){
+    return{
+      en:c.name||'', ta:c.ta_name||'', era:c.era||'',
+      emoji:c.emoji||'👤', color:c.color||'#333',
+      quote:c.tagline_en||'',
+      story_en:c.summary_en||'', story_ta:c.summary_ta||'',
+      verses:c.verses||[], timeline:c.timeline||[],
+      lessons:(c.lessons_en||[]).map(function(l,i){
+        return{en:l,ta:(c.lessons_ta||[])[i]||''};
+      })
+    };
+  });
+})();
+
+/* ── 2. SONGS: TAMIL_SONGS.categories → flat SONGS array ── */
+var SONGS=[];
+(function(){
+  if(typeof TAMIL_SONGS==='undefined'||!TAMIL_SONGS.categories)return;
+  TAMIL_SONGS.categories.forEach(function(cat){
+    (cat.songs||[]).forEach(function(s){
+      SONGS.push({
+        ta:s.title_ta||'', en:s.title_en||'',
+        lyrics:s.lyrics_ta||'', num:s.no||'',
+        cat:cat.title_en||'General'
+      });
+    });
+  });
+})();
+
+/* ── 3. KIDS_STORIES: map field names in-place ── */
+(function(){
+  if(typeof KIDS_STORIES==='undefined')return;
+  KIDS_STORIES.forEach(function(s){
+    s.en    = s.en    || s.title_en  || '';
+    s.ta    = s.ta    || s.title_ta  || '';
+    s.emoji = s.emoji || s.icon      || '📖';
+    s.cat   = s.cat   || s.category  || 'General';
+    s.body_en = s.body_en || s.story_en || '';
+    s.body_ta = s.body_ta || s.story_ta || '';
+    /* build moral from lessons */
+    if(!s.moral_en && s.lessons   && s.lessons.length)
+      s.moral_en=s.lessons.join(' · ');
+    if(!s.moral_ta && s.lessons_ta && s.lessons_ta.length)
+      s.moral_ta=s.lessons_ta.join(' · ');
+  });
+})();
+</script>
+
 <script>
 "use strict";
 /* ═══════════════════════════════════════
@@ -552,15 +607,43 @@ var AU=(function(){
   }
   function msg(t){var e=document.getElementById('au-msg');if(e)e.textContent=t||'';}
 
-  function open(v){
-    _warmup(); /* ← Key fix: warm up on first user tap */
+  /* Auto-detect best language for a verse */
+  function _autoLang(v){
+    var appLang=(typeof App!=='undefined')?App.getLang():'both';
+    if(appLang==='en')return'en';
+    if(appLang==='ta')return'ta';
+    /* both: prefer Tamil if Tamil text exists */
+    return(v&&v.ta&&v.ta.trim())?'ta':'en';
+  }
+  /* hear(v): one-tap play — auto language + auto start */
+  function hear(v){
+    if(!v)return;
+    _ok=typeof window!=='undefined'&&'speechSynthesis'in window;
+    _warmup();
     _v=v;
+    _lang=_autoLang(v);
+    document.getElementById('au-ref').textContent=v.ref||'';
+    document.getElementById('au-panel').classList.add('on');
+    _setLUI(_lang);
+    if(!_ok){msg('⚠ TTS not supported. Enable in browser settings.');return;}
+    _lv();
+    /* delay slightly so warmup can settle on Android */
+    setTimeout(function(){
+      var t=(_lang==='ta'&&v.ta)?v.ta:v.en;
+      _speak(t,_lang==='ta'?'ta-IN':'en-US');
+    },350);
+  }
+  function open(v){
+    _ok=typeof window!=='undefined'&&'speechSynthesis'in window;
+    _warmup();
+    _v=v;
+    _lang=_autoLang(v);
     document.getElementById('au-ref').textContent=v.ref||'';
     document.getElementById('au-panel').classList.add('on');
     _setLUI(_lang);msg('');
-    if(!_ok){msg('⚠ TTS not supported on this device.');return;}
+    if(!_ok){msg('⚠ TTS not supported. Enable in browser settings.');return;}
     _lv();
-    msg(_lang==='ta'?'Tap ▶ PLAY to hear Tamil · Switch language above':'Tap ▶ PLAY to hear English');
+    msg(_lang==='ta'?'Tap ▶ PLAY to hear Tamil':'Tap ▶ PLAY to hear English');
   }
   function close(){stop();document.getElementById('au-panel').classList.remove('on');}
   function toggle(){
@@ -631,7 +714,7 @@ var AU=(function(){
   function pause(){if(_ok&&window.speechSynthesis.speaking&&!window.speechSynthesis.paused)window.speechSynthesis.pause();}
   function resume(){if(_ok&&window.speechSynthesis.paused)window.speechSynthesis.resume();}
   function stop(){if(_ok)window.speechSynthesis.cancel();sui(false);_ut=null;}
-  return{open:open,close:close,toggle:toggle,lang:lang,
+  return{open:open,hear:hear,close:close,toggle:toggle,lang:lang,
          play:play,pause:pause,resume:resume,stop:stop,readCh:readCh,speakText:speakText};
 })();
 
@@ -700,7 +783,7 @@ function mkVC(v,lang){
       (showEn?'<div class="ven">'+esc(v.en)+'</div>':'')+
     '</div>'+
     '<div class="va">'+
-      '<button onclick="AU.open(BD.byId('+id+'))">🔊 HEAR</button>'+
+      '<button onclick="AU.hear(BD.byId('+id+'))">🔊 HEAR</button>'+
       '<button id="sv-'+id+'" onclick="toggleSave('+id+',this)">'+(saved?'♥ SAVED':'♡ SAVE')+'</button>'+
       '<button onclick="shareV(BD.byId('+id+'))">⇧ SHARE</button>'+
     '</div>'+
@@ -818,7 +901,7 @@ var CD=(function(){
             '<div class="kven">'+esc(vobj.en)+'</div>'+
             '<div class="kvta">'+esc(vobj.ta)+'</div>'+
             '<div class="kvact">'+
-              '<button onclick="AU.open(BD.byId('+vobj.id+'))" style="background:rgba(255,255,255,.1);color:#fff">🔊 HEAR</button>'+
+              '<button onclick="AU.hear(BD.byId('+vobj.id+'))" style="background:rgba(255,255,255,.1);color:#fff">🔊 HEAR</button>'+
               '<button onclick="RM.open(BD.byId('+vobj.id+'))" style="background:var(--gold);color:#080810">READ</button>'+
             '</div>'+
           '</div>';
@@ -1181,7 +1264,7 @@ var SH=(function(){
       '<div class="dref">'+esc(daily.ref)+'</div>'+
       '<div class="dbtns">'+
         '<button class="dbtn" onclick="RM.open(BD.byId('+daily.id+'))">READ</button>'+
-        '<button class="dbtn" onclick="AU.open(BD.byId('+daily.id+'))">HEAR</button>'+
+        '<button class="dbtn" onclick="AU.hear(BD.byId('+daily.id+'))">HEAR</button>'+
         '<button class="dbtn" onclick="shareV(BD.byId('+daily.id+'))">SHARE</button>'+
       '</div>':'<div class="dta">Loading verse…</div>')+
     '</div>';
