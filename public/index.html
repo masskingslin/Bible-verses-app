@@ -534,17 +534,41 @@ var ST=(function(){
    Firefox, WebView — no alert(), graceful fallback
 ═══════════════════════════════════════ */
 var AU=(function(){
-  /* Re-check on first user touch — some browsers expose speechSynthesis lazily */
-  var _ok=false;
+  var _ok=false,_tested=false;
+
   function _checkOk(){
-    _ok=(typeof window!=='undefined')&&('speechSynthesis'in window)&&
-        (typeof window.SpeechSynthesisUtterance!=='undefined');
-    return _ok;
+    /* Check API presence */
+    var hasApi=('speechSynthesis'in window)&&(typeof window.SpeechSynthesisUtterance!=='undefined');
+    if(!hasApi){_ok=false;return false;}
+    /* Extra check: some browsers expose the API but it's non-functional (paused forever) */
+    try{
+      var ss=window.speechSynthesis;
+      /* If pending is true at startup it's usually broken WebView */
+      if(typeof ss.pending!=='undefined'&&typeof ss.speaking!=='undefined'){
+        _ok=true;return true;
+      }
+    }catch(e){_ok=false;return false;}
+    _ok=true;return true;
   }
   _checkOk();
-  /* Also re-check after first interaction */
-  document.addEventListener('touchstart',function _t(){_checkOk();if(_ok)_lv();document.removeEventListener('touchstart',_t);},{once:true,passive:true});
-  document.addEventListener('click',function _c(){_checkOk();if(_ok)_lv();document.removeEventListener('click',_c);},{once:true});
+
+  /* Re-check after user gesture — critical for lazy browsers */
+  function recheck(){
+    _tested=false;
+    _checkOk();
+    if(_ok){
+      _lv();
+      try{
+        if(window.speechSynthesis.onvoiceschanged!==undefined)
+          window.speechSynthesis.onvoiceschanged=function(){_lv();};
+      }catch(e){}
+      [200,800,2000].forEach(function(t){setTimeout(_lv,t);});
+    }
+    return _ok;
+  }
+
+  document.addEventListener('touchstart',function _t(){recheck();document.removeEventListener('touchstart',_t);},{once:true,passive:true});
+  document.addEventListener('click',function _c(){recheck();document.removeEventListener('click',_c);},{once:true});
 
   var _v=null,_lang='ta',_vs=[],_warm=false,_ut=null;
   var _chunks=[],_ci=0,_playing=false;
@@ -765,7 +789,9 @@ var AU=(function(){
   return{open:open,close:close,toggle:toggle,lang:lang,
          play:play,pause:pause,resume:resume,stop:stop,
          readCh:readCh,speakText:speakText,speakLong:speakLong,
-         isOk:function(){return _checkOk();},voices:function(){return _vs.slice();},
+         isOk:function(){return _checkOk();},
+         recheck:recheck,
+         voices:function(){return _vs.slice();},
          _checkOkPub:function(){return _checkOk();}};
 })();
 
@@ -792,50 +818,125 @@ var PN=(function(){
 })();
 
 /* ═══════════════════════════════════════
-   TTS SETTINGS — NEW
-   ⚙ button in header opens this overlay
-   Shows: support status, voice list, test buttons,
-          Tamil installation guide
+   TTS SETTINGS — FULL REBUILD
+   Retry, Chrome deep-link, voice list, test buttons
 ═══════════════════════════════════════ */
 var TTSS=(function(){
-  function open(){_render();document.getElementById('tts-ov').classList.add('on');}
+  var _retrying=false;
+
+  function open(){
+    /* Force a recheck on user gesture — this is the moment we have gesture context */
+    AU.recheck();
+    _retrying=false;
+    _render();
+    document.getElementById('tts-ov').classList.add('on');
+  }
   function close(){AU.stop();document.getElementById('tts-ov').classList.remove('on');}
+
+  /* Retry — called by button tap (which IS a user gesture) */
+  function retry(){
+    _retrying=true;
+    var el=document.getElementById('tts-retry-btn');
+    if(el){el.textContent='⏳ Checking…';el.disabled=true;}
+    /* Try to actually speak a silent utterance to force init */
+    var nowOk=AU.recheck();
+    if(nowOk){
+      try{
+        var u=new SpeechSynthesisUtterance(' ');
+        u.volume=0;u.rate=2;
+        window.speechSynthesis.speak(u);
+        setTimeout(function(){
+          try{window.speechSynthesis.cancel();}catch(e){}
+          _render(); /* Re-render after trying */
+        },600);
+      }catch(e){_render();}
+    } else {
+      setTimeout(_render,300);
+    }
+  }
 
   function _render(){
     var ok=AU.isOk();
-    var voices=ok?window.speechSynthesis.getVoices():[];
+    var voices=[];
+    if(ok){try{voices=window.speechSynthesis.getVoices()||[];}catch(e){}}
     var taV=voices.filter(function(v){return(v.lang||'').toLowerCase().indexOf('ta')===0;});
     var enV=voices.filter(function(v){return(v.lang||'').toLowerCase().indexOf('en')===0;});
     var h='';
 
-    /* Status bar */
-    h+='<div style="padding:14px;background:'+(ok?'#081a08':'#1a0808')+';border-bottom:2px solid '+(ok?'#2a6a2a':'#6a2a2a')+'">';
-    h+='<div style="font-size:9px;letter-spacing:2px;color:'+(ok?'#5afa5a':'#fa5a5a')+';font-family:var(--sans);font-weight:700">';
-    h+=(ok?'✓ TTS SUPPORTED · இந்த Browser-ல் Audio வேலை செய்கிறது':'✗ TTS NOT SUPPORTED · Audio இந்த Browser-ல் வேலை செய்யவில்லை')+'</div>';
     if(!ok){
-      h+='<div style="font-size:13px;color:rgba(255,255,255,.8);font-family:var(--ta2);margin-top:8px;line-height:2.0">';
-      h+='<b style="color:#fac85a">தீர்வு (Fix):</b><br>';
-      h+='1. Chrome browser-ல் திறக்கவும் (Open in Chrome)<br>';
-      h+='2. Play Store → <b>Google Text-to-Speech</b> → Install<br>';
-      h+='3. Settings → Language → Text-to-Speech → Google TTS → ⚙ → Tamil ⬇<br>';
-      h+='4. App மூடி மீண்டும் திறக்கவும்';
+      /* ── TTS NOT SUPPORTED SCREEN ── */
+      h+='<div style="padding:20px 16px;background:#1a0505;border-bottom:2px solid #8b0000;text-align:center">';
+      h+='<div style="font-size:36px;margin-bottom:10px">🔇</div>';
+      h+='<div style="font-size:11px;letter-spacing:2px;color:#fa5a5a;font-family:var(--sans);font-weight:700;margin-bottom:6px">TTS NOT SUPPORTED</div>';
+      h+='<div style="font-size:13px;color:rgba(255,255,255,.7);font-family:var(--ta2);line-height:1.9">Audio இந்த browser-ல் வேலை செய்யவில்லை.<br>Chrome browser-ல் திறந்தால் சரியாகும்.</div>';
       h+='</div>';
-    }
-    h+='</div>';
 
-    if(ok){
+      /* RETRY button — tap = user gesture, may unlock TTS */
+      h+='<div style="padding:16px;border-bottom:1px solid var(--brd)">';
+      h+='<button id="tts-retry-btn" onclick="TTSS.retry()" style="display:block;width:100%;padding:16px;background:linear-gradient(135deg,#0a3a6a,#0d5a9a);border:2px solid #3a8aff;color:#fff;font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;margin-bottom:10px;letter-spacing:1px">🔄 RETRY · மீண்டும் சோதி</button>';
+      h+='<div style="font-size:11px;color:rgba(255,255,255,.4);font-family:var(--ta2);text-align:center">Tap Retry after installing Google TTS</div>';
+      h+='</div>';
+
+      /* Open in Chrome button */
+      h+='<div style="padding:16px;border-bottom:1px solid var(--brd)">';
+      h+='<div style="font-size:9px;letter-spacing:3px;color:var(--txt3);font-family:var(--sans);margin-bottom:12px">STEP 1 · முதல் படி</div>';
+      h+='<button onclick="TTSS.openInChrome()" style="display:flex;align-items:center;gap:14px;width:100%;padding:16px;background:linear-gradient(135deg,#0a2a10,#1a4a20);border:2px solid #2a8a3a;color:#fff;cursor:pointer;text-align:left">';
+      h+='<span style="font-size:28px">🌐</span>';
+      h+='<div><div style="font-size:13px;font-weight:700;font-family:var(--sans)">OPEN IN CHROME BROWSER</div>';
+      h+='<div style="font-size:12px;color:rgba(255,255,255,.65);font-family:var(--ta2);margin-top:3px">Chrome-ல் திறக்கவும் — Audio வேலை செய்யும்</div></div></button>';
+      h+='</div>';
+
+      /* Install guide */
+      h+='<div style="padding:16px;border-bottom:1px solid var(--brd)">';
+      h+='<div style="font-size:9px;letter-spacing:3px;color:var(--txt3);font-family:var(--sans);margin-bottom:12px">STEP 2 · இரண்டாம் படி — INSTALL TAMIL TTS</div>';
+
+      /* Step cards */
+      var steps=[
+        {n:'1',icon:'📲',ta:'Play Store திறக்கவும்',en:'Open Google Play Store'},
+        {n:'2',icon:'🔍',ta:'"Google Text-to-Speech" தேடவும்',en:'Search: Google Text-to-Speech'},
+        {n:'3',icon:'⬇',ta:'Install / Open பண்ணவும்',en:'Install or Open the app'},
+        {n:'4',icon:'⚙',ta:'Settings → Install voice data → Tamil → ⬇',en:'Settings → Install voice data → Tamil'},
+        {n:'5',icon:'🔁',ta:'App மூடி Chrome-ல் மீண்டும் திறக்கவும்',en:'Close & reopen in Chrome'},
+        {n:'6',icon:'🔄',ta:'இங்கே RETRY அழுத்தவும்',en:'Tap RETRY button above'}
+      ];
+      steps.forEach(function(s){
+        h+='<div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)">';
+        h+='<div style="width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.15);color:var(--gold);font-size:11px;font-weight:700;font-family:var(--sans);display:flex;align-items:center;justify-content:center;flex-shrink:0">'+s.n+'</div>';
+        h+='<div style="font-size:22px;flex-shrink:0;line-height:1.3">'+s.icon+'</div>';
+        h+='<div><div style="font-size:13px;color:rgba(255,255,255,.85);font-family:var(--ta2);line-height:1.7">'+s.ta+'</div>';
+        h+='<div style="font-size:11px;color:rgba(255,255,255,.4);font-family:var(--sans);margin-top:1px">'+s.en+'</div></div>';
+        h+='</div>';
+      });
+      h+='</div>';
+
+      /* Samsung / other browser note */
+      h+='<div style="padding:14px;background:rgba(255,200,0,.05);border-bottom:1px solid rgba(255,200,0,.1)">';
+      h+='<div style="font-size:9px;letter-spacing:2px;color:#fac85a;font-family:var(--sans);font-weight:700;margin-bottom:8px">📱 ANDROID BROWSER NOTE</div>';
+      h+='<div style="font-size:13px;color:rgba(255,255,255,.65);font-family:var(--ta2);line-height:1.9">';
+      h+='Samsung Browser, UC Browser, Huawei Browser — இவற்றில் Audio வேலை செய்யாது.<br>';
+      h+='<b style="color:#fac85a">Chrome for Android மட்டுமே</b> Tamil TTS support செய்கிறது.';
+      h+='</div></div>';
+
+    } else {
+      /* ── TTS SUPPORTED SCREEN ── */
+      h+='<div style="padding:12px 16px;background:#081a08;border-bottom:2px solid #2a6a2a;display:flex;align-items:center;gap:10px">';
+      h+='<span style="font-size:22px">✅</span>';
+      h+='<div><div style="font-size:10px;letter-spacing:2px;color:#5afa5a;font-family:var(--sans);font-weight:700">TTS SUPPORTED · Audio வேலை செய்கிறது</div>';
+      h+='<div style="font-size:11px;color:rgba(255,255,255,.5);font-family:var(--ta2);margin-top:2px">'+voices.length+' voices · '+taV.length+' Tamil · '+enV.length+' English</div></div>';
+      h+='</div>';
+
       /* Stat cards */
       h+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--brd)">';
-      h+=_statCard('TAMIL VOICES',taV.length,taV.length>0?'#2a6a2a':'#6a2a2a',taV.length>0?'#5afa5a':'#fa5a5a');
-      h+=_statCard('EN VOICES',enV.length,'#1a2a5c','#7aaafa');
-      h+=_statCard('TOTAL',voices.length,'#2a2a1a','#fac85a');
+      h+=_statCard('TAMIL',taV.length,taV.length>0?'#0d3a0d':'#3a0d0d',taV.length>0?'#5afa5a':'#fa5a5a');
+      h+=_statCard('ENGLISH',enV.length,'#0d1a3a','#7aaafa');
+      h+=_statCard('TOTAL',voices.length,'#1a1a0d','#fac85a');
       h+='</div>';
 
       /* Test buttons */
       h+='<div style="padding:14px;border-bottom:1px solid var(--brd)">';
       h+='<div style="font-size:8px;letter-spacing:3px;color:var(--txt3);font-family:var(--sans);margin-bottom:10px">QUICK TEST · சோதனை</div>';
-      h+='<button onclick="TTSS.testTA()" style="display:block;width:100%;padding:13px;margin-bottom:8px;background:#0a2e3a;border:1px solid #1a5c6a;color:#fff;font-size:13px;font-family:var(--ta2);cursor:pointer;text-align:left">🔊 தமிழில் சோதிக்கவும் — Test Tamil TTS</button>';
-      h+='<button onclick="TTSS.testEN()" style="display:block;width:100%;padding:13px;background:#0a2a0a;border:1px solid #1a5a1a;color:#fff;font-size:12px;font-family:var(--sans);cursor:pointer;text-align:left;font-weight:700">🔊 TEST ENGLISH TTS — Click to hear</button>';
+      h+='<button onclick="TTSS.testTA()" style="display:block;width:100%;padding:14px;margin-bottom:8px;background:#0a2e3a;border:1px solid #1a5c6a;color:#fff;font-size:14px;font-family:var(--ta2);cursor:pointer;text-align:left">🔊 தமிழில் சோதிக்கவும் — Test Tamil</button>';
+      h+='<button onclick="TTSS.testEN()" style="display:block;width:100%;padding:14px;background:#0a2a0a;border:1px solid #1a5a1a;color:#fff;font-size:12px;font-family:var(--sans);cursor:pointer;text-align:left;font-weight:700;letter-spacing:.5px">🔊 TEST ENGLISH TTS — Click to hear</button>';
       h+='</div>';
 
       /* Tamil not installed guide */
@@ -843,48 +944,60 @@ var TTSS=(function(){
         h+='<div style="padding:14px;background:#1a0d00;border-bottom:2px solid var(--gold)">';
         h+='<div style="font-size:9px;letter-spacing:2px;color:var(--gold);font-family:var(--sans);font-weight:700;margin-bottom:10px">⚠ TAMIL VOICE NOT INSTALLED · தமிழ் குரல் இல்லை</div>';
         h+='<div style="font-size:14px;line-height:2.2;color:rgba(255,255,255,.8);font-family:var(--ta2)">';
-        h+='Tamil TTS install செய்ய:<br>';
-        h+='<b style="color:var(--gold)">Android:</b><br>';
         h+='1. Play Store → "Google Text-to-Speech" → Open<br>';
         h+='2. ⚙ Settings → Install voice data → Tamil → ⬇<br>';
-        h+='3. Settings → General Management → Language → Text-to-Speech → Preferred engine → ⚙ → Install voice data → Tamil<br>';
-        h+='4. App மூடி மீண்டும் திறக்கவும்<br>';
-        h+='<b style="color:var(--gold)">iPhone/iPad:</b><br>';
-        h+='Settings → Accessibility → Spoken Content → Voices → Tamil → Download';
+        h+='3. Settings → Language → Text-to-Speech → Google TTS → ⚙ → Tamil ⬇<br>';
+        h+='4. App மூடி மீண்டும் திறக்கவும், then tap RETRY below';
         h+='</div>';
-        h+='<button onclick="TTSS.testEN()" style="display:block;width:100%;padding:13px;margin-top:12px;background:#0a2a0a;border:1px solid #1a5a1a;color:#fff;font-size:12px;font-family:var(--sans);cursor:pointer;font-weight:700">🔊 MEANWHILE — TEST ENGLISH VOICE</button>';
+        h+='<button id="tts-retry-btn" onclick="TTSS.retry()" style="display:block;width:100%;padding:13px;margin-top:12px;background:#1a3a6a;border:2px solid #3a6aaa;color:#fff;font-size:12px;font-weight:700;font-family:var(--sans);cursor:pointer;letter-spacing:1px">🔄 RETRY AFTER INSTALLING</button>';
+        h+='<button onclick="TTSS.testEN()" style="display:block;width:100%;padding:13px;margin-top:8px;background:#0a2a0a;border:1px solid #1a5a1a;color:#fff;font-size:12px;font-family:var(--sans);cursor:pointer;font-weight:700">🔊 USE ENGLISH VOICE MEANWHILE</button>';
         h+='</div>';
       }
 
       /* Voice list */
       if(voices.length>0){
         h+='<div style="padding:10px 14px 6px;font-size:8px;letter-spacing:3px;color:var(--txt3);font-family:var(--sans)">AVAILABLE VOICES ('+voices.length+')</div>';
-        var show=taV.concat(enV.slice(0,3)).concat(voices.filter(function(v){
+        var show=taV.concat(enV.slice(0,4)).concat(voices.filter(function(v){
           var l=(v.lang||'').toLowerCase();return l.indexOf('ta')!==0&&l.indexOf('en')!==0;
-        }).slice(0,3));
-        show.forEach(function(v,idx){
+        }).slice(0,2));
+        show.forEach(function(v){
           var allIdx=voices.indexOf(v);
           var isTa=(v.lang||'').toLowerCase().indexOf('ta')===0;
           h+='<div class="tts-row">';
-          h+='<span class="tts-badge" style="background:'+(isTa?'#0a3a5c':'#0a2a0a')+';color:#fff">'+_esc(v.lang||'?')+'</span>';
-          h+='<div style="flex:1"><div class="tts-voice-name">'+_esc(v.name||'Voice '+idx)+'</div>';
-          h+='<div class="tts-voice-meta">'+(v.localService?'LOCAL · ':'NETWORK · ')+(v.default?'DEFAULT':'')+'</div></div>';
-          h+='<button onclick="TTSS.testVoiceIdx('+allIdx+')" style="background:rgba(255,255,255,.1);border:none;color:var(--txt2);padding:5px 8px;font-size:8px;font-family:var(--sans);cursor:pointer">TEST</button>';
+          h+='<span class="tts-badge" style="background:'+(isTa?'#0a3a5c':'#0a2a0a')+';color:#fff;font-size:9px;min-width:46px;text-align:center">'+_esc((v.lang||'?').toUpperCase())+'</span>';
+          h+='<div style="flex:1"><div class="tts-voice-name">'+_esc(v.name||'Unknown')+'</div>';
+          h+='<div class="tts-voice-meta">'+(v.localService?'📱 LOCAL':'☁ NETWORK')+(v.default?' · DEFAULT':'')+'</div></div>';
+          h+='<button onclick="TTSS.testVoiceIdx('+allIdx+')" style="background:rgba(255,255,255,.1);border:none;color:var(--txt2);padding:6px 10px;font-size:8px;font-family:var(--sans);cursor:pointer;font-weight:700">▶ TEST</button>';
           h+='</div>';
         });
+        h+='<div style="height:20px"></div>';
       }
     }
 
     var el=document.getElementById('tts-body');if(el)el.innerHTML=h;
   }
 
-  function _statCard(label,val,bg,col){
-    return '<div style="background:'+bg+';padding:14px;text-align:center">'+
-      '<div style="font-size:26px;font-weight:700;color:'+col+';font-family:var(--sans)">'+val+'</div>'+
-      '<div style="font-size:8px;color:rgba(255,255,255,.5);font-family:var(--sans);margin-top:3px">'+label+'</div></div>';
+  /* openInChrome — tries Android intent:// URL, falls back to copy-paste prompt */
+  function openInChrome(){
+    var url=window.location.href;
+    /* Try Android Chrome intent */
+    try{
+      var intent='intent://'+url.replace(/^https?:\/\//,'')+
+        '#Intent;scheme=https;package=com.android.chrome;end';
+      window.location.href=intent;
+    }catch(e){}
+    /* Also try direct */
+    setTimeout(function(){
+      try{window.open('googlechrome://navigate?url='+encodeURIComponent(url),'_blank');}catch(e){}
+    },500);
   }
 
-  function _esc(s){return s.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function _statCard(label,val,bg,col){
+    return '<div style="background:'+bg+';padding:14px;text-align:center">'+
+      '<div style="font-size:28px;font-weight:700;color:'+col+';font-family:var(--sans)">'+val+'</div>'+
+      '<div style="font-size:8px;color:rgba(255,255,255,.5);font-family:var(--sans);margin-top:3px">'+label+'</div></div>';
+  }
+  function _esc(s){return(s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
   function testTA(){AU.speakText('நான் கர்த்தரை நேசிக்கிறேன். தேவன் நல்லவர். இயேசு என்னை நேசிக்கிறார். வேத வசனம் கேட்கலாம்.','ta-IN');}
   function testEN(){AU.speakText('The Lord is my shepherd I shall not want. Jesus loves me this I know.','en-US');}
@@ -897,10 +1010,10 @@ var TTSS=(function(){
     ut.voice=v;ut.lang=v.lang;ut.rate=0.9;
     window.speechSynthesis.speak(ut);
   }
-  /* keep old name for compatibility */
   function testVoice(idx){testVoiceIdx(idx);}
 
-  return{open:open,close:close,testTA:testTA,testEN:testEN,testVoice:testVoice,testVoiceIdx:testVoiceIdx};
+  return{open:open,close:close,retry:retry,openInChrome:openInChrome,
+         testTA:testTA,testEN:testEN,testVoice:testVoice,testVoiceIdx:testVoiceIdx};
 })();
 
 /* ═══════════════════════════════════════
