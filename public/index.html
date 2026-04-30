@@ -25,10 +25,12 @@ html,body{height:100%;overflow:hidden}
 body{font-family:var(--ta2);background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased}
 button{font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scrollbar{display:none}
+/* SHELL */
 #app{display:flex;flex-direction:column;height:100vh;max-width:480px;margin:0 auto;overflow:hidden}
 #hdr{flex-shrink:0;height:var(--hdr);background:var(--bg2);border-bottom:1px solid var(--gold);display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:50}
 #main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 #nav{flex-shrink:0;height:var(--nav);background:var(--bg2);border-top:1px solid var(--gold);display:flex;overflow-x:auto}
+/* LOADING — FIX 2 & 7 */
 #ls{position:fixed;inset:0;z-index:999;background:#040408;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
 .ls-img{width:90px;height:90px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;animation:lsglow 2s ease-in-out infinite alternate}
 @keyframes lsglow{from{box-shadow:0 0 10px rgba(201,168,76,.3)}to{box-shadow:0 0 28px rgba(201,168,76,.7)}}
@@ -37,24 +39,31 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .ls-track{width:200px;height:3px;background:rgba(201,168,76,.15);border-radius:2px;overflow:hidden}
 .ls-bar{height:100%;background:var(--gold);width:0%;transition:width .4s ease;border-radius:2px}
 .ls-msg{font-size:10px;color:rgba(232,220,200,.5);letter-spacing:1px;font-family:var(--sans)}
+/* FIX 7: error message */
 .ls-err{display:none;font-size:10px;color:#ff6b6b;text-align:center;line-height:1.9;font-family:var(--sans);padding:0 30px}
+/* PUSH BANNER */
 #pn-banner{display:none;position:fixed;top:0;left:0;right:0;z-index:998;max-width:480px;margin:0 auto;background:linear-gradient(135deg,#0d2040,#1a3a6a);border-bottom:2px solid var(--gold);padding:12px 14px;animation:slidedown .3s ease}
 @keyframes slidedown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
-.pn-inner{display:flex;align-items:flex-start;gap:12px}.pn-ico{font-size:22px;flex-shrink:0}
+.pn-inner{display:flex;align-items:flex-start;gap:12px}
+.pn-ico{font-size:22px;flex-shrink:0}
 .pn-title{font-size:13px;font-weight:700;color:#fff;font-family:var(--sans)}
 .pn-body{font-size:12px;color:rgba(255,255,255,.75);font-family:var(--ta2);margin-top:3px;line-height:1.5}
 .pn-close{background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;font-size:14px;border-radius:4px;flex-shrink:0;cursor:pointer}
+/* HEADER */
 .hbrand{display:flex;align-items:center;gap:10px}
 .hico{width:34px;height:34px;border-radius:8px;object-fit:cover;border:1px solid var(--gold)}
 .htit{font-size:12px;letter-spacing:3px;font-weight:700;color:var(--txt);font-family:var(--sans)}
 .hsub{font-size:7px;letter-spacing:1px;color:var(--txt3);margin-top:1px;font-family:var(--sans)}
 .hbtns{display:flex;gap:5px}
 .hbtn{background:transparent;border:1px solid var(--brd);color:var(--txt2);width:32px;height:28px;font-size:11px;font-weight:700;font-family:var(--sans)}
+/* NAV */
 .nb{flex:1;min-width:48px;border:none;background:transparent;color:var(--txt3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all .15s}
 .nb.on{color:var(--gold);border-top:2px solid var(--gold);background:rgba(201,168,76,.05)}
 .ni{font-size:16px;line-height:1}.nl{font-size:7px;font-weight:700;letter-spacing:.3px;font-family:var(--sans)}
+/* SCREENS */
 .scr{display:none}.scr.on{display:block;animation:fu .2s ease}
 @keyframes fu{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+/* TILES */
 .tg{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:3px}
 .tile{padding:14px;display:flex;flex-direction:column;justify-content:space-between;min-height:88px;cursor:pointer;overflow:hidden;position:relative}
 .tile.w2{grid-column:1/3;min-height:130px}.tile.clk{grid-column:1/3;min-height:100px;cursor:default}
@@ -66,8 +75,10 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .dref{font-size:9px;color:rgba(255,255,255,.6);font-weight:700;margin-bottom:10px;font-family:var(--sans)}
 .dbtns{display:flex;gap:5px}.dbtn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:5px 10px;font-size:8px;font-weight:700;font-family:var(--sans)}
 .ttl{font-size:13px;font-weight:700;color:#fff;font-family:var(--sans)}.tts{font-size:9px;color:rgba(255,255,255,.5);margin-top:3px;font-family:var(--sans)}
+/* SECTION HDR */
 .sh{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--brd)}
 .sht{font-size:8px;letter-spacing:3px;font-weight:700;color:var(--txt2);font-family:var(--sans)}
+/* VERSE CARD */
 .vc{background:var(--bg2);border-bottom:1px solid var(--brd)}
 .vch{padding:7px 14px;display:flex;align-items:center;justify-content:space-between}
 .vr{font-size:10px;font-weight:700;color:#fff;letter-spacing:.5px;font-family:var(--sans)}.vbk{font-size:9px;color:rgba(255,255,255,.5);font-family:var(--ta2)}
@@ -76,9 +87,11 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .ven{font-size:15px;line-height:1.85;color:var(--txt);font-family:var(--en);font-style:italic}
 .va{display:flex;gap:2px;margin-top:10px}
 .va button{flex:1;padding:7px 2px;border:none;background:var(--bg3);color:var(--txt2);font-size:8px;font-weight:700;border-top:1px solid var(--brd);font-family:var(--sans)}
+/* LANG TOGGLE */
 .ltog{display:flex;gap:2px;padding:5px 14px;background:var(--bg2);border-bottom:1px solid var(--brd)}
 .ltog button{flex:1;padding:7px;border:none;background:var(--bg3);color:var(--txt2);font-size:9px;font-weight:700;font-family:var(--sans)}
 .ltog button.on{background:var(--acc);color:#fff}
+/* SEARCH */
 .sbar{display:flex;border-bottom:1px solid var(--gold)}
 .sinp{flex:1;background:var(--bg2);border:none;padding:12px 14px;color:var(--txt);font-size:15px;font-family:var(--en)}
 .sinp::placeholder{color:var(--txt3);font-style:italic}
@@ -86,6 +99,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .chips{display:flex;gap:4px;overflow-x:auto;padding:8px 14px;border-bottom:1px solid var(--brd)}
 .chip{background:var(--bg3);border:1px solid var(--brd);color:var(--txt2);padding:5px 12px;font-size:9px;white-space:nowrap;font-family:var(--sans)}
 .chip.on{background:var(--gold);border-color:var(--gold);color:#080810}
+/* BOOKS */
 .bfilt{display:flex;gap:3px;padding:3px}
 .bfilt button{flex:1;padding:8px;border:none;background:var(--bg3);color:var(--txt2);font-size:9px;font-weight:700;font-family:var(--sans)}
 .bfilt button.on{background:#0d4a1a;color:#fff}
@@ -94,6 +108,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .bne{font-size:12px;color:#fff;font-weight:700;font-family:var(--sans)}.bnt{font-size:11px;color:rgba(255,255,255,.8);font-family:var(--ta2);margin-top:2px}
 .bm{font-size:8px;color:rgba(255,255,255,.45);font-family:var(--sans)}
 .bbtns{display:flex;gap:3px;margin-top:8px}.bbtns button{flex:1;background:rgba(255,255,255,.18);border:none;color:#fff;padding:5px 0;font-size:8px;font-weight:700;font-family:var(--sans)}
+/* CHARACTER / STORY TILES */
 .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:3px}
 .ctile{padding:14px;min-height:108px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;position:relative;overflow:hidden}
 .cemi{position:absolute;right:8px;top:8px;font-size:30px;opacity:.22}
@@ -101,10 +116,12 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .ce{font-size:8px;color:rgba(255,255,255,.45);font-family:var(--sans);margin-top:3px}
 .ctl{font-size:11px;color:rgba(255,255,255,.65);font-family:var(--en);font-style:italic;margin-top:4px;line-height:1.4}
 .cbtn{background:rgba(255,255,255,.18);border:none;color:#fff;padding:6px;font-size:8px;font-weight:700;font-family:var(--sans);width:100%;margin-top:7px}
+/* OVERLAYS */
 .ov{display:none;position:fixed;inset:0;z-index:400;flex-direction:column;max-width:480px;margin:0 auto;background:var(--bg)}
 .ov.on{display:flex;animation:fu .2s ease}
 .ovbar{flex-shrink:0;padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
 .ovbody{flex:1;overflow-y:auto}
+/* READING */
 .rbar{flex-shrink:0;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
 .rbody{flex:1;overflow-y:auto;padding:32px 22px}
 .rta{font-family:var(--ta);line-height:2.2;margin-bottom:24px;color:var(--txt)}
@@ -112,6 +129,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .ren{line-height:1.9;font-style:italic;color:var(--txt);font-family:var(--en)}
 .rbadge{display:inline-block;padding:5px 18px;font-size:9px;font-weight:700;letter-spacing:3px;margin-top:20px;font-family:var(--sans)}
 .rctls{display:flex;gap:6px}.rcbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.15);color:#fff;font-family:var(--sans);cursor:pointer}
+/* CHAPTER READER */
 .chbody{flex:1;overflow-y:auto;padding:12px 14px;background:var(--bg)}
 .chv{padding:9px 0;border-bottom:1px solid var(--brd);display:flex;gap:12px}
 .chvn{font-size:10px;font-weight:700;color:var(--gold);font-family:var(--sans);flex-shrink:0;padding-top:3px;width:28px;text-align:right}
@@ -124,6 +142,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .chlb{display:flex;gap:3px;margin-right:4px}
 .chlb button{padding:0 8px;height:28px;border:none;background:var(--bg3);color:var(--txt2);font-size:8px;font-weight:700;font-family:var(--sans)}
 .chlb button.on{background:var(--acc);color:#fff}
+/* AUDIO PANEL — FIX 3 */
 #au-panel{display:none;position:fixed;bottom:var(--nav);left:0;right:0;z-index:200;max-width:480px;margin:0 auto}
 #au-panel.on{display:block}
 .auinner{background:linear-gradient(135deg,#030818,#0a1835);padding:14px;box-shadow:0 -4px 20px rgba(0,0,0,.6);position:relative;border-top:1px solid rgba(100,150,255,.2)}
@@ -134,19 +153,17 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .auctls{display:flex;gap:4px}
 .auctls button{flex:1;padding:9px 4px;border:none;font-size:9px;font-weight:700;font-family:var(--sans);cursor:pointer}
 .aucls{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.1);border:none;color:#fff;width:26px;height:26px;font-size:13px;cursor:pointer}
-.aumsg{margin-top:6px;font-size:9px;color:rgba(255,255,255,.55);font-family:var(--sans);line-height:1.7;white-space:pre-line}
+.aumsg{margin-top:6px;font-size:9px;color:rgba(255,255,255,.45);font-family:var(--sans);line-height:1.6}
 /* SONGS */
-.song-cat-hdr{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.08)}
+.song-cat-hdr{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 .song-cat-t{font-size:13px;font-weight:700;color:#fff;font-family:var(--sans)}
 .song-cat-e{font-size:10px;color:rgba(255,255,255,.6);font-family:var(--sans);margin-top:2px}
 .song-cat-body{display:none}.song-cat-body.open{display:block}
-.song-item{padding:13px 14px;border-bottom:1px solid var(--brd);background:var(--bg2);cursor:pointer;display:flex;align-items:center;gap:10px}
-.song-item:active{background:var(--bg3)}
-.song-num{font-size:10px;color:var(--txt3);font-family:var(--sans);width:22px;flex-shrink:0;text-align:center}
-.song-tita{font-size:14px;color:var(--txt);font-family:var(--ta2)}
-.song-tite{font-size:11px;color:var(--txt2);font-family:var(--en);font-style:italic;margin-top:2px}
-/* Full lyrics display */
-.song-lyrics{font-size:17px;line-height:2.4;color:var(--txt);font-family:var(--ta2);white-space:pre-line;padding:0}
+.song-item{padding:12px 14px;border-bottom:1px solid var(--brd);background:var(--bg2);cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.song-num{font-size:10px;color:var(--txt3);font-family:var(--sans);width:22px;flex-shrink:0}
+.song-tita{font-size:14px;color:var(--txt);font-family:var(--ta2);flex:1}
+.song-tite{font-size:11px;color:var(--txt2);font-family:var(--en);font-style:italic}
+.song-lyrics{font-size:16px;line-height:2.2;color:var(--txt);font-family:var(--ta2);white-space:pre-line}
 /* STORY / CHAR SECTIONS */
 .csec{padding:15px;border-bottom:1px solid var(--brd)}
 .csl{font-size:8px;letter-spacing:3px;font-weight:700;color:var(--txt3);font-family:var(--sans);margin-bottom:11px}
@@ -156,6 +173,8 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .kvref{font-size:9px;font-weight:700;color:var(--gold);font-family:var(--sans);margin-bottom:7px}
 .kven{font-size:15px;line-height:1.85;color:var(--txt);font-family:var(--en);font-style:italic}
 .kvta{font-size:14px;line-height:2.0;color:var(--txt2);font-family:var(--ta2);margin-top:8px}
+.kvact{display:flex;gap:4px;margin-top:10px}
+.kvact button{flex:1;padding:7px;border:none;font-size:8px;font-weight:700;font-family:var(--sans);cursor:pointer}
 .tli{display:flex;gap:13px;padding:9px 0;border-bottom:1px solid var(--brd)}.tli:last-child{border-bottom:none}
 .tlcol{display:flex;flex-direction:column;align-items:center;gap:4px}
 .tldot{width:9px;height:9px;border-radius:50%;flex-shrink:0}.tlline{width:1px;background:var(--brd);flex:1}
@@ -166,40 +185,50 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .lesnn{font-size:22px;font-weight:700;color:var(--gold);font-family:var(--sans);opacity:.4;flex-shrink:0;line-height:1;margin-top:2px}
 .lesen{font-size:15px;line-height:1.8;color:var(--txt);font-family:var(--en)}
 .lesta{font-size:13px;line-height:1.9;color:var(--txt2);font-family:var(--ta2);margin-top:5px}
+/* PAGINATION */
 .pgbar{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:var(--bg2);border-bottom:1px solid var(--brd)}
 .pgbtn{background:var(--gold);border:none;color:#080810;padding:6px 16px;font-size:9px;font-weight:700;font-family:var(--sans);cursor:pointer}
 .pgbtn:disabled{background:var(--bg3);color:var(--txt3)}.pgi{font-size:9px;color:var(--txt2);font-family:var(--sans)}
+/* MISC */
 .empty{text-align:center;padding:52px 20px}.emico{font-size:44px;margin-bottom:14px;opacity:.18}
 .emtxt{font-size:9px;letter-spacing:2px;color:var(--txt3);line-height:2.2;font-family:var(--sans)}
 .ad{background:var(--bg2);border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);height:50px;display:flex;align-items:center;justify-content:center}
 .adlbl{font-size:8px;color:var(--txt3);letter-spacing:2px;font-family:var(--sans)}.pb{padding-bottom:calc(var(--nav)+12px)}
-/* TTS SETTINGS */
-.tts-row{padding:10px 14px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:12px}
-.tts-badge{font-size:9px;padding:3px 8px;font-family:var(--sans);font-weight:700;flex-shrink:0}
-.tts-voice-name{font-size:12px;color:var(--txt);font-family:var(--sans)}
-.tts-voice-meta{font-size:9px;color:var(--txt2);font-family:var(--sans);margin-top:2px}
-/* STORY READ OVERLAY TABS */
-.ov-tab-row{display:flex;background:rgba(0,0,0,.3);flex-shrink:0;border-bottom:1px solid var(--brd)}
-.ov-tab{flex:1;padding:11px;border:none;font-size:9px;font-weight:700;font-family:var(--sans);cursor:pointer;background:transparent;color:rgba(255,255,255,.4);border-bottom:2px solid transparent}
-.ov-tab.on{color:var(--gold);border-bottom-color:var(--gold);background:rgba(201,168,76,.07)}
-/* READ TO ME BUTTON */
-.read-to-me-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px;background:linear-gradient(135deg,#0a4a1a,#0d7a2a);border:none;color:#fff;font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;letter-spacing:1px}
-.read-to-me-btn:active{opacity:.8}
+/* TTS SETTINGS PANEL */
+.tts-panel{padding:8px 0}
+.tts-panel h3{padding:12px 14px;font-size:11px;letter-spacing:2px;color:var(--gold);font-family:var(--sans);border-bottom:1px solid var(--brd)}
+.tts-status{padding:10px 14px;font-size:11px;font-family:var(--sans);border-bottom:1px solid var(--brd)}
+.tts-status.ok{color:#5afa5a;background:rgba(0,100,0,.15)}
+.tts-status.err{color:#fa5a5a;background:rgba(100,0,0,.15)}
+.tts-row label{font-size:10px;color:var(--txt2);font-family:var(--sans);flex-shrink:0;width:110px}
+.tts-row input[type=range]{flex:1}
+.tts-row span{font-size:10px;color:var(--txt);font-family:var(--sans);width:32px;text-align:right}
+.tts-row select{flex:1;background:var(--bg3);border:1px solid var(--brd);color:var(--txt);padding:5px;font-size:10px;font-family:var(--sans)}
+.tts-test{padding:12px 14px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--brd)}
+.tts-test button{flex:1;padding:10px;border:1px solid var(--brd);font-size:10px;font-weight:700;font-family:var(--sans);cursor:pointer;background:var(--bg3);color:var(--txt2)}
+.tts-test-result{padding:10px 14px;font-size:11px;color:var(--txt2);font-family:var(--sans);border-bottom:1px solid var(--brd);min-height:32px}
+.tts-diag{padding:12px 14px}
+.tts-diag summary{font-size:9px;color:var(--txt3);font-family:var(--sans);cursor:pointer;letter-spacing:1px}
+.tts-diag pre{font-size:9px;color:var(--txt2);margin-top:8px;white-space:pre-wrap;font-family:monospace;line-height:1.6}
 </style>
 </head>
 <body>
 
-<!-- LOADING SCREEN -->
+<!-- ═══ LOADING SCREEN (Fix 2 + Fix 7) ═══ -->
 <div id="ls">
   <img src="icon.png" class="ls-img" onerror="this.style.display='none'"/>
   <div class="ls-title">வேத வசனம்</div>
   <div class="ls-sub">HOLY BIBLE · TAMIL + ENGLISH</div>
   <div class="ls-track"><div class="ls-bar" id="ls-bar"></div></div>
   <div class="ls-msg" id="ls-msg">Loading…</div>
-  <div class="ls-err" id="ls-err">⚠ Data failed to load.<br/>Check that all bd_a.js – bd_f.js files<br/>are uploaded to data/</div>
+  <!-- Fix 7: error fallback -->
+  <div class="ls-err" id="ls-err">
+    ⚠ Data failed to load.<br/>
+    Check that all bd_a.js – bd_f.js files<br/>are uploaded to public/data/
+  </div>
 </div>
 
-<!-- PUSH NOTIFICATION BANNER -->
+<!-- ═══ PUSH NOTIFICATION BANNER ═══ -->
 <div id="pn-banner">
   <div class="pn-inner">
     <div class="pn-ico">🔔</div>
@@ -211,10 +240,11 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
   </div>
 </div>
 
-<!-- APP -->
+<!-- ═══ APP ═══ -->
 <div id="app" style="display:none">
   <header id="hdr">
     <div class="hbrand">
+      <!-- Fix 1: icon.png in public/ shown in header -->
       <img src="icon.png" class="hico" onerror="this.style.display='none'"/>
       <div>
         <div class="htit">வேத வசனம்</div>
@@ -251,7 +281,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
       </div>
       <div id="v-list" class="pb"></div>
     </div>
-    <!-- SEARCH -->
+    <!-- AI SEARCH -->
     <div class="scr" id="s-search">
       <div style="background:#2d0a5e;padding:14px 16px 12px">
         <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">AI VERSE FINDER · வசன தேடல்</div>
@@ -283,15 +313,16 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
     <div class="scr" id="s-stories">
       <div style="background:linear-gradient(135deg,#0d3a5c,#1a5276);padding:14px 16px 12px">
         <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">📚 KIDS STORIES · குழந்தைகள் கதைகள்</div>
-        <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">FULL BIBLE STORIES · TAMIL+ENGLISH · 🔊 AUDIO</div>
+        <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">15 BIBLE STORIES · TAMIL+ENGLISH · AUDIO</div>
       </div>
+      <div class="bfilt" id="stor-filt"></div>
       <div class="cgrid pb" id="stor-grid"></div>
     </div>
     <!-- SONGS -->
     <div class="scr" id="s-songs">
       <div style="background:linear-gradient(135deg,#1a0038,#3d1a6e);padding:14px 16px 12px">
         <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">🎵 SONGS · பாடல்கள்</div>
-        <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">FULL LYRICS · TAMIL CHRISTIAN SONGS · 🔊 AUDIO</div>
+        <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">TAMIL CHRISTIAN SONGS · LYRICS · AUDIO</div>
       </div>
       <div class="sbar"><input class="sinp" id="song-srch" placeholder="பாடல் தேடு · Search songs…" oninput="SSONGS.filter(this.value)"/></div>
       <div id="songs-list" class="pb"></div>
@@ -378,50 +409,35 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
   <div class="ovbody" id="cd-body"></div>
 </div>
 
-<!-- STORY OVERLAY — full story + audio for kids -->
 <div class="ov" id="story-ov">
-  <div class="ovbar" id="stbar" style="border-bottom:1px solid rgba(255,255,255,.1)">
+  <div class="ovbar" id="stbar">
     <div style="display:flex;align-items:center;gap:10px">
       <button class="rcbtn" style="width:32px;height:32px;font-size:14px;flex-shrink:0" onclick="StD.close()">←</button>
       <div><div id="st-name" style="font-size:14px;font-weight:700;color:#fff;font-family:var(--sans)"></div>
       <div id="st-ta-name" style="font-size:12px;color:rgba(255,255,255,.7);font-family:var(--ta2)"></div></div>
     </div>
-    <div style="display:flex;gap:5px;align-items:center">
-      <button id="st-hear-btn" class="rcbtn" style="padding:0 12px;height:34px;font-size:10px;font-weight:700;font-family:var(--sans)" onclick="StD.readToMe()">🔊 HEAR</button>
-      <button class="rcbtn" style="padding:0 10px;height:34px;font-size:10px;font-weight:700;font-family:var(--sans);background:rgba(255,60,60,.2)" onclick="AU.stop();StD.resetHearBtn()">⏹</button>
-    </div>
+    <span id="st-emi" style="font-size:28px"></span>
   </div>
-  <div class="ov-tab-row" id="st-tabs"></div>
   <div class="ovbody" id="st-body"></div>
 </div>
 
-<!-- SONG OVERLAY — full lyrics + audio -->
 <div class="ov" id="song-ov">
-  <div class="ovbar" id="songbar" style="border-bottom:1px solid rgba(255,255,255,.1)">
+  <div class="ovbar" id="songbar">
     <div style="display:flex;align-items:center;gap:10px">
       <button class="rcbtn" style="width:32px;height:32px;font-size:14px;flex-shrink:0" onclick="SongD.close()">←</button>
       <div><div id="sg-name" style="font-size:14px;font-weight:700;color:#fff;font-family:var(--ta2)"></div>
       <div id="sg-en" style="font-size:10px;color:rgba(255,255,255,.6);font-family:var(--sans)"></div></div>
     </div>
-    <div style="display:flex;gap:5px">
-      <button class="rcbtn" id="sg-hear-btn" style="padding:0 12px;height:34px;font-size:10px;font-weight:700;font-family:var(--sans)" onclick="SongD.hear()">🔊 HEAR</button>
-      <button class="rcbtn" style="padding:0 10px;height:34px;font-size:10px;font-weight:700;font-family:var(--sans);background:rgba(255,60,60,.2)" onclick="AU.stop()">⏹</button>
-    </div>
+    <button class="rcbtn" style="padding:0 10px;height:30px;font-size:9px;font-weight:700;font-family:var(--sans)" onclick="AU.speakText(document.getElementById('sg-lyrics').textContent,'ta-IN')">🔊 HEAR</button>
   </div>
-  <div class="ovbody" style="padding:20px 18px">
+  <div class="ovbody" style="padding:18px">
     <div class="song-lyrics" id="sg-lyrics"></div>
-    <div style="height:20px"></div>
-    <!-- Prev / Next song navigation -->
-    <div style="display:flex;gap:8px;padding-bottom:24px">
-      <button id="sg-prev" onclick="SongD.prev()" style="flex:1;padding:12px;background:var(--bg3);border:1px solid var(--brd);color:var(--txt2);font-size:10px;font-weight:700;font-family:var(--sans);cursor:pointer">◀ PREV SONG</button>
-      <button id="sg-next" onclick="SongD.next()" style="flex:1;padding:12px;background:var(--bg3);border:1px solid var(--brd);color:var(--txt2);font-size:10px;font-weight:700;font-family:var(--sans);cursor:pointer">NEXT SONG ▶</button>
-    </div>
   </div>
 </div>
 
 <!-- TTS SETTINGS OVERLAY -->
 <div class="ov" id="tts-ov">
-  <div class="ovbar" style="background:linear-gradient(135deg,#080818,#0a0a2a);border-bottom:1px solid var(--gold)">
+  <div class="ovbar" style="background:linear-gradient(135deg,#080818,#0a0a2a);border-bottom:1px solid var(--gold);flex-shrink:0">
     <div style="display:flex;align-items:center;gap:10px">
       <button class="rcbtn" style="width:32px;height:32px;font-size:14px" onclick="TTSS.close()">←</button>
       <div>
@@ -433,7 +449,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
   <div class="ovbody" id="tts-body"></div>
 </div>
 
-<!-- AUDIO PANEL -->
+<!-- AUDIO PANEL (Fix 3 — Inbuilt TTS with warmup) -->
 <div id="au-panel">
   <div class="auinner">
     <button class="aucls" onclick="AU.close()">✕</button>
@@ -453,7 +469,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
   </div>
 </div>
 
-<!-- DATA FILES -->
+<!-- DATA: Script tags (no fetch — reliable on Android) -->
 <script src="data/bd_a.js"></script>
 <script src="data/bd_b.js"></script>
 <script src="data/bd_c.js"></script>
@@ -463,6 +479,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 <script src="characters.js"></script>
 <script src="kids_stories.js"></script>
 <script src="songs.js"></script>
+<script src="tts_engine.js"></script>
 
 <script>
 "use strict";
@@ -473,7 +490,7 @@ var BD=(function(){
   var BEN=['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation'];
   var BTA=['ஆதியாகமம்','யாத்திராகமம்','லேவியராகமம்','எண்ணாகமம்','உபாகமம்','யோசுவா','நியாயாதிபதிகள்','ரூத்','1 சாமுவேல்','2 சாமுவேல்','1 இராஜாக்கள்','2 இராஜாக்கள்','1 நாளாகமம்','2 நாளாகமம்','எஸ்றா','நெகேமியா','எஸ்தர்','யோபு','சங்கீதம்','நீதிமொழிகள்','பிரசங்கி','உன்னதப்பாட்டு','ஏசாயா','எரேமியா','புலம்பல்','எசேக்கியேல்','தானியேல்','ஓசியா','யோவேல்','ஆமோஸ்','ஒபதியா','யோனா','மீகா','நாகூம்','ஆபகூக்','செப்பனியா','ஆகாய்','சகரியா','மல்கியா','மத்தேயு','மாற்கு','லூக்கா','யோவான்','அப்போஸ்தலர்','ரோமர்','1 கொரிந்தியர்','2 கொரிந்தியர்','கலாத்தியர்','எபேசியர்','பிலிப்பியர்','கொலோசெயர்','1 தெசலோனிக்கேயர்','2 தெசலோனிக்கேயர்','1 தீமோத்தேயு','2 தீமோத்தேயு','தீத்து','பிலேமோன்','எபிரேயர்','யாக்கோபு','1 பேதுரு','2 பேதுரு','1 யோவான்','2 யோவான்','3 யோவான்','யூதா','வெளிப்படுத்தல்'];
   var CLR=['#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a','#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a','#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a','#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#3a3a3a','#1a3a5c','#1a4a1a','#5c1a1a','#3a1a5c','#5c3a00','#005c5c','#003a5c','#2a3a6a','#1a4a2a','#6a1a1a','#2a1a5c','#5c3a10','#105c3a','#003a6a','#4a3a10','#2a3a6a','#1a4a2a','#6a1a1a','#2a1a5c','#5c3a10','#105c3a','#003a6a','#4a3a10','#2a3a6a','#1a4a2a','#6a1a1a','#2a1a5c','#5c3a10','#105c3a','#003a6a','#4a3a10','#2a3a6a','#1a4a2a'];
-  var _vv=[],_bb={};
+  var _vv=[],_map={},_bb={};
   function build(){
     try{
       var all=[].concat(
@@ -485,11 +502,16 @@ var BD=(function(){
                ch:r[1],v:r[2],ref:BEN[r[0]]+' '+r[1]+':'+r[2],
                ta:r[3]||'',en:r[4]||'',color:CLR[r[0]%CLR.length]};
       });
-      _bb={};
-      _vv.forEach(function(v){if(!_bb[v.book])_bb[v.book]=[];_bb[v.book].push(v);});
+      _map={};_bb={};
+      _vv.forEach(function(v){
+        _map[v.bi+'_'+v.ch+'_'+v.v]=v;
+        if(!_bb[v.book])_bb[v.book]=[];
+        _bb[v.book].push(v);
+      });
       return _vv.length;
     }catch(e){console.error('BD.build:',e);return 0;}
   }
+  function cof(b){var i=BEN.indexOf(b);return CLR[(i<0?0:i)%CLR.length];}
   function daily(){if(!_vv.length)return null;var d=new Date(),n=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000);return _vv[n%_vv.length];}
   function search(q){
     if(!q||!q.trim())return[];
@@ -505,9 +527,7 @@ var BD=(function(){
     sc.sort(function(a,b){return b.s-a.s;});
     return sc.slice(0,15).map(function(x){return x.v;});
   }
-  function cof(b){var i=BEN.indexOf(b);return CLR[(i<0?0:i)%CLR.length];}
-  return{BEN:BEN,BTA:BTA,CLR:CLR,build:build,
-    count:function(){return _vv.length;},all:function(){return _vv;},
+  return{BEN:BEN,BTA:BTA,CLR:CLR,build:build,count:function(){return _vv.length;},all:function(){return _vv;},
     byId:function(id){return _vv.find(function(v){return v.id===id;})||null;},
     byBook:function(n){return _bb[n]||[];},
     byBookCh:function(n,c){return(_bb[n]||[]).filter(function(v){return v.ch===c;});},
@@ -529,215 +549,61 @@ var ST=(function(){
 })();
 
 /* ═══════════════════════════════════════
-   AUDIO ENGINE — CROSS-BROWSER + ANDROID WEBVIEW FIXED
-   Works on Android Chrome, Samsung Browser,
-   Firefox, WebView, APK WebView — no alert(), graceful fallback
+   AUDIO ENGINE — delegates to TTSEngine when available
+   Falls back to raw speechSynthesis if not loaded
 ═══════════════════════════════════════ */
 var AU=(function(){
-  var _ok=false,_tested=false;
-
-  /* ── Android WebView / APK TTS bridge ──
-     App must call: webView.addJavascriptInterface(new AndroidTTS(ctx),"AndroidTTS")
-     If bridge is present, we use native Android TTS which always works in APK. */
-  var _ab=window.AndroidTTS||window.Android||null;
-  var _usingBridge=!!(  _ab
-    &&(typeof _ab.speak==='function'||typeof _ab.speakText==='function'));
-
-  function _bridgeSpeak(text,lang){
-    try{
-      if(_ab.speak)_ab.speak(text,lang||'ta-IN');
-      else if(_ab.speakText)_ab.speakText(text,lang||'ta-IN');
-    }catch(e){_usingBridge=false;}
-  }
-  function _bridgeStop(){
-    try{if(_ab&&_ab.stop)_ab.stop();}catch(e){}
-  }
-
-  function _checkOk(){
-    /* Android bridge always wins */
-    if(_usingBridge){_ok=true;return true;}
-    /* Check API presence */
-    var hasApi=('speechSynthesis'in window)&&(typeof window.SpeechSynthesisUtterance!=='undefined');
-    if(!hasApi){_ok=false;return false;}
-    /* Extra check: some browsers expose the API but it's non-functional (paused forever) */
-    try{
-      var ss=window.speechSynthesis;
-      if(typeof ss.pending!=='undefined'&&typeof ss.speaking!=='undefined'){
-        _ok=true;return true;
-      }
-    }catch(e){_ok=false;return false;}
-    _ok=true;return true;
-  }
-  _checkOk();
-
-  /* Re-check after user gesture — critical for lazy browsers */
-  function recheck(){
-    _tested=false;
-    _checkOk();
-    if(_ok){
-      _lv();
-      try{
-        if(window.speechSynthesis.onvoiceschanged!==undefined)
-          window.speechSynthesis.onvoiceschanged=function(){_lv();};
-      }catch(e){}
-      [200,800,2000].forEach(function(t){setTimeout(_lv,t);});
-    }
-    return _ok;
-  }
-
-  document.addEventListener('touchstart',function _t(){recheck();document.removeEventListener('touchstart',_t);},{once:true,passive:true});
-  document.addEventListener('click',function _c(){recheck();document.removeEventListener('click',_c);},{once:true});
-
+  var _ok=typeof window!=='undefined'&&'speechSynthesis'in window;
   var _v=null,_lang='ta',_vs=[],_warm=false,_ut=null;
-  var _chunks=[],_ci=0,_playing=false;
 
+  /* Load voices — also re-init TTSEngine so its voice list stays fresh */
   function _lv(){
-    if(!_checkOk())return;
-    try{_vs=window.speechSynthesis.getVoices()||[];}catch(e){_vs=[];}
+    if(_ok)_vs=window.speechSynthesis.getVoices()||[];
+    if(typeof TTSEngine!=='undefined')TTSEngine.init();
   }
   if(_ok){
     _lv();
-    try{if(window.speechSynthesis.onvoiceschanged!==undefined)
-      window.speechSynthesis.onvoiceschanged=function(){_lv();};}catch(e){}
-    [500,1200,2500,5000].forEach(function(t){setTimeout(_lv,t);});
+    if(window.speechSynthesis.onvoiceschanged!==undefined)
+      window.speechSynthesis.onvoiceschanged=_lv;
+    setTimeout(_lv,500);setTimeout(_lv,1500);setTimeout(_lv,3500);setTimeout(_lv,7000);
   }
 
+  /* Warm-up: required by Android WebView before TTS works */
   function _warmup(){
-    _checkOk();
     if(_warm||!_ok)return;
     try{
       var u=new SpeechSynthesisUtterance(' ');
-      u.volume=0;u.rate=2;
+      u.volume=0;u.rate=1;
       window.speechSynthesis.speak(u);
-      setTimeout(function(){try{if(_ok)window.speechSynthesis.cancel();}catch(e){}},300);
+      setTimeout(function(){if(_ok)window.speechSynthesis.cancel();},300);
       _warm=true;
       setTimeout(_lv,400);
-    }catch(e){}
+    }catch(e){console.log('warmup error:',e);}
   }
 
-  /* Split long text into ~160-char chunks at natural boundaries */
-  function _split(text){
-    if(!text||!text.trim())return[];
-    var out=[],lines=text.split('\n');
-    lines.forEach(function(line){
-      line=line.trim();if(!line)return;
-      if(line.length<=170){out.push(line);return;}
-      var rest=line;
-      while(rest.length>170){
-        var cut=170;
-        for(var i=170;i>60;i--){
-          var c=rest.charAt(i);
-          if(c===' '||c==='.'||c==='!'||c==='?'||c===','||c===';'){cut=i+1;break;}
-        }
-        out.push(rest.substring(0,cut).trim());
-        rest=rest.substring(cut).trim();
-      }
-      if(rest)out.push(rest);
-    });
-    return out.filter(function(x){return x;});
-  }
-
-  function _bestVoice(lc){
-    var px=lc.split('-')[0].toLowerCase(),best=null;
-    for(var i=0;i<_vs.length;i++){
-      var vl=(_vs[i].lang||'').toLowerCase();
-      if(vl.indexOf(px)===0){best=_vs[i];if(vl===lc.toLowerCase())break;}
-    }
-    return best;
-  }
-
-  function _runChunks(chunks,lc,onDone){
-    _chunks=chunks;_ci=0;_playing=true;
-
-    /* ── Android bridge path ── */
-    if(_usingBridge){
-      _sui(true);
-      var fullText=chunks.join(' ');
-      _bridgeSpeak(fullText,lc);
-      /* Bridge fires async; we can't get onEnd — best-effort: estimate duration */
-      var est=Math.max(5000,fullText.length*65);
-      setTimeout(function(){if(_playing){_playing=false;_sui(false);if(onDone)onDone();}},est);
-      return;
-    }
-
-    function next(){
-      if(!_playing||_ci>=_chunks.length){
-        _playing=false;_sui(false);
-        if(_ci>=_chunks.length){_msg('');if(onDone)onDone();}
-        return;
-      }
-      if(!_ok){_playing=false;_sui(false);return;}
-      try{
-        _ut=new SpeechSynthesisUtterance(_chunks[_ci++]);
-        _ut.lang=lc;
-        _ut.rate=lc.indexOf('ta')===0?0.78:0.85;
-        _ut.pitch=1.0;_ut.volume=1.0;
-        var bv=_bestVoice(lc);if(bv)_ut.voice=bv;
-        _ut.onstart=function(){_sui(true);};
-        _ut.onend=function(){setTimeout(next,80);};
-        _ut.onerror=function(e){
-          if(e.error==='interrupted'||e.error==='canceled'){setTimeout(next,100);return;}
-          _playing=false;_sui(false);
-          if(lc.indexOf('ta')===0)
-            _msg('⚠ Tamil voice missing.\nFix: Settings → TTS (⚙) → Install Tamil');
-          else
-            _msg('⚠ TTS error: '+(e.error||'unknown'));
-        };
-        window.speechSynthesis.speak(_ut);
-        /* Android keep-alive: resume every 8 sec — WebView pauses after ~15s */
-        if(_ci===1){
-          (function _ka(){
-            var kaTimer=setTimeout(function(){
-              if(!_playing){return;}
-              try{
-                var ss=window.speechSynthesis;
-                if(ss.paused)ss.resume();
-                /* Extra WebView fix: if stuck (speaking=false, not paused), force next */
-                else if(!ss.speaking&&!ss.paused&&_playing){setTimeout(next,50);return;}
-              }catch(e){}
-              _ka();
-            },8000);
-          })();
-        }
-      }catch(ex){_playing=false;_sui(false);_msg('⚠ '+ex.message);}
-    }
-    next();
-  }
-
-  function _sui(pl){
+  function sui(pl){
     var b=document.getElementById('au-play');if(!b)return;
     if(pl){b.textContent='▶ PLAYING…';b.style.background='rgba(255,255,255,.15)';b.style.color='#fff';}
     else{b.textContent='▶ PLAY';b.style.background='#fff';b.style.color='#080810';}
   }
-  function _msg(t){var e=document.getElementById('au-msg');if(e)e.textContent=t||'';}
+  function msg(t){var e=document.getElementById('au-msg');if(e)e.textContent=t||'';}
 
   function open(v){
-    _checkOk();_warmup();_v=v;
-    var ref=document.getElementById('au-ref');if(ref)ref.textContent=v.ref||'';
+    _warmup();
+    _v=v;
+    document.getElementById('au-ref').textContent=v.ref||'';
     document.getElementById('au-panel').classList.add('on');
-    _setLUI(_lang);_msg('');
-    if(!_ok){
-      _msg('⚠ TTS not available.\nTap ⚙ Settings for install guide.');
-      return;
-    }
+    _setLUI(_lang);msg('');
+    if(!_ok){msg('⚠ TTS not supported on this device.');return;}
     _lv();
-    _msg(_lang==='ta'?'▶ PLAY → Tamil audio · ⚙ Settings to test':'▶ PLAY → English audio');
-  }
-
-  /* _showTTSHelp — shows TTS overlay with instructions instead of blocking alert */
-  function _showTTSHelp(){
-    var ov=document.getElementById('tts-ov');
-    if(ov){
-      TTSS.open();
-      return;
-    }
-    /* Fallback: show in au-panel */
-    var panel=document.getElementById('au-panel');
-    if(panel)panel.classList.add('on');
-    _msg('⚠ Audio not available on this browser.\n\nFix: Use Chrome browser.\nOr: Install Google Text-to-Speech\nfrom Play Store, then reopen app.\n\nTap ⚙ in header for full guide.');
+    msg(_lang==='ta'?'Tap ▶ PLAY to hear Tamil · Switch language above':'Tap ▶ PLAY to hear English');
   }
   function close(){stop();document.getElementById('au-panel').classList.remove('on');}
-  function toggle(){var p=document.getElementById('au-panel');if(p.classList.contains('on'))close();else if(_v)open(_v);}
+  function toggle(){
+    var p=document.getElementById('au-panel');
+    if(p.classList.contains('on'))close();
+    else if(_v)open(_v);
+  }
   function lang(l){_lang=l;stop();_setLUI(l);}
   function _setLUI(l){
     ['ta','en'].forEach(function(x){
@@ -747,1267 +613,186 @@ var AU=(function(){
     });
   }
 
-  function play(){
-    _checkOk();
-    if(!_v)return;
-    _warmup();_lv();
-    if(!_ok){_showTTSHelp();return;}
-    var t=(_lang==='ta'&&_v.ta)?_v.ta:_v.en;
-    if(!t||!t.trim()){_msg('⚠ No text.');return;}
-    stop();_msg('');
-    _runChunks(_split(t),_lang==='ta'?'ta-IN':'en-US');
-  }
+  /* Core speak — delegates to TTSEngine when available, raw SpeechSynthesis as fallback */
+  function _speak(text,lc,onEnd){
+    if(!text||!text.trim()){msg('⚠ No text.');return;}
+    stop();
 
-  /* speakText — for songs, stories, any long content */
-  function speakText(t,lc){
-    _checkOk();
-    if(!t||!t.trim())return;
-    _warmup();_lv();
-    if(!_ok){
-      _showTTSHelp();
+    /* ── TTSEngine path (better voice selection + chunking) ── */
+    if(typeof TTSEngine!=='undefined'&&TTSEngine.isSupported()){
+      sui(true);msg('');
+      TTSEngine.on('onError',function(){
+        sui(false);
+        msg(lc.indexOf('ta')===0
+          ?'⚠ Tamil voice not found.\nInstall: Play Store → Google Text-to-Speech\n→ Language → Download Tamil'
+          :'⚠ TTS error');
+      });
+      TTSEngine.speakLong(text,lc,function(){
+        sui(false);msg('');
+        if(onEnd)onEnd();
+      });
       return;
     }
-    stop();
-    var panel=document.getElementById('au-panel');
-    if(!panel.classList.contains('on')){
-      _v={ref:'🔊 Speaking…',ta:t,en:t};
-      var ref=document.getElementById('au-ref');if(ref)ref.textContent='Speaking…';
-      panel.classList.add('on');
-      _setLUI(lc&&lc.indexOf('ta')===0?'ta':'en');
-    }
-    _msg('');
-    _runChunks(_split(t),lc||'ta-IN');
-  }
-  function speakLong(t,lc,onDone){
-    _checkOk();
-    if(!t||!t.trim())return;
-    _warmup();_lv();
-    if(!_ok){_showTTSHelp();return;}
-    stop();
-    /* Show audio panel with speaking indicator */
-    _v={ref:'🔊 '+(lc&&lc.indexOf('ta')===0?'Tamil Audio · தமிழ் ஒலி':'English Audio'),ta:t,en:t};
-    var panel=document.getElementById('au-panel');
-    var ref=document.getElementById('au-ref');
-    if(ref)ref.textContent=_v.ref;
-    if(panel)panel.classList.add('on');
-    _setLUI(lc&&lc.indexOf('ta')===0?'ta':'en');
-    _msg('');
-    _runChunks(_split(t),lc||'ta-IN',onDone);
+
+    /* ── Raw speechSynthesis fallback ── */
+    if(!_ok){msg('⚠ Speech not available.');return;}
+    _lv();
+    try{
+      _ut=new SpeechSynthesisUtterance(text);
+      _ut.lang=lc;
+      _ut.rate=lc.indexOf('ta')===0?0.80:0.85;
+      _ut.pitch=1.0;_ut.volume=1.0;
+      var px=lc.split('-')[0],best=null;
+      for(var i=0;i<_vs.length;i++){
+        if(_vs[i].lang&&_vs[i].lang.toLowerCase().indexOf(px)===0){
+          best=_vs[i];
+          if(_vs[i].lang.toLowerCase()===lc.toLowerCase())break;
+        }
+      }
+      if(best)_ut.voice=best;
+      _ut.onstart=function(){sui(true);msg('');};
+      _ut.onend=function(){sui(false);msg('');if(onEnd)onEnd();};
+      _ut.onerror=function(e){
+        sui(false);
+        if(lc.indexOf('ta')===0)
+          msg('⚠ Tamil voice not found.\nInstall: Play Store → Google Text-to-Speech\n→ Language → Download Tamil');
+        else
+          msg('⚠ TTS error: '+(e.error||''));
+      };
+      window.speechSynthesis.speak(_ut);
+      sui(true);
+    }catch(e){sui(false);msg('⚠ '+e.message);}
   }
 
+  function play(){
+    if(!_v)return;
+    _warmup();
+    var t=(_lang==='ta'&&_v.ta)?_v.ta:_v.en;
+    _speak(t,_lang==='ta'?'ta-IN':'en-US');
+  }
   function readCh(){
-    if(typeof CR==='undefined')return;
-    var bk=CR._bk,ch=CR._ch;
+    var bk=CR?CR._bk:'',ch=CR?CR._ch:1;
     if(!bk)return;
     var vs=BD.byBookCh(bk,ch);if(!vs.length)return;
     _warmup();
-    var panel=document.getElementById('au-panel');
-    if(!panel.classList.contains('on')){
+    if(!document.getElementById('au-panel').classList.contains('on')){
       _v={ref:bk+' Ch '+ch,ta:'',en:''};
-      var ref=document.getElementById('au-ref');if(ref)ref.textContent=bk+' Ch '+ch;
-      panel.classList.add('on');_setLUI(_lang);
+      document.getElementById('au-ref').textContent=bk+' Chapter '+ch;
+      document.getElementById('au-panel').classList.add('on');_setLUI(_lang);
     }
-    var t=vs.map(function(v,i){return(i+1)+'. '+(_lang==='ta'?v.ta:v.en);}).join(' ');
-    _msg('Reading '+vs.length+' verses…');
-    stop();
-    _runChunks(_split(t),_lang==='ta'?'ta-IN':'en-US',function(){_msg('Chapter complete ✓');});
+    var t=vs.map(function(v,i){return (i+1)+'. '+(_lang==='ta'?v.ta:v.en);}).join(' ');
+    msg('Reading '+vs.length+' verses…');
+    _speak(t,_lang==='ta'?'ta-IN':'en-US',function(){msg('Chapter complete ✓');});
   }
+  function speakText(t,lc){_warmup();if(t&&t.trim())_speak(t,lc||'ta-IN');}
 
-  function pause(){if(_ok&&window.speechSynthesis.speaking&&!window.speechSynthesis.paused)window.speechSynthesis.pause();}
-  function resume(){if(_ok&&window.speechSynthesis.paused)window.speechSynthesis.resume();}
+  function pause(){
+    if(typeof TTSEngine!=='undefined')TTSEngine.pause();
+    else if(_ok&&window.speechSynthesis.speaking&&!window.speechSynthesis.paused)
+      window.speechSynthesis.pause();
+  }
+  function resume(){
+    if(typeof TTSEngine!=='undefined')TTSEngine.resume();
+    else if(_ok&&window.speechSynthesis.paused)window.speechSynthesis.resume();
+  }
   function stop(){
-    _playing=false;_chunks=[];_ci=0;
-    if(_usingBridge){_bridgeStop();}
-    else if(_ok){try{window.speechSynthesis.cancel();}catch(e){}}
-    _sui(false);_ut=null;_msg('');
+    if(typeof TTSEngine!=='undefined')TTSEngine.stop();
+    if(_ok)try{window.speechSynthesis.cancel();}catch(e){}
+    sui(false);_ut=null;
   }
-
   return{open:open,close:close,toggle:toggle,lang:lang,
-         play:play,pause:pause,resume:resume,stop:stop,
-         readCh:readCh,speakText:speakText,speakLong:speakLong,
-         isOk:function(){return _checkOk();},
-         recheck:recheck,
-         usingBridge:function(){return _usingBridge;},
-         voices:function(){return _vs.slice();},
-         _checkOkPub:function(){return _checkOk();}};
+         play:play,pause:pause,resume:resume,stop:stop,readCh:readCh,speakText:speakText};
 })();
 
 /* ═══════════════════════════════════════
-   PUSH NOTIFICATIONS
+   IN-APP NOTIFICATIONS (No Firebase needed)
+   Admin sends message via localStorage ADMIN_MSG
+   Users see it as a banner notification
 ═══════════════════════════════════════ */
 var PN=(function(){
   var _dismissed=false;
   function checkLocal(){
+    /* Check for admin message stored in localStorage */
     try{
-      var raw=localStorage.getItem('ADMIN_MSG');if(!raw)return;
-      var m=JSON.parse(raw),seen=localStorage.getItem('PN_SEEN')||'';
-      if(m.id&&m.id!==seen&&m.title){show(m.title,m.body||'');localStorage.setItem('PN_SEEN',m.id);}
+      var raw=localStorage.getItem('ADMIN_MSG');
+      if(!raw)return;
+      var m=JSON.parse(raw);
+      var seen=localStorage.getItem('PN_SEEN')||'';
+      if(m.id&&m.id!==seen&&m.title){
+        show(m.title,m.body||'');
+        localStorage.setItem('PN_SEEN',m.id);
+      }
     }catch(e){}
   }
   function show(title,body){
     document.getElementById('pn-title').textContent=title;
     document.getElementById('pn-body').textContent=body;
     document.getElementById('pn-banner').style.display='block';
-    _dismissed=false;setTimeout(function(){if(!_dismissed)dismiss();},9000);
+    _dismissed=false;
+    setTimeout(function(){if(!_dismissed)dismiss();},9000);
   }
-  function dismiss(){document.getElementById('pn-banner').style.display='none';_dismissed=true;}
+  function dismiss(){
+    document.getElementById('pn-banner').style.display='none';
+    _dismissed=true;
+  }
   return{checkLocal:checkLocal,show:show,dismiss:dismiss};
 })();
 
 /* ═══════════════════════════════════════
-   TTS SETTINGS — FULL REBUILD
-   Retry, Chrome deep-link, voice list, test buttons
+   TTSS — TTS SETTINGS OVERLAY
+   Opens the TTS settings overlay and renders
+   TTSEngine's diagnostic + test panel inside it.
+   Falls back gracefully if TTSEngine not loaded.
 ═══════════════════════════════════════ */
 var TTSS=(function(){
-  var _retrying=false;
 
   function open(){
-    /* Force a recheck on user gesture — this is the moment we have gesture context */
-    AU.recheck();
-    _retrying=false;
-    _render();
-    document.getElementById('tts-ov').classList.add('on');
-  }
-  function close(){AU.stop();document.getElementById('tts-ov').classList.remove('on');}
-
-  /* Retry — called by button tap (which IS a user gesture) */
-  function retry(){
-    _retrying=true;
-    var el=document.getElementById('tts-retry-btn');
-    if(el){el.textContent='⏳ Checking…';el.disabled=true;}
-    /* Try to actually speak a silent utterance to force init */
-    var nowOk=AU.recheck();
-    if(nowOk){
-      try{
-        var u=new SpeechSynthesisUtterance(' ');
-        u.volume=0;u.rate=2;
-        window.speechSynthesis.speak(u);
-        setTimeout(function(){
-          try{window.speechSynthesis.cancel();}catch(e){}
-          _render(); /* Re-render after trying */
-        },600);
-      }catch(e){_render();}
-    } else {
-      setTimeout(_render,300);
+    /* Re-init TTSEngine on user gesture — critical for lazy browsers */
+    if(typeof TTSEngine!=='undefined'){
+      TTSEngine.init();
     }
+    var ov=document.getElementById('tts-ov');
+    if(!ov)return;
+    ov.classList.add('on');
+    _render();
+  }
+
+  function close(){
+    /* Stop any test audio */
+    if(typeof TTSEngine!=='undefined')TTSEngine.stop();
+    else AU.stop();
+    var ov=document.getElementById('tts-ov');
+    if(ov)ov.classList.remove('on');
   }
 
   function _render(){
-    var ok=AU.isOk();
-    var bridgeOk=AU.usingBridge();
-    var voices=[];
-    if(ok&&!bridgeOk){try{voices=window.speechSynthesis.getVoices()||[];}catch(e){}}
-    var taV=voices.filter(function(v){return(v.lang||'').toLowerCase().indexOf('ta')===0;});
-    var enV=voices.filter(function(v){return(v.lang||'').toLowerCase().indexOf('en')===0;});
-    var h='';
+    var body=document.getElementById('tts-body');
+    if(!body)return;
 
-    /* ── Android Bridge banner ── */
-    if(bridgeOk){
-      h+='<div style="padding:14px 16px;background:#081a08;border-bottom:2px solid #2a8a2a;display:flex;align-items:center;gap:10px">';
-      h+='<span style="font-size:22px">✅</span>';
-      h+='<div><div style="font-size:10px;letter-spacing:2px;color:#5afa5a;font-family:var(--sans);font-weight:700">ANDROID TTS BRIDGE · நேரடி ஒலி</div>';
-      h+='<div style="font-size:11px;color:rgba(255,255,255,.5);font-family:var(--ta2);margin-top:2px">Native Android TTS active — full Tamil support</div></div>';
-      h+='</div>';
-      h+='<div style="padding:14px;border-bottom:1px solid var(--brd)">';
-      h+='<button onclick="TTSS.testTA()" style="display:block;width:100%;padding:14px;margin-bottom:8px;background:#0a2e3a;border:1px solid #1a5c6a;color:#fff;font-size:14px;font-family:var(--ta2);cursor:pointer;text-align:left">🔊 தமிழில் சோதிக்கவும் — Test Tamil</button>';
-      h+='<button onclick="TTSS.testEN()" style="display:block;width:100%;padding:14px;background:#0a2a0a;border:1px solid #1a5a1a;color:#fff;font-size:12px;font-family:var(--sans);cursor:pointer;text-align:left;font-weight:700;letter-spacing:.5px">🔊 TEST ENGLISH TTS</button>';
-      h+='</div>';
-      var el=document.getElementById('tts-body');if(el)el.innerHTML=h;
+    /* ── TTSEngine available: use its built-in settings panel ── */
+    if(typeof TTSEngine!=='undefined'){
+      TTSEngine.renderSettingsPanel('tts-body');
       return;
     }
 
-    if(!ok){
-      /* ── TTS NOT SUPPORTED SCREEN ── */
-      h+='<div style="padding:20px 16px;background:#1a0505;border-bottom:2px solid #8b0000;text-align:center">';
-      h+='<div style="font-size:36px;margin-bottom:10px">🔇</div>';
-      h+='<div style="font-size:11px;letter-spacing:2px;color:#fa5a5a;font-family:var(--sans);font-weight:700;margin-bottom:6px">TTS NOT SUPPORTED</div>';
-      h+='<div style="font-size:13px;color:rgba(255,255,255,.7);font-family:var(--ta2);line-height:1.9">Audio இந்த browser-ல் வேலை செய்யவில்லை.<br>Chrome browser-ல் திறந்தால் சரியாகும்.</div>';
-      h+='</div>';
-
-      /* RETRY button */
-      h+='<div style="padding:16px;border-bottom:1px solid var(--brd)">';
-      h+='<button id="tts-retry-btn" onclick="TTSS.retry()" style="display:block;width:100%;padding:16px;background:linear-gradient(135deg,#0a3a6a,#0d5a9a);border:2px solid #3a8aff;color:#fff;font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;margin-bottom:10px;letter-spacing:1px">🔄 RETRY · மீண்டும் சோதி</button>';
-      h+='<div style="font-size:11px;color:rgba(255,255,255,.4);font-family:var(--ta2);text-align:center">Tap Retry after installing Google TTS</div>';
-      h+='</div>';
-
-      /* Open in Chrome */
-      h+='<div style="padding:16px;border-bottom:1px solid var(--brd)">';
-      h+='<div style="font-size:9px;letter-spacing:3px;color:var(--txt3);font-family:var(--sans);margin-bottom:12px">STEP 1 · முதல் படி</div>';
-      h+='<button onclick="TTSS.openInChrome()" style="display:flex;align-items:center;gap:14px;width:100%;padding:16px;background:linear-gradient(135deg,#0a2a10,#1a4a20);border:2px solid #2a8a3a;color:#fff;cursor:pointer;text-align:left">';
-      h+='<span style="font-size:28px">🌐</span>';
-      h+='<div><div style="font-size:13px;font-weight:700;font-family:var(--sans)">OPEN IN CHROME BROWSER</div>';
-      h+='<div style="font-size:12px;color:rgba(255,255,255,.65);font-family:var(--ta2);margin-top:3px">Chrome-ல் திறக்கவும் — Audio வேலை செய்யும்</div></div></button>';
-      h+='</div>';
-
-      /* APK WebView note */
-      h+='<div style="padding:14px;background:rgba(255,200,0,.06);border-bottom:1px solid rgba(255,200,0,.15)">';
-      h+='<div style="font-size:9px;letter-spacing:2px;color:#fac85a;font-family:var(--sans);font-weight:700;margin-bottom:8px">📱 APK / WEBVIEW FIX</div>';
-      h+='<div style="font-size:12px;color:rgba(255,255,255,.65);font-family:var(--ta2);line-height:1.9">';
-      h+='APK-ல் Audio வேலை செய்யவில்லையா?<br>';
-      h+='<b style="color:#fac85a">Android Developer:</b> WebView-ல் addJavascriptInterface(new AndroidTTS(ctx), "AndroidTTS") சேர்க்கவும்.<br>';
-      h+='speak(text, lang), stop() methods expose செய்யவும் — App automatically detects it.';
-      h+='</div></div>';
-
-      /* Install guide */
-      h+='<div style="padding:16px;border-bottom:1px solid var(--brd)">';
-      h+='<div style="font-size:9px;letter-spacing:3px;color:var(--txt3);font-family:var(--sans);margin-bottom:12px">STEP 2 · இரண்டாம் படி — INSTALL TAMIL TTS</div>';
-
-      /* Step cards */
-      var steps=[
-        {n:'1',icon:'📲',ta:'Play Store திறக்கவும்',en:'Open Google Play Store'},
-        {n:'2',icon:'🔍',ta:'"Google Text-to-Speech" தேடவும்',en:'Search: Google Text-to-Speech'},
-        {n:'3',icon:'⬇',ta:'Install / Open பண்ணவும்',en:'Install or Open the app'},
-        {n:'4',icon:'⚙',ta:'Settings → Install voice data → Tamil → ⬇',en:'Settings → Install voice data → Tamil'},
-        {n:'5',icon:'🔁',ta:'App மூடி Chrome-ல் மீண்டும் திறக்கவும்',en:'Close & reopen in Chrome'},
-        {n:'6',icon:'🔄',ta:'இங்கே RETRY அழுத்தவும்',en:'Tap RETRY button above'}
-      ];
-      steps.forEach(function(s){
-        h+='<div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)">';
-        h+='<div style="width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.15);color:var(--gold);font-size:11px;font-weight:700;font-family:var(--sans);display:flex;align-items:center;justify-content:center;flex-shrink:0">'+s.n+'</div>';
-        h+='<div style="font-size:22px;flex-shrink:0;line-height:1.3">'+s.icon+'</div>';
-        h+='<div><div style="font-size:13px;color:rgba(255,255,255,.85);font-family:var(--ta2);line-height:1.7">'+s.ta+'</div>';
-        h+='<div style="font-size:11px;color:rgba(255,255,255,.4);font-family:var(--sans);margin-top:1px">'+s.en+'</div></div>';
-        h+='</div>';
-      });
-      h+='</div>';
-
-      /* Samsung / other browser note */
-      h+='<div style="padding:14px;background:rgba(255,200,0,.05);border-bottom:1px solid rgba(255,200,0,.1)">';
-      h+='<div style="font-size:9px;letter-spacing:2px;color:#fac85a;font-family:var(--sans);font-weight:700;margin-bottom:8px">📱 ANDROID BROWSER NOTE</div>';
-      h+='<div style="font-size:13px;color:rgba(255,255,255,.65);font-family:var(--ta2);line-height:1.9">';
-      h+='Samsung Browser, UC Browser, Huawei Browser — இவற்றில் Audio வேலை செய்யாது.<br>';
-      h+='<b style="color:#fac85a">Chrome for Android மட்டுமே</b> Tamil TTS support செய்கிறது.';
-      h+='</div></div>';
-
-    } else {
-      /* ── TTS SUPPORTED SCREEN ── */
-      h+='<div style="padding:12px 16px;background:#081a08;border-bottom:2px solid #2a6a2a;display:flex;align-items:center;gap:10px">';
-      h+='<span style="font-size:22px">✅</span>';
-      h+='<div><div style="font-size:10px;letter-spacing:2px;color:#5afa5a;font-family:var(--sans);font-weight:700">TTS SUPPORTED · Audio வேலை செய்கிறது</div>';
-      h+='<div style="font-size:11px;color:rgba(255,255,255,.5);font-family:var(--ta2);margin-top:2px">'+voices.length+' voices · '+taV.length+' Tamil · '+enV.length+' English</div></div>';
-      h+='</div>';
-
-      /* Stat cards */
-      h+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--brd)">';
-      h+=_statCard('TAMIL',taV.length,taV.length>0?'#0d3a0d':'#3a0d0d',taV.length>0?'#5afa5a':'#fa5a5a');
-      h+=_statCard('ENGLISH',enV.length,'#0d1a3a','#7aaafa');
-      h+=_statCard('TOTAL',voices.length,'#1a1a0d','#fac85a');
-      h+='</div>';
-
-      /* Test buttons */
-      h+='<div style="padding:14px;border-bottom:1px solid var(--brd)">';
-      h+='<div style="font-size:8px;letter-spacing:3px;color:var(--txt3);font-family:var(--sans);margin-bottom:10px">QUICK TEST · சோதனை</div>';
-      h+='<button onclick="TTSS.testTA()" style="display:block;width:100%;padding:14px;margin-bottom:8px;background:#0a2e3a;border:1px solid #1a5c6a;color:#fff;font-size:14px;font-family:var(--ta2);cursor:pointer;text-align:left">🔊 தமிழில் சோதிக்கவும் — Test Tamil</button>';
-      h+='<button onclick="TTSS.testEN()" style="display:block;width:100%;padding:14px;background:#0a2a0a;border:1px solid #1a5a1a;color:#fff;font-size:12px;font-family:var(--sans);cursor:pointer;text-align:left;font-weight:700;letter-spacing:.5px">🔊 TEST ENGLISH TTS — Click to hear</button>';
-      h+='</div>';
-
-      /* Tamil not installed guide */
-      if(taV.length===0){
-        h+='<div style="padding:14px;background:#1a0d00;border-bottom:2px solid var(--gold)">';
-        h+='<div style="font-size:9px;letter-spacing:2px;color:var(--gold);font-family:var(--sans);font-weight:700;margin-bottom:10px">⚠ TAMIL VOICE NOT INSTALLED · தமிழ் குரல் இல்லை</div>';
-        h+='<div style="font-size:14px;line-height:2.2;color:rgba(255,255,255,.8);font-family:var(--ta2)">';
-        h+='1. Play Store → "Google Text-to-Speech" → Open<br>';
-        h+='2. ⚙ Settings → Install voice data → Tamil → ⬇<br>';
-        h+='3. Settings → Language → Text-to-Speech → Google TTS → ⚙ → Tamil ⬇<br>';
-        h+='4. App மூடி மீண்டும் திறக்கவும், then tap RETRY below';
-        h+='</div>';
-        h+='<button id="tts-retry-btn" onclick="TTSS.retry()" style="display:block;width:100%;padding:13px;margin-top:12px;background:#1a3a6a;border:2px solid #3a6aaa;color:#fff;font-size:12px;font-weight:700;font-family:var(--sans);cursor:pointer;letter-spacing:1px">🔄 RETRY AFTER INSTALLING</button>';
-        h+='<button onclick="TTSS.testEN()" style="display:block;width:100%;padding:13px;margin-top:8px;background:#0a2a0a;border:1px solid #1a5a1a;color:#fff;font-size:12px;font-family:var(--sans);cursor:pointer;font-weight:700">🔊 USE ENGLISH VOICE MEANWHILE</button>';
-        h+='</div>';
-      }
-
-      /* Voice list */
-      if(voices.length>0){
-        h+='<div style="padding:10px 14px 6px;font-size:8px;letter-spacing:3px;color:var(--txt3);font-family:var(--sans)">AVAILABLE VOICES ('+voices.length+')</div>';
-        var show=taV.concat(enV.slice(0,4)).concat(voices.filter(function(v){
-          var l=(v.lang||'').toLowerCase();return l.indexOf('ta')!==0&&l.indexOf('en')!==0;
-        }).slice(0,2));
-        show.forEach(function(v){
-          var allIdx=voices.indexOf(v);
-          var isTa=(v.lang||'').toLowerCase().indexOf('ta')===0;
-          h+='<div class="tts-row">';
-          h+='<span class="tts-badge" style="background:'+(isTa?'#0a3a5c':'#0a2a0a')+';color:#fff;font-size:9px;min-width:46px;text-align:center">'+_esc((v.lang||'?').toUpperCase())+'</span>';
-          h+='<div style="flex:1"><div class="tts-voice-name">'+_esc(v.name||'Unknown')+'</div>';
-          h+='<div class="tts-voice-meta">'+(v.localService?'📱 LOCAL':'☁ NETWORK')+(v.default?' · DEFAULT':'')+'</div></div>';
-          h+='<button onclick="TTSS.testVoiceIdx('+allIdx+')" style="background:rgba(255,255,255,.1);border:none;color:var(--txt2);padding:6px 10px;font-size:8px;font-family:var(--sans);cursor:pointer;font-weight:700">▶ TEST</button>';
-          h+='</div>';
-        });
-        h+='<div style="height:20px"></div>';
-      }
-    }
-
-    var el=document.getElementById('tts-body');if(el)el.innerHTML=h;
+    /* ── Fallback: TTSEngine not loaded ── */
+    var supported='speechSynthesis'in window;
+    body.innerHTML=[
+      '<div style="padding:20px 16px;text-align:center">',
+        '<div style="font-size:32px;margin-bottom:12px">'+(supported?'⚠':'🔇')+'</div>',
+        '<div style="font-size:11px;letter-spacing:2px;color:'+(supported?'#fac85a':'#fa5a5a')+';font-family:var(--sans);font-weight:700;margin-bottom:8px">',
+          supported?'TTS ENGINE NOT LOADED':'TTS NOT SUPPORTED',
+        '</div>',
+        '<div style="font-size:12px;color:rgba(255,255,255,.6);font-family:var(--ta2);line-height:1.9">',
+          supported
+            ?'tts_engine.js வேலை செய்யவில்லை.<br>public/ folder-ல் tts_engine.js இருக்கிறதா என்று பார்க்கவும்.'
+            :'Chrome browser-ல் திறந்தால் Audio வேலை செய்யும்.',
+        '</div>',
+      '</div>'
+    ].join('');
   }
 
-  /* openInChrome — tries Android intent:// URL, falls back to copy-paste prompt */
-  function openInChrome(){
-    var url=window.location.href;
-    /* Try Android Chrome intent */
-    try{
-      var intent='intent://'+url.replace(/^https?:\/\//,'')+
-        '#Intent;scheme=https;package=com.android.chrome;end';
-      window.location.href=intent;
-    }catch(e){}
-    /* Also try direct */
-    setTimeout(function(){
-      try{window.open('googlechrome://navigate?url='+encodeURIComponent(url),'_blank');}catch(e){}
-    },500);
-  }
-
-  function _statCard(label,val,bg,col){
-    return '<div style="background:'+bg+';padding:14px;text-align:center">'+
-      '<div style="font-size:28px;font-weight:700;color:'+col+';font-family:var(--sans)">'+val+'</div>'+
-      '<div style="font-size:8px;color:rgba(255,255,255,.5);font-family:var(--sans);margin-top:3px">'+label+'</div></div>';
-  }
-  function _esc(s){return(s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-
-  function testTA(){AU.speakText('நான் கர்த்தரை நேசிக்கிறேன். தேவன் நல்லவர். இயேசு என்னை நேசிக்கிறார். வேத வசனம் கேட்கலாம்.','ta-IN');}
-  function testEN(){AU.speakText('The Lord is my shepherd I shall not want. Jesus loves me this I know.','en-US');}
-  function testVoiceIdx(idx){
-    if(!AU.isOk())return;
-    var voices=window.speechSynthesis.getVoices();
-    var v=voices[idx];if(!v)return;
-    window.speechSynthesis.cancel();
-    var ut=new SpeechSynthesisUtterance('Testing voice: '+v.name);
-    ut.voice=v;ut.lang=v.lang;ut.rate=0.9;
-    window.speechSynthesis.speak(ut);
-  }
-  function testVoice(idx){testVoiceIdx(idx);}
-
-  return{open:open,close:close,retry:retry,openInChrome:openInChrome,
-         testTA:testTA,testEN:testEN,testVoice:testVoice,testVoiceIdx:testVoiceIdx};
+  return{open:open,close:close};
 })();
 
-/* ═══════════════════════════════════════
-   APP CONTROLLER
-═══════════════════════════════════════ */
-var App=(function(){
-  var _cur='home';
-  function init(){
-    var n=BD.build();
-    if(ST.g('theme')==='light'){document.documentElement.setAttribute('data-light','');}
-    var tb=document.getElementById('th-btn');if(tb)tb.textContent=ST.g('theme')==='light'?'☽':'☀';
-    /* ── Load cached AI-generated content from localStorage ── */
-    _loadCachedContent();
-    _buildHome(n);
-    SV.build();SA.buildChips();SBOOKS.build();CHARS.build();STORS.build();SSONGS.build();
-    var sub=document.getElementById('h-sub');
-    if(sub)sub.textContent=(n||'0').toLocaleString()+' VERSES · OFFLINE';
-    var lb=document.getElementById('lang-btn');
-    if(lb){var l=ST.g('lang');lb.textContent=l==='ta'?'TA':l==='en'?'EN':'BI';}
-    PN.checkLocal();
-    document.getElementById('ls').style.display='none';
-    document.getElementById('app').style.display='flex';
-  }
 
-  function nav(id){
-    document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on');});
-    document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});
-    var scr=document.getElementById('s-'+id);if(scr)scr.classList.add('on');
-    var btn=document.querySelector('.nb[data-s="'+id+'"]');if(btn)btn.classList.add('on');
-    _cur=id;AU.stop();
-    if(id==='saved')SVDSAVED.build();
-  }
-
-  function theme(){
-    var isL=document.documentElement.hasAttribute('data-light');
-    if(isL){document.documentElement.removeAttribute('data-light');ST.setTheme('dark');document.getElementById('th-btn').textContent='☀';}
-    else{document.documentElement.setAttribute('data-light','');ST.setTheme('light');document.getElementById('th-btn').textContent='☽';}
-  }
-
-  function cycleLang(){
-    var l=ST.g('lang'),nx=l==='both'?'ta':l==='ta'?'en':'both';
-    ST.setLang(nx);
-    document.getElementById('lang-btn').textContent=nx==='ta'?'TA':nx==='en'?'EN':'BI';
-    SV.build();
-  }
-
-  function _buildHome(n){
-    var el=document.getElementById('home-tiles');if(!el)return;
-    var dv=BD.daily();
-    var tiles=[
-      {l:'66 BOOKS',s:'📖 வேத புத்தகங்கள்',c:'#0d2e0d',f:"App.nav('books')"},
-      {l:'SONGS',s:'🎵 '+( typeof TAMIL_SONGS!=='undefined'?TAMIL_SONGS.allSongs.length+' பாடல்கள்':'பாடல்கள்'),c:'#1a0038',f:"App.nav('songs')"},
-      {l:'KIDS STORIES',s:'📚 குழந்தைகள் கதைகள்',c:'#0d3a5c',f:"App.nav('stories')"},
-      {l:'CHARACTERS',s:'✦ வேத பாத்திரங்கள்',c:'#3a1a00',f:"App.nav('chars')"}
-    ];
-    var h='';
-    tiles.forEach(function(t){
-      h+='<div class="tile" style="background:'+t.c+'" onclick="'+t.f+'">';
-      h+='<div class="dtag">EXPLORE</div><div><div class="ttl">'+t.l+'</div><div class="tts">'+t.s+'</div></div></div>';
-    });
-    if(dv){
-      var ta=_esc(dv.ta),en=_esc(dv.en);
-      h+='<div class="tile clk" style="background:'+dv.color+'">';
-      h+='<div class="dtag">TODAY\'S VERSE · இன்றைய வசனம்</div>';
-      h+='<div class="dta">'+ta.substring(0,90)+(ta.length>90?'…':'')+'</div>';
-      h+='<div class="den">'+en.substring(0,90)+(en.length>90?'…':'')+'</div>';
-      h+='<div class="dref">'+dv.ref+'</div>';
-      h+='<div class="dbtns">';
-      h+='<button class="dbtn" onclick="RM.open('+dv.id+')">READ</button>';
-      h+='<button class="dbtn" id="hv-aud" onclick="AU.open({ref:\''+_js(dv.ref)+'\',ta:\''+_js(dv.ta.substring(0,300))+'\',en:\''+_js(dv.en.substring(0,300))+'\'})">🔊</button>';
-      h+='<button class="dbtn" id="hv-sv" onclick="_toggleSave('+dv.id+',this)">'+(ST.isSaved(dv.id)?'♥ SAVED':'♡ SAVE')+'</button>';
-      h+='</div></div>';
-    }
-    el.innerHTML=h;
-    // Recent verses
-    var vv=document.getElementById('home-vv');
-    if(vv&&dv){
-      var rel=BD.byBookCh(dv.book,dv.ch).slice(0,5);
-      var hh='<div class="sh"><span class="sht">FROM '+_esc(dv.ref)+'</span></div>';
-      rel.forEach(function(v){hh+=_vc(v);});
-      vv.innerHTML=hh;
-    }
-  }
-
-  function _vc(v){
-    var lang=ST.g('lang');
-    var ta=_esc(v.ta),en=_esc(v.en),ref=_esc(v.ref);
-    var h='<div class="vc"><div class="vch"><span class="vr">'+ref+'</span>';
-    h+='<div style="display:flex;gap:4px">';
-    h+='<button style="background:none;border:none;color:var(--txt2);font-size:14px;cursor:pointer" onclick="AU.open({ref:\''+_js(v.ref)+'\',ta:\''+_js(v.ta.substring(0,300))+'\',en:\''+_js(v.en.substring(0,300))+'\'})">🔊</button>';
-    h+='<button style="background:none;border:none;color:var(--txt2);font-size:14px;cursor:pointer" id="sv'+v.id+'" onclick="_toggleSave('+v.id+',this)">'+(ST.isSaved(v.id)?'♥':'♡')+'</button>';
-    h+='</div></div><div class="vbd">';
-    if(lang!=='en')h+='<div class="vta">'+ta+'</div>';
-    if(lang!=='ta')h+='<div class="ven">'+en+'</div>';
-    h+='</div></div>';
-    return h;
-  }
-  function _esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-  function _js(s){return(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,' ').replace(/\r/g,'');}
-
-  /* ── _loadCachedContent ──
-     Merges AI-generated lyrics/stories saved in localStorage
-     back into the live TAMIL_SONGS / KIDS_STORIES arrays.
-     Called once at init before screens are built. */
-  function _loadCachedContent(){
-    try{
-      /* Songs — key: "generated_lyrics_<no or title>" */
-      if(typeof TAMIL_SONGS!=='undefined'&&TAMIL_SONGS.allSongs){
-        TAMIL_SONGS.allSongs.forEach(function(song){
-          var key='generated_lyrics_'+(song.no||song.title_en||'');
-          try{
-            var cached=localStorage.getItem(key);
-            if(cached&&cached.trim().length>80)song.lyrics_ta=cached;
-          }catch(e){}
-        });
-      }
-      /* Kids Stories — key: "gen_story_<id>" */
-      if(typeof KIDS_STORIES!=='undefined'){
-        KIDS_STORIES.forEach(function(story){
-          var key='gen_story_'+story.id;
-          try{
-            var cached=localStorage.getItem(key);
-            if(cached){
-              var parsed=JSON.parse(cached);
-              if(parsed.en&&parsed.en.length>200)story.story_en=parsed.en;
-              if(parsed.ta&&parsed.ta.length>100)story.story_ta=parsed.ta;
-            }
-          }catch(e){}
-        });
-      }
-    }catch(e){/* localStorage unavailable — silently skip */}
-  }
-
-  return{init:init,nav:nav,theme:theme,cycleLang:cycleLang,_vc:_vc,_esc:_esc,_js:_js};
-})();
-
-function _toggleSave(id,btn){
-  var saved=ST.toggleSave(id);
-  if(btn)btn.textContent=saved?'♥ SAVED':'♡ SAVE';
-}
-
-/* ═══════════════════════════════════════
-   SCRIPTURE VERSES SCREEN
-═══════════════════════════════════════ */
-var SV=(function(){
-  var _all=[],_filtered=[],_lang='both',_pg=0,_pp=30;
-  function build(){_all=BD.all();_filtered=_all.slice();_lang=ST.g('lang');_render();}
-  function setLang(l){
-    _lang=l;ST.setLang(l);
-    document.querySelectorAll('#v-ltog button').forEach(function(b){b.classList.remove('on');});
-    var map={ta:0,en:1,both:2};
-    var btns=document.querySelectorAll('#v-ltog button');
-    if(btns[map[l]])btns[map[l]].classList.add('on');
-    _pg=0;_render();
-  }
-  function filter(q){
-    if(!q||!q.trim()){_filtered=_all.slice();}
-    else{
-      var ql=q.toLowerCase().trim();
-      _filtered=_all.filter(function(v){
-        return v.ta.indexOf(q)!==-1||v.en.toLowerCase().indexOf(ql)!==-1||v.ref.toLowerCase().indexOf(ql)!==-1;
-      });
-    }
-    _pg=0;_render();
-  }
-  function prev(){if(_pg>0){_pg--;_render();}}
-  function next(){if((_pg+1)*_pp<_filtered.length){_pg++;_render();}}
-  function _render(){
-    var total=_filtered.length,start=_pg*_pp,end=Math.min(start+_pp,total);
-    var slice=_filtered.slice(start,end);
-    document.getElementById('v-pgi').textContent=(start+1)+'-'+end+' / '+total;
-    document.getElementById('v-prev').disabled=_pg===0;
-    document.getElementById('v-next').disabled=end>=total;
-    var h=slice.map(function(v){return App._vc(v);}).join('');
-    document.getElementById('v-list').innerHTML=h||'<div class="empty"><div class="emico">📖</div><div class="emtxt">NO VERSES FOUND</div></div>';
-  }
-  return{build:build,setLang:setLang,filter:filter,prev:prev,next:next};
-})();
-
-/* ═══════════════════════════════════════
-   SEARCH SCREEN
-═══════════════════════════════════════ */
-var SA=(function(){
-  var _chips=['love அன்பு','peace சமாதானம்','faith விசுவாசம்','hope நம்பிக்கை','joy சந்தோஷம்','grace கிருபை','prayer ஜெபம்','salvation இரட்சிப்பு'];
-  function buildChips(){
-    var h=_chips.map(function(c){return'<span class="chip" onclick="SA.chip(\''+c+'\')">'+(c.split(' ')[0])+'</span>';}).join('');
-    document.getElementById('ai-chips').innerHTML=h;
-  }
-  function chip(t){document.getElementById('ai-srch').value=t;run();}
-  function run(){
-    var q=(document.getElementById('ai-srch').value||'').trim();
-    if(!q)return;
-    var res=BD.search(q);
-    var h=res.length?res.map(function(v){return App._vc(v);}).join(''):
-      '<div class="empty"><div class="emico">🔍</div><div class="emtxt">NO RESULTS FOR "'+App._esc(q)+'"</div></div>';
-    document.getElementById('ai-list').innerHTML=h;
-  }
-  return{buildChips:buildChips,chip:chip,run:run};
-})();
-
-/* ═══════════════════════════════════════
-   BOOKS SCREEN
-═══════════════════════════════════════ */
-var SBOOKS=(function(){
-  var _filt='OT';
-  function build(){
-    var h='<button class="'+(  _filt==='OT'?'on':'')+'" onclick="SBOOKS.filt(\'OT\')">OT · பழைய ஏற்பாடு</button>';
-    h+='<button class="'+(    _filt==='NT'?'on':'')+'" onclick="SBOOKS.filt(\'NT\')">NT · புது ஏற்பாடு</button>';
-    document.getElementById('b-filt').innerHTML=h;
-    _grid();
-  }
-  function filt(f){_filt=f;build();}
-  function _grid(){
-    var OT=39,en=BD.BEN,ta=BD.BTA,cl=BD.CLR;
-    var items=_filt==='OT'?en.slice(0,OT).map(function(b,i){return{b:b,t:ta[i],c:cl[i],i:i};}):
-      en.slice(OT).map(function(b,i){return{b:b,t:ta[OT+i],c:cl[OT+i],i:OT+i};});
-    var h=items.map(function(x){
-      var chs=BD.byBook(x.b),chCt=chs.length?Math.max.apply(null,chs.map(function(v){return v.ch;})):0;
-      return'<div class="btile" style="background:'+x.c+'" onclick="CR.open(\''+x.b+'\',1)">'+
-        '<div><div class="bne">'+App._esc(x.b)+'</div><div class="bnt">'+App._esc(x.t)+'</div></div>'+
-        '<div><div class="bm">'+chCt+' CHAPTERS</div>'+
-        '<div class="bbtns"><button onclick="event.stopPropagation();CR.open(\''+x.b+'\',1)">READ</button>'+
-        '<button onclick="event.stopPropagation();AU.open({ref:\''+x.b+' 1:1\',ta:\''+App._js((BD.byBookCh(x.b,1)[0]||{ta:''}).ta.substring(0,200))+'\',en:\''+App._js((BD.byBookCh(x.b,1)[0]||{en:''}).en.substring(0,200))+'\'})">🔊</button></div></div></div>';
-    }).join('');
-    document.getElementById('b-grid').innerHTML=h;
-  }
-  return{build:build,filt:filt};
-})();
-
-/* ═══════════════════════════════════════
-   CHARACTERS SCREEN
-═══════════════════════════════════════ */
-var CHARS=(function(){
-  function build(){
-    if(typeof BIBLE_CHARACTERS==='undefined'){
-      document.getElementById('c-grid').innerHTML='<div class="empty"><div class="emico">👤</div><div class="emtxt">characters.js NOT LOADED</div></div>';return;
-    }
-    var h=BIBLE_CHARACTERS.map(function(c){
-      return'<div class="ctile" style="background:'+c.color+'" onclick="CD.open(\''+c.id+'\')">'+
-        '<div class="cemi">'+c.emoji+'</div>'+
-        '<div><div class="dtag">'+c.era+' · '+c.testament+'</div>'+
-        '<div class="cn">'+App._esc(c.name)+'</div>'+
-        '<div class="cnt">'+App._esc(c.ta_name)+'</div>'+
-        '<div class="ctl">'+App._esc(c.tagline_en)+'</div></div>'+
-        '<button class="cbtn">VIEW STORY →</button></div>';
-    }).join('');
-    document.getElementById('c-grid').innerHTML=h;
-  }
-  return{build:build};
-})();
-
-/* ═══════════════════════════════════════
-   CHARACTER DETAIL OVERLAY
-═══════════════════════════════════════ */
-var CD=(function(){
-  var _c=null,_tab='summary';
-  function open(id){
-    if(typeof BIBLE_CHARACTERS==='undefined')return;
-    _c=BIBLE_CHARACTERS.find(function(x){return x.id===id;});
-    if(!_c)return;
-    _tab='summary';
-    document.getElementById('cd-name').textContent=_c.name;
-    document.getElementById('cd-ta-name').textContent=_c.ta_name;
-    document.getElementById('cd-era').textContent=_c.era+' · '+_c.testament;
-    document.getElementById('cd-emi').textContent=_c.emoji;
-    var bar=document.getElementById('char-bar');if(bar)bar.style.background='linear-gradient(135deg,'+_c.color+',#080810)';
-    _render();
-    document.getElementById('char-ov').classList.add('on');
-  }
-  function close(){document.getElementById('char-ov').classList.remove('on');_c=null;}
-  function tab(t){_tab=t;_render();}
-
-  function _render(){
-    if(!_c)return;
-    var c=_c;
-    /* Check if this character has linked kids stories */
-    var hasStories=(typeof KIDS_STORIES!=='undefined')&&
-      KIDS_STORIES.some(function(s){return s.character_id===c.id;});
-    var tabs=['summary','timeline','verses','lessons'];
-    if(hasStories)tabs.push('stories');
-    var th=tabs.map(function(t){
-      var label={summary:'SUMMARY',timeline:'TIMELINE',verses:'VERSES',lessons:'LESSONS',stories:'📚 STORIES'}[t]||t.toUpperCase();
-      return'<button class="ov-tab'+(t===_tab?' on':'')+'" onclick="CD.tab(\''+t+'\')">'+label+'</button>';
-    }).join('');
-
-    var h='<div class="ov-tab-row" style="overflow-x:auto">'+th+'</div>';
-
-    if(_tab==='summary'){
-      h+='<div class="csec"><div class="csl">SUMMARY</div><div class="csen">'+App._esc(c.summary_en)+'</div>';
-      h+='<div class="csta">'+App._esc(c.summary_ta)+'</div>';
-      h+='<div style="margin-top:14px"><button onclick="AU.speakText(\''+App._js(c.summary_en)+'\',\'en-US\')" style="background:rgba(255,255,255,.1);border:none;color:var(--txt2);padding:7px 14px;font-size:9px;font-family:var(--sans);cursor:pointer;margin-right:5px">🔊 EN</button>';
-      h+='<button onclick="AU.speakText(\''+App._js(c.summary_ta)+'\',\'ta-IN\')" style="background:rgba(255,255,255,.1);border:none;color:var(--txt2);padding:7px 14px;font-size:9px;font-family:var(--sans);cursor:pointer">🔊 தமிழ்</button></div></div>';
-    }
-    else if(_tab==='timeline'){
-      h+='<div class="csec">';
-      c.timeline.forEach(function(t,i){
-        h+='<div class="tli"><div class="tlcol"><div class="tldot" style="background:'+c.color+'"></div>'+(i<c.timeline.length-1?'<div class="tlline"></div>':'')+'</div>';
-        h+='<div><div class="tlref">'+App._esc(t.ref)+'</div><div class="tlen">'+App._esc(t.en)+'</div><div class="tlta">'+App._esc(t.ta)+'</div></div></div>';
-      });
-      h+='</div>';
-    }
-    else if(_tab==='verses'){
-      h+='<div class="csec">';
-      c.verses.forEach(function(v){
-        h+='<div class="kv"><div class="kvref">'+App._esc(v.ref)+'</div><div class="kven">'+App._esc(v.en)+'</div><div class="kvta">'+App._esc(v.ta)+'</div>';
-        h+='<div style="margin-top:8px"><button onclick="AU.speakText(\''+App._js(v.ta)+'\',\'ta-IN\')" style="background:rgba(255,255,255,.1);border:none;color:var(--txt2);padding:6px 10px;font-size:8px;font-family:var(--sans);cursor:pointer">🔊 கேட்க</button></div></div>';
-      });
-      h+='</div>';
-    }
-    else if(_tab==='lessons'){
-      h+='<div class="csec">';
-      (c.lessons_en||[]).forEach(function(l,i){
-        h+='<div class="lesn"><div class="lesnn">'+(i+1)+'</div><div>';
-        h+='<div class="lesen">'+App._esc(l)+'</div>';
-        if(c.lessons_ta&&c.lessons_ta[i])h+='<div class="lesta">'+App._esc(c.lessons_ta[i])+'</div>';
-        h+='</div></div>';
-      });
-      h+='</div>';
-    }
-    else if(_tab==='stories'){
-      /* Related kids stories */
-      var related=(typeof KIDS_STORIES!=='undefined')
-        ?KIDS_STORIES.filter(function(s){return s.character_id===c.id;})
-        :[];
-      h+='<div class="csec">';
-      if(!related.length){
-        h+='<div class="empty" style="padding:30px 0"><div class="emico">📚</div><div class="emtxt">NO LINKED STORIES</div></div>';
-      } else {
-        related.forEach(function(s){
-          h+='<div style="background:'+s.color+';border-radius:8px;padding:14px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:12px" onclick="CD.close();StD.open(\''+s.id+'\')">';
-          h+='<span style="font-size:28px">'+s.icon+'</span>';
-          h+='<div style="flex:1"><div style="font-size:13px;font-weight:700;color:#fff;font-family:var(--sans)">'+App._esc(s.title_en)+'</div>';
-          h+='<div style="font-size:11px;color:rgba(255,255,255,.7);font-family:var(--ta2);margin-top:2px">'+App._esc(s.title_ta)+'</div>';
-          h+='<div style="font-size:9px;color:rgba(255,255,255,.45);font-family:var(--sans);margin-top:3px">'+s.category+' · Tap to read</div></div>';
-          h+='<span style="color:rgba(255,255,255,.4);font-size:18px">▶</span>';
-          h+='</div>';
-        });
-      }
-      h+='</div>';
-    }
-
-    document.getElementById('cd-body').innerHTML=h;
-    document.getElementById('cd-body').scrollTop=0;
-  }
-  return{open:open,close:close,tab:tab};
-})();
-
-/* ═══════════════════════════════════════
-   KIDS STORIES SCREEN
-═══════════════════════════════════════ */
-var STORS=(function(){
-  function build(){
-    if(typeof KIDS_STORIES==='undefined'){
-      document.getElementById('stor-grid').innerHTML='<div class="empty"><div class="emico">📚</div><div class="emtxt">kids_stories.js NOT LOADED</div></div>';return;
-    }
-    var h=KIDS_STORIES.map(function(s){
-      return'<div class="ctile" style="background:'+s.color+'" onclick="StD.open(\''+s.id+'\')">'+
-        '<div class="cemi">'+s.icon+'</div>'+
-        '<div><div class="dtag">'+s.category+' · 🔊 AUDIO</div>'+
-        '<div class="cn">'+App._esc(s.title_en)+'</div>'+
-        '<div class="cnt">'+App._esc(s.title_ta)+'</div></div>'+
-        '<button class="cbtn" style="display:flex;align-items:center;justify-content:center;gap:6px">📖 READ · 🔊 HEAR</button></div>';
-    }).join('');
-    document.getElementById('stor-grid').innerHTML=h;
-  }
-  return{build:build};
-})();
-
-/* ═══════════════════════════════════════
-   STORY DETAIL OVERLAY — FIXED
-   Full story text EN+Tamil, READ TO ME button,
-   kids-friendly large audio button
-═══════════════════════════════════════ */
-var StD=(function(){
-  var _s=null,_tab='story';
-
-  function open(id){
-    if(typeof KIDS_STORIES==='undefined')return;
-    _s=KIDS_STORIES.find(function(x){return x.id===id;});
-    if(!_s)return;
-    _tab='story';
-    AU.stop();
-    document.getElementById('st-name').textContent=_s.title_en;
-    document.getElementById('st-ta-name').textContent=_s.title_ta;
-    var bar=document.getElementById('stbar');
-    if(bar)bar.style.background='linear-gradient(135deg,'+_s.color+',#040810)';
-    resetHearBtn();
-    _render();
-    document.getElementById('story-ov').classList.add('on');
-  }
-
-  function close(){AU.stop();document.getElementById('story-ov').classList.remove('on');_s=null;resetHearBtn();}
-  function tab(t){_tab=t;_render();}
-
-  function resetHearBtn(){
-    var btn=document.getElementById('st-hear-btn');
-    if(btn){btn.textContent='🔊 HEAR';btn.style.background='';}
-  }
-
-  function _render(){
-    if(!_s)return;
-    var s=_s;
-    /* Tabs */
-    var thr='<button class="ov-tab'+(_tab==='story'?' on':'')+'" onclick="StD.tab(\'story\')">📖 STORY</button>';
-    thr+='<button class="ov-tab'+(_tab==='listen'?' on':'')+'" onclick="StD.tab(\'listen\')">🔊 LISTEN</button>';
-    thr+='<button class="ov-tab'+(_tab==='lessons'?' on':'')+'" onclick="StD.tab(\'lessons\')">✦ LESSONS</button>';
-    document.getElementById('st-tabs').innerHTML=thr;
-
-    var h='';
-    if(_tab==='story'){
-      /* Check if story content is complete (>300 chars) */
-      var storyEnFull=s.story_en&&s.story_en.trim().length>300;
-      var storyTaFull=s.story_ta&&s.story_ta.trim().length>200;
-
-      /* Key verse */
-      h+='<div style="padding:14px 14px 0">';
-      h+='<div class="kv"><div class="kvref">'+App._esc(s.verse_ref)+'</div>';
-      h+='<div class="kven">'+App._esc(s.verse_en)+'</div>';
-      if(s.verse_ta)h+='<div class="kvta">'+App._esc(s.verse_ta)+'</div>';
-      h+='</div></div>';
-
-      /* Full story EN */
-      h+='<div class="csec">';
-      h+='<div class="csl">STORY IN ENGLISH</div>';
-      if(storyEnFull){
-        h+='<div class="csen" style="white-space:pre-wrap">'+App._esc(s.story_en||'')+'</div>';
-      } else {
-        if(s.story_en&&s.story_en.trim())
-          h+='<div class="csen" style="white-space:pre-wrap;margin-bottom:12px">'+App._esc(s.story_en)+'</div>';
-        h+='<div id="st-ai-box" style="background:linear-gradient(135deg,#0a1835,#0d2050);border:1px solid rgba(100,150,255,.25);padding:14px;border-radius:4px;margin-top:8px">';
-        h+='<div style="font-size:9px;letter-spacing:2px;color:#7aaafa;font-family:var(--sans);margin-bottom:8px">🤖 AI STORY GENERATOR</div>';
-        h+='<div style="font-size:12px;color:rgba(255,255,255,.6);font-family:var(--ta2);line-height:1.8;margin-bottom:10px">Full story இல்லை. AI மூலம் உருவாக்கலாம் (Internet தேவை).</div>';
-        h+='<button onclick="StD.genStory()" style="width:100%;padding:12px;background:linear-gradient(135deg,#0d3a8a,#1a5acc);border:1px solid #3a7aff;color:#fff;font-size:12px;font-weight:700;font-family:var(--sans);cursor:pointer;letter-spacing:.5px" id="st-gen-btn">✨ GENERATE FULL STORY · முழு கதை உருவாக்கு</button>';
-        h+='<div id="st-gen-status" style="margin-top:8px;font-size:11px;color:rgba(255,255,255,.5);font-family:var(--ta2);display:none"></div>';
-        h+='</div>';
-      }
-      h+='</div>';
-
-      /* Full story Tamil */
-      if(storyTaFull){
-        h+='<div class="csec">';
-        h+='<div class="csl">கதை தமிழில்</div>';
-        h+='<div class="csta" style="white-space:pre-wrap">'+App._esc(s.story_ta)+'</div>';
-        h+='</div>';
-      } else if(s.story_ta&&s.story_ta.trim()){
-        h+='<div class="csec"><div class="csl">கதை தமிழில் (சுருக்கம்)</div>';
-        h+='<div class="csta" style="white-space:pre-wrap">'+App._esc(s.story_ta)+'</div>';
-        h+='</div>';
-      }
-    }
-    else if(_tab==='listen'){
-      /* Dedicated listen tab with language choice */
-      h+='<div style="padding:16px 14px">';
-      h+='<div style="font-size:9px;letter-spacing:3px;color:var(--txt3);font-family:var(--sans);margin-bottom:14px">🔊 READ ALOUD · கேட்கவும்</div>';
-
-      /* Tamil button */
-      h+='<button onclick="StD.readLang(\'ta\')" style="display:flex;align-items:center;gap:14px;width:100%;padding:16px;margin-bottom:10px;background:linear-gradient(135deg,#0a2e10,#0d4a1a);border:1px solid #1a7a2a;color:#fff;cursor:pointer;text-align:left">';
-      h+='<span style="font-size:28px">🇮🇳</span>';
-      h+='<div><div style="font-size:13px;font-weight:700;font-family:var(--sans)">LISTEN IN TAMIL</div>';
-      h+='<div style="font-size:12px;color:rgba(255,255,255,.7);font-family:var(--ta2);margin-top:3px">தமிழில் கதை கேட்கலாம்</div></div></button>';
-
-      /* English button */
-      h+='<button onclick="StD.readLang(\'en\')" style="display:flex;align-items:center;gap:14px;width:100%;padding:16px;margin-bottom:10px;background:linear-gradient(135deg,#0a1e3a,#0d3a6a);border:1px solid #1a4a8a;color:#fff;cursor:pointer;text-align:left">';
-      h+='<span style="font-size:28px">🇬🇧</span>';
-      h+='<div><div style="font-size:13px;font-weight:700;font-family:var(--sans)">LISTEN IN ENGLISH</div>';
-      h+='<div style="font-size:12px;color:rgba(255,255,255,.7);font-family:var(--en);margin-top:3px;font-style:italic">Hear the full story in English</div></div></button>';
-
-      /* Stop button */
-      h+='<button onclick="AU.stop();StD.resetHearBtn()" style="display:flex;align-items:center;gap:14px;width:100%;padding:14px;background:rgba(255,60,60,.1);border:1px solid rgba(255,60,60,.3);color:#fff;cursor:pointer">';
-      h+='<span style="font-size:22px">⏹</span>';
-      h+='<div style="font-size:12px;font-weight:700;font-family:var(--sans)">STOP AUDIO</div></button>';
-
-      h+='<div style="margin-top:16px;padding:12px;background:rgba(255,255,255,.04);border:1px solid var(--brd)">';
-      h+='<div style="font-size:9px;letter-spacing:2px;color:var(--txt3);font-family:var(--sans);margin-bottom:6px">TTS SETUP</div>';
-      h+='<div style="font-size:12px;color:rgba(255,255,255,.55);font-family:var(--ta2);line-height:1.9">';
-      h+='Audio வேலை செய்யவில்லையா? ⚙ Settings-ல் Tamil TTS install guide பாரும்.';
-      h+='</div>';
-      h+='<button onclick="TTSS.open()" style="margin-top:8px;padding:8px 14px;background:rgba(255,255,255,.08);border:1px solid var(--brd);color:var(--txt2);font-size:9px;font-family:var(--sans);cursor:pointer;font-weight:700">⚙ OPEN TTS SETTINGS</button>';
-      h+='</div>';
-      h+='</div>';
-    }
-    else{
-      /* Lessons */
-      h+='<div style="padding:14px">';
-      (s.lessons||[]).forEach(function(l,i){
-        h+='<div class="lesn"><div class="lesnn">'+(i+1)+'</div><div>';
-        h+='<div class="lesen">'+App._esc(l)+'</div>';
-        if(s.lessons_ta&&s.lessons_ta[i])h+='<div class="lesta">'+App._esc(s.lessons_ta[i])+'</div>';
-        h+='</div></div>';
-      });
-      h+='</div>';
-    }
-
-    var body=document.getElementById('st-body');
-    body.innerHTML=h;body.scrollTop=0;
-  }
-
-  /* readLang — reads story in chosen language with proper fallback */
-  function readLang(lang){
-    if(!_s)return;
-    AU._checkOkPub();
-    if(!AU.isOk()){TTSS.open();return;}
-    var text,lc;
-    if(lang==='ta'){
-      var voices=window.speechSynthesis.getVoices();
-      var hasTa=voices.some(function(v){return(v.lang||'').toLowerCase().indexOf('ta')===0;});
-      if(hasTa&&_s.story_ta){text=_s.story_ta;lc='ta-IN';}
-      else{
-        /* Tamil voice missing — offer English */
-        text=_s.story_en||_s.story_ta||'';lc='en-US';
-        if(_s.story_ta&&!hasTa){
-          /* Show a notice in listen tab */
-          var note=document.querySelector('#st-body .ta-note');
-          if(!note){
-            note=document.createElement('div');
-            note.className='ta-note';
-            note.style.cssText='padding:10px 14px;background:#2a1a00;border-left:3px solid #fac85a;font-size:12px;color:rgba(255,255,255,.7);font-family:var(--ta2);line-height:1.8;margin-bottom:8px';
-            note.textContent='Tamil voice இல்லாததால் English-ல் கேட்கலாம். ⚙ Settings → Tamil TTS install பண்ணவும்.';
-            var body=document.getElementById('st-body');
-            if(body)body.prepend(note);
-          }
-        }
-      }
-    } else {
-      text=_s.story_en||'';lc='en-US';
-    }
-    if(!text)return;
-    /* Update HEAR button state */
-    var btn=document.getElementById('st-hear-btn');
-    if(btn){btn.textContent='🔊 PLAYING…';btn.style.background='rgba(255,255,255,.15)';}
-    AU.speakLong(text,lc,function(){resetHearBtn();});
-  }
-
-  /* readToMe — called from header HEAR button, auto-detects best language */
-  function readToMe(){
-    if(!_s)return;
-    AU._checkOkPub();
-    if(!AU.isOk()){TTSS.open();return;}
-    var voices=window.speechSynthesis.getVoices();
-    var hasTa=voices.some(function(v){return(v.lang||'').toLowerCase().indexOf('ta')===0;});
-    readLang(hasTa?'ta':'en');
-  }
-
-  function _msg(t){
-    var body=document.getElementById('st-body');
-    if(!body)return;
-    var existing=body.querySelector('.story-msg');
-    if(existing)existing.remove();
-    var d=document.createElement('div');
-    d.className='story-msg';
-    d.style.cssText='padding:10px 14px;background:#1a0d00;border-left:3px solid var(--gold);font-size:12px;color:rgba(255,255,255,.7);font-family:var(--ta2);line-height:1.7;margin:0 14px 8px';
-    d.textContent=t;
-    var firstSec=body.querySelector('.csec');
-    if(firstSec)body.insertBefore(d,firstSec);else body.prepend(d);
-  }
-
-  /* genStory — uses Claude AI to generate full kids Bible story in EN + Tamil */
-  function genStory(){
-    if(!_s)return;
-    var btn=document.getElementById('st-gen-btn');
-    var status=document.getElementById('st-gen-status');
-    if(btn){btn.textContent='⏳ Generating…';btn.disabled=true;}
-    if(status){status.style.display='block';status.textContent='Claude AI கதை உருவாக்குகிறது…';}
-    var prompt='You are a children\'s Bible story writer who writes in both English and Tamil. Write a FULL, engaging Bible story for children about: "'+_s.title_en+'" (Tamil: "'+_s.title_ta+'").\n'+
-      'Key verse: '+_s.verse_ref+' — '+_s.verse_en+'\n\n'+
-      'IMPORTANT: Respond ONLY with a JSON object (no markdown), exactly this format:\n'+
-      '{"story_en":"...full English story (400-600 words, child-friendly, engaging, with dialogue)...","story_ta":"...full Tamil story (300-500 words, simple Tamil, child-friendly)..."}\n\n'+
-      'Make the story vivid and educational for children aged 6-12.';
-    fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        messages:[{role:'user',content:prompt}]
-      })
-    }).then(function(r){return r.json();}).then(function(data){
-      var txt='';
-      if(data&&data.content)data.content.forEach(function(b){if(b.type==='text')txt+=b.text;});
-      txt=txt.trim().replace(/^```json|```$/g,'').trim();
-      var parsed=JSON.parse(txt);
-      if(!parsed.story_en)throw new Error('Bad response format');
-      /* Save back to story object */
-      _s.story_en=parsed.story_en;
-      if(parsed.story_ta)_s.story_ta=parsed.story_ta;
-      /* Save to localStorage */
-      try{localStorage.setItem('gen_story_'+_s.id,JSON.stringify({en:_s.story_en,ta:_s.story_ta}));}catch(e){}
-      /* Re-render */
-      _tab='story';_render();
-    }).catch(function(e){
-      if(btn){btn.textContent='✨ RETRY · மீண்டும்';btn.disabled=false;}
-      if(status){status.textContent='⚠ Error: '+(e.message||'Check internet');}
-    });
-  }
-
-  return{open:open,close:close,tab:tab,readToMe:readToMe,readLang:readLang,resetHearBtn:resetHearBtn,genStory:genStory};
-})();
-
-/* ═══════════════════════════════════════
-   SONGS SCREEN — FIXED
-   Categories accordion, full lyrics in overlay
-═══════════════════════════════════════ */
-var SSONGS=(function(){
-  var _all=[];
-  function build(){
-    if(typeof TAMIL_SONGS==='undefined'){
-      document.getElementById('songs-list').innerHTML='<div class="empty"><div class="emico">🎵</div><div class="emtxt">songs.js NOT LOADED</div></div>';return;
-    }
-    _all=TAMIL_SONGS.allSongs||[];
-    _render(_all);
-  }
-  function filter(q){
-    if(!q||!q.trim()){_render(_all);return;}
-    var ql=q.toLowerCase().trim();
-    var res=_all.filter(function(s){
-      return(s.title_ta&&s.title_ta.indexOf(q)!==-1)||(s.title_en&&s.title_en.toLowerCase().indexOf(ql)!==-1);
-    });
-    _render(res);
-  }
-  function _render(songs){
-    var el=document.getElementById('songs-list');if(!el)return;
-    if(!songs||!songs.length){
-      el.innerHTML='<div class="empty"><div class="emico">🎵</div><div class="emtxt">NO SONGS FOUND</div></div>';return;
-    }
-    var cats=TAMIL_SONGS.categories||[];
-    var h='';
-    cats.forEach(function(cat){
-      var cs=songs.filter(function(s){return s.catId===cat.id;});
-      if(!cs.length)return;
-      h+='<div>';
-      h+='<div class="song-cat-hdr" style="background:'+cat.color+'" onclick="SSONGS.toggle(\''+cat.id+'\')">';
-      h+='<div><div class="song-cat-t">'+cat.icon+' '+App._esc(cat.title_ta)+'</div>';
-      h+='<div class="song-cat-e">'+App._esc(cat.title_en)+' · '+cs.length+' பாடல்கள்</div></div>';
-      h+='<span id="sarr-'+cat.id+'" style="color:rgba(255,255,255,.5);font-size:16px;transition:transform .2s">▶</span>';
-      h+='</div>';
-      h+='<div class="song-cat-body" id="sbody-'+cat.id+'">';
-      cs.forEach(function(song){
-        var idx=_all.indexOf(song);
-        h+='<div class="song-item" onclick="SongD.openIdx('+idx+')">';
-        h+='<span class="song-num">'+song.no+'</span>';
-        h+='<div style="flex:1"><div class="song-tita">'+App._esc(song.title_ta||'')+'</div>';
-        h+='<div class="song-tite">'+App._esc(song.title_en||'')+'</div></div>';
-        h+='<span style="color:rgba(255,255,255,.25);font-size:14px">▶</span>';
-        h+='</div>';
-      });
-      h+='</div></div>';
-    });
-    el.innerHTML=h;
-  }
-  function toggle(id){
-    var body=document.getElementById('sbody-'+id);
-    var arr=document.getElementById('sarr-'+id);
-    if(!body)return;
-    var open=body.classList.contains('open');
-    body.classList.toggle('open');
-    if(arr)arr.style.transform=open?'':'rotate(90deg)';
-  }
-  function getAll(){return _all;}
-  return{build:build,filter:filter,toggle:toggle,getAll:getAll};
-})();
-
-/* ═══════════════════════════════════════
-   SONG DETAIL OVERLAY
-   Full lyrics, HEAR button with playing state,
-   prev/next song navigation
-═══════════════════════════════════════ */
-var SongD=(function(){
-  var _cur=null,_curIdx=-1;
-
-  function openIdx(idx){
-    var all=SSONGS.getAll();
-    if(idx>=0&&idx<all.length){_curIdx=idx;open(all[idx]);}
-  }
-
-  function open(song){
-    _cur=song;
-    AU.stop();_resetHearBtn();
-    document.getElementById('sg-name').textContent=song.title_ta||'';
-    document.getElementById('sg-en').textContent=(song.catIcon||'')+(song.catTitle_en||'')+' · '+(song.title_en||'');
-    /* Full lyrics — textContent preserves \n with pre-wrap CSS */
-    var lyricsEl=document.getElementById('sg-lyrics');
-    var hasLyrics=song.lyrics_ta&&song.lyrics_ta.trim().length>80;
-    if(hasLyrics){
-      if(lyricsEl)lyricsEl.textContent=song.lyrics_ta;
-    } else {
-      /* Show partial lyrics + AI generate button */
-      if(lyricsEl){
-        var partial=song.lyrics_ta&&song.lyrics_ta.trim()?song.lyrics_ta.trim()+'\n\n':'';
-        lyricsEl.innerHTML=
-          (partial?'<pre style="white-space:pre-wrap;font-size:17px;line-height:2.4;color:var(--txt);font-family:var(--ta2);margin-bottom:16px">'+App._esc(partial)+'</pre>':'')+''+
-          '<div id="sg-ai-box" style="background:linear-gradient(135deg,#0a1835,#0d2050);border:1px solid rgba(100,150,255,.25);padding:16px;border-radius:4px">'+
-          '<div style="font-size:9px;letter-spacing:2px;color:#7aaafa;font-family:var(--sans);margin-bottom:10px">🤖 AI LYRICS GENERATOR</div>'+
-          '<div style="font-size:12px;color:rgba(255,255,255,.6);font-family:var(--ta2);line-height:1.8;margin-bottom:12px">'+
-          'Full lyrics இல்லை. AI மூலம் உருவாக்கலாம் (Internet தேவை).<br><span style="font-size:10px;color:rgba(255,255,255,.4)">Full lyrics not stored. Generate with AI (requires internet).</span></div>'+
-          '<button onclick="SongD.genLyrics()" style="width:100%;padding:13px;background:linear-gradient(135deg,#0d3a8a,#1a5acc);border:1px solid #3a7aff;color:#fff;font-size:12px;font-weight:700;font-family:var(--sans);cursor:pointer;letter-spacing:1px" id="sg-gen-btn">✨ GENERATE FULL LYRICS · முழு பாடல் உருவாக்கு</button>'+
-          '<div id="sg-gen-status" style="margin-top:8px;font-size:11px;color:rgba(255,255,255,.5);font-family:var(--ta2);display:none"></div>'+
-          '</div>';
-      }
-    }
-    var bar=document.getElementById('songbar');
-    if(bar)bar.style.background='linear-gradient(135deg,'+(song.catColor||'#1a0038')+',#040810)';
-    /* Update prev/next buttons */
-    var all=SSONGS.getAll();
-    var pp=document.getElementById('sg-prev'),np=document.getElementById('sg-next');
-    if(pp)pp.disabled=(_curIdx<=0);
-    if(np)np.disabled=(_curIdx>=all.length-1);
-    document.getElementById('song-ov').classList.add('on');
-  }
-
-  /* genLyrics — uses Claude AI to generate full Tamil Christian song lyrics */
-  function genLyrics(){
-    if(!_cur)return;
-    var btn=document.getElementById('sg-gen-btn');
-    var status=document.getElementById('sg-gen-status');
-    if(btn){btn.textContent='⏳ Generating…';btn.disabled=true;}
-    if(status){status.style.display='block';status.textContent='Claude AI பாடல் உருவாக்குகிறது…';}
-    var prompt='You are a Tamil Christian music expert. Generate the FULL complete Tamil lyrics for the Christian song titled:\n'+
-      'Tamil title: "'+(_cur.title_ta||'')+'" \nEnglish title: "'+(_cur.title_en||'')+'"\n'+
-      'Category: '+(_cur.catTitle_en||'Tamil Christian Song')+'\n\n'+
-      'Instructions:\n'+
-      '- Write the COMPLETE song with all verses and chorus\n'+
-      '- Use authentic Tamil Christian worship language\n'+
-      '- Format: Chorus/பல்லவி first, then Verse 1/1ம் சரணம், Verse 2/2ம் சரணம\', etc.\n'+
-      '- Mark sections clearly: [பல்லவி], [1ம் சரணம்], etc.\n'+
-      '- Write ONLY the lyrics, no commentary\n'+
-      '- If you know the actual song, use the real lyrics. Otherwise compose appropriate lyrics.';
-    fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        messages:[{role:'user',content:prompt}]
-      })
-    }).then(function(r){return r.json();}).then(function(data){
-      var txt='';
-      if(data&&data.content){
-        data.content.forEach(function(b){if(b.type==='text')txt+=b.text;});
-      }
-      txt=txt.trim();
-      if(!txt){throw new Error('Empty response');}
-      /* Save generated lyrics back to song object */
-      _cur.lyrics_ta=txt;
-      /* Update display */
-      var lyricsEl=document.getElementById('sg-lyrics');
-      if(lyricsEl)lyricsEl.textContent=txt;
-      /* Save to localStorage so it persists */
-      try{
-        var key='generated_lyrics_'+(_cur.no||_cur.title_en||'');
-        localStorage.setItem(key,txt);
-      }catch(e){}
-    }).catch(function(e){
-      if(btn){btn.textContent='✨ RETRY · மீண்டும்';btn.disabled=false;}
-      if(status){status.textContent='⚠ Error: '+(e.message||'Check internet connection');}
-    });
-  }
-
-  function close(){AU.stop();_resetHearBtn();document.getElementById('song-ov').classList.remove('on');_cur=null;_curIdx=-1;}
-
-  function prev(){if(_curIdx>0)openIdx(_curIdx-1);}
-  function next(){var all=SSONGS.getAll();if(_curIdx<all.length-1)openIdx(_curIdx+1);}
-
-  function _resetHearBtn(){
-    var btn=document.getElementById('sg-hear-btn');
-    if(btn){btn.textContent='🔊 HEAR';btn.style.background='';}
-  }
-
-  /* HEAR — reads full lyrics aloud, handles missing Tamil voice gracefully */
-  function hear(){
-    if(!_cur)return;
-    AU._checkOkPub();
-    if(!AU.isOk()){TTSS.open();return;}
-    var lyrics=(_cur.lyrics_ta||'').trim();
-    if(!lyrics||lyrics.length<20){
-      /* No lyrics yet — prompt to generate first */
-      var lyrEl=document.getElementById('sg-lyrics');
-      if(lyrEl){
-        var note=document.createElement('div');
-        note.style.cssText='padding:10px 14px;background:#2a1a00;border-left:3px solid #fac85a;font-size:12px;color:rgba(255,255,255,.8);font-family:var(--ta2);margin-bottom:10px';
-        note.textContent='பாடல் வரிகள் இல்லை. மேலே "✨ GENERATE" பொத்தானை அழுத்தவும். No lyrics — tap Generate first.';
-        lyrEl.prepend(note);
-      }
-      return;
-    }
-    var voices=window.speechSynthesis?window.speechSynthesis.getVoices():[];
-    var hasTa=AU.usingBridge()||voices.some(function(v){return(v.lang||'').toLowerCase().indexOf('ta')===0;});
-    if(hasTa){
-      var btn=document.getElementById('sg-hear-btn');
-      if(btn){btn.textContent='🔊 PLAYING…';btn.style.background='rgba(255,255,255,.15)';}
-      AU.speakLong(lyrics,'ta-IN',function(){_resetHearBtn();});
-    } else {
-      _showNoTamilSheet();
-    }
-  }
-
-  function _showNoTamilSheet(){
-    /* Remove any existing sheet */
-    var old=document.getElementById('sg-ta-sheet');if(old)old.remove();
-    var msg=document.createElement('div');
-    msg.id='sg-ta-sheet';
-    msg.style.cssText='position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:linear-gradient(135deg,#0a1830,#0d2050);padding:16px;z-index:600;border-top:2px solid #fac85a';
-    msg.innerHTML=
-      '<div style="font-size:10px;letter-spacing:2px;color:#fac85a;font-family:var(--sans);margin-bottom:8px">⚠ TAMIL VOICE NOT INSTALLED · தமிழ் குரல் இல்லை</div>'+
-      '<div style="font-size:13px;color:rgba(255,255,255,.8);font-family:var(--ta2);line-height:1.9;margin-bottom:12px">Play Store → Google Text-to-Speech → Install voice → Tamil</div>'+
-      '<div style="display:flex;gap:8px">'+
-      '<button id="sg-en-play" style="flex:1;padding:11px;background:#0a3a0a;border:1px solid #2a7a2a;color:#fff;font-size:11px;font-weight:700;font-family:var(--sans);cursor:pointer">▶ ENGLISH AUDIO</button>'+
-      '<button onclick="TTSS.open();document.getElementById(\'sg-ta-sheet\').remove()" style="flex:1;padding:11px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:11px;font-family:var(--sans);cursor:pointer;font-weight:700">⚙ INSTALL GUIDE</button>'+
-      '<button onclick="document.getElementById(\'sg-ta-sheet\').remove()" style="padding:11px 14px;background:rgba(255,0,0,.15);border:1px solid rgba(255,0,0,.3);color:#fff;font-size:15px;cursor:pointer">✕</button>'+
-      '</div>';
-    document.body.appendChild(msg);
-    /* Attach English play after DOM insertion */
-    var enBtn=document.getElementById('sg-en-play');
-    if(enBtn&&_cur){
-      var lyricsCopy=_cur.lyrics_ta||'';
-      enBtn.addEventListener('click',function(){
-        msg.remove();
-        AU.speakLong(lyricsCopy,'en-US');
-      });
-    }
-  }
-
-  return{open:open,openIdx:openIdx,close:close,hear:hear,prev:prev,next:next,genLyrics:genLyrics};
-})();
-
-/* ═══════════════════════════════════════
-   CHAPTER READER OVERLAY
-═══════════════════════════════════════ */
-var CR=(function(){
-  var _bk='',_ch=1,_lang='ta';
-  function open(book,ch){
-    _bk=book;_ch=ch||1;
-    document.getElementById('ch-title').textContent=BD.BTA[BD.BEN.indexOf(book)]||book;
-    _render();
-    document.getElementById('ch-ov').classList.add('on');
-  }
-  function close(){AU.stop();document.getElementById('ch-ov').classList.remove('on');}
-  function showLang(l){_lang=l;_render();}
-  function prev(){var chs=BD.byBook(_bk);if(!chs.length)return;if(_ch>1){_ch--;_render();}}
-  function next(){var chs=BD.byBook(_bk);if(!chs.length)return;var maxCh=Math.max.apply(null,chs.map(function(v){return v.ch;}));if(_ch<maxCh){_ch++;_render();}}
-  function jump(){var n=parseInt(prompt('Go to chapter:'),10);if(n&&n>0){_ch=n;_render();}}
-  function _render(){
-    var vs=BD.byBookCh(_bk,_ch);
-    document.getElementById('ch-sub').textContent='Chapter '+_ch+' · '+vs.length+' verses';
-    document.getElementById('ch-jump').textContent='Ch '+_ch;
-    ['ta','en','bo'].forEach(function(x){var b=document.getElementById('ch-'+x+'-btn');if(b)b.classList.remove('on');});
-    var cur=_lang==='both'?'bo':_lang;
-    var cb=document.getElementById('ch-'+cur+'-btn');if(cb)cb.classList.add('on');
-    var col=BD.colorOf(_bk);
-    var h=vs.map(function(v){
-      return'<div class="chv"><span class="chvn" style="color:'+col+'">'+v.v+'</span><div class="chvcol">'+
-        (_lang!=='en'?'<div class="chvta">'+App._esc(v.ta)+'</div>':'')+
-        (_lang!=='ta'?'<div class="chven">'+App._esc(v.en)+'</div>':'')+
-        '</div></div>';
-    }).join('');
-    document.getElementById('ch-body').innerHTML=h||'<div class="empty"><div class="emico">📖</div><div class="emtxt">NO VERSES</div></div>';
-    document.getElementById('ch-body').scrollTop=0;
-  }
-  return{open:open,close:close,showLang:showLang,prev:prev,next:next,jump:jump,_bk:_bk,_ch:_ch,
-    get _bk(){return _bk;},get _ch(){return _ch;}};
-})();
-
-/* ═══════════════════════════════════════
-   READING MODE OVERLAY
-═══════════════════════════════════════ */
-var RM=(function(){
-  var _v=null;
-  function open(id){
-    _v=BD.byId(id);if(!_v)return;
-    var lang=ST.g('lang');
-    document.getElementById('read-ref').textContent=_v.ref;
-    var ta=document.getElementById('read-ta');
-    var en=document.getElementById('read-en');
-    var div=document.getElementById('read-div');
-    var badge=document.getElementById('read-badge');
-    var fs=ST.g('fs')||18;
-    ta.style.fontSize=fs+'px';ta.style.display=lang==='en'?'none':'';
-    en.style.fontSize=(fs-2)+'px';en.style.display=lang==='ta'?'none':'';
-    ta.textContent=_v.ta;en.textContent=_v.en;
-    div.style.background=_v.color;
-    badge.textContent=_v.ref;badge.style.background=_v.color;badge.style.color='#fff';
-    document.getElementById('read-ov').classList.add('on');
-  }
-  function close(){AU.stop();document.getElementById('read-ov').classList.remove('on');_v=null;}
-  function fs(d){
-    if(!_v)return;
-    ST.setFs(ST.g('fs')+d);
-    var f=ST.g('fs');
-    document.getElementById('read-ta').style.fontSize=f+'px';
-    document.getElementById('read-en').style.fontSize=(f-2)+'px';
-  }
-  return{open:open,close:close,fs:fs,
-    get _v(){return _v;}};
-})();
-
-/* ═══════════════════════════════════════
-   SAVED VERSES SCREEN
-═══════════════════════════════════════ */
-var SVDSAVED=(function(){
-  function build(){
-    var ids=ST.saved();
-    document.getElementById('saved-lbl').textContent=ids.length+' SAVED';
-    if(!ids.length){
-      document.getElementById('saved-list').innerHTML='<div class="empty"><div class="emico">♡</div><div class="emtxt">NO SAVED VERSES YET\nTap ♡ on any verse to save</div></div>';return;
-    }
-    var h=ids.map(function(id){var v=BD.byId(id);return v?App._vc(v):'';}).join('');
-    document.getElementById('saved-list').innerHTML=h;
-  }
-  return{build:build};
-})();
-
-/* ═══════════════════════════════════════
-   INIT
-═══════════════════════════════════════ */
-window.addEventListener('load',function(){
-  var bar=document.getElementById('ls-bar'),msg=document.getElementById('ls-msg');
-  var steps=[[15,'Loading Bible data…'],[35,'Building verse index…'],[60,'Preparing songs & stories…'],[85,'Setting up screens…'],[100,'Ready! வேத வசனம்']];
-  var i=0;
-  function tick(){
-    if(i>=steps.length){App.init();return;}
-    if(bar)bar.style.width=steps[i][0]+'%';
-    if(msg)msg.textContent=steps[i][1];
-    i++;setTimeout(tick,220);
-  }
-  tick();
-  /* Error fallback: if app didn't start in 4 seconds */
-  setTimeout(function(){
-    if(document.getElementById('ls').style.display!=='none'){
-      var err=document.getElementById('ls-err');if(err)err.style.display='block';
-      if(msg)msg.textContent='';
-    }
-  },4000);
-});
-</script>
-</body>
-</html>
