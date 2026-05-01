@@ -1,518 +1,147 @@
 /* ================================================================
-KIDS_STORIES.js — Bible Stories for Young Children
-Based on Van Dam Bible Stories for Young Children
-Tamil + English, Subject-wise, Age 3-10
+   KIDS_STORIES.js — Bible Stories for Young Children
+   Based on Van Dam Bible Stories for Young Children
+   Tamil + English, Subject-wise, Age 3-10
 ================================================================ */
 var KIDS_STORIES = [
-{
-id:"creation", title_en:"God Made Everything", title_ta:"தே வன்
-எல்லாவற்றை யும் படை த்தார்",
-category:"Old Testament", icon:"🌍", color:"#1a5276",
-verse_ref:"Genesis 1:1", verse_en:"In the beginning God created
-the heaven and the earth.",
-verse_ta:"ஆதியிலே தே வன் வானத்தை யும் பூமியை யும்
-சிருஷ்டித்தார்.",
-story_en:"Before anything existed, there was only God. Then God
-said, 'Let there be light!' and beautiful light filled the darkness.
-On the second day God made the sky. On the third day He made the dry
-land and the sea, and He covered the land with grass and flowers and
-trees. On the fourth day God put the bright sun in the sky for daytime
-and the moon and stars for nighttime. On the fifth day God made fish
-to swim in the sea and birds to fly in the sky. On the sixth day God
-made all the animals — lions and elephants, rabbits and butterflies.
-Last of all, God made a man named Adam and a woman named Eve. God
-looked at everything He had made and said, 'It is very good!' On the
-seventh day, God rested. That is why Sunday is a special day of rest
-and worship.",
-story_ta:"எதுவும் இருக்கும் முன்பு, தே வன் மட்டுமே இருந்தார். பின்பு
-தே வன் 'வெ ளிச்சம் உண்டாகக்கடவது' என்று ச ொன்னார், அழகான
-வெ ளிச்சம் இருளை நிரப்பியது. இரண்டாம் நாள் ஆகாயத்தை படை த்தார். மூன்றாம் நாள் நிலத்தை யும் கடலை யும் படை த்து, நிலத்தை புல், பூக்கள்,
-மரங்களால் மூடினார். நான்காம் நாள் பகலுக்கு சூரியனை யும், இரவுக்கு
-சந்திரனை யும் நட்சத்திரங்களை யும் வை த்தார். ஐந்தாம் நாள் கடலில்
-மீன்களை யும் ஆகாயத்தில் பறவை களை யும் படை த்தார். ஆறாம் நாள்
-சிங்கம், யானை , முயல், வண்ணத்துப்பூச்சி என எல்லா விலங்குகளை யும்
-படை த்தார். கடை சியாக ஆதாம் என்ற மனிதனை யும் ஏவாள் என்ற
-பெ ண்ணை யும் படை த்தார். தே வன் எல்லாவற்றை யும் பார்த்து 'இது மிகவும்
-நல்லது' என்றார். ஏழாம் நாள் தே வன் ஓய்ந்தார். அதனால்
-ஞாயிற்றுக்கிழமை ஓய்வும் வழிபாடும் செ ய்ய சிறப்பான நாள்.",
-lessons:["God made everything from nothing — He is all-powerful.",
-"Everything God made is good and beautiful.", "God made YOU specially
-— you are precious to Him."],
-lessons_ta:["தே வன் எதுவும் இல்லாமல் எல்லாவற்றை யும்
-படை த்தார்.", "தே வன் படை த்த எல்லாமே நல்லதும் அழகானதும்.",
-"தே வன் உன்னை சிறப்பாக படை த்தார் — நீஅவருக்கு மதிப்புமிக்கவன்."]
-},
-{
-id:"adam_eve", title_en:"Adam and Eve in the Garden",
-title_ta:"ஆதாம் ஏவாள் த ோட்டத்தில்",category:"Old Testament", icon:"🍎", color:"#1a5c1a",
-verse_ref:"Genesis 2:15", verse_en:"And the LORD God took the man,
-and put him into the garden of Eden to dress it and to keep it.",
-verse_ta:"கர்த்தராகிய தே வன் மனுஷனை ஏதே ன் த ோட்டத்திலே
-வை த்தார்.",
-story_en:"God planted a beautiful garden called Eden. Flowers
-bloomed everywhere, rivers flowed through it, and all the animals
-lived there in peace. God put Adam in the garden to take care of it.
-Adam gave names to all the animals, but he was lonely. So God made Eve
-from Adam's rib, and Adam was so happy! God told them, 'You may eat
-from any tree in the garden — but not from the tree in the middle. If
-you eat from it, you will die.' One day a sneaky serpent came to Eve.
-'Did God really say you cannot eat this fruit? It will make you wise!'
-Eve looked at the beautiful fruit. She took it and ate it. She gave
-some to Adam too. Suddenly they felt ashamed. They hid from God behind
-the trees. God called, 'Adam, where are you?' He knew what they had
-done. He was sad because they disobeyed. He had to send them out of
-the beautiful garden. But God still loved them and promised that one
-day He would send Someone to make everything right again.",
-story_ta:"தே வன் ஏதே ன் என்ற அழகான த ோட்டத்தை நட்டார். எங்கும்
-பூக்கள் மலர்ந்தன, ஆறுகள் ஓடின, விலங்குகள் அமை தியாக வாழ்ந்தன.
-தே வன் ஆதாமை த ோட்டத்தை கவனிக்க வை த்தார். ஆதாம் எல்லா
-விலங்குகளுக்கும் பெ யர் வை த்தான், ஆனால் தனிமை யாக இருந்தான்.
-அதனால் தே வன் ஆதாமின் விலா எலும்பிலிருந்து ஏவாளை படை த்தார்.
-'எல்லா மரங்களிலும் பழம் சாப்பிடலாம் — ஆனால் நடுவில் உள்ள மரத்தை
-த ொடாதே ' என்றார் தே வன். ஒருநாள் தந்திரமான பாம்பு வந்து ஏவாளை
-வழிதவறச் செ ய்தது. ஏவாள் பழத்தை சாப்பிட்டாள், ஆதாமுக்கும்
-க ொடுத்தாள். உடனே அவர்கள் வெ ட்கப்பட்டு மரங்களுக்குப் பின்னால்
-ஒளிந்தனர். தே வன் 'ஆதாமே , நீஎங்கே ?' என்று கே ட்டார். தே வன்
-துக்கமடை ந்தார், அவர்களை த ோட்டத்திலிருந்து வெ ளியே அனுப்பினார். ஆனால் தே வன் அவர்களை இன்னும் நே சித்தார், எல்லாவற்றை யும்
-சரிசெ ய்ய யாரை யாவது அனுப்புவே ன் என்று வாக்களித்தார்.",
-lessons:["Obeying God keeps us safe and happy.", "One wrong choice
-can have big consequences.", "Even when we disobey, God still loves
-us."],
-lessons_ta:["தே வனுக்கு கீழ்ப்படிவது நம்மை பாதுகாக்கிறது.", "ஒரு
-தவறான தே ர்வு பெ ரிய விளை வுகளை க ொண்டுவரலாம்.", "நாம்
-கீழ்ப்படியாவிட்டாலும் தே வன் நம்மை நே சிக்கிறார்."]
-},
-{
-id:"noah_ark", title_en:"Noah and the Big Boat",
-title_ta:"ந ோவாவும் பெ ரிய பே ழை யும்",
-category:"Old Testament", icon:"🚢", color:"#1d4e89",
-verse_ref:"Genesis 6:22", verse_en:"Thus did Noah; according to
-all that God commanded him, so he did.",
-verse_ta:"தே வன் அவனுக்குக் கட்டளை யிட்ட யாவற்றை யும் ந ோவா
-அப்படியே செ ய்தான்.",
-story_en:"Many years after Adam and Eve, the world became verywicked. People were mean and did terrible things. God's heart was
-broken. But there was one good man — Noah. He loved God and obeyed
-Him. God told Noah, 'Build a big boat called an ark. I am going to
-send a great flood.' Noah's neighbors laughed at him. 'A boat? In the
-middle of dry land? Ha ha ha!' But Noah kept building. When the ark
-was ready, God told Noah to bring two of every animal — two elephants,
-two lions, two birds of every kind. Noah's family went in too. Then
-God shut the door. Rain began to fall and fall and fall for 40 days
-and nights. Water covered everything. But Noah and all the animals
-were safe inside the ark. After many days the water went down. Noah
-sent out a dove. The dove came back with an olive leaf — land was
-near! Finally the boat rested on a mountain. They all came out! Noah
-built an altar and thanked God. Then God put a beautiful rainbow in
-the sky. 'I promise I will never flood the whole earth again,' said
-God. Every rainbow you see is God keeping His promise!",
-story_ta:"ஆதாம் ஏவாளுக்கு பிறகு பல ஆண்டுகள் கழித்து, உலகம்
-மிகவும் ப ொல்லாப்பானது. மக்கள் கெ ட்டவர்களாகி தீய காரியங்கள்
-செ ய்தனர். தே வனின் இருதயம் ந ொந்தது. ஆனால் ஒரு நல்ல மனிதன்
-இருந்தான் — ந ோவா. அவன் தே வனை நே சித்து கீழ்ப்படிந்தான். தே வன்
-ந ோவாவிடம் 'பெ ரிய பே ழை கட்டு, வெ ள்ளம் வரும்' என்றார்.
-அக்கம்பக்கத்தினர் சிரித்தனர். ஆனால் ந ோவா கட்டினான். பே ழை
-தயாரானதும், தே வன் ஒவ்வ ொரு வகை விலங்கிலும் இரண்டிரண்டு
-க ொண்டுவரச் ச ொன்னார். ந ோவாவின் குடும்பமும் உள்ளே செ ன்றனர்.
-தே வன் கதவை மூடினார். 40 நாள் இரவும் பகலும் மழை பெ ய்தது.
-எல்லாமே தண்ணரிீல் மூழ்கியது. ஆனால் பே ழை யில் உள்ளவர்கள்
-பாதுகாப்பாக இருந்தனர். ந ோவா ஒரு புறாவை விட்டான், அது ஒலிவ்
-இலை யுடன் திரும்பியது — நிலம் இருக்கிறது! இறுதியில் பே ழை மலை யில்
-ஓய்ந்தது. ந ோவா பலிபடீ ம் கட்டி தே வனுக்கு நன்றி ச ொன்னான். தே வன்
-வானவில்லை வானத்தில் வை த்தார். 'இனி இப்படி வெ ள்ளம் வரவிட்டே ன்'
-என்று வாக்களித்தார்.",
-lessons:["God protects those who trust and obey Him.", "Every
-rainbow is God's promise of love.", "Be brave to do what's right even
-when people laugh at you."],
-lessons_ta:["தே வனை நம்பி கீழ்ப்படிவ ோரை அவர் பாதுகாக்கிறார்.",
-"ஒவ்வ ொரு வானவிலும் தே வனின் அன்பின் வாக்குறுதி.", "மக்கள்
-சிரித்தாலும் சரியான காரியம் செ ய்ய தை ரியமாயிரு."]
-},
-{
-id:"baby_moses", title_en:"Baby Moses in the Basket",
-title_ta:"கூடை யில் குழந்தை ம ோசே ",
-category:"Old Testament", icon:"🧺", color:"#6e2c00",
-verse_ref:"Exodus 2:10", verse_en:"And he became her son. And she
-called his name Moses.",
-verse_ta:"அவன் அவளுக்கு மகனாயினான், அவள் அவனுக்கு ம ோசே
-என்று பே ரிட்டாள்.",
-story_en:"In Egypt, God's people the Israelites were slaves. The
-mean Pharaoh made a terrible rule: every baby boy must be thrown into
-the river! A mother named Jochebed had a beautiful baby boy. She hid him for three months. When he got too big to hide, she made a little
-basket from reeds and covered it with tar to make it waterproof. She
-gently placed her baby inside and put the basket in the river reeds.
-His big sister Miriam watched from far away. Then — who came to the
-river? Pharaoh's own daughter! She heard the baby crying. She opened
-the basket and saw the sweet baby. 'Oh, a Hebrew baby!' she said. But
-she felt sorry for him and wanted to keep him. Miriam ran over. 'Shall
-I find a Hebrew woman to nurse him for you?' she asked. 'Yes!' said
-the princess. So the baby's own mother nursed him and got paid for it!
-When he was old enough, he went to live in the palace as Pharaoh's
-grandson. The princess named him Moses, which means 'drawn out of the
-water.' God had a great plan for Moses!",
-story_ta:"எகிப்தில் தே வனின் மக்களாகிய இஸ்ரவே லர்கள்
-அடிமை களாக இருந்தனர். க ொடிய பார்வ ோன் ஒரு க ொடுமை யான
-கட்டளை யிட்டான்: ஒவ்வ ொரு ஆண் குழந்தை யும் நதியில் ப ோடப்பட
-வே ண்டும்! ய ோகே பே த் என்ற தாயுக்கு அழகான குழந்தை பிறந்தது.
-அவளை மூன்று மாதம் மறை த்தாள். பின்பு ஒரு சிறிய கூடை செ ய்து தார்
-பூசி நீரில் மிதக்குமாறு செ ய்தாள். குழந்தை யை மெ ன்மை யாக கூடை யில்
-வை த்து நதியில் நாணல் செ டிகளுக்குள் மறை த்தாள். அக்கா மிரியாம்
-த ொலை வில் நின்று பார்த்தாள். அப்ப ோது பார்வ ோனின் மகள் நதிக்கு
-வந்தாள்! குழந்தை யின் அழுகுரல் கே ட்டு கூடை யை திறந்தாள். அவளுக்கு
-இரக்கம் வந்தது. மிரியாம் ஓடி வந்தாள், 'ஒரு பெ ண்ணை
-அழை க்கட்டுமா?' என்று கே ட்டாள். 'சரி' என்றாள் இளவரசி. குழந்தை யின்
-ச ொந்த தாயே அவனை வளர்க்க அழை க்கப்பட்டாள்! பெ ரியவனானதும்
-அரண்மனை யில் வாழ்ந்தான். 'தண்ணரிீலிருந்து எடுக்கப்பட்டவன்' என்று
-ம ோசே என்று பே ரிடப்பட்டான். தே வனுக்கு ம ோசே க்காக ஒரு மிகப் பெ ரிய
-திட்டம் இருந்தது!",
-lessons:["God protects His children even in dangerous times.",
-"God has a special plan for every child.", "A mother's love never
-gives up."],
-lessons_ta:["ஆபத்தான நே ரங்களிலும் தே வன் தம் பிள்ளை களை
-காக்கிறார்.", "ஒவ்வ ொரு குழந்தை க்கும் தே வனிடம் சிறப்பான திட்டம்
-இருக்கிறது.", "அன்னை யின் அன்பு ஒருப ோதும் விட்டுவிடாது."]
-},
-{
-id:"red_sea", title_en:"Crossing the Red Sea",
-title_ta:"செ ங்கடலை கடந்தனர்",
-category:"Old Testament", icon:"🌊", color:"#1a5276",
-verse_ref:"Exodus 14:14", verse_en:"The LORD will fight for you,
-and you shall hold your peace.",
-verse_ta:"கர்த்தர் உங்களுக்காக யுத்தம் செ ய்வார்; நீங்கள்
-சும்மாயிருங்கள்.",
-story_en:"Moses had grown up. God spoke to him from a burning bush
-that did not burn up! God said, 'Go tell Pharaoh to let My people go!'
-Moses went to Pharaoh again and again, but Pharaoh's heart was hard.
-God sent ten plagues — frogs and locusts and darkness and more.
-Finally Pharaoh said, 'GO! Leave Egypt!' So all the Israelites — two
-million people — marched out of Egypt. They were FREE! But then Pharaoh changed his mind. He sent his whole army with hundreds of
-chariots racing after them. The Israelites arrived at the Red Sea and
-looked behind them — the Egyptian army was coming! They were trapped!
-'Were there no graves in Egypt that you brought us here to die?' they
-cried to Moses. Moses said, 'Don't be afraid! Stand still and watch
-what God will do!' Then Moses stretched out his staff over the sea.
-God sent a strong wind all night. The sea split in TWO and the water
-stood like walls on both sides! The ground became dry! The Israelites
-walked through on dry land! All night they crossed. When the last
-Israelite reached the other side, Moses stretched out his staff again.
-The walls of water came crashing down on the Egyptian army. They were
-all gone. The Israelites were SAFE! They sang and danced and praised
-God. Miriam took a tambourine and led all the women in dancing,
-singing, 'Sing to the LORD, for He has triumphed gloriously!'",
-story_ta:"ம ோசே வளர்ந்தான். தே வன் எரிகிற முட்செ டியில் அவனிடம்
-பே சினார். 'பார்வ ோனிடம் ப ோய் என் மக்களை விடுவி என்று ச ொல்'
-என்றார் தே வன். ம ோசே மீண்டும் மீண்டும் பார்வ ோனிடம் ப ோனான், ஆனால் பார்வ ோன் கே ட்கவில்லை . தே வன் தவளை , வெ ட்டுக்கிளி, இருள்
-உள்ளிட்ட பத்து வாதை களை அனுப்பினார். இறுதியில் 'ப ோங்கள்!'
-என்றான் பார்வ ோன். இரண்டு க ோடி இஸ்ரவே லர்கள் எகிப்திலிருந்து
-வெ ளியே றினர். ஆனால் பார்வ ோன் மனம் மாறி தன் முழு படை யை யும்
-அனுப்பினான். இஸ்ரவே லர்கள் செ ங்கடல் முன்பு நின்று பார்த்தனர் —
-எகிப்து படை வருகிறது! ம ோசே 'பயப்படாதே ! தே வன் செ ய்வதை பார்!'
-என்றான். ம ோசே தன் க ோலை கடல் மே ல் நீட்டினான். தே வன் பலத்த
-காற்று அனுப்பினார். கடல் இரண்டாக பிரிந்தது! தண்ணர்ீ இரு பக்கமும்
-சுவர்ப ோல் நின்றது. நிலம் உலர்ந்தது! இஸ்ரவே லர்கள் நடந்து கடந்தனர்.
-கடை சியாவர் கடந்ததும் ம ோசே மீண்டும் க ோலை நீட்டினான். தண்ணர்ீ
-திரும்பி எகிப்து படை யை மூடியது. இஸ்ரவே லர்கள் பாதுகாப்பாக
-இருந்தனர். மிரியாம் தம்பட்டை எடுத்து பெ ண்களை கூட்டி ஆடி
-பாடினாள்!",
-lessons:["When we are in trouble, God fights for us.", "Be still
-and watch God work miracles.", "After God saves us, we should praise
-Him with joy!"],
-lessons_ta:["கஷ்டத்தில் இருக்கும்ப ோது தே வன் நமக்காக
-ப ோராடுகிறார்.", "அமை தியாக நின்று தே வனின் அற்புதங்களை பார்.",
-"தே வன் காப்பாற்றிய பிறகு மகிழ்ச்சியுடன் துதிக்கவே ண்டும்!"]
-},
-{
-id:"david_goliath", title_en:"David and the Giant Goliath",
-title_ta:"தாவதுீ ம் மாபெ ரும் க ோலியாத்தும்",
-category:"Old Testament", icon:"🪨", color:"#784212",
-verse_ref:"1 Samuel 17:45", verse_en:"I come to thee in the name
-of the LORD of hosts.",
-verse_ta:"நான் சே னை களின் கர்த்தரின் நாமத்திலே உன்னிடத்தில்
-வருகிறே ன்.",
-story_en:"The Philistine army had a giant soldier named Goliath.
-He was over nine feet tall! He wore heavy armor and carried a huge
-spear. Every morning and evening he came out and shouted, 'Send me your best soldier to fight me! If he wins, we will be your servants.
-If I win, you will be our slaves!' All the Israelite soldiers were
-terrified. Even King Saul was afraid. Nobody dared to fight Goliath.
-Young David was just a shepherd boy. He came to bring food to his
-brothers in the army. He heard Goliath shouting and was amazed. 'Who
-is this man to insult the armies of the living God?' David went to
-King Saul. 'I will fight him!' Saul tried to put his armor on David,
-but it was too big. David took it off. He picked up five smooth stones
-from the stream and his sling. He walked toward the giant. Goliath
-laughed. 'Am I a dog that you come at me with sticks?' David shouted
-back, 'You come with a sword, but I come in the name of the LORD!'
-David put a stone in his sling, spun it around, and let it fly. CRACK!
-The stone hit Goliath right in the forehead. The huge giant fell face
-down on the ground. The Israelites cheered. With God's help, the
-little shepherd boy had defeated the mighty giant!",
-story_ta:"பெ லிஸ்தியரின் படை யில் க ோலியாத் என்ற மாபெ ரும் வரீன்
-இருந்தான். அவன் ஒன்பது அடிக்கும் மே ல் உயரம்! கனமான கவசம்
-அணிந்து, பெ ரிய ஈட்டி ஏந்தினான். தினமும் 'உங்கள் சிறந்த வரீனை
-அனுப்புங்கள்!' என்று கத்தினான். இஸ்ரவே ல் வரீர்கள் எல்லாரும்
-பயந்தனர். யாரும் க ோலியாத்துடன் ப ோர் செ ய்ய தை ரியப்படவில்லை .
-தாவதுீ மே ய்ப்பன் பை யன். தன் அண்ணன்களுக்கு சாப்பாடு க ொண்டுவர
-வந்தான். க ோலியாத்தின் கத்தலை கே ட்டு 'ஜவீ னுள்ள தே வனின் படை யை
-இகழ்கிறவன் யார்?' என்று கே ட்டான். ராஜா சவுலிடம் 'நான் ப ோர்
-செ ய்வே ன்!' என்றான். சவுலின் கவசம் ப ொருந்தவில்லை . தாவதுீ அதை
-கழற்றி, ஐந்து மெ ல்லிய கற்களை எடுத்தான். க ோலியாத் சிரித்தான்.
-தாவதுீ 'நீவாளுடன் வருகிறாய், நான் கர்த்தரின் நாமத்தில் வருகிறே ன்!'
-என்று கத்தினான். கவண்கல்லை சுழற்றி விட்டான். கல் க ோலியாத்தின்
-நெ ற்றியில் பட்டது. மாபெ ரும் வரீன் தரை யில் விழுந்தான். சிறு மே ய்ப்பன்
-தே வனின் உதவியால் மாவரீனை த ோற்கடித்தான்!",
-lessons:["It doesn't matter how big the problem is — God is
-bigger!", "We are brave when we trust in God's name.", "God can use
-even the smallest person to do great things."],
-lessons_ta:["பிரச்சினை எவ்வளவு பெ ரியதாக இருந்தாலும் — தே வன்
-அதை விட பெ ரியவர்!", "தே வனின் நாமத்தை நம்பும்ப ோது நாம்
-தை ரியமானவர்கள்.", "மிகச்சிறிய மனிதனை யும் தே வன் பெ ரிய
-காரியங்களுக்கு பயன்படுத்தலாம்."]
-},
-{
-id:"daniel_lions", title_en:"Daniel in the Lions' Den",
-title_ta:"சிங்கக் குகை யில் தானியே ல்",
-category:"Old Testament", icon:"🦁", color:"#1a3a5c",
-verse_ref:"Daniel 6:22", verse_en:"My God hath sent his angel, and
-hath shut the lions' mouths.",
-verse_ta:"என் தே வன் தம்முடை ய தூதனை அனுப்பி சிங்கங்களின்
-வாயை அடை த்தார்.",
-story_en:"Daniel was God's man in the land of Babylon. He was so
-wise and faithful that the king made him one of the three most
-important rulers in the whole kingdom. But the other rulers were jealous. They looked for something wrong in Daniel's life — but they
-couldn't find anything! He was perfectly honest. Then they had an evil
-plan. They told the king, 'Make a law that for 30 days no one can pray
-to anyone except you!' The king liked this idea and signed it. But
-Daniel heard about the new law and... he opened his windows toward
-Jerusalem and prayed to God THREE TIMES that day, just as always. The
-jealous men saw him. They ran to the king. 'Daniel disobeyed your
-law!' The king was very sad — he liked Daniel. But the law could not
-be changed. Daniel was thrown into the pit of hungry lions. The king
-put a stone over the hole. 'May your God save you, Daniel!' That night
-the king could not sleep, could not eat. At dawn he ran to the lion
-pit. 'Daniel! Did your God save you?' he cried. Then a voice came from
-the dark pit — 'O King, live forever! God sent His angel and shut the
-lions' mouths! I am not hurt!' The king pulled Daniel out. Daniel had
-no wounds at all! The king made a new law: everyone must respect
-Daniel's God!",
-story_ta:"தானியே ல் பாபில ோனில் தே வனின் மனிதன். அவன் மிகவும்
-ஞானமும் நே ர்மை யுமானவன் என்பதால் ராஜா அவனை மிக முக்கியமான
-தலை வர்களில் ஒருவனாக்கினான். மற்றவர்கள் ப ொறாமை ப்பட்டனர்.
-தானியே லில் குற்றம் தே டினர் — ஒன்றும் கிடை க்கவில்லை ! பின்பு தீய
-திட்டம் தீட்டினர். '30 நாளுக்கு உன்னை யன்றி வே று யாரை யும் ஜெ பிக்க
-கூடாது' என்ற கட்டளை பிறப்பிக்க ராஜாவை வற்புறுத்தினர். ஆனால்
-தானியே ல் தன் ஜன்னலை திறந்து தினமும் மூன்று வே ளை யும் தே வனை
-ஜெ பித்தான். ப ொறாமை க்காரர்கள் ராஜாவிடம் ஓடினர். ராஜா
-துக்கமடை ந்தான். தானியே லை சிங்கக் குகை யில் ப ோட்டனர். ராஜா
-தூங்கவில்லை , சாப்பிடவில்லை . விடியற்காலை ஓடி வந்தான்.
-'தானியே லே ! உன் தே வன் உன்னை காப்பாற்றினாரா?' என்று கத்தினான்.
-இருட்டில் ஒரு குரல் கே ட்டது — 'ராஜாவே , தே வன் தூதனை அனுப்பி
-சிங்கங்களின் வாயை மூடினார்!' தானியே லை வெ ளியே எடுத்தனர் — ஒரு
-காயமும் இல்லை ! ராஜா புதிய கட்டளை இட்டான்: எல்லாரும்
-தானியே லின் தே வனை கண்ணியப்படுத்தவே ண்டும்!",
-lessons:["Pray to God every day no matter what.", "God protects
-those who are faithful to Him.", "Being honest and faithful is more
-powerful than any enemy."],
-lessons_ta:["என்ன நடந்தாலும் தினமும் தே வனை ஜெ பி.",
-"விசுவாசமுள்ளவர்களை தே வன் பாதுகாக்கிறார்.", "நே ர்மை யும்
-விசுவாசமும் எந்த எதிரியை யும் விட வல்லமை யானது."]
-},
-{
-id:"jonah", title_en:"Jonah and the Big Fish",
-title_ta:"ய ோனாவும் பெ ரிய மீனும்",
-category:"Old Testament", icon:"🐋", color:"#2471a3",
-verse_ref:"Jonah 2:1", verse_en:"Then Jonah prayed unto the LORD
-his God out of the fish's belly.",
-verse_ta:"ய ோனா மீன் வயிற்றிலிருந்து தன் தே வனாகிய கர்த்தரை
-ந ோக்கி ஜெ பித்தான்.",
-story_en:"God told Jonah, 'Go to the big city of Nineveh and tell
-them to stop doing wrong things.' But Jonah didn't want to go. Instead he got on a ship going the OPPOSITE direction! God sent a great storm.
-The waves crashed and the ship rocked wildly. All the sailors were
-terrified and prayed to their gods. But Jonah was asleep below. 'Wake
-up! Pray to your God!' the captain shouted. The sailors cast lots to
-find out who caused the storm — and it landed on Jonah. 'What have you
-done?' they asked. Jonah told them everything. 'Throw me into the
-sea,' he said, 'and the storm will stop.' The sailors tried hard to
-row to shore first, but the storm got worse. Finally they threw Jonah
-overboard. Immediately the storm stopped! The sea was calm. The
-sailors worshipped God. But Jonah sank down, down into the dark water.
-Then God sent a HUGE fish that swallowed Jonah whole. Jonah sat inside
-the belly of the fish for three days and three nights. In the dark,
-smelly fish belly, Jonah prayed. He said sorry to God. After three
-days the fish swam to shore and spat Jonah out onto dry land! God told
-Jonah again: 'Go to Nineveh.' This time Jonah went. He told the people
-to stop their wickedness, and the whole city repented! God forgave
-them. Jonah learned that God's love and mercy are for everyone.",
-story_ta:"தே வன் ய ோனாவிடம் 'நினிவே என்ற பெ ரிய நகரத்துக்கு
-ப ோய், அவர்கள் செ ய்யும் தவறுகளை நிறுத்த ச ொல்' என்றார். ஆனால்
-ய ோனா ப ோக விரும்பவில்லை . அதற்கு மாறாக எதிர்புறம் ப ோகும்
-கப்பலில் ஏறினான்! தே வன் பெ ரிய புயலை அனுப்பினார். மாலுமிகள்
-அனை வரும் பயந்து தங்கள் தெ ய்வங்களை ந ோக்கி ஜெ பித்தனர். ஆனால்
-ய ோனா தூங்கிக் க ொண்டிருந்தான். 'எழுந்திரு! உன் தே வனை ந ோக்கி
-ஜெ பி!' என்று மாலுமி கத்தினான். புயலுக்கு காரணம் யார் என்று சீட்டு
-ப ோட்டு பார்த்தனர் — அது ய ோனா மே ல் விழுந்தது. 'நீஎன்ன செ ய்தாய்?'
-என்று கே ட்டனர். ய ோனா அனை த்தை யும் கூறினான். 'என்னை கடலில்
-தூக்கி ப ோடுங்கள், புயல் நிற்கும்' என்றான். அவர்கள் ய ோனாவை தூக்கி
-எறிந்தனர். உடனே புயல் நின்றது! கடல் அமை தியானது. ய ோனா இருண்ட
-தண்ணருீ க்குள் மூழ்கினான். அப்ப ோது தே வன் ஒரு மிகப்பெ ரிய மீனை
-அனுப்பினார், அது ய ோனாவை முழுங்கயது. ய ோனா மீனின் வயிற்றில்
-மூன்று நாள் இரவும் பகலும் இருந்தான். இருட்டான மீனின் வயிற்றில்,
-ய ோனா தே வனிடம் மன்னிப்பு கே ட்டு ஜெ பித்தான். மூன்று நாட்களுக்கு பின்
-மீன் ய ோனாவை கரை யில் கக்கியது! தே வன் மீண்டும் 'நினிவே க்கு ப ோ'
-என்றார். இம்முறை ய ோனா ப ோனான். மக்கள் தங்கள் தீய வழிகளை
-விட்டு திரும்பும்படி எச்சரித்தான். முழு நகரமும் மனந்திரும்பியது! தே வன்
-அவர்களை மன்னித்தார். தே வனின் அன்பும் இரக்கமும் அனை வருக்கும்
-உரியது என்பதை ய ோனா கற்றுக்க ொண்டான்.",
-lessons:["You cannot run away or hide from God.", "God gives us a
-second chance when we repent.", "God is merciful and loves
-everyone."],
-lessons_ta:["தே வனை விட்டு ஓடவ ோ ஒளியவ ோ முடியாது.", "நாம்
-மனந்திரும்பும்ப ோது தே வன் இரண்டாவது வாய்ப்பளிக்கிறார்.", "தே வன்
-இரக்கமுள்ளவர், எல்லாரை யும் நே சிக்கிறார்."]
-},
-{
-id:"jesus_birth", title_en:"The Birth of Jesus",
-title_ta:"இயே சுவின் பிறப்பு",
-category:"New Testament", icon:"⭐", color:"#f1c40f",verse_ref:"Luke 2:11", verse_en:"For unto you is born this day in
-the city of David a Saviour, which is Christ the Lord.",
-verse_ta:"இன்று தாவதீின் ஊரிலே இரட்சகர் உங்களுக்குப்
-பிறந்திருக்கிறார்; அவர் கிறிஸ்து என்னும் ஆண்டவர்.",
-story_en:"A long time ago, an angel named Gabriel visited a young
-woman named Mary. The angel said, 'Do not be afraid, Mary! You will
-have a special baby, and you must name Him Jesus. He will be the Son
-of God!' Mary and her husband Joseph had to travel a long way to a
-town called Bethlehem. When they got there, it was very crowded. There
-were no rooms left in the inn. The only place they could stay was in a
-stable where animals were kept. That night, Baby Jesus was born! Mary
-wrapped Him in soft cloths and laid Him in a manger, which is a
-feeding box for animals. Out in the fields, shepherds were watching
-their sheep. Suddenly, the sky lit up with bright angels! The angels
-sang, 'Glory to God! The Savior is born in Bethlehem!' The shepherds
-hurried to the stable and found the baby Jesus, just as the angels
-said. Later, wise men from the East saw a bright new star in the sky.
-They followed the star all the way to Jesus and gave Him royal gifts
-of gold, frankincense, and myrrh. God had kept His promise to send a
-Savior!",
-story_ta:"வெ கு காலத்திற்கு முன்பு, காபிரியே ல் என்ற தூதன் மரியாள்
-என்ற இளம்பெ ண்ணிடம் வந்தான். 'மரியாளே பயப்படாதே ! உனக்கு ஒரு
-சிறப்பான குழந்தை பிறக்கும், அவருக்கு இயே சு என்று பே ரிடுவாயாக.
-அவர் தே வனின் குமாரன்!' என்றான் தூதன். மரியாளும் அவள் கணவன்
-ய ோசே ப்பும் பெ த்லகே ம் என்ற ஊருக்கு நீண்ட தூரம் பயணம் செ ய்தனர்.
-அங்கு மிக கூட்டமாக இருந்தது. சத்திரத்தில் இடமில்லை . விலங்குகளை
-கட்டும் த ொழுவத்தில் மட்டுமே அவர்களுக்கு இடம் கிடை த்தது. அன்று
-இரவு குழந்தை இயே சு பிறந்தார்! மரியாள் அவரை துணிகளால் சுற்றி,
-விலங்குகள் சாப்பிடும் முன்னணை யில் கிடத்தினாள். வயல்வெ ளியில்
-மே ய்ப்பர்கள் ஆடுகளை காத்துக்க ொண்டிருந்தனர். திடீரெ ன்று வானத்தில்
-பிரகாசமான தூதர்கள் த ோன்றினர்! 'தே வனுக்கு மகிமை ! பெ த்லகே மில்
-இரட்சகர் பிறந்திருக்கிறார்!' என்று பாடினர். மே ய்ப்பர்கள் ஓடிச் செ ன்று
-குழந்தை இயே சுவை பார்த்தனர். பின்னர், கிழக்கிலிருந்து வந்த சாஸ்திரிகள்
-வானத்தில் ஒரு புதிய நட்சத்திரத்தை கண்டனர். அதை பின்பற்றி வந்து
-இயே சுவுக்கு தங்கம், தூபவர்க்கம், வெ ள்ளை ப்ப ோளம் ஆகிய பரிசுகளை
-அளித்தனர். இரட்சகரை அனுப்புவதாக தே வன் அளித்த வாக்குறுதி
-நிறை வே றியது!",
-lessons:["Jesus is the greatest gift God ever gave us.", "God
-keeps His promises.", "Jesus came for everyone—rich kings and poor
-shepherds."],
-lessons_ta:["தே வன் நமக்கு அளித்த மிகச் சிறந்த பரிசு இயே சு.",
-"தே வன் தம் வாக்குறுதிகளை நிறை வே ற்றுகிறார்.", "இயே சு
-அனை வருக்காகவும் வந்தார்—பணக்கார ராஜாக்களுக்கும் ஏழை
-மே ய்ப்பர்களுக்கும்."]
-},
-{
-id:"feed_5000", title_en:"Jesus Feeds Five Thousand",
-title_ta:"இயே சு ஐயாயிரம் பே ருக்கு உணவளித்தல்",category:"New Testament", icon:"🍞", color:"#e67e22",
-verse_ref:"John 6:11", verse_en:"And Jesus took the loaves; and
-when he had given thanks, he distributed to the disciples...",
-verse_ta:"இயே சு அந்த அப்பங்களை எடுத்து, ஸ்த ோத்திரம்பண்ணி,
-சீஷர்களிடத்தில் க ொடுத்தார்...",
-story_en:"Everywhere Jesus went, big crowds followed Him to hear
-Him teach and heal the sick. One day, a huge crowd of over 5,000
-people followed Jesus to a grassy hillside. Jesus taught them all day.
-When evening came, the people were very hungry. Jesus' friends, the
-disciples, said, 'Send the people away so they can buy food.' But
-Jesus said, 'You give them something to eat.' The disciples were
-shocked! 'It would cost so much money to feed all these people!'
-Andrew brought a little boy to Jesus. 'This boy has five small loaves
-of bread and two little fish,' Andrew said, 'but that's not enough for
-so many.' Jesus smiled. He told everyone to sit down on the green
-grass. He took the little boy's lunch, looked up to heaven, and
-thanked God for it. Then He started breaking the bread and fish into
-pieces. The disciples passed the food to the people. A miracle
-happened! The food kept multiplying. Every single person ate until
-their tummies were full. When the disciples gathered the leftovers,
-there were twelve whole baskets full of food! The little boy's tiny
-lunch had fed thousands of people because Jesus is the powerful Son of
-God.",
-story_ta:"இயே சு செ ன்ற இடமெ ல்லாம் மக்கள் அவர் ப ோதனை யை
-கே ட்கவும், குணமடை யவும் பின்த ொடர்ந்தனர். ஒருநாள் ஐயாயிரத்திற்கும்
-மே ற்பட்ட மக்கள் ஒரு மலை ப்பகுதியில் இயே சுவை பின்த ொடர்ந்தனர்.
-மாலை யானதும் மக்கள் மிகவும் பசியாயிருந்தனர். சீஷர்கள் 'மக்களை
-உணவு வாங்க அனுப்பிவிடும்' என்றனர். இயே சுவ ோ 'நீங்களே
-அவர்களுக்கு உணவு க ொடுங்கள்' என்றார். சீஷர்கள் அதிர்ச்சியடை ந்தனர்!
-அந்திரே யா ஒரு சிறுவனை அழை த்து வந்து, 'இவனிடம் ஐந்து சிறிய
-அப்பங்களும் இரண்டு மீன்களும் உள்ளன, ஆனால் இவ்வளவு பே ருக்கு இது
-எப்படி காணும்?' என்றான். இயே சு புன்னகை த்து, எல்லாரை யும் புல்மே ல்
-அமரச் ச ொன்னார். அந்த உணவை எடுத்து, வானத்தை அண்ணாந்து
-பார்த்து, தே வனுக்கு நன்றி செ லுத்தினார். பின்பு அதை பிட்டு சீஷர்களிடம்
-க ொடுத்தார். ஒரு அற்புதம் நடந்தது! உணவு பெ ருகிக்க ொண்டே இருந்தது.
-அனை வரின் வயிறும் நிறை யும் வரை சாப்பிட்டனர். மீதியான உணவை
-எடுத்தப ோது பன்னிரண்டு கூடை கள் நிரம்பின! இயே சு தே வனின்
-வல்லமை யுள்ள குமாரன் என்பதால் சிறுவனின் உணவு
-ஆயிரக்கணக்கானவர்களுக்கு ப ோதுமானதாக இருந்தது.",
-lessons:["Little things become great when we give them to Jesus.",
-"Jesus cares about our everyday needs, like being hungry.", "Jesus has
-the power to do amazing miracles."],
-lessons_ta:["நாம் இயே சுவிடம் க ொடுக்கும்ப ோது சிறிய காரியங்களும்
-பெ ரியதாக மாறும்.", "பசி ப ோன்ற நமது அன்றாட தே வை கள் மீது இயே சு
-அக்கறை க ொள்கிறார்.", "இயே சுவால் ஆச்சரியமான அற்புதங்களை செ ய்ய
-முடியும்."]
-},
-{id:"good_samaritan", title_en:"The Good Samaritan", title_ta:"நல்ல
-சமாரியன்",
-category:"New Testament", icon:"❤️", color:"#c0392b",
-verse_ref:"Luke 10:27", verse_en:"Thou shalt love the Lord thy God
-with all thy heart... and thy neighbour as thyself.",
-verse_ta:"உன் தே வனாகிய கர்த்தரிடத்தில் முழு இருதயத்த ோடும்...
-அன்புகூர்ந்து, உன்னிடத்தில் அன்புகூருவதுப ோலப் பிறனிடத்திலும்
-அன்புகூருவாயாக.",
-story_en:"One day, a man asked Jesus, 'Who is my neighbor?' Jesus
-answered by telling a story. A Jewish man was traveling down a
-dangerous, rocky road from Jerusalem to Jericho. Suddenly, robbers
-jumped out! They beat him up, stole his clothes and money, and left
-him hurt on the side of the road. A little while later, a priest
-walked by. He saw the hurt man, but he crossed over to the other side
-of the road and kept walking. Next, a Levite (a temple helper) walked
-by. He also looked at the man and crossed to the other side. Finally,
-a man from Samaria came riding on a donkey. Jews and Samaritans
-usually didn't like each other. But when the Samaritan saw the hurt
-man, his heart filled with pity. He stopped, cleaned the man's wounds
-with oil and wine, and bandaged them. Then he gently lifted the man
-onto his own donkey and took him to an inn. The Samaritan paid the
-innkeeper and said, 'Take good care of him. If it costs more, I will
-pay you when I return.' Jesus looked at the man who asked the question
-and said, 'Which of these three was a true neighbor?' The man
-answered, 'The one who showed him mercy.' Jesus smiled and said, 'Go
-and do the same.'",
-story_ta:"ஒருநாள் ஒருவர் இயே சுவிடம் 'என் பிறன் யார்?' என்று
-கே ட்டார். இயே சு ஒரு கதை மூலம் பதிலளித்தார். ஒரு யூதன்
-எருசலே மிலிருந்து எரிக ோவுக்கு ஆபத்தான பாதை யில்
-செ ன்றுக ொண்டிருந்தான். திடீரெ ன திருடர்கள் அவனை த் தாக்கி,
-பணத்தை யும் துணிகளை யும் பறித்து, காயப்படுத்திவிட்டுச் செ ன்றனர். சிறிது
-நே ரம் கழித்து ஒரு ஆசாரியன் (பூசாரி) அந்த வழியே வந்தான்.
-காயம்பட்டவனை ப் பார்த்தும், அவன் விலகிச் செ ன்றான். அடுத்து ஒரு
-லே வியன் (ஆலய உதவியாளன்) வந்தான். அவனும் பார்த்துவிட்டு விலகிச்
-செ ன்றான். கடை சியாக, சமாரியன் ஒருவன் கழுதை யில் வந்தான்.
-ப ொதுவாக யூதர்களுக்கும் சமாரியர்களுக்கும் பகை இருக்கும். ஆனால்
-சமாரியன் காயம்பட்டவனை ப் பார்த்தவுடன் இரக்கங்க ொண்டான். அவன்
-காயங்களுக்கு எண்ணெ யும் திராட்சரசமும் வார்த்து கட்டினான். அவனை
-தன் கழுதை யின்மே ல் ஏற்றி ஒரு சத்திரத்துக்குக் க ொண்டுப ோனான்.
-சத்திரக்காரனிடம் பணம் க ொடுத்து, 'இவனை ப் பார்த்துக்க ொள், அதிக
-செ லவானால் நான் திரும்பி வரும்ப ோது தருகிறே ன்' என்றான். இயே சு
-கதை யை க் கே ட்டுவிட்டு, 'இந்த மூவரில் யார் உண்மை யான பிறன்?'
-என்று கே ட்டார். 'இரக்கம் காட்டினவனே ' என்று அவர் பதிலளித்தார்.
-'நீயும் அப்படியே செ ய்' என்று இயே சு கூறினார்.",
-lessons:["Everyone is our neighbor, no matter who they are.", "We
-must show love by helping those in need.", "Love is an action, not
-just a feeling."],
-lessons_ta:["அவர்கள் யாராக இருந்தாலும் அனை வரும் நமதுபிறரே .", "தே வை யிலுள்ளவர்களுக்கு உதவுவதன் மூலம் அன்பை க் காட்ட
-வே ண்டும்.", "அன்பு என்பது வெ றும் உணர்வல்ல, அது ஒரு செ யல்."]
-}
+  {
+    id:"creation", title_en:"God Made Everything", title_ta:"தேவன் எல்லாவற்றையும் படைத்தார்",
+    category:"Old Testament", icon:"🌍", color:"#1a5276",
+    verse_ref:"Genesis 1:1", verse_en:"In the beginning God created the heaven and the earth.",
+    verse_ta:"ஆதியிலே தேவன் வானத்தையும் பூமியையும் சிருஷ்டித்தார்.",
+    story_en:"Before anything existed, there was only God — glorious, powerful, and full of love. There was no sun, no moon, no earth, no stars. Only God. Then, with His mighty voice, God began to create. On the first day, God said, 'Let there be light!' And beautiful, bright light filled the darkness. God saw that the light was good. He separated the light from the darkness, calling the light 'day' and the darkness 'night.' On the second day, God made the sky — a beautiful blue dome stretching over the waters. On the third day, God gathered the waters together and made dry land appear. He called the dry land 'earth' and the waters 'seas.' Then God covered the land with soft green grass, beautiful flowers in every color, and tall trees heavy with fruit. On the fourth day, God put the bright sun in the sky to warm the earth during daytime, and the gentle moon and twinkling stars for the nighttime. On the fifth day, God made fish to swim in the oceans and rivers, and birds with colorful wings to fly in the sky. On the sixth day, God made all the animals — mighty lions, huge elephants, gentle rabbits, and butterflies with wings like stained glass. Last of all, God made a man named Adam from the dust of the earth, and breathed life into his nostrils. Then God made a woman named Eve from Adam's rib. God looked at everything He had made — the stars, the flowers, the animals, and the people — and He said with a joyful smile, 'It is VERY good!' On the seventh day, God rested from all His work. That is why Sunday is a special day of rest and worship.",
+    story_ta:"எதுவும் இருக்கும் முன்பு, தேவன் மட்டுமே இருந்தார் — மகிமையும் வல்லமையும் அன்பும் நிறைந்தவர். சூரியன் இல்லை, சந்திரன் இல்லை, பூமி இல்லை, நட்சத்திரங்கள் இல்லை. தேவன் மட்டுமே. பின்பு தமது வல்லமையான குரலால் தேவன் படைத்தலை தொடங்கினார். முதல் நாளில், தேவன் 'வெளிச்சம் உண்டாகக்கடவது' என்று சொன்னார், அழகான பிரகாசமான வெளிச்சம் இருளை நிரப்பியது. தேவன் வெளிச்சத்தை நல்லதென்று கண்டார். வெளிச்சத்தையும் இருளையும் பிரித்து, வெளிச்சத்தை பகல் என்றும் இருளை இரவு என்றும் பேரிட்டார். இரண்டாம் நாளில் தேவன் ஆகாயத்தை படைத்தார் — தண்ணீரின் மேல் பரந்து விரிந்த அழகான நீல விரிகுடாவை. மூன்றாம் நாளில் தேவன் தண்ணீர்களை ஒன்றாக சேர்த்து உலர்ந்த நிலம் தோன்றும்படி செய்தார். உலர்ந்த நிலத்தை பூமி என்றும் தண்ணீர்களை கடல்கள் என்றும் பேரிட்டார். பின்பு நிலத்தை மென்மையான பசுமையான புல்லாலும், பல நிறங்களில் மலர்ந்த பூக்களாலும், பழங்கள் நிறைந்த உயர்ந்த மரங்களாலும் மூடினார். நான்காம் நாளில் பகலுக்கு பூமியை சூடேற்ற சூரியனையும், இரவுக்கு மென்மையான சந்திரனையும், மினுமினுக்கும் நட்சத்திரங்களையும் வைத்தார். ஐந்தாம் நாளில் கடல்களிலும் ஆறுகளிலும் நீந்த மீன்களையும், ஆகாயத்தில் நிறங்கள் பூசிய இறக்கைகளுடன் பறக்க பறவைகளையும் படைத்தார். ஆறாம் நாளில் வல்லமையான சிங்கங்கள், பெரிய யானைகள், மென்மையான முயல்கள், பளிங்கு கண்ணாடி போன்ற இறக்கைகள் கொண்ட வண்ணத்துப்பூச்சிகள் உள்ளிட்ட எல்லா விலங்குகளையும் படைத்தார். கடைசியாக, தேவன் பூமியின் மண்ணிலிருந்து ஆதாம் என்ற மனிதனை உருவாக்கி, அவன் மூக்கில் ஜீவ சுவாசத்தை ஊதினார். பின்பு ஆதாமின் விலா எலும்பிலிருந்து ஏவாள் என்ற பெண்ணை படைத்தார். தேவன் தாம் படைத்த எல்லாவற்றையும் — நட்சத்திரங்கள், பூக்கள், விலங்குகள், மக்கள் — பார்த்து மகிழ்ச்சியான புன்னகையுடன் 'இது மிகவும் நல்லது!' என்றார். ஏழாம் நாள் தேவன் தமது எல்லா வேலைகளிலிருந்தும் ஓய்ந்தார். அதனால் ஞாயிற்றுக்கிழமை ஓய்வும் வழிபாடும் செய்ய சிறப்பான நாள்.",
+    lessons:["God made everything from nothing — He is all-powerful.", "Everything God made is good and beautiful.", "God made YOU specially — you are precious to Him."],
+    lessons_ta:["தேவன் எதுவும் இல்லாமல் எல்லாவற்றையும் படைத்தார்.", "தேவன் படைத்த எல்லாமே நல்லதும் அழகானதும்.", "தேவன் உன்னை சிறப்பாக படைத்தார் — நீ அவருக்கு மதிப்புமிக்கவன்."]
+  },
+  {
+    id:"adam_eve", title_en:"Adam and Eve in the Garden", title_ta:"ஆதாம் ஏவாள் தோட்டத்தில்",
+    category:"Old Testament", icon:"🍎", color:"#1a5c1a",
+    verse_ref:"Genesis 2:15", verse_en:"And the LORD God took the man, and put him into the garden of Eden to dress it and to keep it.",
+    verse_ta:"கர்த்தராகிய தேவன் மனுஷனை ஏதேன் தோட்டத்திலே வைத்தார்.",
+    story_en:"God planted a beautiful garden called Eden in the east. It was the most wonderful place you could imagine — flowers bloomed everywhere in colors you have never seen, rivers flowed through it like liquid crystal, and all the animals lived there in perfect peace. Lions played with lambs, and birds sang the sweetest songs. God put Adam in the garden to take care of it. Adam explored every corner, smelling the flowers and tasting the fruits. He gave names to all the animals — elephant, tiger, eagle, dolphin — but after naming them all, he felt lonely. There was no one like him to talk to and laugh with. So God caused Adam to fall into a deep sleep, took one of his ribs, and made a woman named Eve. When Adam woke up and saw Eve, his eyes lit up with joy! He said, 'This is now bone of my bones and flesh of my flesh!' God told them, 'You may freely eat from any tree in the garden — but not from the tree of the knowledge of good and evil in the middle. If you eat from it, you will surely die.' One bright afternoon, a sneaky serpent came to Eve. 'Did God really say you cannot eat from ANY tree?' the serpent asked slyly. Eve replied, 'We may eat from any tree except the one in the middle. If we touch it, we will die.' The serpent lied, 'You will NOT surely die! God knows that when you eat it, your eyes will be opened and you will be like God, knowing everything.' Eve looked at the beautiful fruit. It looked so tasty and wise. She took it and ate it. Then she gave some to her husband Adam, who was with her, and he ate it too. Immediately, something terrible happened. They felt ashamed for the first time. They tried to cover themselves with fig leaves and hid from God behind the trees. In the cool of the evening, God walked through the garden and called, 'Adam, where are you?' Adam answered, 'I heard Your voice, and I was afraid because I was naked, so I hid.' God was very sad because they disobeyed. He had to send them out of the beautiful garden. But even then, God still loved them. He made clothes of animal skins to cover them, and He promised that one day He would send Someone special to make everything right again.",
+    story_ta:"தேவன் கிழக்கில் ஏதேன் என்ற அழகான தோட்டத்தை நட்டார். அது உன்னால் கற்பனை செய்யக்கூடிய மிக அற்புதமான இடமாக இருந்தது — நீ ஒருபோதும் காணாத நிறங்களில் எங்கும் பூக்கள் மலர்ந்தன, படிகம் போன்ற தெளிந்த ஆறுகள் ஓடின, விலங்குகள் எல்லாம் அமைதியாக வாழ்ந்தன. சிங்கங்கள் ஆட்டுக்குட்டிகளோடு விளையாடின, பறவைகள் இனிமையான பாடல்கள் பாடின. தேவன் ஆதாமை தோட்டத்தை கவனிக்க வைத்தார். ஆதாம் ஒவ்வொரு மூலையையும் ஆராய்ந்தான், பூக்களை முகர்ந்து, பழங்களை சுவைத்தான். அவன் எல்லா விலங்குகளுக்கும் பெயர் வைத்தான் — யானை, புலி, கழுகு, டால்பின் — ஆனால் அவை அனைத்தற்றிற்கும் பெயர் வைத்த பிறகு, அவன் தனிமையாக உணர்ந்தான். அவனைப் போல் பேசவும் சிரிக்கவும் யாரும் இல்லை. அதனால் தேவன் ஆதாமை ஆழ்ந்த தூக்கத்தில் விழச்செய்து, அவனது ஒரு விலா எலும்பை எடுத்து ஏவாள் என்ற பெண்ணை படைத்தார். ஆதாம் விழித்து ஏவாளை கண்டபோது, அவன் கண்கள் மகிழ்ச்சியால் பிரகாசித்தன! அவன் சொன்னான், 'இவள் என் எலும்பின் எலும்பும் என் மாம்சத்தின் மாம்சமுமாயிருக்கிறாள்!' தேவன் அவர்களிடம் சொன்னார், 'நீங்கள் தோட்டத்தில் உள்ள எல்லா மரங்களின் கனியும் சாப்பிடலாம் — ஆனால் நடுவில் உள்ள நன்மை தீமை அறியும் மரத்தை மட்டும் சாப்பிடாதே. அதை சாப்பிட்டால் நிச்சயமாக மரிப்பீர்.' ஒரு பிரகாசமான மாலைப்பொழுதில், தந்திரமான பாம்பு ஏவாளிடம் வந்தது. 'தேவன் எல்லா மரத்தின் கனியையும் சாப்பிடக்கூடாது என்று உண்மையாகவே சொன்னாரா?' என்று பாம்பு தந்திரமாக கேட்டது. ஏவாள் பதிலளித்தாள், 'நாங்கள் தோட்டத்தின் மரங்களின் கனியை சாப்பிடலாம். ஆனால் நடுவில் உள்ள மரத்தின் கனியை சாப்பிடக்கூடாது, தொட்டாலும் மரிப்போம்.' பாம்பு பொய் சொன்னது, 'நீங்கள் நிச்சயமாக மாட்டீர்கள்! தேவன் அதை சாப்பிடும்போது உங்கள் கண்கள் திறக்கப்படும், எல்லாம் அறிந்த தேவனைப் போல ஆவீர்கள் என்று அறிந்திருக்கிறார்.' ஏவாள் அந்த அழகான கனியை பார்த்தாள். அது சாப்பிடப் பிரியமாகவும் ஞானமாகவும் தோன்றியது. அவள் அந்த கனியை எடுத்து சாப்பிட்டாள், தன்னோடிருந்த கணவன் ஆதாமுக்கும் கொடுத்தாள், அவனும் சாப்பிட்டான். உடனடியாக, எதுவோ மோசமானது நடந்தது. முதல் முறையாக அவர்கள் வெட்கப்பட்டார்கள். அத்தி இலைகளால் தங்களை மூடிக்கொண்டு மரங்களுக்குப் பின்னால் ஒளிந்தனர். மாலைப் பொழுதில் தேவன் தோட்டத்தில் நடந்து வந்து, 'ஆதாமே, நீ எங்கே?' என்று அழைத்தார். ஆதாம் பதிலளித்தான், 'உமது சத்தம் கேட்டேன், நான் நிர்வாணியாக இருப்பதால் பயந்து ஒளிந்தேன்.' அவர்கள் கீழ்ப்படியாததால் தேவன் மிகவும் துக்கமடைந்தார். அவர்களை அந்த அழகான தோட்டத்திலிருந்து வெளியேற்ற வேண்டியதாயிற்று. ஆனால் அப்போதும் தேவன் அவர்களை நேசித்தார். அவர்களை மூடுவதற்கு விலங்கின் தோல்களால் உடைகளை செய்தார், எல்லாவற்றையும் சரிசெய்ய ஒரு நாள் ஒரு சிறப்பானவரை அனுப்புவேன் என்று வாக்களித்தார்.",
+    lessons:["Obeying God keeps us safe and happy.", "One wrong choice can have big consequences.", "Even when we disobey, God still loves us and provides a way back."],
+    lessons_ta:["தேவனுக்கு கீழ்ப்படிவது நம்மை பாதுகாக்கிறது.", "ஒரு தவறான தேர்வு பெரிய விளைவுகளை கொண்டுவரலாம்.", "நாம் கீழ்ப்படியாவிட்டாலும் தேவன் நம்மை நேசிக்கிறார், திரும்பி வர வழி தருகிறார்."]
+  },
+  {
+    id:"noah_ark", title_en:"Noah and the Big Boat", title_ta:"நோவாவும் பெரிய பேழையும்",
+    category:"Old Testament", icon:"🚢", color:"#1d4e89",
+    verse_ref:"Genesis 6:22", verse_en:"Thus did Noah; according to all that God commanded him, so he did.",
+    verse_ta:"தேவன் அவனுக்குக் கட்டளையிட்ட யாவற்றையும் நோவா அப்படியே செய்தான்.",
+    story_en:"Many years after Adam and Eve left the garden, the world became very wicked. People lied, stole, hurt each other, and forgot all about God. It broke God's heart to see such cruelty and sin everywhere. But there was one good man in the whole world — Noah. Noah loved God with all his heart, and he obeyed God's commands. He had a wife, three sons named Shem, Ham, and Japheth, and their wives. God spoke to Noah one day and said, 'I have decided to put an end to all the wickedness on earth. I am going to send a great flood. Build a big boat called an ark. Make it 300 cubits long, 50 cubits wide, and 30 cubits high. Put rooms in it and cover it with pitch inside and out.' Noah's neighbors laughed at him and made fun of him. 'A boat? In the middle of dry land? Are you crazy, old man?' they mocked. But Noah kept building. He and his sons cut down gopher wood and hammered for many, many years. When the ark was finally ready, God told Noah something amazing: 'Bring into the ark two of every kind of animal — male and female — to keep them alive. Bring birds, cattle, and every creeping thing.' Can you imagine the sight? Two elephants, two giraffes, two lions, two rabbits, two sparrows, two peacocks — animals of every kind came walking, hopping, flying, and crawling to Noah! Then Noah's family went inside. God Himself shut the door. Seven days later, dark clouds covered the sky. Rain began to fall — and it did not stop for 40 days and 40 nights! Water burst up from the ground too. The rivers overflowed. The oceans rose higher and higher until every mountain was covered. But Noah and all the animals inside the ark were safe and dry. After 150 days, the water began to go down. Noah sent out a raven, and it flew around and returned. Then he sent out a dove. The dove could not find a place to land, so it came back. Seven days later, Noah sent the dove out again. That evening, the dove returned with a fresh olive leaf in its beak! Noah knew that plants were growing again. After seven more days, he sent the dove again, and this time it did not return — it had found a new home! Finally, the ark rested on the mountains of Ararat. They all came out onto dry ground! Noah built an altar and sacrificed to God to say thank you. Then God put the very first rainbow in the sky — a beautiful arch of red, orange, yellow, green, blue, and purple. God said, 'This rainbow is My promise. I will never destroy the whole earth with a flood again.' Every rainbow you see today is God keeping His promise!",
+    story_ta:"ஆதாம் ஏவாள் தோட்டத்திலிருந்து வெளியேற்றப்பட்ட பல ஆண்டுகளுக்குப் பிறகு, உலகம் மிகவும் பொல்லாப்பானது. மக்கள் பொய் சொன்னார்கள், திருடினார்கள், ஒருவரையொருவர் காயப்படுத்தினார்கள், தேவனைப் பற்றி முற்றிலும் மறந்துவிட்டார்கள். எங்கும் கொடூரமும் பாவமும் இருப்பதை கண்டு தேவனின் இருதயம் உடைந்தது. ஆனால் உலகில் ஒரு நல்ல மனிதன் இருந்தான் — நோவா. நோவா தன் முழு இதயத்தோடும் தேவனை நேசித்தான், அவரது கட்டளைகளுக்கு கீழ்ப்படிந்தான். அவனுக்கு ஒரு மனைவியும், சேம், ஹாம், யாப்பேத் என்ற மூன்று குமாரர்களும், அவர்களது மனைவிகளும் இருந்தனர். ஒருநாள் தேவன் நோவாவிடம் பேசினார், 'பூமியில் உள்ள எல்லா பொல்லாப்பையும் முடிவுக்கு கொண்டுவர முடிவு செய்துள்ளேன். ஒரு பெரிய வெள்ளம் வரும். ஒரு பெரிய பேழையை கட்டு. அது 300 முழ நீளமும், 50 முழ அகலமும், 30 முழ உயரமும் இருக்கட்டும். அதில் அறைகளை அமைத்து, உள்ளும் வெளியும் தாரால் பூசு.' நோவாவின் அக்கம்பக்கத்தினர் அவனை சிரித்து கேலி செய்தனர். 'பேழையா? உலர்ந்த நிலத்தின் நடுவில்? நீ பைத்தியமா, முதியவனே?' என்று பரிகாசம் செய்தனர். ஆனால் நோவா கட்டினான். அவனும் அவன் குமாரர்களும் கோப்பர் மரங்களை வெட்டி, பல பல ஆண்டுகள் சுத்தியல் அடித்தனர். இறுதியாக பேழை தயாரானதும், தேவன் நோவாவிடம் ஒரு அற்புதமான காரியத்தை சொன்னார்: 'ஒவ்வொரு வகை விலங்கிலும் ஆணும் பெண்ணுமாக இரண்டிரண்டு கொண்டு வா, அவை உயிரோடு இருக்கட்டும். பறவைகள், கால்நடைகள், பூEarthவில் ஊர்வன அனைத்தையும் கொண்டுவா.' அந்த காட்சியை கற்பனை செய்து பாருங்கள்! இரண்டு யானைகள், இரண்டு ஜிராஃபைகள், இரண்டு சிங்கங்கள், இரண்டு முயல்கள், இரண்டு குருவிகள், இரண்டு மயில்கள் — ஒவ்வொரு வகையான விலங்குகளும் நடந்து, குதித்து, பறந்து, ஊர்ந்து நோவாவிடம் வந்தன! பின்பு நோவாவின் குடும்பம் உள்ளே சென்றனர். தேவன் தாமே கதவை மூடினார். ஏழு நாட்களுக்குப் பிறகு, கருமேகங்கள் வானத்தை மூடின. மழை பெய்யத் தொடங்கியது — 40 நாட்களும் 40 இரவுகளும் நின்றதே இல்லை! தண்ணீர் பூமியிலிருந்தும் பொங்கி எழுந்தது. ஆறுகள் வழிந்தோடின. கடல்கள் உயர உயர எழுந்து ஒவ்வொரு மலையையும் மூடின. ஆனால் பேழையில் உள்ள நோவாவும் விலங்குகளும் பாதுகாப்பாகவும் உலர்வாகவும் இருந்தனர். 150 நாட்களுக்குப் பிறகு தண்ணீர் குறையத் தொடங்கியது. நோவா ஒரு காகத்தை விட்டான், அது சுற்றிப் பறந்து திரும்பி வந்தது. பின்பு ஒரு புறாவை விட்டான். புறா தரையிறங்க இடம் கிடைக்கவில்லை, அதனால் திரும்பி வந்தது. ஏழு நாட்களுக்குப் பிறகு மீண்டும் புறாவை விட்டான். அந்த மாலைப்பொழுதில், புறா வாயில் புதிய ஒலிவ இலையுடன் திரும்பியது! நோவா அறிந்தான் — மரங்கள் முளைத்து வருகின்றன! மேலும் ஏழு நாட்களுக்குப் பிறகு மீண்டும் புறாவை விட்டான், இம்முறை அது திரும்பவில்லை — அது புதிய வீட்டை கண்டுபிடித்துவிட்டது! இறுதியாக பேழை அரராத் மலைகளில் ஓய்ந்தது. அவர்கள் எல்லாரும் உலர்ந்த தரையில் இறங்கினர்! நோவா பலிபீடம் கட்டி, நன்றி சொல்ல தேவனுக்கு பலியிட்டான். பின்பு தேவன் வானவில்லை வைத்தார் — சிவப்பு, ஆரஞ்சு, மஞ்சள், பச்சை, நீலம், ஊதா நிறங்களின் அழகான வளைவு. தேவன் சொன்னார், 'இந்த வானவில் என் வாக்குறுதி. இனி ஒருபோதும் வெள்ளத்தால் பூமியை அழிக்கமாட்டேன்.' இன்று நீ காணும் ஒவ்வொரு வானவிலும் தேவன் தம் வாக்குறுதியை காப்பாற்றுவதே!",
+    lessons:["God protects those who trust and obey Him.", "Every rainbow is God's promise of love and faithfulness.", "Be brave to do what's right even when people laugh at you."],
+    lessons_ta:["தேவனை நம்பி கீழ்ப்படிவோரை அவர் பாதுகாக்கிறார்.", "ஒவ்வொரு வானவிலும் தேவனின் அன்பின் மற்றும் விசுவாசத்தின் வாக்குறுதி.", "மக்கள் சிரித்தாலும் சரியான காரியம் செய்ய தைரியமாயிரு."]
+  },
+  {
+    id:"baby_moses", title_en:"Baby Moses in the Basket", title_ta:"கூடையில் குழந்தை மோசே",
+    category:"Old Testament", icon:"🧺", color:"#6e2c00",
+    verse_ref:"Exodus 2:10", verse_en:"And he became her son. And she called his name Moses.",
+    verse_ta:"அவன் அவளுக்கு மகனாயினான், அவள் அவனுக்கு மோசே என்று பேரிட்டாள்.",
+    story_en:"In the land of Egypt, God's people the Israelites had grown very large in number. The cruel Pharaoh who ruled Egypt became afraid that they might rebel against him. So he made a terrible, cruel law: every baby boy born to the Israelites must be thrown into the Nile River! The baby girls could live, but the boys must die. It was a very sad time. A woman named Jochebed from the tribe of Levi had a beautiful baby boy. He had dark eyes and a sweet smile. She loved him so much. For three whole months, she hid him in their small house. But as he grew bigger, he began to cry louder, and she knew she could not hide him much longer. So Jochebed had a brave idea. She took papyrus reeds from the riverbank and wove them into a little basket. She covered the outside with tar and pitch so it would be waterproof. Then she made a soft bed of cloth inside and gently placed her sleeping baby inside the tiny boat. She carried the basket to the river and tucked it carefully among the tall reeds along the bank, where it would not float away. The baby's big sister Miriam hid nearby, watching to see what would happen. Then — who should come to the river for a bath? Pharaoh's own daughter, the princess of Egypt, with her maids! As she walked by the river, she heard the sound of a baby crying. 'What is that?' she asked. She saw the little basket among the reeds and sent one of her maids to get it. When she opened the lid, there was the sweetest baby she had ever seen! He was crying, and her heart melted with compassion. 'This must be one of the Hebrew babies,' she said softly. Just then, clever Miriam ran up from her hiding place. 'Shall I go and find a Hebrew woman to nurse the baby for you?' she asked quickly. 'Yes, do that!' said the princess. So Miriam ran all the way home and got her own mother — the baby's real mother, Jochebed! The princess said, 'Take this baby and nurse him for me, and I will pay you wages.' So the baby's own mother got to hold him, feed him, and sing to him every single day! When the boy was old enough, he went to live in the palace as Pharaoh's grandson. The princess named him Moses, which means 'drawn out of the water.' God had a great, great plan for this little baby in the basket — He would one day use Moses to free His people from Egypt!",
+    story_ta:"எகிப்து தேசத்தில் தேவனின் மக்களாகிய இஸ்ரவேலர்கள் மிக அதிக எண்ணிக்கையில் பெருகியிருந்தனர். எகிப்தை ஆண்ட கொடூரமான பார்வோன் அவர்கள் தனக்கு எதிராக கிளர்ச்சி செய்வார்களோ என்று பயந்தான். அதனால் ஒரு கொடூரமான கட்டளையை பிறப்பித்தான்: இஸ்ரவேலர்களுக்கு பிறக்கும் ஒவ்வொரு ஆண் குழந்தையும் நைல் நதியில் போடப்பட வேண்டும்! பெண் குழந்தைகள் வாழலாம், ஆனால் ஆண் குழந்தைகள் இறக்க வேண்டும். அது மிகவும் துக்கமான காலம். லேவி கோத்திரத்தைச் சேர்ந்த யோகேபேத் என்ற பெண்ணுக்கு அழகான ஆண் குழந்தை பிறந்தது. அவனுக்கு கருமையான கண்களும் இனிமையான புன்னகையும் இருந்தன. அவள் அவனை மிகவும் நேசித்தாள். முழு மூன்று மாதங்கள் அவனை அவர்களது சிறிய வீட்டில் மறைத்தாள். ஆனால் அவன் பெரிதாக வளர்ந்தபோது, அவன் அழுகை சத்தம் அதிகமாக ஒலிக்கத் தொடங்கியது, அவள் அவனை அதிக காலம் மறைக்க முடியாது என்று அறிந்தாள். அதனால் யோகேபேத் ஒரு தைரியமான யோசனையை செய்தாள். நதிக்கரையிலிருந்து பாப்பிரஸ் வேம்பை எடுத்து ஒரு சிறிய கூடையை நெய்தாள். நீரில் மூழ்காதபடி வெளியே தாரும் பிசினும் பூசினாள். பின்பு உள்ளே துணியால் ஒரு மென்மையான படுக்கையை அமைத்து, தூங்கிக்கொண்டிருந்த தன் குழந்தையை அந்த சிறிய படகில் மென்மையாக வைத்தாள். அந்த கூடையை நதிக்கு கொண்டுவந்து, கரையோரத்தில் உயர்ந்த வேம்புகளுக்கு மத்தியில் கவனமாக மறைத்தாள், அது அடித்துச் செல்லப்படாமல் இருக்க. குழந்தையின் அக்கா மிரியாம் அருகில் ஒளிந்து, என்ன நடக்கிறது என்று பார்த்துக்கொண்டிருந்தாள். அப்போது — நதிக்கு குளிக்க வந்தது யார்? எகிப்தின் இளவரசி, பார்வோனின் சொந்த மகள், தன் தாதிமார்களுடன்! நதிக்கரையில் நடந்து செல்லும்போது, அவள் குழந்தையின் அழுகுரல் கேட்டாள். 'அது என்ன?' என்று கேட்டாள். வேம்புகளுக்கு மத்தியில் அந்த சிறிய கூடையை கண்டாள், தன் தாதி ஒருத்தியை அதை எடுக்க அனுப்பினாள். மூடியை திறந்தபோது, அவள் ஒருபோதும் கண்டிராத மிகவும் இனிமையான குழந்தை அதில் இருந்தான்! அவன் அழுதான், அவளது இருதயம் இரக்கத்தால் உருகியது. 'இது ஒரு எபிரேய குழந்தை தான்' என்று மெதுவாக சொன்னாள். அப்போதுதான், தந்திரமான மிரியாம் தன் ஒளிந்திருந்த இடத்திலிருந்து ஓடி வந்தாள். 'இந்த குழந்தைக்கு பால் கொடுக்க நான் ஒரு எபிரேய பெண்ணை கண்டுபிடித்து வரட்டுமா?' என்று வேகமாக கேட்டாள். 'ஆம், அப்படியே செய்!' என்று இளவரசி சொன்னாள். அதனால் மிரியாம் வீட்டிற்கு ஓடி, தன் சொந்த தாயாரை — குழந்தையின் உண்மையான தாயார் யோகேபேத்தை — அழைத்து வந்தாள்! இளவரசி சொன்னாள், 'இந்த குழந்தையை எடுத்து எனக்காக வளர்த்து வா, நான் உனக்கு சம்பளம் தருவேன்.' அதனால் குழந்தையின் சொந்த தாயே அவனை தூக்கி, பால் கொடுத்து, ஒவ்வொரு நாளும் பாடல் பாடினாள்! குழந்தை பெரியவனானதும், அவன் எகிப்து அரண்மனையில் பார்வோனின் பேரனாக வாழ்ந்தான். இளவரசி அவனுக்கு மோசே என்று பெயர் சூட்டினாள், அதற்கு 'தண்ணீரிலிருந்து எடுக்கப்பட்டவன்' என்று பொருள். தேவனுக்கு இந்த சிறிய கூடைக் குழந்தைக்காக ஒரு மிக பெரிய திட்டம் இருந்தது — ஒரு நாள் அவனை பயன்படுத்தி தமது மக்களை எகிப்திலிருந்து விடுவிப்பார்!",
+    lessons:["God protects His children even in dangerous times.", "God has a special plan for every child, no matter how small.", "A mother's love and courage never give up."],
+    lessons_ta:["ஆபத்தான நேரங்களிலும் தேவன் தம் பிள்ளைகளை காக்கிறார்.", "எவ்வளவு சிறியவராக இருந்தாலும் ஒவ்வொரு குழந்தைக்கும் தேவனிடம் சிறப்பான திட்டம் இருக்கிறது.", "அன்னையின் அன்பும் தைரியமும் ஒருபோதும் விட்டுவிடாது."]
+  },
+  {
+    id:"red_sea", title_en:"Crossing the Red Sea", title_ta:"செங்கடலை கடந்தனர்",
+    category:"Old Testament", icon:"🌊", color:"#1a5276",
+    verse_ref:"Exodus 14:14", verse_en:"The LORD will fight for you, and you shall hold your peace.",
+    verse_ta:"கர்த்தர் உங்களுக்காக யுத்தம் செய்வார்; நீங்கள் சும்மாயிருங்கள்.",
+    story_en:"Moses had grown from a baby in a basket into a mighty man of God. One day, while tending sheep in the wilderness, he saw a bush burning with fire — but it was not being consumed! God spoke to him from the bush: 'I AM WHO I AM. Go to Pharaoh and tell him to let My people go!' Moses went to Pharaoh again and again, performing miracles with his staff. But Pharaoh's heart was as hard as stone. So God sent ten terrible plagues upon Egypt — the water turned to blood, frogs covered the land, lice and flies swarmed, livestock died, boils broke out on the people, hail destroyed the crops, locusts ate everything, darkness covered the land for three days, and finally the angel of death took the firstborn of every Egyptian family. After that terrible night, Pharaoh cried out, 'GO! Leave Egypt! Take everything and GO!' So all the Israelites — men, women, children, and elders — about two million people — packed their belongings and marched out of Egypt. They were FREE! But then Pharaoh's heart hardened again. 'Why did I let them go? They were my slaves!' He gathered his whole army — 600 of the best war chariots, plus all the other chariots of Egypt, with officers over all of them — and chased after the Israelites. The Israelites had traveled to the edge of the Red Sea. They looked ahead — water everywhere! They looked behind — the Egyptian army was coming fast, kicking up dust! They were trapped! 'Were there no graves in Egypt that you brought us here to die in the wilderness?' they cried to Moses. 'We told you in Egypt to leave us alone!' But Moses stood tall and said, 'Don't be afraid! Stand still and see the salvation of the LORD, which He will accomplish for you today. The Egyptians whom you see today, you shall see again no more forever. The LORD will fight for you, and you shall hold your peace.' Then Moses stretched out his staff over the sea. God sent a strong east wind all night long. The water split in TWO! The waters stood up like walls on the right side and on the left side! The ground became completely dry! The Israelites walked through on dry land — mothers carrying babies, fathers leading children, elders leaning on their walking sticks. The pillar of cloud moved behind them, keeping the Egyptian army away all night. When the last Israelite reached the other side, Moses stretched out his staff again over the sea. The walls of water came crashing down with a mighty roar! The chariots were thrown into the sea. The horses and riders were drowned. Every single Egyptian soldier was gone. The Israelites were SAFE! They looked at the shore and saw dead Egyptians washed up on the beach. Then Miriam the prophetess, Aaron's sister, took a tambourine in her hand, and all the women went out after her with tambourines and dancing. Miriam sang: 'Sing to the LORD, for He has triumphed gloriously! The horse and its rider He has thrown into the sea!'",
+    story_ta:"மோசே ஒரு கூடைக் குழந்தையிலிருந்து தேவனின் வல்லமையான மனிதனாக வளர்ந்திருந்தான். ஒருநாள், பாலைவனத்தில் ஆடு மேய்த்துக்கொண்டிருக்கும்போது, அவன் ஒரு செடி அக்கினியால் எரிவதை கண்டான் — ஆனால் அது எரிந்து முடிவதில்லை! தேவன் அந்த செடியிலிருந்து அவனிடம் பேசினார்: 'நான் இருக்கிறவர். பார்வோனிடம் போய் என் மக்களை விடுவி என்று சொல்!' மோசே தன் கோலால் அற்புதங்கள் செய்து, மீண்டும் மீண்டும் பார்வோனிடம் போனான். ஆனால் பார்வோனின் இருதயம் கல் போல் கடினமாக இருந்தது. அதனால் தேவன் எகிப்தின் மீது பத்து கொடிய வாதைகளை அனுப்பினார் — தண்ணீர் இரத்தமாக மாறியது, தவளைகள் நாட்டை மூடின, பேன்களும் ஈக்களும் படையெடுத்தன, கால்நடைகள் இறந்தன, மக்களின் மீது கொப்புளங்கள் உருவாயின, கல்மழை பயிர்களை அழித்தது, வெட்டுக்கிளிகள் எல்லாவற்றையும் தின்றன, மூன்று நாட்கள் இருள் தேசத்தை மூடியது, இறுதியாக மரண தூதன் ஒவ்வொரு எகிப்திய குடும்பத்தின் மூத்த மகனையும் எடுத்தான். அந்த கொடிய இரவிற்குப் பிறகு, பார்வோன் அலறினான், 'போ! எகிப்தை விட்டு போ! எல்லாவற்றையும் எடுத்துக்கொண்டு போ!' அதனால் எல்லா இஸ்ரவேலர்களும் — ஆண்கள், பெண்கள், குழந்தைகள், முதியவர்கள் — சுமார் இரண்டு கோடி மக்கள் — தங்கள் பொருட்களை போட்டுக்கொண்டு எகிப்திலிருந்து புறப்பட்டனர். அவர்கள் சுதந்திரமானார்கள்! ஆனால் பார்வோனின் இருதயம் மீண்டும் கடினமானது. 'நான் அவர்களை ஏன் விட்டுவிட்டேன்? அவர்கள் என் அடிமைகள்!' அவன் தன் முழு படையையும் கூட்டினான் — 600 சிறந்த போர் தேர்கள், எகிப்தின் மற்ற எல்லா தேர்கள், அவை அனைத்தின் மீதும் அதிகாரிகள் — இஸ்ரவேலர்களை துரத்தினார்கள். இஸ்ரவேலர்கள் செங்கடலின் கரைக்கு வந்திருந்தனர். முன்னே பார்த்தார்கள் — எங்கும் தண்ணீர்! பின்னே பார்த்தார்கள் — எகிப்து படை வேகமாக வந்து கொண்டிருந்தது, புழுதி பறக்கிறது! அவர்கள் சிக்கிக்கொண்டனர்! 'எகிப்தில் கல்லறைகள் இல்லாததால், எங்களை பாலைவனத்தில் இறக்க வழி நடத்தினீர்களா?' என்று அவர்கள் மோசேயை கதறினார்கள். 'எகிப்தில் எங்களை விட்டுவிடும்மாறு நாங்கள் உம்மிடம் சொன்னதை மறந்துவிட்டீர்களா?' ஆனால் மோசே தைரியமாக நின்று சொன்னான், 'பயப்படாதே! நின்று கொண்டிருந்து, கர்த்தர் இன்று உங்களுக்காக செய்யப்போகும் இரட்சிப்பை பார். இன்று நீங்கள் காணும் எகிப்தியர்களை இனி என்றென்றும் காணமாட்டீர்கள். கர்த்தர் உங்களுக்காக யுத்தம் செய்வார்; நீங்கள் சும்மாயிருங்கள்.' பின்பு மோசே தன் கோலை கடல் மேல் நீட்டினான். தேவன் பூர்விகாற்றை அனுப்பினார், அது இரவு முழுவதும் பலமாக வீசியது. கடல் இரண்டாக பிரிந்தது! தண்ணீர் வலதுபுறத்திலும் இடதுபுறத்திலும் சுவர்போல் நின்றது! நிலம் முழுமையாக உலர்ந்தது! இஸ்ரவேலர்கள் உலர்ந்த நிலத்தில் நடந்து கடந்தனர் — குழந்தைகளை தூக்கிக்கொண்டு செல்லும் தாய்மார்கள், குழந்தைகளை வழி நடத்தும் தந்தையர், நடைக்குச் சாய்வுகளை சாய்ந்து செல்லும் முதியவர்கள். மேகத்தூண் அவர்களுக்கு பின்னால் நகர்ந்து, இரவு முழுவதும் எகிப்து படையை விலக்கி வைத்தது. கடைசி இஸ்ரவேலர் கரையை கடந்ததும், மோசே மீண்டும் தன் கோலை கடல் மேல் நீட்டினான். தண்ணீர் சுவர்கள் பெரும் இரைச்சலோடு விழுந்தன! தேர்கள் கடலில் எறியப்பட்டன. குதிரைகளும் வீரர்களும் மூழ்கினார்கள். ஒவ்வொரு எகிப்து வீரனும் அழிந்தான். இஸ்ரவேலர்கள் பாதுகாப்பாக இருந்தனர்! அவர்கள் கரையை பார்த்தார்கள், இறந்த எகிப்தியர்கள் கரையில் கழுவப்பட்டிருப்பதை கண்டனர். பின்பு ஆரோனின் சகோதரி தீர்க்கதரிசி மிரியாம் தம்பட்டையை கையில் எடுத்தாள், எல்லா பெண்களும் தம்பட்டைகளுடன் அவளுக்கு பின் சென்று ஆடினார்கள். மிரியாம் பாடினாள்: 'கர்த்தருக்குப் பாடுங்கள், அவர் மகிமையாக வெற்றிசிறந்தார்; குதிரையையும் அதின் வீரரையும் கடலிலே தள்ளினார்!'",
+    lessons:["When we are in trouble, God fights for us.", "Be still and watch God work miracles in impossible situations.", "After God saves us, we should praise Him with joy and thanksgiving!"],
+    lessons_ta:["கஷ்டத்தில் இருக்கும்போது தேவன் நமக்காக போராடுகிறார்.", "அமைதியாக நின்று இயலாத சூழ்நிலைகளில் தேவனின் அற்புதங்களை பார்.", "தேவன் காப்பாற்றிய பிறகு மகிழ்ச்சியுடனும் நன்றியுடனும் அவரை துதிக்கவேண்டும்!"]
+  },
+  {
+    id:"david_goliath", title_en:"David and the Giant Goliath", title_ta:"தாவீதும் மாபெரும் கோலியாத்தும்",
+    category:"Old Testament", icon:"🪨", color:"#784212",
+    verse_ref:"1 Samuel 17:45", verse_en:"I come to thee in the name of the LORD of hosts.",
+    verse_ta:"நான் சேனைகளின் கர்த்தரின் நாமத்திலே உன்னிடத்தில் வருகிறேன்.",
+    story_en:"The armies of Israel and the Philistines were camped on two hills facing each other, with a valley between them. The Philistine army had a giant soldier named Goliath from the city of Gath. He was over nine feet tall! His bronze armor alone weighed 125 pounds. He carried a huge spear with an iron head that weighed 15 pounds, and a shield bearer walked in front of him. Every morning and evening for forty days, Goliath came out and shouted across the valley: 'I am Goliath the Philistine! Choose one of your men to fight me! If he wins, we will be your servants. If I win, you will be our slaves!' All the Israelite soldiers, including King Saul, were absolutely terrified. Nobody dared to challenge the mighty giant. Now David was just a young shepherd boy, the youngest of eight brothers. He came to the battlefield to bring food to his three older brothers who were in Saul's army. He heard Goliath's booming voice and saw the fear in the soldiers' faces. David was amazed and angry. 'Who is this uncircumcised Philistine that he should defy the armies of the living God?' he asked. David went to King Saul and said, 'Let no one lose heart because of this Philistine. Your servant will go and fight him!' Saul looked at the young boy and said, 'You are not able to go against him. You are only a boy, and he has been a warrior from his youth!' But David told Saul how he had killed lions and bears while protecting his sheep. 'The LORD who delivered me from the paw of the lion and the paw of the bear will deliver me from the hand of this Philistine.' Saul put his own heavy armor on David, but it was too big and heavy. David could hardly walk! He took it off and said, 'I cannot go in these, because I am not used to them.' Instead, David picked up his shepherd's staff and chose five smooth stones from the stream. He put them in his shepherd's bag and, with his sling in his hand, approached the giant. Goliath looked down at the boy and sneered. 'Am I a dog, that you come at me with sticks?' He cursed David and said, 'Come to me, and I will give your flesh to the birds and the wild animals!' But David shouted back bravely, 'You come against me with sword and spear and javelin, but I come against you in the name of the LORD Almighty, the God of the armies of Israel, whom you have defied. This day the LORD will deliver you into my hands, and the whole world will know that there is a God in Israel!' David put one stone in his sling, spun it around his head, and let it fly. The stone sailed through the air and struck Goliath right in the forehead — the only place not covered by his helmet! The huge giant crashed face down on the ground with a thunderous thud. David ran over, took Goliath's own sword, and cut off his head. The Philistine army fled in terror, and the Israelites chased them and won a great victory! David would one day become the greatest king of Israel.",
+    story_ta:"இஸ்ரவேலின் படையும் பெலிஸ்தியரின் படையும் ஒரு பள்ளத்தாக்கின் இருபுறமும் ஒரு மலையின் மேல் ஒன்றையொன்று எதிர்கொண்டு கூடாரம் அமைத்திருந்தன. பெலிஸ்திய படையில் காத் நகரத்தைச் சேர்ந்த கோலியாத் என்ற மாபெரும் வீரன் இருந்தான். அவன் ஒன்பது அடிக்கும் மேல் உயரம்! அவனது வெண்கல கவசம் மட்டும் 125 பவுண்டு எடை கொண்டிருந்தது. அவன் 15 பவுண்டு இரும்பு தலை கொண்ட ஒரு பெரிய ஈட்டியை ஏந்தினான், ஒரு கேடய வீரன் அவனுக்கு முன்பாக நடந்தான். நாற்பது நாட்களுக்கு தினமும் காலையிலும் மாலையிலும் கோலியாத் வந்து பள்ளத்தாக்கின் குறுக்கே கத்தினான்: 'நான் பெலிஸ்தியனாகிய கோலியாத்! உங்கள் மனிதர்களில் ஒருவனை தேர்ந்தெடுத்து என்னோடு போர் செய்ய சொல்லுங்கள்! அவன் வென்றால், நாங்கள் உங்கள் அடிமைகள். நான் வென்றால், நீங்கள் எங்கள் அடிமைகள்!' இஸ்ரவேல் வீரர்கள் அனைவரும், ராஜா சவுல் உட்பட, முற்றிலும் பயந்தனர். அந்த மாபெரும் வீரனை சவால் செய்ய யாரும் தைரியப்படவில்லை. தாவீது ஒரு இளம் மேய்ப்பன் பையன், எட்டு சகோதரர்களில் இளையவன். சவுலின் படையில் இருந்த தன் மூத்த மூன்று சகோதரர்களுக்கு சாப்பாடு கொண்டுவர போர்க்களத்திற்கு வந்தான். அவன் கோலியாத்தின் இரைச்சல் குரலை கேட்டான், வீரர்களின் முகங்களில் உள்ள பயத்தை கண்டான். தாவீது ஆச்சரியப்பட்டு கோபமடைந்தான். 'இந்த விருத்த சேதனமில்லாத பெலிஸ்தியன் யார்? ஜீவனுள்ள தேவனின் படைகளை இகழ்கிறவன் யார்?' என்று கேட்டான். தாவீது ராஜா சவுலிடம் சென்று சொன்னான், 'இந்த பெலிஸ்தியன் காரணமாக எவரும் இதயத்தை குறைந்து போக விடாதீர். உமது அடியான் போய் அவனோடு போர் செய்வான்!' சவுல் அந்த இளம் பையனை பார்த்து, 'நீ அவனுக்கு எதிராக போக தகுதியானவன் அல்ல. நீ வெறும் ஒரு பையன், அவனோ சிறுவயதிலிருந்தே வீரன்!' என்றான். ஆனால் தாவீது சவுலிடம் தன் ஆடுகளை காப்பாற்றும்போது சிங்கங்களையும் கரடிகளையும் எப்படி கொன்றான் என்று சொன்னான். 'சிங்கத்தின் கையிலிருந்தும் கரடியின் கையிலிருந்தும் என்னை தப்புவித்த கர்த்தர், இந்த பெலிஸ்தியனின் கையிலிருந்தும் என்னை தப்புவிப்பார்.' சவுல் தன் கனமான கவசத்தை தாவீது மேல் போட்டான், ஆனால் அது மிகவும் பெரிதாகவும் கனமாகவும் இருந்தது. தாவீது நடக்கக்கூட கஷ்டப்பட்டான்! அவன் அதை கழற்றி, 'இவற்றில் நான் போக முடியாது, ஏனெனில் நான் இவற்றுக்கு பழகியவன் அல்ல' என்றான். அதற்கு பதிலாக, தாவீது தன் மேய்ப்பன் கோலை எடுத்து, ஓடையிலிருந்து ஐந்து மெல்லிய கற்களை தேர்ந்தெடுத்தான். அவற்றை தன் மேய்ப்பன் பையில் போட்டு, கவண்கல்லை கையில் எடுத்து, மாபெரும் வீரனை நோக்கி சென்றான். கோலியாத் பையனை கீழே பார்த்து அவமதித்தான். 'நான் ஒரு நாயா, நீ குச்சிகளுடன் என்னிடம் வருகிறாயா?' அவன் தாவீதை சபித்து, 'என்னிடம் வா, நான் உன் மாம்சத்தை பறவைகளுக்கும் காட்டு விலங்குகளுக்கும் தருவேன்!' என்றான். ஆனால் தாவீது தைரியமாக திரும்ப கத்தினான், 'நீ வாளும் ஈட்டியும் குந்தமும் கொண்டு என்னிடம் வருகிறாய், நானோ சேனைகளின் கர்த்தரின் நாமத்திலே, நீ இகழ்ந்த இஸ்ரவேல் படைகளின் தேவனாகிய கர்த்தரின் நாமத்திலே உன்னிடத்தில் வருகிறேன். இந்த நாளில் கர்த்தர் உன்னை என் கையில் ஒப்புக்கொடுப்பார்; இஸ்ரவேலில் தேவன் இருக்கிறார் என்று பூமியனைத்தும் அறியும்!' தாவீது ஒரு கல்லை கவணில் வைத்து, தலைக்கு மேலே சுழற்றி, அதை விட்டான். கல் காற்றில் பறந்து கோலியாத்தின் நெற்றியில் பட்டது — அவனது தலைக்கவசத்தால் மூடப்படாத ஒரே இடம்! மாபெரும் வீரன் இடிமுழக்கம் போல் முகம் குப்புற தரையில் விழுந்தான். தாவீது ஓடி வந்து, கோலியாத்தின் சொந்த வாளை எடுத்து, அவன் தலையை வெட்டினான். பெலிஸ்திய படை பயத்தில் தப்பியோடியது, இஸ்ரவேலர்கள் அவர்களை துரத்தி பெரிய வெற்றி பெற்றனர்! தாவீது ஒருநாள் இஸ்ரவேலின் மிகப் பெரிய ராஜாவாக ஆவான்.",
+    lessons:["It doesn't matter how big the problem is — God is bigger!", "We are brave when we trust in God's power and name.", "God can use even the smallest, youngest person to do great things."],
+    lessons_ta:["பிரச்சினை எவ்வளவு பெரியதாக இருந்தாலும் — தேவன் அதை விட பெரியவர்!", "தேவனின் வல்லமையையும் நாமத்தையும் நம்பும்போது நாம் தைரியமானவர்கள்.", "மிகச்சிறியவரையும் இளையவரையும் தேவன் பெரிய காரியங்களுக்கு பயன்படுத்தலாம்."]
+  },
+  {
+    id:"daniel_lions", title_en:"Daniel in the Lions' Den", title_ta:"சிங்கக் குகையில் தானியேல்",
+    category:"Old Testament", icon:"🦁", color:"#1a3a5c",
+    verse_ref:"Daniel 6:22", verse_en:"My God hath sent his angel, and hath shut the lions' mouths.",
+    verse_ta:"என் தேவன் தம்முடைய தூதனை அனுப்பி சிங்கங்களின் வாயை அடைத்தார்.",
+    story_en:"Daniel was an extraordinary man who loved God with all his heart. Even though he lived far from home in the foreign land of Babylon, he never stopped praying to God every single day. Daniel was so wise, honest, and faithful that King Darius made him one of the three most important rulers in the whole kingdom — in fact, the king planned to set Daniel over the entire kingdom! But the other rulers and satraps were jealous of Daniel. They looked for something wrong in his work — but they could not find any fault or corruption in him because he was completely trustworthy and honest. Then they had an evil plan. They went to King Darius and said, 'King Darius, live forever! All the royal administrators have agreed that the king should issue an edict and enforce a decree that for the next thirty days, anyone who prays to any god or human being except you, Your Majesty, shall be thrown into the lions' den.' The king liked this idea and signed the official decree, which under the law of the Medes and Persians could not be changed. But Daniel heard about the new law, and what did he do? He went home to his upstairs room where the windows opened toward Jerusalem. Just as he had always done, three times a day he got down on his knees and prayed to God, giving thanks to Him. The jealous men saw Daniel praying and ran to the king. 'Daniel, one of the exiles from Judah, pays no attention to you or the decree you signed. He still prays three times a day!' The king was very sad. He liked Daniel very much and tried to think of a way to rescue him until sundown, but the law could not be changed. So the king gave the order, and Daniel was brought and thrown into the den of hungry lions. A stone was placed over the mouth of the den, and the king sealed it with his own signet ring so that Daniel's situation would not be changed. The king went back to his palace and could not eat or sleep all night. He could not enjoy any entertainment. At the first light of dawn, the king got up and hurried to the lions' den. As he approached the den, he called to Daniel in an anguished voice, 'Daniel, servant of the living God, has your God, whom you serve continually, been able to rescue you from the lions?' Then from deep in the darkness came Daniel's voice — calm and clear: 'O King, live forever! My God sent His angel, and he shut the mouths of the lions. They have not hurt me, because I was found innocent in His sight. Nor have I ever done any wrong before you, Your Majesty.' The king was overjoyed and ordered Daniel pulled up out of the den. Not a scratch was found on him, because he had trusted in his God. Then King Darius made a new law: 'In every part of my kingdom, people must fear and reverence the God of Daniel. For He is the living God, and He endures forever.'",
+    story_ta:"தானியேல் ஒரு அற்புதமான மனிதன், தன் முழு இதயத்தோடும் தேவனை நேசித்தான். அவன் தன் வீட்டிலிருந்து தூரமான பாபிலோன் நாட்டில் வாழ்ந்தாலும், ஒவ்வொரு நாளும் தேவனை ஜெபிப்பதை ஒருபோதும் நிறுத்தவில்லை. தானியேல் மிகவும் ஞானமும் நேர்மையும் விசுவாசமும் உள்ளவன் என்பதால், ராஜா தாரியு அவனை முழு ராஜ்யத்தின் மிக முக்கியமான மூன்று ஆளுநர்களில் ஒருவனாக்கினான் — உண்மையில், ராஜா தானியேலை முழு ராஜ்யத்திற்கும் மேலானவனாக நியமிக்க திட்டமிட்டிருந்தான்! ஆனால் மற்ற ஆளுநர்களும் சத்ரப்களும் பொறாமைப்பட்டனர். அவர்கள் தானியேலின் வேலையில் ஏதாவது தவறு கண்டுபிடிக்க முயன்றனர் — ஆனால் அவன் முற்றிலும் நம்பிக்கையானவனும் நேர்மையானவனும் என்பதால் எந்த குற்றமோ தவறோ கண்டுபிடிக்க முடியவில்லை. பின்பு அவர்கள் தீய திட்டம் தீட்டினர். அவர்கள் ராஜா தாரியுவிடம் சென்று, 'ராஜா தாரியுவே, என்றென்றும் வாழ்க! அனைத்து ராஜ அதிகாரிகளும் ஒத்துக்கொண்டதாக, ராஜா ஒரு தீர்ப்பை பிறப்பித்து, முழு சட்டத்தையும் நடைமுறைப்படுத்த வேண்டும்: வரும் முப்பது நாட்களுக்கு, உமது மகாபாக்கியத்தைத் தவிர வேறு எந்த தேவனுக்கோ மனிதனுக்கோ ஜெபிக்கும் எவரும் சிங்கக் குகையில் போடப்பட வேண்டும்.' ராஜா இந்த யோசனையை விரும்பி, அதிகாரப்பூர்வ தீர்ப்பில் கையெழுத்திட்டான், அது மேதியரினும் பேர்சியரினும் சட்டப்படி மாற்ற முடியாதது. ஆனால் தானியேல் புதிய சட்டத்தை கேள்விப்பட்டான், அவன் என்ன செய்தான்? அவன் தன் மேல் அறைக்கு சென்றான், அங்கு ஜன்னல்கள் எருசலேமை நோக்கி திறந்திருந்தன. எப்போதும் செய்வதுபோல், தினமும் மூன்று வேளை முழங்காலிட்டு தேவனை ஜெபித்து, அவருக்கு நன்றி சொன்னான். பொறாமைக்காரர்கள் தானியேல் ஜெபிப்பதை கண்டு ராஜாவிடம் ஓடினார்கள். 'தானியேல், யூதாவின் சிறையாளர்களில் ஒருவன், உம்மையோ நீர் கையெழுத்திட்ட தீர்ப்பையோ கவனிக்கவில்லை. அவன் இன்னும் நாளுக்கு மூன்று வேளை ஜெபிக்கிறான்!' ராஜா மிகவும் துக்கமடைந்தான். அவன் தானியேலை மிகவும் நேசித்தான், சூரியன் அஸ்தமிக்கும் வரை அவனை காப்பாற்ற ஒரு வழி சிந்தித்தான், ஆனால் சட்டத்தை மாற்ற முடியவில்லை. அதனால் ராஜா கட்டளையிட்டான், தானியேல் பசியான சிங்கங்களின் குகையில் கொண்டு போய் போடப்பட்டான். குகையின் வாயில் ஒரு கல் வைக்கப்பட்டது, ராஜா தன் சொந்த முத்திரை மோதிரத்தால் அதை முத்திரையிட்டான், தானியேலின் நிலைமை மாற்றப்படாமல் இருக்க. ராஜா தன் அரண்மனைக்கு திரும்பி, இரவு முழுவதும் சாப்பிடவோ தூங்கவோ முடியவில்லை. அவனால் எந்த மகிழ்ச்சியையும் அனுபவிக்க முடியவில்லை. விடியற்காலையின் முதல் ஒளியில், ராஜா எழுந்து சிங்கக் குகைக்கு விரைந்தான். குகையை அணுகும்போது, அவன் வேதனையான குரலில் தானியேலை அழைத்தான், 'ஜீவனுள்ள தேவனின் அடியானே தானியேலே, நீ தொடர்ந்து சேவிக்கும் உன் தேவன், சிங்கங்களின் கையிலிருந்து உன்னை தப்புவிக்க வல்லவரா?' அப்போது இருட்டின் ஆழத்திலிருந்து தானியேலின் குரல் — அமைதியாகவும் தெளிவாகவும் — கேட்டது: 'ராஜாவே, என்றென்றும் வாழ்க! என் தேவன் தம்முடைய தூதனை அனுப்பி, சிங்கங்களின் வாயை மூடினார். அவை என்னை தீண்டவில்லை, ஏனெனில் அவர் பார்வையில் நான் குற்றமற்றவன் என்று காணப்பட்டேன். உம் மகாபாக்கியத்திற்கு முன்பாகவும் நான் ஒருபோதும் எந்த தவறும் செய்யவில்லை.' ராஜா மிகுந்த மகிழ்ச்சியடைந்து, தானியேலை குகையிலிருந்து வெளியே இழுக்க கட்டளையிட்டான். அவன் மீது ஒரு சிறு சிரா scratch கூட காணப்படவில்லை, ஏனெனில் அவன் தன் தேவனில் நம்பிக்கை வைத்திருந்தான். பின்பு ராஜா தாரியு புதிய சட்டம் இட்டான்: 'என் ராஜ்யத்தின் ஒவ்வொரு பகுதியிலும், மக்கள் தானியேலின் தேவனை பயந்து கண்ணியப்படுத்த வேண்டும். அவர் ஜீவனுள்ள தேவன், என்றென்றும் நிலைத்திருக்கிறார்.'",
+    lessons:["Pray to God every day no matter what laws or rules people make.", "God protects those who are faithful to Him, even in the scariest situations.", "Being honest and faithful is more powerful than any enemy or trap."],
+    lessons_ta:["என்ன சட்டங்களோ விதிகளோ மக்கள் இட்டாலும் தினமும் தேவனை ஜெபி.", "விசுவாசமுள்ளவர்களை தேவன் மிகவும் பயமான சூழ்நிலைகளிலும் பாதுகாக்கிறார்.", "நேர்மையும் விசுவாசமும் எந்த எதிரியையும் கண்ணியையும் விட வல்லமையானது."]
+  },
+  {
+    id:"jonah", title_en:"Jonah and the Big Fish", title_ta:"யோனாவும் பெரிய மீனும்",
+    category:"Old Testament", icon:"🐋", color:"#2471a3",
+    verse_ref:"Jonah 2:1", verse_en:"Then Jonah prayed unto the LORD his God out of the fish's belly.",
+    verse_ta:"யோனா மீன் வயிற்றிலிருந்து தன் தேவனாகிய கர்த்தரை நோக்கி ஜெபித்தான்.",
+    story_en:"God spoke to His prophet Jonah one clear day: 'Go at once to the great city of Nineveh and preach against it, because its wickedness has come up before Me.' But Jonah did NOT want to go. The people of Nineveh were enemies of Israel, and Jonah hated them. He wanted God to destroy them, not save them. So instead of obeying, Jonah ran away in the opposite direction! He went down to the port city of Joppa and found a ship sailing to Tarshish, far away in the west. He paid the fare and boarded the ship, thinking he could run away from God. But God saw everything. The LORD sent a great storm upon the sea. The wind howled like a wild beast, the waves crashed over the deck, and the ship rocked so violently that it seemed about to break apart. The sailors were terrified. They threw their cargo overboard to lighten the ship, and each one cried out to his own god. But the storm only grew worse. Where was Jonah? Fast asleep below deck! The captain found him and shouted, 'How can you sleep? Get up and call on your god! Maybe he will take notice of us so that we will not perish!' The sailors cast lots to find out who had brought this terrible storm upon them — and the lot fell on Jonah. Jonah told them everything: 'I am a Hebrew, and I worship the LORD, the God of heaven, who made the sea and the dry land. I am running away from Him.' The sailors were terrified and asked, 'What should we do to you to make the sea calm?' Jonah answered, 'Pick me up and throw me into the sea, and it will become calm. I know that it is my fault this great storm has come upon you.' The sailors tried hard to row back to land, but the storm grew even more violent. Finally they cried out to the LORD, 'Please, LORD, do not let us die for taking this man's life,' and they threw Jonah overboard. Immediately, the raging sea grew calm. The sailors were amazed and worshipped the LORD. But Jonah sank down, down, down into the dark, cold water. Then the LORD provided a huge fish — perhaps a whale — that swallowed Jonah whole. Jonah sat inside the belly of the fish for three days and three nights. In that dark, smelly, wet place, Jonah finally did what he should have done before — he prayed. He cried out to God, 'In my distress I called to the LORD, and He answered me. From deep in the realm of the dead I called for help, and You listened to my cry.' Jonah repented and promised to obey. After three days and three nights, the fish swam close to shore and spat Jonah out onto dry land! God spoke to Jonah again: 'Go to the great city of Nineveh and proclaim the message I give you.' This time, Jonah obeyed. He walked through the huge city for three days, shouting, 'Forty more days and Nineveh will be overthrown!' To everyone's surprise, the people of Nineveh believed God! From the greatest to the least, they put on sackcloth, fasted, and turned from their evil ways. Even the king sat in ashes and decreed that everyone should cry out to God and give up their wickedness. When God saw what they did and how they turned from their evil ways, He had compassion and did not bring destruction upon them. Jonah learned a hard but beautiful lesson: you can never run away from God, and God's mercy and love are for ALL people — even those we do not like.",
+    story_ta:"தேவன் தமது தீர்க்கதரிசி யோனாவிடம் ஒரு தெளிவான நாளில் பேசினார்: 'உடனே நினிவே பெரிய நகரத்திற்கு போய், அதின் தீமை எனக்கு முன்பாக வந்ததால் அதற்கு விரோதமாக பிரசங்கி.' ஆனால் யோனா போக விரும்பவில்லை. நினிவே மக்கள் இஸ்ரவேலின் எதிரிகள், யோனா அவர்களை வெறுத்தான். அவர்களை தேவன் அழிக்க வேண்டும் என்று விரும்பினான், இரட்சிக்கக்கூடாது. அதனால் கீழ்ப்படிவதற்கு பதிலாக, யோனா எதிர் திசையில் ஓடினான்! அவன் யாப்போ துறைமுக நகரத்திற்கு சென்று, மேற்கில் தூரத்தில் உள்ள தர்ஷீஷுக்கு போகும் ஒரு கப்பலை கண்டான். கட்டணம் கொடுத்து கப்பலில் ஏறினான், தேவனிடமிருந்து தப்பிக்க முடியும் என்று நினைத்தான். ஆனால் தேவன் எல்லாவற்றையும் கண்டார். கர்த்தர் கடலில் ஒரு பெரிய புயலை அனுப்பினார். காற்று காட்டு விலங்கு போல கத்தியது, அலைகள் படகின் மேல் மோதின, கப்பல் அதிர்வதை விட்டு உடைந்துவிடும் போல ஆடியது. கப்பலோர் பயந்தனர். படகை இலேசாக்க அவர்கள் சரக்குகளை கடலில் போட்டனர், ஒவ்வொருவரும் தங்கள் தேவனை அழைத்தனர். ஆனால் புயல் இன்னும் மோசமானது. யோனா எங்கே இருந்தான்? கீழ் தளத்தில் ஆழ்ந்த தூக்கத்தில்! கப்பலோரின் தலைவன் அவனை கண்டு கத்தினான், 'நீ எப்படி தூங்க முடிகிறது? எழுந்து உன் தேவனை அழை! அவர் நம்மை கவனித்தால் நாம் அழிந்துபோகமாட்டோம்!' கப்பலோர் சீட்டுக்குலுக்கி, இந்த கொடிய புயலை யார் கொண்டுவந்தார்கள் என்று கண்டுபிடிக்க முயன்றனர் — சீட்டு யோனாவிற்கு வந்தது. யோனா அவர்களிடம் எல்லாவற்றையும் சொன்னான்: 'நான் ஒரு எபிரேயன், கடலையும் உலர்ந்த நிலத்தையும் படைத்த வானத்தின் தேவனாகிய கர்த்தரை நான் வணங்குகிறேன். நான் அவரிடமிருந்து ஓடுகிறேன்.' கப்பலோர் பயந்து, 'கடல் அமைதியாக இருக்க எங்களுக்கு என்ன செய்ய வேண்டும்?' என்று கேட்டனர். யோனா பதிலளித்தான், 'என்னை தூக்கி கடலில் போடுங்கள், அப்போது அது அமைதியாகும். இந்த பெரிய புயல் உங்களுக்கு வந்தது என் காரணமாக என்று நான் அறிவேன்.' கப்பலோர் கரைக்கு திரும்ப திரும்பி துடுப்பு போட்டனர், ஆனால் புயல் இன்னும் கொடிதானது. இறுதியாக அவர்கள் கர்த்தரை நோக்கி கூப்பிட்டார்கள், 'கர்த்தரே, இந்த மனிதனின் உயிரை எடுப்பதற்காக எங்களை கொல்லாதேயும்,' என்று சொல்லி யோனாவை கடலில் போட்டனர். உடனடியாக, கொந்தளிக்கும் கடல் அமைதியானது. கப்பலோர் ஆச்சரியப்பட்டு கர்த்தரை வணங்கினார்கள். ஆனால் யோனா கடலில் கீழே கீழே கீழே மூழ்கினான், இருட்டான குளிர்ந்த தண்ணீரில். பின்பு கர்த்தர் ஒரு பெரிய மீனை — ஒரு திமிங்கலமாக இருக்கலாம் — அனுப்பினார், அது யோனாவை முழுவதுமாக விழுங்கியது. யோனா மீன் வயிற்றில் மூன்று நாள் இரவும் பகலும் இருந்தான். அந்த இருட்டான, துர்நாற்றமுள்ள, ஈரமான இடத்தில், யோனா இறுதியாக முன்பே செய்ய வேண்டியதை செய்தான் — அவன் ஜெபித்தான். 'என் இக்கட்டிலே கர்த்தரை நோக்கி கூப்பிட்டேன், அவர் எனக்கு மறுமொழி கொடுத்தார். மரித்தோரின் இடத்தின் ஆழத்திலிருந்து உதவி கோரினேன், நீர் என் கூக்குரலை கேட்டீர்.' யோனா மனந்திரும்பி கீழ்ப்படிய சத்தியம் செய்தான். மூன்று நாட்களும் மூன்று இரவுகளுக்குப் பிறகு, மீன் கரைக்கு அருகில் நீந்தி வந்து, யோனாவை உலர்ந்த தரையில் வாந்தி எடுத்தது! தேவன் மீண்டும் யோனாவிடம் பேசினார்: 'நினிவே பெரிய நகரத்திற்கு போய், நான் தரும் செய்தியை பிரசங்கி.' இம்முறை, யோனா கீழ்ப்படிந்தான். அவன் மூன்று நாட்கள் அந்த பெரிய நகரத்தில் நடந்து சென்று கத்தினான், 'இன்னும் நாற்பது நாட்களில் நினிவே கவிழ்க்கப்படும்!' எல்லாரும் ஆச்சரியப்படும் வகையில், நினிவே மக்கள் தேவனை நம்பினார்கள்! பெரியவர் முதல் சிறியவர் வரை, அவர்கள் சாக்குத் துணி அணிந்து, உபவாசம் செய்து, தங்கள் தீய வழிகளிலிருந்து திரும்பினார்கள். ராஜா கூட சாம்பலில் அமர்ந்து, எல்லாரும் தேவனை அழைத்து தங்கள் பொல்லாப்பை விட வேண்டும் என்று தீர்ப்பிட்டான். அவர்கள் செய்ததையும் தங்கள் தீய வழிகளிலிருந்து திரும்பியதையும் தேவன் கண்டபோது, அவர் மனதுருகி அவர்களை அழிக்கவில்லை. யோனா ஒரு கடினமான ஆனால் அழகான பாடத்தை கற்றுக்கொண்டான்: தேவனிடமிருந்து ஒருபோதும் தப்பிக்க முடியாது, மேலும் தேவனின் இரக்கமும் அன்பும் எல்லா மக்களுக்கும் — நாம் விரும்பாதவர்களுக்குக்கூட.",
+    lessons:["We cannot run away from God — He is everywhere and knows everything.", "When we say sorry to God and turn back to Him, He forgives and gives us another chance.", "God's love and mercy are for ALL people, even those who seem far from Him or who we do not like."],
+    lessons_ta:["தேவனிடமிருந்து தப்பிக்க முடியாது — அவர் எங்கும் இருக்கிறார், எல்லாம் அறிகிறார்.", "தேவனிடம் மன்னிப்பு கேட்டு அவரிடம் திரும்பும்போது, அவர் மன்னித்து மீண்டும் வாய்ப்பு தருகிறார்.", "தேவனின் இரக்கமும் அன்பும் எல்லா மக்களுக்கும் — நாம் விரும்பாதவர்களுக்குக்கூட."]
+  },
+  {
+    id:"baby_jesus", title_en:"The Birth of Baby Jesus", title_ta:"குழந்தை இயேசுவின் பிறப்பு",
+    category:"New Testament", icon:"⭐", color:"#1a3a6a",
+    verse_ref:"Luke 2:11", verse_en:"For unto you is born this day in the city of David a Saviour, which is Christ the Lord.",
+    verse_ta:"இன்று தாவீதின் ஊரிலே உங்களுக்கு ஒரு இரட்சகர் பிந்திருக்கிறார்; அவர் கர்த்தராகிய கிறிஸ்து.",
+    story_en:"Long, long ago, in a quiet little town called Nazareth in the country of Israel, there lived a young woman named Mary. She was kind, gentle, and loved God with all her heart. Mary was promised in marriage to a good carpenter named Joseph. One day, something absolutely amazing happened. An angel named Gabriel appeared to Mary with a brilliant light and said, 'Greetings, you who are highly favored! The Lord is with you!' Mary was troubled and wondered what kind of greeting this might be. But the angel said, 'Do not be afraid, Mary. You have found favor with God. You will conceive and give birth to a son, and you are to call Him Jesus. He will be great and will be called the Son of the Most High. The Lord God will give Him the throne of His father David, and He will reign over Jacob's descendants forever; His kingdom will never end!' Mary was amazed and asked, 'How can this be, since I am a virgin?' The angel answered, 'The Holy Spirit will come on you, and the power of the Most High will overshadow you. So the holy one to be born will be called the Son of God. For nothing is impossible with God.' Mary said with humble faith, 'I am the Lord's servant. May your word to me be fulfilled.' Meanwhile, the Roman emperor Caesar Augustus ordered that everyone in the empire must go to their family's hometown to be counted in a census. Joseph's family was from Bethlehem, the city of David. So Joseph and Mary made the long, difficult journey — about 90 miles — from Nazareth to Bethlehem. Mary was very close to having her baby! But when they arrived in Bethlehem, every single inn and guest room was FULL. There was no room anywhere in the whole town because so many people had come for the census. Joseph and Mary knocked on many doors, but everyone said, 'No room, sorry.' Finally, a kind innkeeper saw Mary was about to give birth and said, 'I don't have any rooms, but there is a stable behind the inn where the animals stay. You are welcome to use it.' So that night, in the humble, simple stable, surrounded by cows, sheep, and donkeys, Mary gave birth to the Son of God! She wrapped Baby Jesus in soft strips of cloth and laid Him gently in a manger — a feeding box for the animals! The Creator of the universe, the King of kings, was born in a stable and slept in a manger! That same night, in nearby fields outside Bethlehem, shepherds were keeping watch over their flocks of sheep. It was dark and quiet. Suddenly, the sky exploded with brilliant, blinding light! An angel of the Lord stood before them, and the glory of the Lord shone all around them. The shepherds were terrified and fell to the ground. But the angel said, 'Do not be afraid! I bring you good news of great joy that will be for all the people. Today in the town of David a Savior has been born to you; He is the Messiah, the Lord. This will be a sign to you: You will find a baby wrapped in cloths and lying in a manger.' Then an enormous army of angels appeared, thousands and thousands of them, filling the entire sky, and they sang in beautiful, powerful voices: 'Glory to God in the highest heaven, and on earth peace to those on whom His favor rests!' The shepherds were so excited! They said to each other, 'Let's go to Bethlehem and see this thing that has happened, which the Lord has told us about.' They hurried to Bethlehem and found Mary and Joseph, and the baby, who was lying in the manger. When they had seen Him, they spread the word concerning what had been told them about this child, and all who heard it were amazed. The shepherds returned to their fields, glorifying and praising God for all the things they had heard and seen. What a wonderful, holy night!",
+    story_ta:"மிகவும் முன்னால், இஸ்ரவேல் தேசத்தில் நாசரேத் என்ற அமைதியான சிறு நகரத்தில் மரியாள் என்ற இளம் பெண் வாழ்ந்தாள். அவள் கிண்ணியமானவள், மென்மையானவள், தன் முழு இதயத்தோடும் தேவனை நேசித்தாள். மரியாள் யோசேப்பு என்ற நல்ல தச்சனுக்கு திருமணம் செய்வதற்கு நிச்சயிக்கப்பட்டிருந்தாள். ஒருநாள், ஒரு முற்றிலும் அற்புதமான காரியம் நடந்தது. கபிரியேல் என்ற தூதன் ஒரு பிரகாசமான ஒளியுடன் மரியாளுக்கு தோன்றி சொன்னான், 'அருள் பெற்றவளே, வாழ்க! கர்த்தர் உன்னோடு இருக்கிறார்!' மரியாள் கலக்கமடைந்து, இந்த வாழ்த்து என்னவென்று யோசித்தாள். ஆனால் தூதன் சொன்னான், 'மரியாளே, பயப்படாதே. நீ தேவனுக்கு முன்பாக அருள் பெற்றிருக்கிறாய். நீ கர்ப்பந்தரித்து ஒரு குமாரனை பெறுவாய், அவருக்கு இயேசு என்று பேரிடுவாய். அவர் பெரியவராயிருப்பார், உன்னதமானவரின் குமாரன் என்று அழைக்கப்படுவார். கர்த்தராகிய தேவன் அவருக்கு அவருடைய தகப்பனாகிய தாவீதின் சிங்காசனத்தைக் கொடுப்பார், அவர் யாக்கோபின் சந்ததியின்மேல் என்றென்றைக்கும் ஆட்சி செய்வார்; அவருடைய ராஜ்யத்திற்கு முடிவில்லை!' மரியாள் ஆச்சரியப்பட்டு, 'நான் கன்னிகையாக இருக்கும்போது இது எப்படி?' என்று கேட்டாள். தூதன் பதிலளித்தான், 'பரிசுத்த ஆவி உன்மேல் வருவார், உன்னதமானவரின் வல்லமை உன்மேல் நிழலிடும். ஆகையால் பிறக்கப்போகிற பரிசுத்த குமாரன் தேவனின் குமாரன் என்று அழைக்கப்படுவார். தேவனால் இயலாத காரியம் ஒன்றும் இல்லை.' மரியாள் தாழ்ச்சியான விசுவாசத்துடன், 'இதோ, கர்த்தரின் அடியாள்; உமது வார்த்தைக்கு எனக்கு ஆகட்டும்' என்றாள். அதே சமயத்தில், ரோம மன்னன் சீசர் ஆகுஸ்துஸ் எல்லாரும் தங்கள் குடும்ப ஊர்களுக்கு சென்று கணக்கெடுப்பில் பதிவு செய்ய வேண்டும் என்று கட்டளையிட்டான். யோசேப்பின் குடும்பம் தாவீதின் நகரமான பெத்தலேமில் சேர்ந்தது. அதனால் யோசேப்பும் மரியாளும் நாசரேத்திலிருந்து பெத்தலேமிற்கு சுமார் 90 மைல் தூரத்தை கடினமான நீண்ட பயணம் செய்தனர். மரியாள் குழந்தை பெறுவதற்கு மிக அருகில் இருந்தாள்! ஆனால் அவர்கள் பெத்தலேமை அடைந்தபோது, ஒவ்வொரு விடுதியும் விருந்தினர் அறையும் நிரம்பியிருந்தது. அத்தனை பேர் கணக்கெடுப்பிற்காக வந்திருந்ததால் நகரம் முழுவதும் இடம் இல்லை. யோசேப்பும் மரியாளும் பல கதவுகளை தட்டினார்கள், ஆனால் எல்லோரும் 'மன்னிக்கவும், இடம் இல்லை' என்றார்கள். இறுதியாக, ஒரு இரக்கமுள்ள விடுதி உரிமையாளர் மரியாள் குழந்தை பெறப்போகிறாள் என்பதை கண்டு, 'என்னிடம் அறைகள் இல்லை, ஆனால் விடுதிக்கு பின்னால் விலங்குகள் தங்கும் ஒரு தொழுவம் உள்ளது. நீங்கள் அதை பயன்படுத்தலாம்' என்றார். அதனால் அன்று இரவு, பணிவான, எளிய தொழுவத்தில், மாடுகள், ஆடுகள், கழுதைகள் சூழ, மரியாள் தேவனின் குமாரனை பெற்றெடுத்தாள்! மரியாள் குழந்தை இயேசுவை மென்மையான துணி துண்டுகளால் சுற்றி, விலங்குகளுக்கான உணவு பெட்டியான தொட்டியில் மெதுவாக கிடத்தினாள்! பிரபஞ்சத்தின் படைப்பாளர், ராஜாக்களின் ராஜா, தொழுவத்தில் பிறந்து, தொட்டியில் தூங்கினார்! அதே இரவு, பெத்தலேமிற்கு வெளியே அருகில் உள்ள வயல்களில், மேய்ப்பர்கள் தங்கள் ஆடுகளை காத்துக்கொண்டிருந்தனர். இருட்டாகவும் அமைதியாகவும் இருந்தது. திடீரென்று, வானம் பிரகாசமான, கண்ணை குருடாக்கும் ஒளியால் வெடித்தது! கர்த்தரின் தூதன் அவர்களுக்கு முன்பாக நின்றான், கர்த்தரின் மகிமை அவர்களைச் சுற்றி பிரகாசித்தது. மேய்ப்பர்கள் பயந்து தரையில் விழுந்தனர். ஆனால் தூதன் சொன்னான், 'பயப்படாதீர்கள்! இதோ, மகா சந்தோஷத்தின் நற்செய்தியை எல்லா ஜனங்களுக்காகவும் உங்களுக்கு அறிவிக்கிறேன். இன்று தாவீதின் பட்டணத்தில் ஒரு இரட்சகர் உங்களுக்காக பிறந்திருக்கிறார்; அவர் கர்த்தராகிய கிறிஸ்து. உங்களுக்கு அடையாளம் என்னவென்றால்: நீங்கள் துணிகளில் சுற்றப்பட்டு, தொட்டியில் கிடக்கும் ஒரு குழந்தையை காண்பீர்கள்.' அப்போது வானம் முழுவதும் ஆயிரக்கணக்கான தூதர்கள் தோன்றினார்கள், எண்ணிக்கையில் அநேகம் அநேகம், அவர்கள் அழகான, வல்லமையான குரல்களில் பாடினார்கள்: 'மிகவும் உன்னதத்திலே தேவனுக்கு மகிமை, பூமியிலே மனுஷரில் அவர் பிரியமாயிருக்கிறவர்களுக்கு சமாதானம்!' மேய்ப்பர்கள் மிகவும் உற்சாகமாக இருந்தனர்! அவர்கள் ஒருவரையொருவர் சொன்னார்கள், 'பெத்தலேமுக்கு போய், கர்த்தர் நமக்கு அறிவித்த இந்த காரியத்தை பார்ப்போம்.' அவர்கள் பெத்தலேமுக்கு விரைந்து சென்று மரியாளையும் யோசேப்பையும் குழந்தையையும் கண்டார்கள், அவர் தொட்டியில் கிடந்தார். அவர்கள் அவரை கண்டபோது, இந்த குழந்தையைப் பற்றி தங்களுக்கு சொல்லப்பட்டதை எல்லாருக்கும் சொன்னார்கள், அதை கேட்ட எல்லோரும் ஆச்சரியப்பட்டனர். மேய்ப்பர்கள் தங்கள் வயல்களுக்கு திரும்பினர், தாங்கள் கேட்டதையும் கண்டதையும் பற்றி தேவனை மகிமைப்படுத்தி, அவரை துதித்தார்கள். என்ன அற்புதமான, பரிசுத்தமான இரவு!",
+    lessons:["Jesus came for EVERYONE — even the humble shepherds were invited first to see the King!", "Christmas is not about gifts and decorations but about the greatest Gift — Jesus, God's Son!", "God keeps every promise He makes — He promised a Savior, and Jesus was born exactly as foretold."],
+    lessons_ta:["இயேசு எல்லாருக்காகவும் வந்தார் — சாதாரண மேய்ப்பர்களும் முதலில் ராஜாவை காண அழைக்கப்பட்டனர்!", "கிறிஸ்மஸ் பரிசுகள் மற்றும் அலங்காரங்களைப் பற்றியது அல்ல — இயேசு என்ற மிகப் பெரிய பரிசைப் பற்றியது, தேவனின் குமாரன்!", "தேவன் தாம் வாக்களித்த ஒவ்வொரு வாக்கையும் காக்கிறார் — அவர் இரட்சகரை வாக்களித்தார், இயேசு தீர்க்கதரிசனத்தின்படி சரியாக பிறந்தார்."]
+  },
+  {
+    id:"jesus_storm", title_en:"Jesus Calms the Storm", title_ta:"இயேசு புயலை அடக்கினார்",
+    category:"New Testament", icon:"⛵", color:"#154360",
+    verse_ref:"Mark 4:39", verse_en:"Peace, be still! And the wind ceased and there was a great calm.",
+    verse_ta:"சமாதானமாயிரு, அமர்ந்திரு என்று கடலை அதட்டினார்; காற்று நின்று மிகவும் அமைதியாயிற்று.",
+    story_en:"One evening, after a long day of teaching and healing people, Jesus said to His disciples, 'Let us go over to the other side of the lake.' They climbed into a boat, and other little boats followed them. Jesus was completely exhausted. He had been teaching crowds all day, touching sick people, and loving everyone who came to Him. So He lay down on a cushion at the back of the boat, and soon He fell into a deep, peaceful sleep. While He was sleeping, a terrible storm suddenly swept down upon the Sea of Galilee. The wind howled like a wild animal, tearing at the sails and rocking the boat violently. The waves grew bigger and bigger, crashing over the sides of the boat and filling it with water. The disciples were experienced fishermen who had sailed these waters their whole lives — Peter, Andrew, James, and John had faced many storms. But even they were absolutely terrified! 'Teacher!' they cried, shaking Jesus awake. 'Don't you care if we drown?' Jesus woke up. He looked at the disciples with eyes full of love, and then He stood up and faced the raging storm. The waves were tossing the boat around like a toy, and the wind was screaming. But Jesus raised His hand and spoke to the storm with the same authority He used to teach and heal: 'Peace! Be still!' Immediately — instantly — the wind stopped. The howling ceased. The waves that had been crashing and foaming went completely flat, smooth as glass. The sea was perfectly calm. Not a ripple. Not a sound. The disciples stared at each other with wide, frightened eyes. They had never seen anything like this! They had seen Jesus heal the sick and cast out demons, but to COMMAND the wind and the waves? Jesus turned to them and asked gently, 'Why are you so afraid? Do you still have no faith?' The disciples were filled with awe and wonder. They whispered among themselves, 'Who is this? Even the wind and the waves obey Him!' They had just learned something incredible about Jesus — He was not just a great teacher or a powerful healer. He was the Lord of all creation. The wind and waves knew His voice and obeyed Him instantly. And if the storm obeyed Jesus, then we can trust Him with any storm in our lives too.",
+    story_ta:"ஒரு மாலையில், நோயாளிகளுக்கு குணமளித்து மக்களுக்கு போதித்த நீண்ட நாளுக்குப் பிறகு, இயேசு தமது சீஷர்களிடம், 'நாம் ஏரியின் அக்கரைக்கு போவோம்' என்றார். அவர்கள் படகில் ஏறினர், மற்ற சிறிய படகுகளும் அவர்களை பின்தொடர்ந்தன. இயேசு முற்றிலும் சோர்ந்துபோயிருந்தார். அவர் நாள் முழுவதும் கூட்டங்களுக்கு போதித்தார், நோயாளிகளை தொட்டார், அவரிடம் வந்த அனைவரையும் நேசித்தார். அதனால் அவர் படகின் பின்புறத்தில் ஒரு தலையணையில் படுத்து, விரைவில் ஆழ்ந்த, அமைதியான தூக்கத்தில் விழுந்தார். அவர் தூங்கிக்கொண்டிருக்கும்போது, கலிலேய கடலில் திடீரென்று ஒரு கொடிய புயல் வீசியது. காற்று காட்டு விலங்கு போல கத்தியது, பாய்களை கிழித்து, படகை வன்மையாக ஆட்டியது. அலைகள் பெரிதாகி பெரிதாக வளர்ந்து, படகின் பக்கவாட்டில் மோதி அதை தண்ணீரால் நிரப்பின. சீஷர்கள் அனுபவமுள்ள மீனவர்கள், தங்கள் வாழ்நாள் முழுவதும் இந்த தண்ணீர்களில் படகு ஓட்டியவர்கள் — பேதுரு, ஆந்திரேயா, யாக்கோபு, யோவான் பல புயல்களை எதிர்கொண்டவர்கள். ஆனால் அவர்களுக்கும் முற்றிலும் பயமாக இருந்தது! 'ஐயா!' என்று அவர்கள் இயேசுவை எழுப்பி அழுதார்கள், 'நாம் மூழ்கிப் போவதை உமக்கு அக்கறையில்லையா?' இயேசு விழித்தார். அவர் அன்பால் நிறைந்த கண்களுடன் சீஷர்களை பார்த்தார், பின்பு எழுந்து நின்று கொந்தளிக்கும் புயலை எதிர்கொண்டார். அலைகள் படகை ஒரு விளையாட்டுப் பொருள் போல tossing செய்தன, காற்று அலறிக்கொண்டிருந்தது. ஆனால் இயேசு தன் கையை உயர்த்தி, போதித்தும் குணமாக்கியும் அதே அதிகாரத்தோடு புயலிடம் பேசினார்: 'சமாதானமாயிரு, அமர்ந்திரு!' உடனடியாக — கண்ணிமைக்கும் நேரத்தில் — காற்று நின்றது. அலறல் நின்றது. மோதியும் ந forth செய்தும் கொண்டிருந்த அலைகள் முழுமையாக தட்டையாயின, கண்ணாடி போல வழவழப்பாயின. கடல் முழுமையான அமைதியானது. ஒரு அலையும் இல்லை. ஒரு சத்தமும் இல்லை. சீஷர்கள் பெரிய, பயமான கண்களுடன் ஒருவரையொருவர் பார்த்தார்கள். இப்படி ஒன்றை அவர்கள் ஒருபோதும் கண்டிருக்கவில்லை! அவர்கள் இயேசு நோயாளிகளை குணமாக்குவதையும் பிசாசுகளை விரட்டுவதையும் கண்டிருந்தனர், ஆனால் காற்றையும் அலைகளையும் கட்டளையிடுவதா? இயேசு அவர்களை நோக்கி திரும்பி, மெதுவாக கேட்டார், 'நீங்கள் இப்படி பயப்படுவதற்கு என்ன காரணம்? உங்களில் இன்னும் விசுவாசம் இல்லையா?' சீஷர்கள் பயத்தாலும் ஆச்சரியத்தாலும் நிறைந்திருந்தனர். அவர்கள் தங்களுக்குள் பேசிக்கொண்டார்கள், 'இவர் யார்? காற்றும் கடலும் இவருக்கு கீழ்ப்படிகிறதே!' அவர்கள் இயேசுவைப் பற்றி ஒரு அற்புதமான காரியத்தை இப்போது கற்றுக்கொண்டார்கள் — அவர் வெறும் ஒரு பெரிய போதகரோ வல்லமையான குணமாக்குபவரோ அல்ல. அவர் படைப்பின் ஆண்டவர். காற்றும் அலைகளும் அவரது குரலை அறிந்து உடனடியாக கீழ்ப்படிகின்றன. இயேசுவுக்கு புயல் கீழ்ப்படிந்தால், நம் வாழ்க்கையில் வரும் எந்த புயலையும் அவரிடம் நாம் நம்பிக்கையாக வைக்கலாம்.",
+    lessons:["Jesus is with us even in our biggest, scariest storms.", "We don't need to be afraid when Jesus is in our boat — He has authority over everything.", "Jesus is more powerful than any storm in our life, and He can bring peace instantly."],
+    lessons_ta:["மிகப் பெரிய, பயமான புயலிலும் இயேசு நம்மோடு இருக்கிறார்.", "இயேசு நம் படகில் இருக்கும்போது பயப்பட தேவையில்லை — அவருக்கு எல்லாவற்றின் மீதும் அதிகாரம் உண்டு.", "வாழ்க்கையில் வரும் எந்த புயலையும் விட இயேசு வல்லமையானவர், அவர் உடனடியாக சமாதானம் கொண்டு வரலாம்."]
+  },
+  {
+    id:"zacchaeus", title_en:"Zacchaeus the Small Man", title_ta:"குள்ளமான சக்கேயு",
+    category:"New Testament", icon:"🌳", color:"#1d6a2c",
+    verse_ref:"Luke 19:10", verse_en:"For the Son of man is come to seek and to save that which was lost.",
+    verse_ta:"இழந்துபோனதை தேடவும் இரட்சிக்கவும் மனுஷகுமாரன் வந்திருக்கிறார்.",
+    story_en:"In the city of Jericho, there lived a man named Zacchaeus. He was the chief tax collector, which meant he was very rich — but nobody liked him. Tax collectors took money from people for the Roman government, and they often cheated and took extra money for themselves. Zacchaeus had become very wealthy by collecting more than people owed. Everyone in Jericho called him a cheat, a sinner, and a traitor to his own people. They refused to eat with him or even look at him. Zacchaeus was very short in stature, which made him feel even smaller in a world that already rejected him. One day, Zacchaeus heard the most exciting news: Jesus was coming to Jericho! Jesus was the teacher who healed the sick, made the blind see, and told stories about God's love. Zacchaeus wanted so badly to see Jesus! But as Jesus walked through the streets, a huge crowd gathered around Him. Zacchaeus ran ahead of the crowd — his little legs moving as fast as they could — and he climbed up a sycamore-fig tree! From up in the branches, he had a perfect view of the road below. He could see everything. Jesus came walking down the road, surrounded by cheering people. The crowd pushed closer to get a glimpse of Him. Then Jesus stopped — right under Zacchaeus's tree! He looked up into the branches, and their eyes met. Jesus called out with a warm smile, 'Zacchaeus! Come down immediately. I must stay at your house today!' Zacchaeus nearly fell out of the tree with shock and joy! He scrambled down as fast as he could, his face beaming with happiness. The crowd grumbled and complained. 'Jesus is going to be the guest of a sinner! A cheat! How can He eat with THAT man?' But Jesus did not care what the crowd said. He cared about Zacchaeus's heart. They went to Zacchaeus's house, and Jesus sat down to eat with him. And something amazing happened inside Zacchaeus — his heart completely changed! He stood up and said to the Lord with deep conviction, 'Look, Lord! Here and now I give half of my possessions to the poor, and if I have cheated anybody out of anything, I will pay back four times the amount!' Jesus smiled with joy and said, 'Today salvation has come to this house, because this man, too, is a son of Abraham. For the Son of Man came to seek and to save the lost.' That day, the short man who everyone hated became a new person — forgiven, changed, and loved by Jesus.",
+    story_ta:"எரிகோ நகரத்தில் சக்கேயு என்ற மனிதன் வாழ்ந்தான். அவன் தலைமை தீர்வை வசூலிப்பவன், அதாவது அவன் மிகவும் பணக்காரன் — ஆனால் யாரும் அவனை விரும்பவில்லை. தீர்வை வசூலிப்பவர்கள் ரோம அரசாங்கத்திற்காக மக்களிடமிருந்து பணம் வசூலித்தனர், அவர்கள் அடிக்கடி மோசடி செய்து மக்கள் கொடுக்க வேண்டியதை விட அதிகமாக பணம் வாங்கினார்கள். சக்கேயு மக்கள் கொடுக்க வேண்டியதை விட அதிகமாக வசூலித்து மிகவும் செல்வந்தனானான். எரிகோவில் உள்ள அனைவரும் அவனை மோசடிக்காரன், பாவி, தன் சொந்த மக்களுக்கு துரோகி என்று அழைத்தனர். அவர்கள் அவனோடு சாப்பிடவோ, அவனை பார்க்கவோ மறுத்தனர். சக்கேயு மிகவும் குள்ளமானவன், இது அவனை ஏற்கனவே தள்ளிவிட்ட உலகில் இன்னும் சிறியவனாக உணரவைத்தது. ஒருநாள், சக்கேயு மிகவும் உற்சாகமான செய்தியை கேள்விப்பட்டான்: இயேசு எரிகோவிற்கு வருகிறார்! இயேசு நோயாளிகளை குணமாக்கி, குருடர்களை பார்வையளித்து, தேவனின் அன்பைப் பற்றி கதைகள் சொன்ன போதகர். சக்கேயு இயேசுவை காண மிகவும் விரும்பினான்! ஆனால் இயேசு வீதிகளில் நடந்து செல்லும்போது, ஒரு பெரிய கூட்டம் அவரைச் சுற்றி கூடியது. சக்கேயு கூட்டத்திற்கு முன்னால் ஓடினான் — அவனது சிறிய கால்கள் முடிந்த வேகத்தில் ஓடின — ஒரு அத்தி அத்தி மரத்தில் ஏறினான்! கிளைகளில் இருந்து, அவனுக்கு கீழே உள்ள வீதியின் சரியான காட்சி கிடைத்தது. அவன் எல்லாவற்றையும் காண முடிந்தது. இயேசு வீதியில் நடந்து வந்தார், கூச்சலிடும் மக்களால் சூழப்பட்டிருந்தார். கூட்டம் அவரை ஒரு பார்வை பார்க்க அருகில் தள்ளியது. பின்பு இயேசு — சக்கேயுவின் மரத்தின் கீழே நின்றார்! அவர் கிளைகளுக்கு மேலே பார்த்தார், அவர்களது கண்கள் சந்தித்தன. இயேசு ஒரு வெத்வமான புன்னகையுடன் கூப்பிட்டார், 'சக்கேயுவே, இறங்கி வா; இன்று நான் உன் வீட்டில் தங்க வேண்டும்.' சக்கேயு ஆச்சரியத்திலும் மகிழ்ச்சியிலும் மரத்திலிருந்து விழுவதற்காக இருந்தான்! அவன் முடிந்த வேகத்தில் இறங்கினான், அவனது முகம் மகிழ்ச்சியால் பிரகாசித்தது. கூட்டம் முறுமுறுத்தது, புகார் கூறியது. 'இயேசு ஒரு பாவியின் வீட்டிற்கு விருந்தினராக போகிறாரா! ஒரு மோசடிக்காரன்! அவர் அந்த மனிதனோடு எப்படி சாப்பிட முடியும்?' ஆனால் இயேசு கூட்டம் என்ன சொன்னாலும் கவலைப்படவில்லை. அவர் சக்கேயுவின் இதயத்தை பற்றி கவலைப்பட்டார். அவர்கள் சக்கேயுவின் வீட்டிற்கு சென்றனர், இயேசு அவனோடு சாப்பிட்டார். அக்கேயுவிற்குள் ஒரு அற்புதமான காரியம் நடந்தது — அவனது இதயம் முழுமையாக மாறியது! அவன் எழுந்து நின்று ஆழ்ந்த உறுதியுடன் ஆண்டவரிடம் சொன்னான், 'இதோ, ஆண்டவரே! இதோ இப்போதே என் சொத்தில் பாதி ஏழைகளுக்கு கொடுக்கிறேன்; நான் யாரிடமாவது எதையாவது மோசடி செய்திருந்தால், அதை நான்கு மடங்காக திருப்பி கொடுக்கிறேன்!' இயேசு மகிழ்ச்சியுடன் புன்னகைத்து சொன்னார், 'இன்று இந்த வீட்டிற்கு இரட்சிப்பு வந்தது, ஏனெனில் இந்த மனிதனும் ஆபிரகாமின் குமாரன். மனுஷகுமாரன் இழந்துபோனதை தேடவும் இரட்சிக்கவும் வந்தார்.' அன்று, எல்லோரும் வெறுத்த சிறிய மனிதன் ஒரு புதிய மனிதனானான் — மன்னிக்கப்பட்டவன், மாற்றப்பட்டவன், இயேசுவினால் நேசிக்கப்பட்டவன்.",
+    lessons:["Jesus loves and seeks those who feel left out, rejected, or hated by others.", "A changed heart is worth more than all the money in the world.", "It's never too late to start over with Jesus — He always welcomes us with open arms."],
+    lessons_ta:["ஒதுக்கப்படுவதாகவும் நிராகரிக்கப்படுவதாகவும் உணர்பவர்களை இயேசு நேசிக்கிறார், அவர்களை தேடுகிறார்.", "மாறிய இதயம் உலகின் எல்லா செல்வத்தையும் விட மதிப்புமிக்கது.", "இயேசுவோடு புதிதாக தொடங்க ஒருபோதும் தாமதமில்லை — அவர் எப்போதும் திறந்த கைகளோடு நம்மை வரவேற்கிறார்."]
+  },
+  {
+    id:"good_shepherd", title_en:"The Good Shepherd", title_ta:"நல்ல மேய்ப்பன்",
+    category:"New Testament", icon:"🐑", color:"#5d4037",
+    verse_ref:"John 10:11", verse_en:"I am the good shepherd: the good shepherd giveth his life for the sheep.",
+    verse_ta:"நான் நல்ல மேய்ப்பன்; நல்ல மேய்ப்பன் ஆடுகளுக்காக தன் உயிரை கொடுக்கிறான்.",
+    story_en:"Jesus told a beautiful story to help people understand how much He loves them. He said, 'Imagine a shepherd who has 100 sheep. Every morning, the shepherd leads his sheep out to green pastures where they can eat sweet grass and drink from cool, clear streams. He walks behind them, watching carefully to make sure no wolf or lion attacks them. He carries a staff to guide them and a rod to fight any danger. Every evening, as the sun sets, the shepherd calls his sheep back to the safe sheepfold. He counts them one by one: one, two, three... all the way to 100. But one evening, as the last sheep came through the gate, the shepherd's face filled with worry. He counted again: 97, 98, 99. Only 99! One little sheep was missing! Now, the shepherd still had 99 safe sheep in the fold. He could have said, 'Oh well, I still have plenty of sheep. That silly little one probably wandered off and got what it deserved.' But that is NOT what a good shepherd does. Instead, the good shepherd left the 99 sheep in the safe fold and went out into the dangerous, dark night to search for the ONE lost sheep. He climbed rocky hills, he crossed cold streams, he called and called into the darkness. His voice was hoarse, his feet were sore, but he would not give up. Finally — there! He heard a faint, frightened bleating from a thorny ravine. The little sheep had fallen down and was stuck, tangled in thorns and bushes, unable to move. The shepherd's heart filled with compassion. He carefully pushed through the thorns, gently untangled the frightened little sheep, and lifted it onto his shoulders. The shepherd carried the lost sheep all the way home on his strong shoulders, rejoicing with every step. When he got back to the village, he called out to all his friends and neighbors: 'Come celebrate with me! I have found my lost sheep!' And then Jesus explained the meaning: 'I am the Good Shepherd. I know each of My sheep by name. They recognize My voice, and I recognize theirs. I love each one of you so much that if even ONE of you were lost, I would leave everything to come looking for you. And I am willing to lay down My life for My sheep.' Jesus was saying that He loves every single person in the world so much that He would die for them — and He DID die on the cross to save us. We are never just a number to Jesus. We are His beloved sheep, and He will always come to find us when we wander away.",
+    story_ta:"இயேசு தாம் எவ்வளவு நேசிக்கிறார் என்பதை மக்கள் புரிந்துகொள்ள உதவ ஒரு அழகான கதையை சொன்னார். அவர் சொன்னார், 'ஒரு மேய்ப்பனுக்கு 100 ஆடுகள் இருப்பதாக கற்பனை செய்யுங்கள். தினமும் காலையில், மேய்ப்பன் தன் ஆடுகளை பசுமையான மேய்ச்சலுக்கு கூட்டிச் செல்வான், அங்கு அவை இனிமையான புல்லை தின்று, குளிர்ந்த தெளிந்த ஓடைகளில் குடிக்கலாம். அவன் அவற்றின் பின்னால் நடந்து, ஓநாயோ சிங்கமோ தாக்காமல் இருக்க கவனமாக பார்ப்பான். அவற்றை வழி நடத்த கோலையும், எந்த ஆபத்தையும் எதிர்க்க சவுக்கையும் ஏந்துவான். ஒவ்வொரு மாலையிலும், சூரியன் அஸ்தமிக்கும்போது, மேய்ப்பன் தன் ஆடுகளை பாதுகாப்பான ஆட்டுத் தொழுவத்திற்கு அழைத்து வருவான். ஒவ்வொன்றாக எண்ணுவான்: ஒன்று, இரண்டு, மூன்று... 100 வரை. ஆனால் ஒரு மாலை, கடைசி ஆடு வந்தபோது, மேய்ப்பனின் முகம் கவலையால் நிரம்பியது. அவன் மீண்டும் எண்ணினான்: 97, 98, 99. 99 மட்டுமே! ஒரு சிறிய ஆடு காணவில்லை! இப்போது, மேய்ப்பனுக்கு தொழுவத்தில் 99 பாதுகாப்பான ஆடுகள் இருந்தன. அவன் 'சரி, என்னிடம் இன்னும் நிறைய ஆடுகள் உள்ளன. அந்த பேதை சிறிய ஆடு எங்கோ அலைந்து, அது தகுதியானதை அடைந்திருக்கும்' என்று சொல்லியிருக்கலாம். ஆனால் அது நல்ல மேய்ப்பன் செய்வதல்ல. அதற்கு பதிலாக, நல்ல மேய்ப்பன் 99 ஆடுகளை பாதுகாப்பான தொழுவத்தில் விட்டுவிட்டு, ஆபத்தான, இருட்டான இரவில் தனி காணாமல்போன ஆட்டை தேடி வெளியே சென்றான். கரடுமுரடான மலைகளில் ஏறினான், குளிர்ந்த ஓடைகளை கடந்தான், இருட்டில் கூப்பிட்டான், கூப்பிட்டான். அவனது குரல் கரகரப்பானது, அவனது கால்கள் வலியானது, ஆனால் அவன் விடவில்லை. இறுதியால் — அங்கே! அவன் முட்செடி நிறைந்த பள்ளத்தாக்கிலிருந்து மங்கலான, பயந்த குரல் கேட்டான். சிறிய ஆடு கீழே விழுந்து, முட்செடிகளிலும் புதர்களிலும் சிக்கி, அசைய முடியாமல் இருந்தது. மேய்ப்பனின் இருதயம் இரக்கத்தால் நிரம்பியது. அவன் கவனமாக முட்செடிகளுக்குள் சென்று, பயந்த சிறிய ஆட்டை மென்மையாக விடுவித்து, தன் தோளின் மேல் தூக்கினான். மேய்ப்பன் அந்த காணாமல்போன ஆட்டை தன் வலிமையான தோள்களில் தூக்கிக்கொண்டு, ஒவ்வொரு அடியிலும் மகிழ்ச்சியுடன் வீட்டிற்கு கொண்டு வந்தான். அவன் கிராமத்திற்கு திரும்பியபோது, தன் நண்பர்களையும் அக்கம்பக்கத்தினரையும் அழைத்தான்: 'என்னோடு கொண்டாட வாருங்கள்! என் காணாமல்போன ஆட்டை கண்டுபிடித்தேன்!' பின்பு இயேசு அதன் பொருளை விளக்கினார்: 'நான் நல்ல மேய்ப்பன். என் ஒவ்வொரு ஆட்டின் பெயரும் எனக்கு தெரியும். அவை என் குரலை அறிகின்றன, நான் அவற்றின் குரலை அறிகிறேன். உங்களில் ஒருவர் கூட காணாமல் போனால், உங்களை தேடி வர நான் எல்லாவற்றையும் விட்டுவிடுவேன். என் ஆடுகளுக்காக நான் என் உயிரை கொடுக்க தயாராக இருக்கிறேன்.' இயேசு உலகில் ஒவ்வொரு மனிதரையும் அவர் அவ்வளவு நேசிக்கிறார் என்று சொன்னார், அவர் அவர்களுக்காக இறக்க தயாராக இருந்தார் — அவர் நம்மை இரட்சிக்க சிலுவையில் இறந்தார். நாம் இயேசுவுக்கு வெறும் எண் அல்ல. நாம் அவரது நேசிக்கப்பட்ட ஆடுகள், நாம் அலைந்து செல்லும்போது அவர் எப்போதும் நம்மை தேடி வருவார்.",
+    lessons:["Jesus knows each of us by name — we are not just a number to Him.", "Jesus never gives up on a lost person — He comes looking for us when we wander away.", "Every person matters to God — especially when they feel lost, lonely, or forgotten."],
+    lessons_ta:["இயேசு நம் ஒவ்வொருவரின் பெயரும் அறிவார் — நாம் வெறும் எண் அல்ல.", "இயேசு தொலைந்தவர்களை ஒருபோதும் விடுவதில்லை — நாம் அலைந்து செல்லும்போது அவர் தேடி வருகிறார்.", "தேவனுக்கு ஒவ்வொரு மனிதனும் முக்கியம் — குறிப்பாக தொலைந்துபோன, தனிமையான, மறக்கப்பட்டவர்கள்."]
+  },
+  {
+    id:"five_loaves", title_en:"Five Loaves and Two Fish", title_ta:"ஐந்து அப்பமும் இரண்டு மீனும்",
+    category:"New Testament", icon:"🍞", color:"#c27c00",
+    verse_ref:"John 6:11", verse_en:"And Jesus took the loaves; and when he had given thanks, he distributed to the disciples.",
+    verse_ta:"இயேசு அந்த அப்பங்களை எடுத்து, நன்றி சொல்லி, சீஷர்களுக்கு பங்கிட்டார்.",
+    story_en:"One day, Jesus was teaching and healing a huge crowd of people on a green hillside near the Sea of Galilee. More and more people came walking from all the nearby villages because they had heard about the wonderful things Jesus did — the blind could see, the lame could walk, and sick people were healed. The crowd grew bigger and bigger until there were about 5,000 men, plus women and children! That means there might have been 15,000 or even 20,000 people! Jesus taught them all day long, telling them about God's kingdom and showing them God's love. As the sun began to set and evening came, the disciples came to Jesus with a problem. 'Lord,' they said, 'this is a remote place, and it's already getting late. Send the crowds away, so they can go to the villages and buy themselves some food.' Jesus looked at His disciples with a kind but challenging smile. 'They do not need to go away,' He said. 'You give them something to eat.' The disciples were shocked. 'US?!' they exclaimed. 'We have here only five small barley loaves and two small fish. That is nowhere near enough for this huge crowd!' Just then, Andrew, Simon Peter's brother, noticed a small boy in the crowd who had packed a little lunch. The boy had five barley loaves — small, round, flat breads — and two little fish, probably dried or smoked. He had brought them for himself, but he was willing to share. Andrew brought the boy to Jesus and said, 'Here is a boy with five small barley loaves and two small fish, but how far will they go among so many?' Jesus said, 'Have the people sit down.' There was plenty of grass in that place, and they sat down — about 5,000 men, plus all the women and children. It must have looked like a vast sea of people stretching across the hillside! Jesus took the five loaves and the two fish. He looked up to heaven and thanked God. Then He began to break the bread and the fish into pieces and give them to the disciples. The disciples walked among the crowd, handing out the food. They handed it out and handed it out and handed it out — and somehow, miraculously, the basket never ran empty! Every person took as much as they wanted, and everyone was completely full and satisfied. When they had all eaten enough, Jesus said to His disciples, 'Gather the pieces that are left over. Let nothing be wasted.' The disciples went around with baskets and collected all the leftover pieces. They filled 12 whole baskets with leftover bread and fish! From FIVE loaves and TWO fish! The little boy must have watched with the biggest eyes ever, full of wonder. His tiny lunch had fed a whole mountain of hungry people, with more left over than they started with! Jesus showed that when we give what little we have to Him, He can multiply it to bless many, many people.",
+    story_ta:"ஒரு நாள், இயேசு கலிலேய கடலுக்கு அருகில் உள்ள பசுமையான மலைப்பக்கத்தில் ஒரு பெரிய கூட்டத்திற்கு போதித்துக்கொண்டும் குணமளித்துக்கொண்டும் இருந்தார். அவர் செய்த அற்புதமான காரியங்களை — குருடர்கள் காண முடிந்தது, முடவர்கள் நடக்க முடிந்தது, நோயாளிகள் குணமானார்கள் — கேள்விப்பட்டு, அருகிலுள்ள கிராமங்களிலிருந்து மக்கள் நடந்து வந்து கொண்டே இருந்தார்கள். கூட்டம் பெரிதாகி பெரிதாக வளர்ந்து, சுமார் 5,000 ஆண்கள், அதோடு பெண்களும் குழந்தைகளும்! அதாவது 15,000 அல்லது 20,000 பேர் இருக்கலாம்! இயேசு நாள் முழுவதும் அவர்களுக்கு போதித்தார், தேவனின் ராஜ்யத்தைப் பற்றி சொன்னார், தேவனின் அன்பை காட்டினார். சூரியன் அஸ்தமிக்கத் தொடங்கி மாலையாகியதும், சீஷர்கள் ஒரு பிரச்சினையுடன் இயேசுவிடம் வந்தனர். 'ஐயா,' அவர்கள் சொன்னார்கள், 'இது தூரமான இடம், நேரம் மிகவும் கடந்துவிட்டது. கூட்டத்தை அனுப்பிவிடுங்கள், அவர்கள் கிராமங்களுக்கு போய் தங்களுக்கு சாப்பாடு வாங்கிக்கொள்ளட்டும்.' இயேசு தன் சீஷர்களை ஒரு கிண்ணியமான ஆனால் சவாலான புன்னகையுடன் பார்த்தார். 'அவர்கள் போக வேண்டியதில்லை,' அவர் சொன்னார். 'நீங்களே அவர்களுக்கு சாப்பாடு கொடுங்கள்.' சீஷர்கள் அதிர்ச்சியடைந்தனர். 'நாங்களா?!' அவர்கள் அலறினார்கள். 'எங்களிடம் இங்கே ஐந்து சிறிய யவன் அப்பங்களும் இரண்டு சிறிய மீன்களும் மட்டுமே உள்ளன. இவ்வளவு பெரிய கூட்டத்திற்கு இது எங்கேயும் போதாது!' அப்போதுதான், சீமோன் பேதுருவின் சகோதரனாகிய ஆந்திரேயா, கூட்டத்தில் ஒரு சிறு பையனை கவனித்தான், அவன் ஒரு சிறிய மதிய உணவு பொட்டலத்தை எடுத்து வந்திருந்தான். அவனிடம் ஐந்து யவன் அப்பங்கள் — சிறிய, வட்டமான, தட்டையான அப்பங்கள் — இருந்தன, இரண்டு சிறிய மீன்கள், ஒருவேளை உலர்த்தப்பட்ட அல்லது புகையிலைக்கப்பட்டவை. அவன் அவற்றை தனக்காக கொண்டு வந்திருந்தான், ஆனால் பகிர்ந்து கொடுக்க தயாராக இருந்தான். ஆந்திரேயா அந்த பையனை இயேசுவிடம் கொண்டு வந்து, 'இங்கே ஒரு பையன், அவனிடம் ஐந்து சிறிய யவன் அப்பங்களும் இரண்டு சிறிய மீன்களும் உள்ளன, ஆனால் இவ்வளவு பேருக்கு இது என்ன ஆகும்?' என்றான். இயேசு சொன்னார், 'மக்களை அமரச் சொல்லுங்கள்.' அந்த இடத்தில் நிறைய புல் இருந்தது, அவர்கள் அமர்ந்தார்கள் — சுமார் 5,000 ஆண்கள், அதோடு எல்லா பெண்களும் குழந்தைகளும். அது மலைப்பக்கத்தில் விரிவாக பரந்திருக்கும் ஒரு மக்கள் கடல் போல இருந்திருக்கும்! இயேசு அந்த ஐந்து அப்பங்களையும் இரண்டு மீன்களையும் எடுத்தார். வானத்தை நோக்கி பார்த்து தேவனுக்கு நன்றி சொன்னார். பின்பர் அப்பத்தையும் மீனையும் துண்டுகளாக உடைத்து சீஷர்களுக்கு கொடுக்கத் தொடங்கினார். சீஷர்கள் கூட்டத்திற்குள் நடந்து, உணவை கொடுத்தனர். அவர்கள் கொடுத்தனர், கொடுத்தனர், கொடுத்தனர் — எப்படியோ, அற்புதமாக, கூடை ஒருபோதும் வற்றவே இல்லை! ஒவ்வொரு மனிதரும் தாங்கள் விரும்பிய அளவு எடுத்தார்கள், எல்லோரும் முழுமையாகவும் திருப்தியாகவும் சாப்பிட்டார்கள். அவர்கள் அனைவரும் போதுமான அளவு சாப்பிட்ட பிறகு, இயேசு தன் சீஷர்களிடம் சொன்னார், 'மீதமான துண்டுகளை சேகரியுங்கள். எதுவும் வீணாகக்கூடாது.' சீஷர்கள் கூடைகளுடன் சுற்றி நடந்து, மீதமான துண்டுகளையெல்லாம் சேகரித்தனர். மீதமான அப்பமும் மீனும் 12 கூடைகள் நிரம்பின! ஐந்து அப்பங்களிலிருந்தும் இரண்டு மீன்களிலிருந்தும்! அந்த சிறு பையன் ஆச்சரியத்தால் நிறைந்த மிக பெரிய கண்களுடன் பார்த்திருப்பான். அவனது சிறிய மதிய உணவு, முழு மலை நிறைய பசியான மக்களை போஷித்தது, தொடங்கியதை விட அதிகமான மீதம் உள்ளிட்டு! இயேசு காட்டினார், நம்மிடம் உள்ள சிறியதை அவருக்கு கொடுக்கும்போது, அவர் அதை பலரை ஆசீர்வதிக்க பலமடங்காக பெருக்க முடியும்.",
+    lessons:["When we give what we have to Jesus, He can multiply it to bless many people.", "Jesus cares about our everyday needs — even something as simple as being hungry.", "Never think what you have is too small — Jesus can use even a little boy's lunch to do a miracle!"],
+    lessons_ta:["நம்மிடம் உள்ளதை இயேசுவிடம் கொடுக்கும்போது, அவர் அதை பலமடங்காக்கி பலரை ஆசீர்வதிக்கலாம்.", "நம் தினசரி தேவைகளில் கூட இயேசு அக்கறை கொள்கிறார் — பசி போன்ற எளிய காரியத்திலும் கூட.", "உன்னிடம் உள்ளது சிறியது என்று ஒருபோதும் நினைக்காதே — ஒரு சிறு பையனின் மதிய உணவை கூட இயேசு அற்புதம் செய்ய பயன்படுத்தலாம்!"]
+  },
+  {
+    id:"resurrection", title_en:"Jesus is Alive!", title_ta:"இயேசு உயிருடன் இருக்கிறார்!",
+    category:"New Testament", icon:"✨", color:"#7d1a00",
+    verse_ref:"Matthew 28:6", verse_en:"He is not here: for he is risen, as he said.",
+    verse_ta:"அவர் இங்கே இல்லை; தாம் சொன்னபடியே உயிர்த்தெழுந்தார்.",
+    story_en:"It was the saddest day the world had ever seen. Jesus — the kind teacher, the wonderful healer, the miracle-working Son of God — had been arrested, beaten, put on a cross, and had died. The sky turned dark in the middle of the day. The earth shook. His mother Mary stood at the foot of the cross, weeping. His disciple John held her. Jesus's friends were heartbroken. They cried and cried. A rich man named Joseph of Arimathea went to Pilate and asked for Jesus's body. Joseph and Nicodemus wrapped Jesus's body in strips of fine linen with spices — myrrh and aloes, about 75 pounds of spices! They placed His body in a new tomb that Joseph had carved out of rock. They rolled a huge, heavy stone in front of the door. The Roman soldiers sealed the stone and stood guard to make sure no one could steal the body. It seemed like all hope was gone. Or so they thought. Three days later, very early on Sunday morning while it was still dark, a woman named Mary Magdalene and some other women went to the tomb. They were carrying spices they had prepared to put on Jesus's body, because they loved Him so much. But when they arrived at the tomb, they got the biggest shock of their entire lives. The huge stone had been ROLLED AWAY from the entrance! The tomb was OPEN! They ran inside. The linen cloths were lying there where the body had been — but Jesus was GONE! Suddenly, two angels in dazzling white clothes appeared like lightning! The women fell to the ground in terror. The angels said, 'Why are you looking for the living among the dead? HE IS NOT HERE! HE HAS RISEN, just as He said! Remember how He told you that He must be delivered into the hands of sinful men, be crucified, and on the third day rise again?' The women ran as fast as they could, trembling with amazement and joy, to tell the disciples. Peter and John ran to the tomb. John looked in and saw the empty cloths. Peter went inside and saw the cloth that had been around Jesus's head, folded up by itself. Then they believed! But Mary Magdalene stayed behind at the tomb, crying and crying in the garden. Then she heard footsteps behind her. She thought it was the gardener. 'Sir,' she said, 'if you have carried Him away, tell me where you have put Him, and I will get Him.' Then the person spoke her name with infinite tenderness — 'Mary.' Just one word. She knew that voice. She turned around and cried out, 'Rabboni!' which means 'Teacher!' It was JESUS — alive! His body was real, His wounds were real, but He was GLORIOUSLY ALIVE! Later that day, Jesus appeared to the disciples too, even though the doors were locked. He showed them His hands and His feet where the nails had been. He ate fish and bread with them. He talked with them for forty days, teaching them about God's kingdom. Then He ascended to heaven in a cloud, promising to return one day. Jesus was really, truly, absolutely ALIVE! Death could not hold Him. The grave could not keep Him. This is the best, most wonderful, most powerful news in the whole world: JESUS IS ALIVE, and because He lives, we can live forever with Him!",
+    story_ta:"அது உலகம் கண்ட மிகவும் துக்கமான நாளாக இருந்தது. இயேசு — கிண்ணிய போதகர், அற்புத குணமாக்குபவர், அற்புதங்கள் செய்த தேவனின் குமாரன் — கைது செய்யப்பட்டு, அடித்து, சிலுவையில் அறையப்பட்டு, இறந்தார். நடுப்பகலில் வானம் இருட்டானது. பூமி அதிர்ந்தது. அவரது தாய் மரியாள் சிலுவையின் அடியில் நின்று அழுதாள். அவரது சீஷன் யோவான் அவளைத் தாங்கினான். இயேசுவின் நண்பர்கள் இருதயம் உடைந்தவர்களாக இருந்தனர். அவர்கள் அழுது அழுதார்கள். அரிமத்தியாவின் யோசேப்பு என்ற ஒரு பணக்காரன் பிலாத்துவிடம் போய் இயேசுவின் உடலை கேட்டான். யோசேப்பும் நிக்கொதேமுவும் இயேசுவின் உடலை பிரீதியமான துணித்துண்டுகளில் போத்திரம் மற்றும் அகில்புறா என்ற நறுமணப் பொருட்களுடன் — சுமார் 75 பவுண்டு நறுமணப் பொருட்கள்! — சுற்றினார்கள். அவர்கள் அவரது உடலை யோசேப்பு பாறையில் வெட்டி எடுத்த புதிய கல்லறையில் வைத்தார்கள். கல்லறையின் வாசலில் ஒரு பெரிய, கனமான கல்லை புரட்டி வைத்தார்கள். ரோமன் படையினர் அந்த கல்லை முத்திரையிட்டு காவல் நின்றனர், யாரும் உடலை திருட முடியாமல் இருக்க. எல்லா நம்பிக்கையும் போய்விட்டது போல் தோன்றியது. மூன்று நாட்களுக்குப் பிறகு, ஞாயிற்றுக்கிழமை அதிகாலையில் இன்னும் இருட்டாக இருக்கும்போது, மரியா மகதலேனாளும் மற்ற சில பெண்களும் கல்லறைக்கு சென்றனர். அவர்கள் இயேசுவின் உடலில் நறுமணப் பொருட்களை போட தயாரித்து கொண்டுவந்திருந்தனர், ஏனெனில் அவர்கள் அவரை மிகவும் நேசித்தார்கள். ஆனால் அவர்கள் கல்லறையை அடைந்தவுடனே, தங்கள் வாழ்நாளில் மிகப் பெரிய அதிர்ச்சியை அடைந்தனர். பெரிய கல் வாசலிலிருந்து புரட்டப்பட்டிருந்தது! கல்லறை திறந்திருந்தது! அவர்கள் உள்ளே ஓடினார்கள். உடல் இருந்த இடத்தில் துணித்துண்டுகள் கிடந்தன — ஆனால் இயேசு போய்விட்டார்! திடீரென்று, மின்னல் போல் ஒளிரும் வெள்ளை ஆடை அணிந்த இரண்டு தூதர்கள் தோன்றினார்கள்! பெண்கள் பயத்தில் தரையில் விழுந்தனர். தூதர்கள் சொன்னார்கள், 'ஜீவனுள்ளவரை மரித்தோரிடத்தில் ஏன் தேடுகிறீர்கள்? அவர் இங்கே இல்லை! தாம் சொன்னபடியே உயிர்த்தெழுந்தார்! அவர் பாவ மனிதர்களின் கையில் ஒப்புக்கொடுக்கப்பட்டு, சிலுவையில் அறையப்பட்டு, மூன்றாம் நாள் உயிர்த்தெழ வேண்டும் என்று அவர் உங்களுக்கு சொன்னதை நினைவுகூருங்கள்.' பெண்கள் ஆச்சரியத்தாலும் மகிழ்ச்சியாலும் நடுங்கிக்கொண்டு, விரைந்து சீஷர்களிடம் சொல்ல ஓடினார்கள். பேதுருவும் யோவானும் கல்லறைக்கு ஓடினார்கள். யோவான் உள்ளே பார்த்து, வெற்றிடமான துணித்துண்டுகளை கண்டான். பேதுரு உள்ளே சென்று, இயேசுவின் தலையைச் சுற்றி இருந்த துணியை, அது தனியாக மடிக்கப்பட்டிருப்பதை கண்டான். பின்பர் அவர்கள் நம்பினார்கள்! ஆனால் மரியா மகதலேனாள் கல்லறையில் தங்கி, தோட்டத்தில் அழுது அழுதாள். அப்போது அவள் பின்னால் காலடி சத்தம் கேட்டாள். அது தோட்டக்காரன் என்று நினைத்தாள். 'ஐயா,' அவள் சொன்னாள், 'நீர் அவரை எடுத்துச் சென்றிருந்தால், அவரை எங்கே வைத்தீர் என்று சொல்லும், நான் அவரை எடுத்துச் செல்வேன்.' அப்போது அந்த மனிதன் எல்லையில்லாத மென்மையுடன் அவள் பெயரை சொன்னார் — 'மரியாளே.' வெறும் ஒரு வார்த்தை. அவள் அந்த குரலை அறிந்தாள். அவள் திரும்பி, 'ரப்பூனி!' என்று அலறினாள், அதற்கு 'போதகர்!' என்று பொருள். அது இயேசு — உயிருடன்! அவரது உடல் உண்மையானது, அவரது காயங்கள் உண்மையானவை, ஆனால் அவர் மகிமையாக உயிருடன் இருந்தார்! அன்று மாலையிலேயே, கதவுகள் பூட்டப்பட்டிருந்தாலும் இயேசு சீஷர்களுக்கும் தோன்றினார். அவர் ஆணிகள் அடித்திருந்த தன் கைகளையும் கால்களையும் அவர்களுக்கு காண்பித்தார். அவர்களோடு மீனும் அப்பமும் சாப்பிட்டார். அவர் நாற்பது நாட்கள் அவர்களோடு இருந்து, தேவனின் ராஜ்யத்தைப் பற்றி போதித்தார். பின்பர் அவர் ஒரு மேகத்தில் பரலோகம் ஏறினார், ஒரு நாள் திரும்பி வருவேன் என்று வாக்களித்தார். இயேசு உண்மையிலேயே, முழுமையாக, மாறாமல் உயிருடன் இருக்கிறார்! மரணம் அவரை வைத்துக்கொள்ள முடியவில்லை. கல்லறை அவரை தக்கவைக்க முடியவில்லை. இதுவே உலகின் மிகச் சிறந்த, மிக அற்புதமான, மிக வல்லமையான செய்தி: இயேசு உயிருடன் இருக்கிறார், அவர் உயிருடன் இருப்பதால், நாமும் அவரோடு என்றென்றும் வாழலாம்!",
+    lessons:["Jesus defeated death forever — He is more powerful than anything in the world!", "Because Jesus rose from the dead and lives, we don't have to be afraid of death.", "Easter is the greatest celebration in the world because Jesus is ALIVE and He gives us eternal life!"],
+    lessons_ta:["இயேசு மரணத்தை என்றென்றைக்கும் தோற்கடித்தார் — அவர் உலகில் உள்ள எல்லாவற்றையும் விட வல்லமையானவர்!", "இயேசு மரித்தோரிலிருந்து உயிர்த்தெழுந்து உயிருடன் இருப்பதால், மரணத்திற்கு நாம் பயப்பட வேண்டியதில்லை.", "ஈஸ்டர் உலகின் மிகப் பெரிய கொண்டாட்டம், ஏனெனில் இயேசு உயிருடன் இருக்கிறார், அவர் நமக்கு நித்திய ஜீவனை தருகிறார்!"]
+  }
 ];
