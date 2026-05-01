@@ -13,7 +13,6 @@ on:
         options: [ debug, release ]
 
 env:
-  # Fix Node.js 20 deprecation warning
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: false
 
 jobs:
@@ -98,29 +97,38 @@ jobs:
       - name: Fix adaptive icon XML
         run: |
           mkdir -p android/app/src/main/res/mipmap-anydpi-v26
-          
+
           echo '<?xml version="1.0" encoding="utf-8"?>
           <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
               <background android:drawable="@color/ic_launcher_background"/>
               <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
           </adaptive-icon>' > android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
-          
+
           echo '<?xml version="1.0" encoding="utf-8"?>
           <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
               <background android:drawable="@color/ic_launcher_background"/>
               <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
           </adaptive-icon>' > android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
-          
+
           mkdir -p android/app/src/main/res/values
           echo '<?xml version="1.0" encoding="utf-8"?>
           <resources>
               <color name="ic_launcher_background">#080810</color>
           </resources>' > android/app/src/main/res/values/ic_launcher_background.xml
-          
+
           echo "Adaptive icon XML fixed"
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
+
+      # ── FIX: Stamp versionCode = run number so installs never downgrade ──
+      - name: Set versionCode and versionName
+        run: |
+          BUILD_NUM=${{ github.run_number }}
+          sed -i "s/versionCode .*/versionCode $BUILD_NUM/" android/app/build.gradle
+          sed -i "s/versionName .*/versionName \"2.2.$BUILD_NUM\"/" android/app/build.gradle
+          echo "✅ versionCode=$BUILD_NUM  versionName=2.2.$BUILD_NUM"
+          grep -E "versionCode|versionName" android/app/build.gradle
 
       - name: Build Debug APK
         if: ${{ github.event.inputs.build_type != 'release' }}
