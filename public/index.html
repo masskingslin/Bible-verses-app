@@ -480,8 +480,6 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 <script src="kids_stories.js"></script>
 <script src="songs.js"></script>
 <script src="tts_engine.js"></script>
-<script src="songs_full_lyrics.js"></script>
-<script src="kids_stories_audio.js"></script>
 
 <script>
 "use strict";
@@ -800,663 +798,612 @@ var TTSS=(function(){
 
 
 /* ═══════════════════════════════════════
-   READING MODE OVERLAY
+   VERSES SCREEN — SV
+═══════════════════════════════════════ */
+var SV=(function(){
+  var _all=[],_filtered=[],_lang='both',_page=0,_PER=30;
+  function init(){_all=BD.all();_filtered=_all.slice();_setLangUI(_lang);render();}
+  function setLang(l){_lang=l;_page=0;_setLangUI(l);render();}
+  function _setLangUI(l){
+    document.querySelectorAll('#v-ltog button').forEach(function(b,i){
+      b.classList.toggle('on',['ta','en','both'][i]===l);
+    });
+  }
+  function filter(q){
+    _filtered=q.trim()?BD.search(q):_all.slice();_page=0;render();
+  }
+  function prev(){if(_page>0){_page--;render();}}
+  function next(){var tp=Math.ceil(_filtered.length/_PER)-1;if(_page<tp){_page++;render();}}
+  function render(){
+    var tp=Math.max(1,Math.ceil(_filtered.length/_PER));
+    var slice=_filtered.slice(_page*_PER,(_page+1)*_PER);
+    document.getElementById('v-pgi').textContent='Page '+(_page+1)+' / '+tp;
+    document.getElementById('v-prev').disabled=(_page===0);
+    document.getElementById('v-next').disabled=(_page>=tp-1);
+    var el=document.getElementById('v-list');
+    if(!el){
+      el=document.createElement('div');el.id='v-list';el.className='pb';
+      document.getElementById('s-verses').appendChild(el);
+    }
+    el.innerHTML=slice.map(function(v){return _vc(v,_lang);}).join('');
+    document.getElementById('s-verses').scrollTop=0;
+  }
+  function _vc(v,lang){
+    var sv=ST.isSaved(v.id);
+    return '<div class="vc"><div class="vch">'+
+      '<div><div class="vr">'+v.ref+'</div><div class="vbk">'+v.bookTa+'</div></div>'+
+      '<div class="va">'+
+      '<button onclick="AU.open(BD.byId('+v.id+'))">🔊</button>'+
+      '<button onclick="RM.open(BD.byId('+v.id+'))">📖</button>'+
+      '<button id="sv'+v.id+'" onclick="App.toggleSave('+v.id+',this)">'+(sv?'♥':'♡')+'</button>'+
+      '</div></div><div class="vbd">'+
+      (lang!=='en'?'<div class="vta">'+v.ta+'</div>':'')+
+      (lang!=='ta'?'<div class="ven">'+v.en+'</div>':'')+
+      '</div></div>';
+  }
+  return{init:init,setLang:setLang,filter:filter,prev:prev,next:next,render:render};
+})();
+
+/* ═══════════════════════════════════════
+   BOOKS SCREEN — SB
+═══════════════════════════════════════ */
+var SB=(function(){
+  function init(){
+    var sb=document.getElementById('s-books');
+    if(sb&&!document.getElementById('b-filt')){
+      sb.innerHTML='<div style="background:linear-gradient(135deg,#1a0038,#2a006a);padding:14px 16px 12px">'+
+        '<div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">📖 BIBLE BOOKS</div>'+
+        '<div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">OLD &amp; NEW TESTAMENT · 66 BOOKS</div></div>'+
+        '<div class="bfilt" id="b-filt"></div>'+
+        '<div class="bgrid pb" id="b-grid"></div>';
+    }
+    var f=document.getElementById('b-filt');
+    if(f)f.innerHTML='<button class="on" onclick="SB.filt(\'all\',this)">All</button>'+
+      '<button onclick="SB.filt(\'OT\',this)">Old</button>'+
+      '<button onclick="SB.filt(\'NT\',this)">New</button>';
+    filt('all',null);
+  }
+  function filt(t,btn){
+    document.querySelectorAll('#b-filt button').forEach(function(b){b.classList.remove('on');});
+    if(btn)btn.classList.add('on');
+    var g=document.getElementById('b-grid');if(!g)return;
+    var OT=39;
+    var books=BD.BEN.filter(function(b,i){
+      if(t==='OT')return i<OT;if(t==='NT')return i>=OT;return true;
+    });
+    g.innerHTML=books.map(function(b){
+      var bi=BD.BEN.indexOf(b);
+      var c=BD.CLR[bi%BD.CLR.length];
+      var chs=0;var bvs=BD.byBook(b);
+      var seen={};
+      bvs.forEach(function(v){seen[v.ch]=1;});
+      for(var k in seen)chs++;
+      return '<div class="btile" style="background:'+c+'">'+
+        '<div><div class="bne">'+b+'</div>'+
+        '<div class="bnt">'+BD.BTA[bi]+'</div>'+
+        '<div class="bm">'+chs+' chapters</div></div>'+
+        '<div class="bbtns"><button onclick="CR.open(\''+b+'\',1)">READ</button></div></div>';
+    }).join('')+'<div class="pb"></div>';
+  }
+  return{init:init,filt:filt};
+})();
+
+/* ═══════════════════════════════════════
+   SEARCH SCREEN — SA
+═══════════════════════════════════════ */
+var SA=(function(){
+  function run(){
+    var q=document.getElementById('ai-srch');if(!q)return;
+    var val=q.value.trim();if(!val)return;
+    var res=BD.search(val);
+    var out=document.getElementById('ai-out');if(!out)return;
+    if(!res.length){
+      out.innerHTML='<div class="empty"><div class="emico">✦</div><div class="emtxt">NO RESULTS</div></div>';return;
+    }
+    out.innerHTML=res.map(function(v){
+      return '<div class="vc"><div class="vch"><div class="vr">'+v.ref+'</div>'+
+        '<div class="va"><button onclick="AU.open(BD.byId('+v.id+'))">🔊</button>'+
+        '<button onclick="RM.open(BD.byId('+v.id+'))">📖</button></div></div>'+
+        '<div class="vbd"><div class="vta">'+v.ta+'</div><div class="ven">'+v.en+'</div></div></div>';
+    }).join('');
+  }
+  return{run:run};
+})();
+
+/* ═══════════════════════════════════════
+   CHAPTER READER — CR
+═══════════════════════════════════════ */
+var CR=(function(){
+  var _bk='Genesis',_ch=1,_lang='ta';
+  function open(bk,ch){_bk=bk;_ch=parseInt(ch)||1;document.getElementById('ch-ov').classList.add('on');_render();}
+  function close(){AU.stop();document.getElementById('ch-ov').classList.remove('on');}
+  function showLang(l){
+    _lang=l;
+    ['ta','en','bo'].forEach(function(x){
+      var b=document.getElementById('ch-'+x+'-btn');if(b)b.classList.toggle('on',x===l||(x==='bo'&&l==='both'));
+    });
+    _render();
+  }
+  function prev(){if(_ch>1){_ch--;_render();}}
+  function next(){if(BD.byBookCh(_bk,_ch+1).length){_ch++;_render();}}
+  function jump(){var n=prompt('Go to chapter:',_ch);if(n&&!isNaN(n)){_ch=parseInt(n);_render();}}
+  function bk(){return _bk;}
+  function ch(){return _ch;}
+  function _render(){
+    var vs=BD.byBookCh(_bk,_ch);
+    document.getElementById('ch-title').textContent=_bk+' — Chapter '+_ch;
+    var bi=BD.BEN.indexOf(_bk);
+    document.getElementById('ch-sub').textContent=(bi>=0?BD.BTA[bi]:'')+' — அதிகாரம் '+_ch;
+    document.getElementById('ch-jump').textContent='Ch '+_ch;
+    var body=document.getElementById('ch-body');
+    body.innerHTML=vs.map(function(v){
+      return '<div class="chv"><div class="chvn">'+v.v+'</div>'+
+        '<div class="chvcol">'+
+        (_lang!=='en'?'<div class="chvta">'+v.ta+'</div>':'')+
+        (_lang!=='ta'?'<div class="chven">'+v.en+'</div>':'')+
+        '</div></div>';
+    }).join('')+'<div style="padding-bottom:80px"></div>';
+    body.scrollTop=0;
+  }
+  return{open:open,close:close,showLang:showLang,prev:prev,next:next,jump:jump,bk:bk,ch:ch};
+})();
+
+/* ═══════════════════════════════════════
+   READING MODE — RM
 ═══════════════════════════════════════ */
 var RM=(function(){
   var _v=null,_fs=18;
   function open(v){
+    if(!v)return;
     _v=v;_fs=ST.g('fs')||18;
     document.getElementById('read-ref').textContent=v.ref||'';
-    _render();
-    document.getElementById('read-ov').classList.add('on');
-  }
-  function close(){
-    AU.stop();
-    document.getElementById('read-ov').classList.remove('on');
-  }
-  function fs(d){
-    _fs=Math.max(13,Math.min(30,_fs+d));
-    ST.setFs(_fs);_render();
-  }
-  function _render(){
-    if(!_v)return;
     var lang=ST.g('lang')||'both';
     var ta=document.getElementById('read-ta');
     var en=document.getElementById('read-en');
-    var dv=document.getElementById('read-div');
-    var bg=document.getElementById('read-badge');
-    ta.style.fontSize=_fs+'px';
-    en.style.fontSize=Math.max(13,_fs-1)+'px';
-    if(lang==='ta'||lang==='both'){ta.textContent=_v.ta||'';ta.style.display='block';}else{ta.style.display='none';}
-    if(lang==='en'||lang==='both'){en.textContent=_v.en||'';en.style.display='block';}else{en.style.display='none';}
-    dv.style.background=_v.color||'var(--gold)';dv.style.display=(lang==='both')?'block':'none';
-    bg.textContent=_v.ref||'';bg.style.background=_v.color||'var(--gold)';bg.style.color='#fff';
+    ta.style.fontSize=_fs+'px';en.style.fontSize=(_fs-2)+'px';
+    ta.textContent=lang!=='en'?v.ta:'';
+    en.textContent=lang!=='ta'?v.en:'';
+    document.getElementById('read-div').style.display=lang==='both'?'block':'none';
+    var badge=document.getElementById('read-badge');
+    badge.textContent=v.ref||'';
+    badge.style.cssText='background:'+(v.color||'#1a3a6a')+';color:#fff;padding:5px 18px;font-size:9px;font-weight:700;letter-spacing:3px;font-family:var(--sans)';
+    document.getElementById('read-ov').classList.add('on');
+    AU.open(v);
+  }
+  function close(){AU.stop();document.getElementById('read-ov').classList.remove('on');}
+  function fs(d){
+    _fs=Math.max(13,Math.min(30,_fs+d));ST.setFs(_fs);
+    document.getElementById('read-ta').style.fontSize=_fs+'px';
+    document.getElementById('read-en').style.fontSize=(_fs-2)+'px';
   }
   return{open:open,close:close,fs:fs};
 })();
 
 /* ═══════════════════════════════════════
-   CHAPTER READER
-═══════════════════════════════════════ */
-var CR=(function(){
-  var _bk='',_ch=1,_lang='ta',_maxCh=1;
-  function open(book,ch){
-    _bk=book;_ch=ch||1;
-    var vs=BD.byBook(_bk);
-    _maxCh=vs.length?Math.max.apply(null,vs.map(function(v){return v.ch;})):1;
-    _render();
-    document.getElementById('ch-ov').classList.add('on');
-  }
-  function close(){AU.stop();document.getElementById('ch-ov').classList.remove('on');}
-  function _render(){
-    var vs=BD.byBookCh(_bk,_ch);
-    var bookTa=vs.length?vs[0].bookTa:'';
-    document.getElementById('ch-title').textContent=_bk+' — Chapter '+_ch;
-    document.getElementById('ch-sub').textContent=bookTa+' — '+_ch+' ஆம் அதிகாரம் · '+vs.length+' VERSES';
-    document.getElementById('ch-jump').textContent='Ch '+_ch;
-    document.getElementById('ch-prev').disabled=(_ch<=1);
-    document.getElementById('ch-next').disabled=(_ch>=_maxCh);
-    var body=document.getElementById('ch-body');
-    if(!vs.length){body.innerHTML='<div class="empty"><div class="emico">📖</div><div class="emtxt">NO VERSES FOUND</div></div>';return;}
-    body.innerHTML=vs.map(function(v){
-      return '<div class="chv">'+
-        '<div class="chvn">'+v.v+'</div>'+
-        '<div class="chvcol">'+
-          (_lang!=='en'?'<div class="chvta">'+v.ta+'</div>':'')+
-          (_lang!=='ta'?'<div class="chven">'+v.en+'</div>':'')+
-        '</div></div>';
-    }).join('');
-    document.getElementById('ch-ov').querySelector('.chbody').scrollTop=0;
-    ['ta','en','both'].forEach(function(l){
-      var b=document.getElementById('ch-'+l+'-btn');if(b)b.classList.toggle('on',_lang===l);
-    });
-  }
-  function showLang(l){_lang=l;_render();}
-  function prev(){if(_ch>1){_ch--;_render();}}
-  function next(){if(_ch<_maxCh){_ch++;_render();}}
-  function jump(){
-    var n=parseInt(prompt('Go to chapter (1-'+_maxCh+'):'),10);
-    if(n>=1&&n<=_maxCh){_ch=n;_render();}
-  }
-  return{open:open,close:close,showLang:showLang,prev:prev,next:next,jump:jump,
-    get _bk(){return _bk;},get _ch(){return _ch;}};
-})();
-
-/* ═══════════════════════════════════════
-   CHARACTER DETAIL OVERLAY
+   CHARACTER DETAIL — CD
 ═══════════════════════════════════════ */
 var CD=(function(){
-  function open(c){
-    document.getElementById('cd-name').textContent=c.name||'';
-    document.getElementById('cd-ta-name').textContent=c.name_ta||'';
-    document.getElementById('cd-era').textContent=(c.era||'')+(c.tribe?' · '+c.tribe:'');
-    document.getElementById('cd-emi').textContent=c.emoji||'👤';
-    var body=document.getElementById('cd-body');
-    var html='';
-    if(c.meaning){html+='<div class="csec"><div class="csl">NAME MEANING · பெயர் பொருள்</div><div class="csen">'+c.meaning+'</div></div>';}
-    if(c.summary_en||c.summary){
-      html+='<div class="csec"><div class="csl">LIFE STORY · வாழ்க்கை கதை</div>'+
-        '<div class="csen">'+(c.summary_en||c.summary||'')+'</div>'+
-        (c.summary_ta?'<div class="csta">'+c.summary_ta+'</div>':'')+
+  var _cur=null;
+  function open(id){
+    if(typeof BIBLE_CHARACTERS==='undefined')return;
+    var c=null;
+    for(var i=0;i<BIBLE_CHARACTERS.length;i++){if(BIBLE_CHARACTERS[i].id===id){c=BIBLE_CHARACTERS[i];break;}}
+    if(!c)return;
+    _cur=c;
+    document.getElementById('cd-name').textContent=c.name;
+    document.getElementById('cd-ta-name').textContent=c.ta_name;
+    document.getElementById('cd-era').textContent=c.era+' · '+(c.testament==='OT'?'Old Testament':'New Testament');
+    document.getElementById('cd-emi').textContent=c.emoji;
+    document.getElementById('char-bar').style.background='linear-gradient(135deg,'+c.color+','+c.color+'cc)';
+    var lang=ST.g('lang')||'both';
+    var html='<div class="csec"><div class="csl">SUMMARY · சுருக்கம்</div>'+
+      (lang!=='ta'?'<div class="csen">'+c.summary_en+'</div>':'')+
+      (lang!=='en'?'<div class="csta">'+c.summary_ta+'</div>':'')+
       '</div>';
-    }
-    if(c.key_verses&&c.key_verses.length){
-      html+='<div class="csec"><div class="csl">KEY VERSES · முக்கிய வசனங்கள்</div>'+
-        c.key_verses.map(function(kv){
-          return '<div class="kv"><div class="kvref">'+(kv.ref||'')+'</div>'+
-            '<div class="kven">'+(kv.en||kv.text||'')+'</div>'+
-            (kv.ta?'<div class="kvta">'+kv.ta+'</div>':'')+
-          '</div>';
-        }).join('')+'</div>';
-    }
     if(c.timeline&&c.timeline.length){
-      html+='<div class="csec"><div class="csl">TIMELINE · காலவரிசை</div>'+
-        c.timeline.map(function(t,i){
-          return '<div class="tli">'+
-            '<div class="tlcol"><div class="tldot" style="background:'+(c.color||'var(--gold)')+'"></div>'+(i<c.timeline.length-1?'<div class="tlline"></div>':'')+'</div>'+
-            '<div><div class="tlref">'+(t.ref||t.event||'')+'</div>'+
-            '<div class="tlen">'+(t.en||t.desc||'')+'</div>'+
-            (t.ta?'<div class="tlta">'+t.ta+'</div>':'')+
+      html+='<div class="csec"><div class="csl">TIMELINE · வரலாறு</div>'+
+        c.timeline.map(function(t){
+          return '<div class="tli"><div class="tlcol">'+
+            '<div class="tldot" style="background:'+c.color+'"></div>'+
+            '<div class="tlline"></div></div>'+
+            '<div style="flex:1;padding-bottom:12px"><div class="tlref">'+t.ref+'</div>'+
+            (lang!=='ta'?'<div class="tlen">'+t.en+'</div>':'')+
+            (lang!=='en'?'<div class="tlta">'+t.ta+'</div>':'')+
             '</div></div>';
         }).join('')+'</div>';
     }
-    if(c.lessons&&c.lessons.length){
-      html+='<div class="csec"><div class="csl">LESSONS · படிப்பினைகள்</div>'+
-        c.lessons.map(function(l,i){
-          return '<div class="lesn"><div class="lesnn">'+(i+1)+'</div>'+
-            '<div><div class="lesen">'+(l.en||l)+'</div>'+
-            (l.ta?'<div class="lesta">'+l.ta+'</div>':'')+
-          '</div></div>';
+    if(c.verses&&c.verses.length){
+      html+='<div class="csec"><div class="csl">KEY VERSES · முக்கிய வசனங்கள்</div>'+
+        c.verses.map(function(v){
+          return '<div class="kv"><div class="kvref">'+v.ref+'</div>'+
+            (lang!=='ta'?'<div class="kven">'+v.en+'</div>':'')+
+            (lang!=='en'?'<div class="kvta">'+v.ta+'</div>':'')+
+            '</div>';
         }).join('')+'</div>';
     }
-    body.innerHTML=html||'<div class="empty"><div class="emtxt">NO DATA</div></div>';
+    if(c.lessons_en&&c.lessons_en.length){
+      html+='<div class="csec"><div class="csl">LESSONS · படிப்பினை</div>'+
+        c.lessons_en.map(function(l,i){
+          return '<div class="lesn"><div class="lesnn">'+(i+1)+'</div><div>'+
+            (lang!=='ta'?'<div class="lesen">'+l+'</div>':'')+
+            (c.lessons_ta&&c.lessons_ta[i]&&lang!=='en'?'<div class="lesta">'+c.lessons_ta[i]+'</div>':'')+
+            '</div></div>';
+        }).join('')+'</div>';
+    }
+    html+='<div class="csec" style="display:flex;gap:6px">'+
+      '<button style="flex:1;padding:13px;background:rgba(0,80,180,.4);border:1px solid rgba(100,150,255,.3);color:#fff;font-size:10px;font-weight:700;font-family:var(--sans);cursor:pointer" onclick="CD.hearTA()">🇮🇳 தமிழில் கேள்</button>'+
+      '<button style="flex:1;padding:13px;background:rgba(0,80,0,.4);border:1px solid rgba(100,200,100,.3);color:#fff;font-size:10px;font-weight:700;font-family:var(--sans);cursor:pointer" onclick="CD.hearEN()">🇬🇧 English Hear</button>'+
+      '</div><div class="pb"></div>';
+    document.getElementById('cd-body').innerHTML=html;
     document.getElementById('char-ov').classList.add('on');
   }
-  function close(){document.getElementById('char-ov').classList.remove('on');}
-  return{open:open,close:close};
+  function hearTA(){if(_cur)AU.speakText(_cur.summary_ta,'ta-IN');}
+  function hearEN(){if(_cur)AU.speakText(_cur.summary_en,'en-US');}
+  function close(){AU.stop();document.getElementById('char-ov').classList.remove('on');}
+  return{open:open,close:close,hearTA:hearTA,hearEN:hearEN};
 })();
 
 /* ═══════════════════════════════════════
-   STORY DETAIL OVERLAY
+   STORY DETAIL — StD
 ═══════════════════════════════════════ */
 var StD=(function(){
-  function open(s){
-    document.getElementById('st-name').textContent=s.title_en||s.title||'';
-    document.getElementById('st-ta-name').textContent=s.title_ta||'';
-    document.getElementById('st-emi').textContent=s.emoji||'📖';
-    var body=document.getElementById('st-body');
-    var html='';
-    if(s.summary_en||s.summary){
-      html+='<div class="csec"><div class="csl">STORY · கதை</div>'+
-        '<div class="csen">'+(s.summary_en||s.summary||'')+'</div>'+
-        (s.summary_ta?'<div class="csta">'+s.summary_ta+'</div>':'')+
+  var _cur=null;
+  function open(id){
+    if(typeof KIDS_STORIES==='undefined')return;
+    var s=null;
+    for(var i=0;i<KIDS_STORIES.length;i++){if(KIDS_STORIES[i].id===id){s=KIDS_STORIES[i];break;}}
+    if(!s)return;
+    _cur=s;
+    document.getElementById('st-name').textContent=s.title_en;
+    document.getElementById('st-ta-name').textContent=s.title_ta;
+    document.getElementById('st-emi').textContent=s.icon||'';
+    document.getElementById('stbar').style.background='linear-gradient(135deg,'+s.color+','+s.color+'cc)';
+    var lang=ST.g('lang')||'both';
+    var html='<div class="csec"><div class="csl">'+s.verse_ref+'</div>'+
+      (lang!=='ta'?'<div class="kven" style="margin-bottom:8px">'+s.verse_en+'</div>':'')+
+      (lang!=='en'?'<div class="kvta">'+s.verse_ta+'</div>':'')+
+      '</div>'+
+      '<div class="csec"><div class="csl">STORY · கதை</div>'+
+      (lang!=='ta'?'<div class="csen">'+s.story_en+'</div>':'')+
+      (lang!=='en'?'<div class="csta">'+s.story_ta+'</div>':'')+
       '</div>';
-    }
-    /* Full story sections */
-    if(s.sections&&s.sections.length){
-      s.sections.forEach(function(sec){
-        html+='<div class="csec">'+
-          (sec.title?'<div class="csl">'+sec.title+'</div>':'')+
-          '<div class="csen">'+(sec.en||'')+'</div>'+
-          (sec.ta?'<div class="csta">'+sec.ta+'</div>':'')+
-        '</div>';
-      });
-    }
-    if(s.key_verses&&s.key_verses.length){
-      html+='<div class="csec"><div class="csl">KEY VERSES · முக்கிய வசனங்கள்</div>'+
-        s.key_verses.map(function(kv){
-          return '<div class="kv"><div class="kvref">'+(kv.ref||'')+'</div>'+
-            '<div class="kven">'+(kv.en||kv.text||'')+'</div>'+
-            (kv.ta?'<div class="kvta">'+kv.ta+'</div>':'')+
-          '</div>';
-        }).join('')+'</div>';
-    }
     if(s.lessons&&s.lessons.length){
-      html+='<div class="csec"><div class="csl">LESSONS · படிப்பினைகள்</div>'+
+      html+='<div class="csec"><div class="csl">LESSONS · படிப்பினை</div>'+
         s.lessons.map(function(l,i){
-          return '<div class="lesn"><div class="lesnn">'+(i+1)+'</div>'+
-            '<div><div class="lesen">'+(l.en||l)+'</div>'+
-            (l.ta?'<div class="lesta">'+l.ta+'</div>':'')+
-          '</div></div>';
+          return '<div class="lesn"><div class="lesnn">'+(i+1)+'</div><div>'+
+            (lang!=='ta'?'<div class="lesen">'+l+'</div>':'')+
+            (s.lessons_ta&&s.lessons_ta[i]&&lang!=='en'?'<div class="lesta">'+s.lessons_ta[i]+'</div>':'')+
+            '</div></div>';
         }).join('')+'</div>';
     }
-    /* Audio button */
-    if(s.summary_ta||s.summary_en){
-      var storyText=(s.summary_ta||s.summary_en||'');
-      html+='<div style="padding:16px"><button class="read-to-me-btn" onclick="AU.speakText(\''+storyText.replace(/'/g,"\\'").substring(0,200)+'\',\'ta-IN\')">🔊 கதையை கேளுங்கள் · READ TO ME</button></div>';
-    }
-    body.innerHTML=html||'<div class="empty"><div class="emtxt">NO DATA</div></div>';
+    html+='<div class="csec" style="display:flex;gap:6px">'+
+      '<button style="flex:1;padding:13px;background:rgba(0,80,180,.4);border:1px solid rgba(100,150,255,.3);color:#fff;font-size:10px;font-weight:700;font-family:var(--sans);cursor:pointer" onclick="StD.hearTA()">🇮🇳 தமிழில் கேள்</button>'+
+      '<button style="flex:1;padding:13px;background:rgba(0,80,0,.4);border:1px solid rgba(100,200,100,.3);color:#fff;font-size:10px;font-weight:700;font-family:var(--sans);cursor:pointer" onclick="StD.hearEN()">🇬🇧 English Hear</button>'+
+      '</div><div class="pb"></div>';
+    document.getElementById('st-body').innerHTML=html;
     document.getElementById('story-ov').classList.add('on');
   }
+  function hearTA(){if(_cur)AU.speakText(_cur.story_ta,'ta-IN');}
+  function hearEN(){if(_cur)AU.speakText(_cur.story_en,'en-US');}
   function close(){AU.stop();document.getElementById('story-ov').classList.remove('on');}
-  return{open:open,close:close};
+  return{open:open,close:close,hearTA:hearTA,hearEN:hearEN};
 })();
 
 /* ═══════════════════════════════════════
-   SONG DETAIL OVERLAY
+   SONG DETAIL — SongD
 ═══════════════════════════════════════ */
 var SongD=(function(){
-  function open(song){
-    document.getElementById('sg-name').textContent=song.title_ta||'';
-    document.getElementById('sg-en').textContent=song.title_en||'';
-    document.getElementById('sg-lyrics').textContent=song.lyrics_ta||'(Lyrics coming soon…)';
+  var _cur=null;
+  function open(catIdx,songIdx){
+    if(typeof TAMIL_SONGS==='undefined')return;
+    var cat=TAMIL_SONGS.categories[catIdx];if(!cat)return;
+    var s=cat.songs[songIdx];if(!s)return;
+    _cur=s;
+    document.getElementById('sg-name').textContent=s.title_ta||'';
+    document.getElementById('sg-en').textContent=(s.title_en||'')+' · '+cat.title_en;
+    document.getElementById('sg-lyrics').textContent=s.lyrics_ta||'';
     document.getElementById('song-ov').classList.add('on');
   }
+  function hearTA(){if(_cur)AU.speakText(_cur.lyrics_ta,'ta-IN');}
   function close(){AU.stop();document.getElementById('song-ov').classList.remove('on');}
-  return{open:open,close:close};
+  return{open:open,close:close,hearTA:hearTA};
 })();
 
 /* ═══════════════════════════════════════
-   VERSE LIST SCREEN (SV)
-═══════════════════════════════════════ */
-var SV=(function(){
-  var _all=[],_fil=[],_lang='both',_pg=0,_perPg=30,_q='';
-  function init(){_all=BD.all();_fil=_all.slice();_render();}
-  function setLang(l){
-    _lang=l;_pg=0;
-    document.querySelectorAll('#v-ltog button').forEach(function(b){b.classList.remove('on');});
-    var idx={ta:0,en:1,both:2}[l]||2;
-    document.querySelectorAll('#v-ltog button')[idx].classList.add('on');
-    _render();
-  }
-  function filter(q){_q=q;_pg=0;
-    var ql=q.toLowerCase();
-    _fil=q.trim()?_all.filter(function(v){
-      return v.ta.indexOf(q)!==-1||v.en.toLowerCase().indexOf(ql)!==-1||v.ref.toLowerCase().indexOf(ql)!==-1;
-    }):_all.slice();
-    _render();
-  }
-  function prev(){if(_pg>0){_pg--;_render();}}
-  function next(){if((_pg+1)*_perPg<_fil.length){_pg++;_render();}}
-  function _render(){
-    var start=_pg*_perPg,end=Math.min(start+_perPg,_fil.length);
-    var page=_fil.slice(start,end);
-    var totalPg=Math.max(1,Math.ceil(_fil.length/_perPg));
-    document.getElementById('v-pgi').textContent='Page '+(_pg+1)+' of '+totalPg+' · '+_fil.length+' verses';
-    document.getElementById('v-prev').disabled=_pg===0;
-    document.getElementById('v-next').disabled=end>=_fil.length;
-    document.getElementById('v-list').innerHTML=page.map(function(v){
-      var saved=ST.isSaved(v.id);
-      return '<div class="vc">'+
-        '<div class="vch"><div>'+
-          '<div class="vr">'+v.ref+'</div>'+
-          '<div class="vbk">'+v.bookTa+'</div>'+
-        '</div>'+
-        '<div class="va" style="margin-top:0;gap:3px">'+
-          '<button onclick="RM.open(BD.byId('+v.id+'))" style="flex:none;padding:4px 8px;background:var(--bg3);border:1px solid var(--brd);color:var(--txt2);font-size:8px;font-weight:700;font-family:var(--sans)">READ</button>'+
-          '<button onclick="var v=BD.byId('+v.id+');AU.open(v)" style="flex:none;padding:4px 8px;background:var(--bg3);border:1px solid var(--brd);color:var(--txt2);font-size:8px;font-weight:700;font-family:var(--sans)">🔊</button>'+
-          '<button id="sv-s'+v.id+'" onclick="App.toggleSave('+v.id+',this)" style="flex:none;padding:4px 8px;background:var(--bg3);border:1px solid var(--brd);font-size:10px;font-family:var(--sans)">'+(saved?'♥':'♡')+'</button>'+
-        '</div></div>'+
-        '<div class="vbd">'+
-          (_lang!=='en'?'<div class="vta">'+v.ta+'</div>':'')+
-          (_lang!=='ta'?'<div class="ven">'+v.en+'</div>':'')+
-        '</div></div>';
-    }).join('');
-    document.getElementById('main').scrollTop=0;
-  }
-  return{init:init,setLang:setLang,filter:filter,prev:prev,next:next};
-})();
-
-/* ═══════════════════════════════════════
-   SEARCH SCREEN (SA)
-═══════════════════════════════════════ */
-var SA=(function(){
-  var CHIPS=['Love · அன்பு','Faith · விசுவாசம்','Hope · நம்பிக்கை','Peace · சமாதானம்','Grace · கிருபை','John 3:16','Psalms 23','Strength · வலிமை','Forgiveness','Salvation'];
-  function init(){
-    document.getElementById('ai-chips').innerHTML=CHIPS.map(function(c){
-      return '<button class="chip" onclick="SA.chip(this,\''+c+'\')">'+c+'</button>';
-    }).join('');
-  }
-  function chip(el,q){
-    document.querySelectorAll('.chip').forEach(function(c){c.classList.remove('on');});
-    el.classList.add('on');
-    document.getElementById('ai-srch').value=q;
-    run();
-  }
-  function run(){
-    var q=document.getElementById('ai-srch').value.trim();
-    if(!q)return;
-    var res=BD.search(q);
-    var el=document.getElementById('ai-list');
-    if(!res.length){el.innerHTML='<div class="empty"><div class="emico">✦</div><div class="emtxt">NO RESULTS FOUND · தேடல் கிடைக்கவில்லை</div></div>';return;}
-    el.innerHTML=res.map(function(v){
-      return '<div class="vc">'+
-        '<div class="vch"><div>'+
-          '<div class="vr">'+v.ref+'</div>'+
-          '<div class="vbk">'+v.bookTa+'</div>'+
-        '</div>'+
-        '<div style="display:flex;gap:3px">'+
-          '<button onclick="RM.open(BD.byId('+v.id+'))" style="padding:4px 8px;border:none;background:var(--bg3);color:var(--txt2);font-size:8px;font-weight:700;font-family:var(--sans)">READ</button>'+
-          '<button onclick="AU.open(BD.byId('+v.id+'))" style="padding:4px 8px;border:none;background:var(--bg3);color:var(--txt2);font-size:8px;font-family:var(--sans)">🔊</button>'+
-        '</div></div>'+
-        '<div class="vbd"><div class="vta">'+v.ta+'</div><div class="ven">'+v.en+'</div></div>'+
-      '</div>';
-    }).join('');
-  }
-  return{init:init,chip:chip,run:run};
-})();
-
-/* ═══════════════════════════════════════
-   BOOKS SCREEN
-═══════════════════════════════════════ */
-var Books=(function(){
-  var _filter='all';
-  var OT=['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi'];
-  function init(){
-    document.getElementById('b-filt').innerHTML=[
-      '<button class="on" onclick="Books.filt(this,\'all\')">ALL 66</button>',
-      '<button onclick="Books.filt(this,\'ot\')">OT · பழைய ஏற்பாடு</button>',
-      '<button onclick="Books.filt(this,\'nt\')">NT · புதிய ஏற்பாடு</button>'
-    ].join('');
-    _render();
-  }
-  function filt(el,f){
-    _filter=f;
-    document.querySelectorAll('#b-filt button').forEach(function(b){b.classList.remove('on');});
-    el.classList.add('on');
-    _render();
-  }
-  function _render(){
-    var books=BD.BEN.filter(function(b){
-      if(_filter==='ot')return OT.indexOf(b)!==-1;
-      if(_filter==='nt')return OT.indexOf(b)===-1;
-      return true;
-    });
-    document.getElementById('b-grid').innerHTML=books.map(function(b){
-      var vs=BD.byBook(b);
-      var chapters=vs.length?Math.max.apply(null,vs.map(function(v){return v.ch;})):0;
-      var ta=vs.length?vs[0].bookTa:'';
-      var col=BD.colorOf(b);
-      var isOT=OT.indexOf(b)!==-1;
-      return '<div class="btile" style="background:'+col+'">'+
-        '<div><div class="bne">'+b+'</div><div class="bnt">'+ta+'</div><div class="bm">'+(isOT?'OLD TESTAMENT':'NEW TESTAMENT')+' · '+chapters+' CH · '+vs.length+' VER</div></div>'+
-        '<div class="bbtns">'+
-          '<button onclick="CR.open(\''+b+'\',1)">📖 READ</button>'+
-          '<button onclick="AU.open({ref:\''+b+'\',ta:\'\',en:\'\',color:\''+col+'\'});AU.readCh()">🔊 HEAR</button>'+
-        '</div></div>';
-    }).join('');
-  }
-  return{init:init,filt:filt};
-})();
-
-/* ═══════════════════════════════════════
-   CHARACTERS SCREEN
-═══════════════════════════════════════ */
-var Chars=(function(){
-  function init(){
-    if(typeof CHARACTERS==='undefined'||!CHARACTERS.length){
-      document.getElementById('c-grid').innerHTML='<div class="empty"><div class="emico">👤</div><div class="emtxt">LOADING CHARACTERS…</div></div>';return;
-    }
-    document.getElementById('c-grid').innerHTML=CHARACTERS.map(function(c){
-      return '<div class="ctile" style="background:'+(c.color||'#1a3a5c')+'" onclick="CD.open('+JSON.stringify(c).replace(/"/g,'&quot;')+')">'+
-        '<div class="cemi">'+(c.emoji||'👤')+'</div>'+
-        '<div>'+
-          '<div class="cn">'+(c.name||'')+'</div>'+
-          '<div class="cnt">'+(c.name_ta||'')+'</div>'+
-          '<div class="ce">'+(c.era||'')+'</div>'+
-          (c.meaning?'<div class="ctl">'+(c.meaning||'')+'</div>':'')+
-        '</div>'+
-        '<button class="cbtn">LIFE STORY · VIEW →</button>'+
-      '</div>';
-    }).join('');
-  }
-  return{init:init};
-})();
-
-/* ═══════════════════════════════════════
-   KIDS STORIES SCREEN
-═══════════════════════════════════════ */
-var Stories=(function(){
-  var _filter='all';
-  function init(){
-    if(typeof KIDS_STORIES==='undefined'){
-      document.getElementById('stor-grid').innerHTML='<div class="empty"><div class="emico">📚</div><div class="emtxt">LOADING…</div></div>';return;
-    }
-    var cats=_getCats();
-    document.getElementById('stor-filt').innerHTML='<button class="on" onclick="Stories.filt(this,\'all\')">ALL</button>'+
-      cats.map(function(c){return '<button onclick="Stories.filt(this,\''+c+'\')">'+c+'</button>';}).join('');
-    _render();
-  }
-  function _getCats(){
-    if(!KIDS_STORIES||!KIDS_STORIES.length)return[];
-    var seen={};
-    return KIDS_STORIES.filter(function(s){var c=s.category||'General';if(seen[c])return false;seen[c]=1;return true;}).map(function(s){return s.category||'General';});
-  }
-  function filt(el,f){
-    _filter=f;
-    document.querySelectorAll('#stor-filt button').forEach(function(b){b.classList.remove('on');});
-    el.classList.add('on');_render();
-  }
-  function _render(){
-    var list=(KIDS_STORIES||[]).filter(function(s){return _filter==='all'||(s.category||'General')===_filter;});
-    document.getElementById('stor-grid').innerHTML=list.map(function(s){
-      var sc=JSON.stringify(s).replace(/"/g,'&quot;');
-      return '<div class="ctile" style="background:'+(s.color||'#0d3a5c')+'" onclick="StD.open('+sc+')">'+
-        '<div class="cemi">'+(s.emoji||'📖')+'</div>'+
-        '<div>'+
-          '<div class="cn">'+(s.title_en||s.title||'')+'</div>'+
-          '<div class="cnt">'+(s.title_ta||'')+'</div>'+
-          '<div class="ce">'+(s.category||'')+'</div>'+
-        '</div>'+
-        '<button class="cbtn">READ STORY →</button>'+
-      '</div>';
-    }).join('');
-  }
-  return{init:init,filt:filt};
-})();
-
-/* ═══════════════════════════════════════
-   SONGS SCREEN (SSONGS)
+   SONGS SCREEN — SSONGS
 ═══════════════════════════════════════ */
 var SSONGS=(function(){
-  var _all=[];
+  var _cats=[];
   function init(){
+    var el=document.getElementById('songs-list');
     if(typeof TAMIL_SONGS==='undefined'){
-      document.getElementById('songs-list').innerHTML='<div class="empty"><div class="emico">🎵</div><div class="emtxt">NO SONGS LOADED</div></div>';return;
+      if(el)el.innerHTML='<div class="empty"><div class="emico">🎵</div><div class="emtxt">songs.js NOT LOADED</div></div>';
+      return;
     }
-    _all=[];
-    (TAMIL_SONGS.categories||[]).forEach(function(cat){
-      (cat.songs||[]).forEach(function(s){_all.push(Object.assign({},s,{catId:cat.id,catTitle:cat.title_en,catColor:cat.color}));});
-    });
-    _renderAll();
+    _cats=TAMIL_SONGS.categories||[];
+    _render(_cats);
   }
   function filter(q){
-    var ql=(q||'').toLowerCase();
-    if(!ql){_renderAll();return;}
-    var fil=_all.filter(function(s){
-      return (s.title_ta||'').indexOf(q)!==-1||(s.title_en||'').toLowerCase().indexOf(ql)!==-1;
-    });
-    _renderList(fil);
-  }
-  function _renderAll(){
-    if(typeof TAMIL_SONGS==='undefined')return;
-    var html='';
-    (TAMIL_SONGS.categories||[]).forEach(function(cat){
-      html+='<div class="song-cat-hdr" onclick="this.nextElementSibling.classList.toggle(\'open\')">'+
-        '<div>'+
-          '<div class="song-cat-t">'+(cat.icon||'🎵')+' '+(cat.title_ta||cat.title_en||'')+'</div>'+
-          '<div class="song-cat-e">'+(cat.title_en||'')+' · '+((cat.songs||[]).length)+' SONGS</div>'+
-        '</div>'+
-        '<span style="color:var(--txt3);font-size:14px">▼</span>'+
-      '</div>'+
-      '<div class="song-cat-body">'+
-        (cat.songs||[]).map(function(s,i){
-          var sc=JSON.stringify(Object.assign({},s,{catId:cat.id})).replace(/"/g,'&quot;');
-          return '<div class="song-item" onclick="SongD.open('+sc+')">'+
-            '<div class="song-num">'+(i+1)+'</div>'+
-            '<div>'+
-              '<div class="song-tita">'+(s.title_ta||'')+'</div>'+
-              '<div class="song-tite">'+(s.title_en||'')+'</div>'+
-            '</div>'+
-          '</div>';
-        }).join('')+
-      '</div>';
-    });
-    document.getElementById('songs-list').innerHTML=html;
-  }
-  function _renderList(list){
-    document.getElementById('songs-list').innerHTML=list.map(function(s,i){
-      var sc=JSON.stringify(s).replace(/"/g,'&quot;');
-      return '<div class="song-item" onclick="SongD.open('+sc+')">'+
-        '<div class="song-num">'+(i+1)+'</div>'+
-        '<div>'+
-          '<div class="song-tita">'+(s.title_ta||'')+'</div>'+
-          '<div class="song-tite">'+(s.title_en||'')+'</div>'+
-        '</div></div>';
-    }).join('');
-  }
-  return{init:init,filter:filter};
-})();
-
-/* ═══════════════════════════════════════
-   SAVED SCREEN
-═══════════════════════════════════════ */
-var Saved=(function(){
-  function render(){
-    var ids=ST.saved();
-    document.getElementById('saved-lbl').textContent=ids.length+' SAVED';
-    if(!ids.length){
-      document.getElementById('saved-list').innerHTML='<div class="empty"><div class="emico">♡</div><div class="emtxt">TAP ♡ ON ANY VERSE TO SAVE IT</div></div>';return;
+    if(!q.trim()){_render(_cats);return;}
+    var ql=q.toLowerCase();
+    var filtered=[];
+    for(var i=0;i<_cats.length;i++){
+      var cat=_cats[i];
+      var songs=[];
+      for(var j=0;j<cat.songs.length;j++){
+        var s=cat.songs[j];
+        if((s.title_ta&&s.title_ta.indexOf(q)!==-1)||
+           (s.title_en&&s.title_en.toLowerCase().indexOf(ql)!==-1)||
+           (s.lyrics_ta&&s.lyrics_ta.indexOf(q)!==-1)){
+          songs.push(s);
+        }
+      }
+      if(songs.length)filtered.push({id:cat.id,icon:cat.icon,title_ta:cat.title_ta,title_en:cat.title_en,color:cat.color,songs:songs});
     }
-    var vv=ids.map(function(id){return BD.byId(id);}).filter(Boolean);
-    document.getElementById('saved-list').innerHTML=vv.map(function(v){
-      return '<div class="vc">'+
-        '<div class="vch"><div>'+
-          '<div class="vr">'+v.ref+'</div>'+
-          '<div class="vbk">'+v.bookTa+'</div>'+
-        '</div>'+
-        '<div style="display:flex;gap:3px">'+
-          '<button onclick="RM.open(BD.byId('+v.id+'))" style="padding:4px 8px;border:none;background:var(--bg3);color:var(--txt2);font-size:8px;font-weight:700;font-family:var(--sans)">READ</button>'+
-          '<button onclick="ST.toggleSave('+v.id+');Saved.render();" style="padding:4px 8px;border:none;background:var(--bg3);color:#fa5a5a;font-size:10px;font-family:var(--sans)">♥</button>'+
-        '</div></div>'+
-        '<div class="vbd"><div class="vta">'+v.ta+'</div><div class="ven">'+v.en+'</div></div>'+
-      '</div>';
-    }).join('');
+    _render(filtered);
   }
-  return{render:render};
+  function _render(cats){
+    var el=document.getElementById('songs-list');if(!el)return;
+    if(!cats.length){el.innerHTML='<div class="empty"><div class="emico">🎵</div><div class="emtxt">NO SONGS FOUND</div></div>';return;}
+    var catIdx={};
+    for(var k=0;k<_cats.length;k++)catIdx[_cats[k].id]=k;
+    el.innerHTML=cats.map(function(cat,ci){
+      var realCi=catIdx[cat.id]!==undefined?catIdx[cat.id]:ci;
+      return '<div class="song-cat-hdr" onclick="SSONGS.toggle('+ci+')">'+
+        '<div>'+
+        '<div class="song-cat-t">'+(cat.icon||'🎵')+' '+cat.title_ta+
+        ' <span style="color:rgba(255,255,255,.4);font-size:9px">'+cat.title_en+'</span></div>'+
+        '<div class="song-cat-e">'+cat.songs.length+' பாடல்கள்</div></div>'+
+        '<span id="sa'+ci+'" style="color:rgba(255,255,255,.4)">'+(ci===0?'▲':'▼')+'</span></div>'+
+        '<div class="song-cat-body'+(ci===0?' open':'')+'" id="sb'+ci+'">'+
+        cat.songs.map(function(s,si){
+          var songRealIdx=0;
+          for(var x=0;x<_cats[realCi].songs.length;x++){
+            if(_cats[realCi].songs[x]===s||(_cats[realCi].songs[x].title_ta===s.title_ta)){songRealIdx=x;break;}
+          }
+          return '<div class="song-item" style="border-left:3px solid '+cat.color+'" onclick="SongD.open('+realCi+','+songRealIdx+')">'+
+            '<div class="song-num">'+(s.no||si+1)+'</div>'+
+            '<div><div class="song-tita">'+s.title_ta+'</div>'+
+            '<div class="song-tite">'+s.title_en+'</div></div></div>';
+        }).join('')+'</div>';
+    }).join('')+'<div class="pb"></div>';
+  }
+  function toggle(ci){
+    var b=document.getElementById('sb'+ci);
+    var a=document.getElementById('sa'+ci);
+    if(!b)return;
+    var open=b.classList.toggle('open');
+    if(a)a.textContent=open?'▲':'▼';
+  }
+  return{init:init,filter:filter,toggle:toggle};
 })();
 
 /* ═══════════════════════════════════════
-   HOME TILES RENDERER
-═══════════════════════════════════════ */
-function _renderHome(){
-  var daily=BD.daily();
-  var now=new Date();
-  var timeStr=now.toLocaleTimeString('ta-IN',{hour:'2-digit',minute:'2-digit'});
-  var dateStr=now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
-  var tiles=[
-    /* Clock */
-    '<div class="tile clk" style="background:linear-gradient(135deg,#0a0a1a,#111130)">'+
-      '<div class="dtag">இன்று · TODAY</div>'+
-      '<div class="ct" id="home-clock">'+timeStr+'</div>'+
-      '<div class="cd">'+dateStr+'</div>'+
-    '</div>',
-    /* Stats */
-    '<div class="tile" style="background:linear-gradient(135deg,#0d2e0d,#1a4a1a)">'+
-      '<div class="dtag">BIBLE DATA</div>'+
-      '<div class="ct">'+Math.round(BD.count()/1000)+'k</div>'+
-      '<div class="cd">VERSES LOADED</div>'+
-    '</div>',
-    /* Books */
-    '<div class="tile" style="background:linear-gradient(135deg,#0d2e0d,#155215)" onclick="App.nav(\'books\')">'+
-      '<div class="ttl">📖 Books · புத்தகங்கள்</div>'+
-      '<div class="tts">66 BOOKS · ALL CHAPTERS</div>'+
-    '</div>',
-    /* People */
-    '<div class="tile" style="background:linear-gradient(135deg,#3a1a00,#5c2e00)" onclick="App.nav(\'chars\')">'+
-      '<div class="ttl">👤 People · நபர்கள்</div>'+
-      '<div class="tts">BIBLE CHARACTERS</div>'+
-    '</div>',
-    /* Stories */
-    '<div class="tile" style="background:linear-gradient(135deg,#0d3a5c,#1a5276)" onclick="App.nav(\'stories\')">'+
-      '<div class="ttl">📚 Stories · கதைகள்</div>'+
-      '<div class="tts">KIDS BIBLE STORIES</div>'+
-    '</div>',
-    /* Songs */
-    '<div class="tile" style="background:linear-gradient(135deg,#1a0038,#3d1a6e)" onclick="App.nav(\'songs\')">'+
-      '<div class="ttl">🎵 Songs · பாடல்கள்</div>'+
-      '<div class="tts">TAMIL CHRISTIAN SONGS</div>'+
-    '</div>'
-  ];
-  document.getElementById('home-tiles').innerHTML=tiles.join('');
-  /* Clock tick */
-  setInterval(function(){
-    var el=document.getElementById('home-clock');
-    if(el)el.textContent=new Date().toLocaleTimeString('ta-IN',{hour:'2-digit',minute:'2-digit'});
-  },30000);
-  /* Today's verses */
-  if(daily){
-    document.getElementById('home-vv').innerHTML=
-      '<div class="vc"><div class="vch"><div>'+
-        '<div class="vr">'+daily.ref+'</div>'+
-        '<div class="vbk">'+daily.bookTa+' · TODAY\'S VERSE</div>'+
-      '</div>'+
-      '<div style="display:flex;gap:3px">'+
-        '<button onclick="RM.open(BD.byId('+daily.id+'))" style="padding:5px 10px;border:none;background:var(--bg3);color:var(--txt2);font-size:8px;font-weight:700;font-family:var(--sans)">READ</button>'+
-        '<button onclick="AU.open(BD.byId('+daily.id+'))" style="padding:5px 10px;border:none;background:var(--bg3);color:var(--txt2);font-size:8px;font-family:var(--sans)">🔊</button>'+
-      '</div></div>'+
-      '<div class="vbd"><div class="vta">'+daily.ta+'</div><div class="ven">'+daily.en+'</div></div></div>';
-  }
-}
-
-/* ═══════════════════════════════════════
-   APP — MAIN CONTROLLER
+   APP — Main controller
 ═══════════════════════════════════════ */
 var App=(function(){
   var _cur='home';
-  var _scrns=['home','verses','search','books','chars','stories','songs','saved'];
-
-  function init(){
-    /* Build Bible data */
-    var bar=document.getElementById('ls-bar');
-    var msg=document.getElementById('ls-msg');
-    function _prog(pct,txt){if(bar)bar.style.width=pct+'%';if(msg)msg.textContent=txt;}
-    _prog(20,'Building Bible data…');
-    setTimeout(function(){
-      try{
-        var count=BD.build();
-        _prog(60,'Loaded '+count+' verses…');
-        setTimeout(function(){
-          try{
-            /* Init screens */
-            _prog(75,'Setting up screens…');
-            _renderHome();
-            SV.init();
-            SA.init();
-            Books.init();
-            Chars.init();
-            Stories.init();
-            SSONGS.init();
-            Saved.render();
-            /* Apply saved theme/lang */
-            if(ST.g('theme')==='light')document.documentElement.setAttribute('data-light','');
-            _prog(95,'Almost ready…');
-            setTimeout(function(){
-              _prog(100,'');
-              /* Hide loading screen, show app */
-              document.getElementById('ls').style.display='none';
-              document.getElementById('app').style.display='flex';
-              document.getElementById('h-sub').textContent=count+' VERSES · LOADED';
-              /* Check notifications */
-              if(typeof PN!=='undefined')PN.checkLocal();
-            },300);
-          }catch(e){console.error('App.init screen setup:',e);_showErr();}
-        },200);
-      }catch(e){console.error('App.init BD.build:',e);_showErr();}
-    },100);
-  }
-
-  function _showErr(){
-    var err=document.getElementById('ls-err');
-    if(err)err.style.display='block';
-    var msg=document.getElementById('ls-msg');
-    if(msg)msg.textContent='⚠ Error loading data';
-  }
 
   function nav(s){
-    if(_scrns.indexOf(s)===-1)return;
-    _cur=s;
-    _scrns.forEach(function(x){
-      var el=document.getElementById('s-'+x);
-      if(el)el.classList.toggle('on',x===s);
-    });
-    document.querySelectorAll('#nav .nb').forEach(function(b){
-      b.classList.toggle('on',b.getAttribute('data-s')===s);
-    });
-    if(s==='saved')Saved.render();
-    document.getElementById('main').scrollTop=0;
-  }
-
-  function theme(){
-    var r=document.documentElement;
-    var isLight=r.hasAttribute('data-light');
-    if(isLight){r.removeAttribute('data-light');ST.setTheme('dark');}
-    else{r.setAttribute('data-light','');ST.setTheme('light');}
-    document.getElementById('th-btn').textContent=isLight?'☀':'🌙';
+    document.querySelectorAll('.scr').forEach(function(el){el.classList.remove('on');});
+    var el=document.getElementById('s-'+s);if(el)el.classList.add('on');
+    document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});
+    var nb=document.querySelector('[data-s="'+s+'"]');if(nb)nb.classList.add('on');
+    _cur=s;AU.stop();
   }
 
   function cycleLang(){
-    var langs=['both','ta','en'];
-    var cur=ST.g('lang')||'both';
-    var next=langs[(langs.indexOf(cur)+1)%langs.length];
+    var ls=['both','ta','en'],cur=ST.g('lang')||'both';
+    var next=ls[(ls.indexOf(cur)+1)%ls.length];
     ST.setLang(next);
-    document.getElementById('lang-btn').textContent={both:'BI',ta:'TA',en:'EN'}[next]||'BI';
+    document.getElementById('lang-btn').textContent=next.toUpperCase();
+    if(_cur==='verses')SV.render();
   }
 
-  function toggleSave(id,el){
+  function theme(){
+    var t=ST.g('theme')==='dark'?'light':'dark';ST.setTheme(t);
+    if(t==='light')document.documentElement.setAttribute('data-light','');
+    else document.documentElement.removeAttribute('data-light');
+    document.getElementById('th-btn').textContent=t==='dark'?'☀':'🌙';
+  }
+
+  function toggleSave(id,btn){
     var saved=ST.toggleSave(id);
-    if(el)el.textContent=saved?'♥':'♡';
+    if(btn)btn.textContent=saved?'♥':'♡';
+    _renderSaved();
   }
 
-  return{init:init,nav:nav,theme:theme,cycleLang:cycleLang,toggleSave:toggleSave};
+  function _countSongs(){
+    if(typeof TAMIL_SONGS==='undefined')return 0;
+    var n=0;for(var i=0;i<TAMIL_SONGS.categories.length;i++)n+=TAMIL_SONGS.categories[i].songs.length;
+    return n;
+  }
+
+  function _vcard(v){
+    var lang=ST.g('lang')||'both';var sv=ST.isSaved(v.id);
+    return '<div class="vc"><div class="vch">'+
+      '<div><div class="vr">'+v.ref+'</div><div class="vbk">'+v.bookTa+'</div></div>'+
+      '<div class="va">'+
+      '<button onclick="AU.open(BD.byId('+v.id+'))">🔊</button>'+
+      '<button onclick="RM.open(BD.byId('+v.id+'))">📖</button>'+
+      '<button onclick="App.toggleSave('+v.id+',this)">'+(sv?'♥':'♡')+'</button>'+
+      '</div></div><div class="vbd">'+
+      (lang!=='en'?'<div class="vta">'+v.ta+'</div>':'')+
+      (lang!=='ta'?'<div class="ven">'+v.en+'</div>':'')+
+      '</div></div>';
+  }
+
+  function _renderHome(){
+    var tg=document.getElementById('home-tiles');if(!tg)return;
+    var daily=BD.daily();
+    var tiles=[
+      {col:'linear-gradient(135deg,#1a3a6a,#2a5aa0)',ct:BD.BEN.length,cd:'BOOKS · புத்தகங்கள்',s:'books'},
+      {col:'linear-gradient(135deg,#1a5c1a,#2a8c2a)',ct:typeof BIBLE_CHARACTERS!=='undefined'?BIBLE_CHARACTERS.length:0,cd:'PEOPLE · பாத்திரங்கள்',s:'chars'},
+      {col:'linear-gradient(135deg,#1d4e89,#2874a6)',ct:typeof KIDS_STORIES!=='undefined'?KIDS_STORIES.length:0,cd:'STORIES · கதைகள்',s:'stories'},
+      {col:'linear-gradient(135deg,#3a1a5c,#6a2a9c)',ct:_countSongs(),cd:'SONGS · பாடல்கள்',s:'songs'}
+    ];
+    var dHtml='';
+    if(daily){
+      dHtml='<div class="tile w2 clk" style="background:linear-gradient(135deg,#080818,#1a1a3a)">'+
+        '<div class="dtag">TODAY\'S VERSE · இன்றைய வசனம்</div>'+
+        '<div class="dta">'+daily.ta+'</div>'+
+        '<div class="den">'+daily.en+'</div>'+
+        '<div class="dref">'+daily.ref+'</div>'+
+        '<div class="dbtns">'+
+        '<button class="dbtn" onclick="AU.open(BD.byId('+daily.id+'))">🔊 HEAR</button>'+
+        '<button class="dbtn" onclick="RM.open(BD.byId('+daily.id+'))">📖 READ</button>'+
+        '</div></div>';
+    }
+    tg.innerHTML=dHtml+tiles.map(function(t){
+      return '<div class="tile" style="background:'+t.col+'" onclick="App.nav(\''+t.s+'\')">'+
+        '<div class="ct">'+t.ct+'</div><div class="cd">'+t.cd+'</div></div>';
+    }).join('');
+    var vv=document.getElementById('home-vv');if(!vv)return;
+    var all=BD.all();var picks=[];var used={};var tries=0;
+    while(picks.length<5&&tries<200){
+      tries++;var r=Math.floor(Math.random()*all.length);
+      if(!used[r]){used[r]=1;picks.push(all[r]);}
+    }
+    vv.innerHTML='<div class="sh"><span class="sht">FEATURED VERSES</span></div>'+
+      picks.map(_vcard).join('')+'<div class="pb"></div>';
+  }
+
+  function _renderChars(){
+    var g=document.getElementById('c-grid');
+    if(!g||typeof BIBLE_CHARACTERS==='undefined')return;
+    g.innerHTML=BIBLE_CHARACTERS.map(function(c){
+      return '<div class="ctile" style="background:'+c.color+'" onclick="CD.open(\''+c.id+'\')">'+
+        '<span class="cemi">'+c.emoji+'</span>'+
+        '<div><div class="cn">'+c.name+'</div>'+
+        '<div class="cnt">'+c.ta_name+'</div>'+
+        '<div class="ce">'+c.era+'</div>'+
+        '<div class="ctl">'+c.tagline_en+'</div></div>'+
+        '<button class="cbtn">READ →</button></div>';
+    }).join('')+'<div class="pb"></div>';
+  }
+
+  function _renderStories(){
+    var g=document.getElementById('stor-grid');
+    var f=document.getElementById('stor-filt');
+    if(!g||typeof KIDS_STORIES==='undefined')return;
+    /* Collect unique categories — ES5 safe, no spread/Set */
+    var cats=[],seen={};
+    for(var i=0;i<KIDS_STORIES.length;i++){
+      var c=KIDS_STORIES[i].category;
+      if(!seen[c]){seen[c]=1;cats.push(c);}
+    }
+    var active=cats[0];
+    function doRender(cat){
+      active=cat;
+      if(f)f.innerHTML=cats.map(function(c){
+        return '<button class="'+(c===active?'on':'')+'" onclick="App._storFilt(\''+c+'\')">'+c+'</button>';
+      }).join('');
+      g.innerHTML=KIDS_STORIES.filter(function(s){return s.category===cat;}).map(function(s){
+        return '<div class="ctile" style="background:'+s.color+'" onclick="StD.open(\''+s.id+'\')">'+
+          '<span class="cemi">'+s.icon+'</span>'+
+          '<div><div class="cn">'+s.title_en+'</div>'+
+          '<div class="cnt">'+s.title_ta+'</div></div>'+
+          '<button class="cbtn">READ →</button></div>';
+      }).join('')+'<div class="pb"></div>';
+    }
+    App._storFilt=doRender;
+    doRender(active);
+  }
+
+  function _renderSaved(){
+    var g=document.getElementById('saved-list');if(!g)return;
+    var ids=ST.saved();
+    var lbl=document.getElementById('saved-lbl');
+    if(lbl)lbl.textContent=ids.length+' SAVED';
+    if(!ids.length){
+      g.innerHTML='<div class="empty"><div class="emico">♡</div><div class="emtxt">NO SAVED VERSES<br>TAP ♡ ON ANY VERSE</div></div>';return;
+    }
+    g.innerHTML=ids.map(function(id){var v=BD.byId(id);return v?_vcard(v):'';}).join('')+'<div class="pb"></div>';
+  }
+
+  /* Build missing screen HTML before init */
+  function _buildScreens(){
+    var ss=document.getElementById('s-search');
+    if(ss&&!document.getElementById('ai-srch')){
+      ss.innerHTML='<div style="background:linear-gradient(135deg,#1a1a00,#3a3a00);padding:14px 16px 12px">'+
+        '<div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">✦ SEARCH · தேடு</div>'+
+        '<div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">TAMIL &amp; ENGLISH VERSE SEARCH</div></div>'+
+        '<div class="sbar"><input class="sinp" id="ai-srch" placeholder="love, அன்பு, peace, John 3:16…" onkeydown="if(event.key===\'Enter\')SA.run()"/>'+
+        '<button class="sbtn" onclick="SA.run()">→</button></div>'+
+        '<div id="ai-out" class="pb"></div>';
+    }
+    /* Update song overlay hear button */
+    var songbar=document.getElementById('songbar');
+    if(songbar&&!document.getElementById('sg-hear-ta')){
+      var old=songbar.querySelector('.rcbtn');if(old)old.remove();
+      var d=document.createElement('div');d.style.cssText='display:flex;gap:4px';
+      d.innerHTML='<button id="sg-hear-ta" class="rcbtn" style="padding:0 8px;height:30px;font-size:9px;font-weight:700;font-family:var(--sans)" onclick="SongD.hearTA()">🇮🇳 HEAR</button>';
+      songbar.appendChild(d);
+    }
+  }
+
+  function init(){
+    if(ST.g('theme')==='light'){document.documentElement.setAttribute('data-light','');document.getElementById('th-btn').textContent='🌙';}
+    document.getElementById('lang-btn').textContent=(ST.g('lang')||'both').toUpperCase();
+    _buildScreens();
+    var bar=document.getElementById('ls-bar'),lmsg=document.getElementById('ls-msg');
+    function prog(p,t){if(bar)bar.style.width=p+'%';if(lmsg)lmsg.textContent=t;}
+    prog(10,'Loading Bible data…');
+    setTimeout(function(){
+      var count=BD.build();
+      if(!count){
+        var err=document.getElementById('ls-err');if(err)err.style.display='block';
+        if(lmsg)lmsg.textContent='⚠ Failed to load data';return;
+      }
+      prog(50,'Rendering…');
+      setTimeout(function(){
+        _renderHome();SV.init();SB.init();SSONGS.init();_renderChars();_renderStories();_renderSaved();
+        document.getElementById('h-sub').textContent=count.toLocaleString()+' VERSES · TAMIL + ENGLISH';
+        prog(95,'Starting…');
+        setTimeout(function(){
+          var ls=document.getElementById('ls');var app=document.getElementById('app');
+          if(ls)ls.style.display='none';if(app)app.style.display='';
+          PN.checkLocal();
+        },150);
+      },80);
+    },50);
+  }
+
+  return{nav:nav,cycleLang:cycleLang,theme:theme,toggleSave:toggleSave,init:init,renderSaved:_renderSaved};
 })();
 
-/* ── Boot ── */
+/* ═══════════════════════════════════════
+   FIX: AU.readCh uses CR.bk() / CR.ch()
+═══════════════════════════════════════ */
+/* Patch readCh to use CR.bk() and CR.ch() functions */
+(function(){
+  var _origReadCh=AU.readCh;
+  /* override AU.readCh to safely access CR */
+  AU.readCh=function(){
+    var bk=CR&&CR.bk?CR.bk():'';
+    var ch=CR&&CR.ch?CR.ch():1;
+    if(!bk)return;
+    var vs=BD.byBookCh(bk,ch);if(!vs.length)return;
+    if(!document.getElementById('au-panel').classList.contains('on')){
+      document.getElementById('au-ref').textContent=bk+' Chapter '+ch;
+      document.getElementById('au-panel').classList.add('on');
+    }
+    var lang=AU._lang||'ta';
+    var t=vs.map(function(v,i){return (i+1)+'. '+(lang==='ta'?v.ta:v.en);}).join(' ');
+    var msg=document.getElementById('au-msg');if(msg)msg.textContent='Reading '+vs.length+' verses…';
+    AU.speakText(t,lang==='ta'?'ta-IN':'en-US');
+  };
+})();
+
+/* ═══════════════════════════════════════
+   START
+═══════════════════════════════════════ */
 if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',App.init);
+  document.addEventListener('DOMContentLoaded',function(){App.init();});
 }else{
   App.init();
 }
+
 </script>
 </body>
 </html>
