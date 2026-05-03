@@ -281,15 +281,13 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
       </div>
       <div id="v-list" class="pb"></div>
     </div>
-    <!-- AI SEARCH -->
+    <!-- SEARCH -->
     <div class="scr" id="s-search">
-      <div style="background:#2d0a5e;padding:14px 16px 12px">
-        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">VERSE FINDER · வசன தேடல்</div>
-        <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">31,102 VERSES · TAMIL + ENGLISH · OFFLINE</div>
+      <div style="background:linear-gradient(135deg,#1a1a00,#3a3a00);padding:14px 16px 12px">
+        <div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">✦ SEARCH · வசன தேடல்</div>
+        <div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">31,102 VERSES · TAMIL+ENGLISH · KEYWORD · REFERENCE</div>
       </div>
       <div class="sbar"><input class="sinp" id="ai-srch" placeholder="love, அன்பு, peace, John 3:16…" onkeydown="if(event.key==='Enter')SA.run()"/><button class="sbtn" onclick="SA.run()">→</button></div>
-      <div class="chips" id="ai-chips"></div>
-      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 2</span></div>
       <div id="ai-list" class="pb"><div class="empty"><div class="emico">✦</div><div class="emtxt">SEARCH TOPIC · KEYWORD · REFERENCE</div></div></div>
     </div>
     <!-- BOOKS -->
@@ -385,11 +383,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
         <button id="ch-en-btn" onclick="CR.showLang('en')">EN</button>
         <button id="ch-bo-btn" onclick="CR.showLang('both')">BI</button>
       </div>
-      <div style="display:flex;gap:2px">
-        <button class="rcbtn" style="padding:0 7px;height:28px;font-size:9px;font-weight:700;font-family:var(--sans)" onclick="CR.readTA()" title="Hear Tamil">🇮🇳</button>
-        <button class="rcbtn" style="padding:0 7px;height:28px;font-size:9px;font-weight:700;font-family:var(--sans)" onclick="CR.readEN()" title="Hear English">🇬🇧</button>
-        <button class="rcbtn" style="padding:0 7px;height:28px;font-size:10px" onclick="AU.stop()" title="Stop">⏹</button>
-      </div>
+      <button class="rcbtn" style="padding:0 10px;height:28px;font-size:9px;font-weight:700;font-family:var(--sans)" onclick="AU.readCh()">🔊</button>
     </div>
   </div>
   <div class="chbody pb" id="ch-body"></div>
@@ -732,7 +726,8 @@ var AU=(function(){
     sui(false);_ut=null;
   }
   return{open:open,close:close,toggle:toggle,lang:lang,
-         play:play,pause:pause,resume:resume,stop:stop,readCh:readCh,speakText:speakText};
+         play:play,pause:pause,resume:resume,stop:stop,readCh:readCh,speakText:speakText,
+         getLang:function(){return _lang;}};
 })();
 
 /* ═══════════════════════════════════════
@@ -928,14 +923,15 @@ var SA=(function(){
     var q=document.getElementById('ai-srch');if(!q)return;
     var val=q.value.trim();if(!val)return;
     var res=BD.search(val);
-    var out=document.getElementById('ai-out')||document.getElementById('ai-list');if(!out)return;
+    var out=document.getElementById('ai-list');if(!out)return;
     if(!res.length){
-      out.innerHTML='<div class="empty"><div class="emico">✦</div><div class="emtxt">NO RESULTS<br>வேறு வார்த்தை தேடுங்கள்</div></div>';return;
+      out.innerHTML='<div class="empty"><div class="emico">✦</div><div class="emtxt">NO RESULTS</div></div>';return;
     }
     out.innerHTML=res.map(function(v){
-      return '<div class="vc"><div class="vch"><div class="vr">'+v.ref+'</div>'+
-        '<div class="va"><button onclick="AU.open(window._VC['+v.id+']||BD.byId('+v.id+'))">🔊</button>'+
-        '<button onclick="RM.open(window._VC['+v.id+']||BD.byId('+v.id+'))">📖</button></div></div>'+
+      window._VC[v.id]=v;
+      return '<div class="vc"><div class="vch"><div class="vr">'+v.ref+'</div><div class="vbk">'+v.bookTa+'</div>'+
+        '<div class="va"><button onclick="AU.open(window._VC['+v.id+'])">🔊</button>'+
+        '<button onclick="RM.open(window._VC['+v.id+'])">📖</button></div></div>'+
         '<div class="vbd"><div class="vta">'+v.ta+'</div><div class="ven">'+v.en+'</div></div></div>';
     }).join('');
   }
@@ -977,20 +973,7 @@ var CR=(function(){
     }).join('')+'<div style="padding-bottom:80px"></div>';
     body.scrollTop=0;
   }
-  function _readLang(lc){
-    var bk=_bk,ch=_ch;
-    if(!bk)return;
-    var vs=BD.byBookCh(bk,ch);
-    if(!vs.length){console.warn('No verses for',bk,'ch',ch);return;}
-    var t=vs.map(function(v,i){return (i+1)+'. '+(lc==='ta-IN'?v.ta:v.en);}).join(' ');
-    /* Show mini-status in chapter nav */
-    var jb=document.getElementById('ch-jump');
-    if(jb){var orig=jb.textContent;jb.textContent='🔊…';setTimeout(function(){jb.textContent=orig;},1500);}
-    AU.speakText(t,lc);
-  }
-  function readTA(){_readLang('ta-IN');}
-  function readEN(){_readLang('en-US');}
-  return{open:open,close:close,showLang:showLang,prev:prev,next:next,jump:jump,bk:bk,ch:ch,readTA:readTA,readEN:readEN};
+  return{open:open,close:close,showLang:showLang,prev:prev,next:next,jump:jump,bk:bk,ch:ch};
 })();
 
 /* ═══════════════════════════════════════
@@ -1372,7 +1355,7 @@ var App=(function(){
     var ss=document.getElementById('s-search');
     if(ss&&!document.getElementById('ai-srch')){
       ss.innerHTML='<div style="background:linear-gradient(135deg,#1a1a00,#3a3a00);padding:14px 16px 12px">'+
-        '<div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">✦ VERSE FINDER · வசன தேடல்</div>'+
+        '<div style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;font-family:var(--sans)">✦ SEARCH · தேடு</div>'+
         '<div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">TAMIL &amp; ENGLISH VERSE SEARCH</div></div>'+
         '<div class="sbar"><input class="sinp" id="ai-srch" placeholder="love, அன்பு, peace, John 3:16…" onkeydown="if(event.key===\'Enter\')SA.run()"/>'+
         '<button class="sbtn" onclick="SA.run()">→</button></div>'+
@@ -1418,8 +1401,36 @@ var App=(function(){
   return{nav:nav,cycleLang:cycleLang,theme:theme,toggleSave:toggleSave,init:init,renderSaved:_renderSaved};
 })();
 
-/* AU.readCh — kept for backward compat, delegates to CR.readTA */
-AU.readCh=function(){if(typeof CR!=='undefined'&&CR.readTA)CR.readTA();};
+/* ═══════════════════════════════════════
+   FIX: AU.readCh uses CR.bk() / CR.ch()
+═══════════════════════════════════════ */
+/* readCh — reads current chapter via TTSEngine / AU.speakText */
+AU.readCh=function(){
+  var bk=CR&&CR.bk?CR.bk():'';
+  var ch=CR&&CR.ch?CR.ch():1;
+  if(!bk)return;
+  var vs=BD.byBookCh(bk,ch);
+  if(!vs.length)return;
+  /* Show audio panel */
+  var panel=document.getElementById('au-panel');
+  if(panel&&!panel.classList.contains('on')){
+    document.getElementById('au-ref').textContent=bk+' Ch '+ch;
+    panel.classList.add('on');
+  }
+  var lang=AU.getLang?AU.getLang():'ta';
+  /* Build numbered text */
+  var t=vs.map(function(v,i){return (i+1)+'. '+(lang==='ta'?v.ta:v.en);}).join(' ');
+  var msgEl=document.getElementById('au-msg');
+  if(msgEl)msgEl.textContent='Reading '+vs.length+' verses…';
+  /* Use TTSEngine if available, else AU.speakText */
+  if(typeof TTSEngine!=='undefined'&&TTSEngine.isSupported()){
+    TTSEngine.speakLong(t,lang==='ta'?'ta-IN':'en-US',function(){
+      if(msgEl)msgEl.textContent='Chapter complete ✓';
+    });
+  } else {
+    AU.speakText(t,lang==='ta'?'ta-IN':'en-US');
+  }
+};
 
 /* ═══════════════════════════════════════
    START
