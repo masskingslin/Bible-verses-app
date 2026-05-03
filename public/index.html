@@ -422,16 +422,41 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 </div>
 
 <div class="ov" id="song-ov">
-  <div class="ovbar" id="songbar">
+  <!-- Top bar -->
+  <div class="ovbar" id="songbar" style="background:linear-gradient(135deg,#0a0020,#1a0040);border-bottom:1px solid var(--gold);flex-shrink:0">
     <div style="display:flex;align-items:center;gap:10px">
-      <button class="rcbtn" style="width:32px;height:32px;font-size:14px;flex-shrink:0" onclick="SongD.close()">←</button>
-      <div><div id="sg-name" style="font-size:14px;font-weight:700;color:#fff;font-family:var(--ta2)"></div>
-      <div id="sg-en" style="font-size:10px;color:rgba(255,255,255,.6);font-family:var(--sans)"></div></div>
+      <button class="rcbtn" style="width:32px;height:32px;font-size:16px;flex-shrink:0" onclick="SongD.close()">←</button>
+      <div>
+        <div id="sg-name" style="font-size:14px;font-weight:700;color:#fff;font-family:var(--ta2)"></div>
+        <div id="sg-en" style="font-size:9px;color:rgba(255,255,255,.5);font-family:var(--sans);margin-top:1px"></div>
+      </div>
     </div>
-    <button class="rcbtn" style="padding:0 10px;height:30px;font-size:9px;font-weight:700;font-family:var(--sans)" onclick="AU.speakText(document.getElementById('sg-lyrics').textContent,'ta-IN')">🔊 HEAR</button>
+    <div style="display:flex;gap:4px">
+      <button class="rcbtn" style="padding:0 8px;height:30px;font-size:10px;font-weight:700;font-family:var(--sans)" onclick="SongD.hearTA()">🇮🇳 கேள்</button>
+      <button class="rcbtn" style="padding:0 8px;height:30px;font-size:10px;font-weight:700;font-family:var(--sans)" onclick="SongD.stop()">⏹</button>
+    </div>
   </div>
-  <div class="ovbody" style="padding:18px">
+  <!-- Lyrics body -->
+  <div class="ovbody" style="padding:20px 18px 100px">
     <div class="song-lyrics" id="sg-lyrics"></div>
+  </div>
+  <!-- Bottom back bar -->
+  <div style="position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;z-index:410;
+              background:linear-gradient(135deg,#0a0020,#1a0040);
+              border-top:1px solid var(--gold);
+              display:flex;align-items:center;padding:8px 10px;gap:6px">
+    <button onclick="SongD.close()" style="flex:1;padding:11px;background:rgba(255,255,255,.08);border:1px solid var(--gold);
+            color:var(--gold);font-size:11px;font-weight:700;font-family:var(--sans);cursor:pointer">
+      ← பாடல் பட்டியல்
+    </button>
+    <button onclick="SongD.hearTA()" style="flex:1;padding:11px;background:rgba(0,80,180,.4);border:1px solid rgba(100,150,255,.4);
+            color:#fff;font-size:11px;font-weight:700;font-family:var(--sans);cursor:pointer">
+      🇮🇳 தமிழில் கேள்
+    </button>
+    <button onclick="SongD.stop()" style="flex:0;padding:11px 14px;background:rgba(180,0,0,.3);border:1px solid rgba(255,80,80,.3);
+            color:#fff;font-size:13px;cursor:pointer">
+      ⏹
+    </button>
   </div>
 </div>
 
@@ -1105,8 +1130,9 @@ var SongD=(function(){
     document.getElementById('song-ov').classList.add('on');
   }
   function hearTA(){if(_cur)AU.speakText(_cur.lyrics_ta,'ta-IN');}
+  function stop(){AU.stop();}
   function close(){AU.stop();document.getElementById('song-ov').classList.remove('on');}
-  return{open:open,close:close,hearTA:hearTA};
+  return{open:open,close:close,hearTA:hearTA,stop:stop};
 })();
 
 /* ═══════════════════════════════════════
