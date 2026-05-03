@@ -523,7 +523,7 @@ var BD=(function(){
         typeof BD_C!=='undefined'?BD_C:[],typeof BD_D!=='undefined'?BD_D:[],
         typeof BD_E!=='undefined'?BD_E:[],typeof BD_F!=='undefined'?BD_F:[]);
       _vv=all.map(function(r){
-        return{id:r[0]*100000+r[1]*1000+r[2],bi:r[0],book:BEN[r[0]],bookTa:BTA[r[0]],
+        return{id:r[0]*1000000+r[1]*1000+r[2],bi:r[0],book:BEN[r[0]],bookTa:BTA[r[0]],
                ch:r[1],v:r[2],ref:BEN[r[0]]+' '+r[1]+':'+r[2],
                ta:r[3]||'',en:r[4]||'',color:CLR[r[0]%CLR.length]};
       });
@@ -552,6 +552,8 @@ var BD=(function(){
     sc.sort(function(a,b){return b.s-a.s;});
     return sc.slice(0,15).map(function(x){return x.v;});
   }
+  /* Global verse cache — set when rendering cards, avoids byId lookup */
+  window._VC = {};
   return{BEN:BEN,BTA:BTA,CLR:CLR,build:build,count:function(){return _vv.length;},all:function(){return _vv;},
     byId:function(id){return _vv.find(function(v){return v.id===id;})||null;},
     byBook:function(n){return _bb[n]||[];},
@@ -854,12 +856,13 @@ var SV=(function(){
     document.getElementById('s-verses').scrollTop=0;
   }
   function _vc(v,lang){
+    window._VC[v.id]=v;
     var sv=ST.isSaved(v.id);
     return '<div class="vc"><div class="vch">'+
       '<div><div class="vr">'+v.ref+'</div><div class="vbk">'+v.bookTa+'</div></div>'+
       '<div class="va">'+
-      '<button onclick="AU.open(BD.byId('+v.id+'))">🔊</button>'+
-      '<button onclick="RM.open(BD.byId('+v.id+'))">📖</button>'+
+      '<button onclick="AU.open(window._VC['+v.id+'])">🔊</button>'+
+      '<button onclick="RM.open(window._VC['+v.id+'])">📖</button>'+
       '<button id="sv'+v.id+'" onclick="App.toggleSave('+v.id+',this)">'+(sv?'♥':'♡')+'</button>'+
       '</div></div><div class="vbd">'+
       (lang!=='en'?'<div class="vta">'+v.ta+'</div>':'')+
@@ -927,8 +930,8 @@ var SA=(function(){
     }
     out.innerHTML=res.map(function(v){
       return '<div class="vc"><div class="vch"><div class="vr">'+v.ref+'</div>'+
-        '<div class="va"><button onclick="AU.open(BD.byId('+v.id+'))">🔊</button>'+
-        '<button onclick="RM.open(BD.byId('+v.id+'))">📖</button></div></div>'+
+        '<div class="va"><button onclick="AU.open(window._VC['+v.id+']||BD.byId('+v.id+'))">🔊</button>'+
+        '<button onclick="RM.open(window._VC['+v.id+']||BD.byId('+v.id+'))">📖</button></div></div>'+
         '<div class="vbd"><div class="vta">'+v.ta+'</div><div class="ven">'+v.en+'</div></div></div>';
     }).join('');
   }
@@ -1245,13 +1248,13 @@ var App=(function(){
     return n;
   }
 
-  function _vcard(v){
+  function _vcard(v){window._VC[v.id]=v;
     var lang=ST.g('lang')||'both';var sv=ST.isSaved(v.id);
     return '<div class="vc"><div class="vch">'+
       '<div><div class="vr">'+v.ref+'</div><div class="vbk">'+v.bookTa+'</div></div>'+
       '<div class="va">'+
-      '<button onclick="AU.open(BD.byId('+v.id+'))">🔊</button>'+
-      '<button onclick="RM.open(BD.byId('+v.id+'))">📖</button>'+
+      '<button onclick="AU.open(window._VC['+v.id+']||BD.byId('+v.id+'))">🔊</button>'+
+      '<button onclick="RM.open(window._VC['+v.id+']||BD.byId('+v.id+'))">📖</button>'+
       '<button onclick="App.toggleSave('+v.id+',this)">'+(sv?'♥':'♡')+'</button>'+
       '</div></div><div class="vbd">'+
       (lang!=='en'?'<div class="vta">'+v.ta+'</div>':'')+
@@ -1276,8 +1279,8 @@ var App=(function(){
         '<div class="den">'+daily.en+'</div>'+
         '<div class="dref">'+daily.ref+'</div>'+
         '<div class="dbtns">'+
-        '<button class="dbtn" onclick="AU.open(BD.byId('+daily.id+'))">🔊 HEAR</button>'+
-        '<button class="dbtn" onclick="RM.open(BD.byId('+daily.id+'))">📖 READ</button>'+
+        '<button class="dbtn" onclick="AU.open(window._VC['+daily.id+']||BD.byId('+daily.id+'))">🔊 HEAR</button>'+
+        '<button class="dbtn" onclick="RM.open(window._VC['+daily.id+']||BD.byId('+daily.id+'))">📖 READ</button>'+
         '</div></div>';
     }
     tg.innerHTML=dHtml+tiles.map(function(t){
