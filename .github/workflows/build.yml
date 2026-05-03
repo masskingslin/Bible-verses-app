@@ -8,7 +8,7 @@ on:
       build_type:
         description: 'Build type'
         required: true
-        default: 'debug'
+        default: 'release'
         type: choice
         options: [ debug, release ]
 
@@ -18,7 +18,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 45
 
     steps:
 
@@ -33,8 +33,7 @@ jobs:
       - name: Install packages
         run: npm install
 
-      # ── FIX: Install native TTS plugin — pinned to Capacitor 5 ──
-      - name: Install Capacitor TTS plugin
+      - name: Install Capacitor TTS plugin (Capacitor 5 compatible)
         run: npm install @capacitor-community/text-to-speech@5.0.0 --legacy-peer-deps
 
       - name: Setup Java 17
@@ -68,18 +67,10 @@ jobs:
           STRINGS_FILE="android/app/src/main/res/values/strings.xml"
           if [ -f "$STRINGS_FILE" ]; then
             sed -i 's|<string name="app_name">.*</string>|<string name="app_name">Holy Bible</string>|g' "$STRINGS_FILE"
-            echo "strings.xml updated:"
             grep app_name "$STRINGS_FILE"
           else
-            echo "Creating strings.xml"
             mkdir -p android/app/src/main/res/values
-            echo '<?xml version="1.0" encoding="utf-8"?>
-            <resources>
-                <string name="app_name">Holy Bible</string>
-                <string name="title_activity_main">Holy Bible</string>
-                <string name="package_name">com.vedavachanam.holybible</string>
-                <string name="custom_url_scheme">com.vedavachanam.holybible</string>
-            </resources>' > "$STRINGS_FILE"
+            printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <string name="app_name">Holy Bible</string>\n    <string name="title_activity_main">Holy Bible</string>\n    <string name="package_name">com.vedavachanam.holybible</string>\n    <string name="custom_url_scheme">com.vedavachanam.holybible</string>\n</resources>\n' > "$STRINGS_FILE"
           fi
 
       - name: Inject app icons into Android
@@ -88,59 +79,43 @@ jobs:
           ICON_DST="android/app/src/main/res"
           for DENSITY in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
             mkdir -p "$ICON_DST/mipmap-$DENSITY"
-            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher.png" \
-               "$ICON_DST/mipmap-$DENSITY/ic_launcher.png"
-            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher_round.png" \
-               "$ICON_DST/mipmap-$DENSITY/ic_launcher_round.png"
-            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher_foreground.png" \
-               "$ICON_DST/mipmap-$DENSITY/ic_launcher_foreground.png"
-            echo "  Injected all icons for $DENSITY"
+            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher.png"            "$ICON_DST/mipmap-$DENSITY/ic_launcher.png"
+            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher_round.png"      "$ICON_DST/mipmap-$DENSITY/ic_launcher_round.png"
+            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher_foreground.png" "$ICON_DST/mipmap-$DENSITY/ic_launcher_foreground.png"
           done
-          echo "All icons injected!"
+          echo "All icons injected"
 
       - name: Fix adaptive icon XML
         run: |
           mkdir -p android/app/src/main/res/mipmap-anydpi-v26
-
-          echo '<?xml version="1.0" encoding="utf-8"?>
-          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-              <background android:drawable="@color/ic_launcher_background"/>
-              <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
-          </adaptive-icon>' > android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
-
-          echo '<?xml version="1.0" encoding="utf-8"?>
-          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-              <background android:drawable="@color/ic_launcher_background"/>
-              <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
-          </adaptive-icon>' > android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
-
+          for f in ic_launcher ic_launcher_round; do
+            printf '<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n    <background android:drawable="@color/ic_launcher_background"/>\n    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>\n</adaptive-icon>\n' \
+              > android/app/src/main/res/mipmap-anydpi-v26/$f.xml
+          done
           mkdir -p android/app/src/main/res/values
-          echo '<?xml version="1.0" encoding="utf-8"?>
-          <resources>
-              <color name="ic_launcher_background">#080810</color>
-          </resources>' > android/app/src/main/res/values/ic_launcher_background.xml
-
-          echo "Adaptive icon XML fixed"
+          printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_background">#080810</color>\n</resources>\n' \
+            > android/app/src/main/res/values/ic_launcher_background.xml
+          echo "Adaptive icons fixed"
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
 
-      # ── FIX: Stamp versionCode = run number so installs never downgrade ──
       - name: Set versionCode and versionName
         run: |
           BUILD_NUM=${{ github.run_number }}
           sed -i "s/versionCode .*/versionCode $BUILD_NUM/" android/app/build.gradle
           sed -i "s/versionName .*/versionName \"2.2.$BUILD_NUM\"/" android/app/build.gradle
-          echo "✅ versionCode=$BUILD_NUM  versionName=2.2.$BUILD_NUM"
+          echo "versionCode=$BUILD_NUM  versionName=2.2.$BUILD_NUM"
           grep -E "versionCode|versionName" android/app/build.gradle
 
       - name: Build Debug APK
-        if: ${{ github.event.inputs.build_type != 'release' }}
+        if: ${{ github.event.inputs.build_type == 'debug' }}
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon
 
+      # ── RELEASE BUILD — properly signed for Play Store ──
       - name: Build Release APK
-        if: ${{ github.event.inputs.build_type == 'release' }}
+        if: ${{ github.event.inputs.build_type != 'debug' }}
         working-directory: android
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > ../bible.keystore
@@ -150,6 +125,7 @@ jobs:
             -Pandroid.injected.signing.key.alias="${{ secrets.KEY_ALIAS }}" \
             -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD }}" \
             --no-daemon
+          echo "Release APK built and signed"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
