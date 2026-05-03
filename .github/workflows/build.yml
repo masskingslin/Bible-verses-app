@@ -33,6 +33,10 @@ jobs:
       - name: Install packages
         run: npm install
 
+      # ── FIX: Install native TTS plugin (replaces broken Web Speech API) ──
+      - name: Install Capacitor TTS plugin
+        run: npm install @capacitor-community/text-to-speech
+
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
