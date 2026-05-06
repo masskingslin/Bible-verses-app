@@ -33,7 +33,7 @@ jobs:
       - name: Install packages
         run: npm install
 
-      - name: Install Capacitor TTS plugin (Capacitor 5 compatible)
+      - name: Install Capacitor TTS plugin (Capacitor 5)
         run: npm install @capacitor-community/text-to-speech@5.0.0 --legacy-peer-deps
 
       - name: Setup Java 17
@@ -54,7 +54,6 @@ jobs:
       - name: Prepare icons in public folder
         run: |
           cp android-icons/mipmap-xxxhdpi/ic_launcher.png public/icon.png
-          echo "icon.png ready"
 
       - name: Add Android platform
         run: npx cap add android || true
@@ -67,35 +66,29 @@ jobs:
           STRINGS_FILE="android/app/src/main/res/values/strings.xml"
           if [ -f "$STRINGS_FILE" ]; then
             sed -i 's|<string name="app_name">.*</string>|<string name="app_name">Holy Bible</string>|g' "$STRINGS_FILE"
-            grep app_name "$STRINGS_FILE"
           else
             mkdir -p android/app/src/main/res/values
             printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <string name="app_name">Holy Bible</string>\n    <string name="title_activity_main">Holy Bible</string>\n    <string name="package_name">com.vedavachanam.holybible</string>\n    <string name="custom_url_scheme">com.vedavachanam.holybible</string>\n</resources>\n' > "$STRINGS_FILE"
           fi
 
-      - name: Inject app icons into Android
+      - name: Inject app icons
         run: |
-          ICON_SRC="android-icons"
-          ICON_DST="android/app/src/main/res"
-          for DENSITY in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
-            mkdir -p "$ICON_DST/mipmap-$DENSITY"
-            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher.png"            "$ICON_DST/mipmap-$DENSITY/ic_launcher.png"
-            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher_round.png"      "$ICON_DST/mipmap-$DENSITY/ic_launcher_round.png"
-            cp "$ICON_SRC/mipmap-$DENSITY/ic_launcher_foreground.png" "$ICON_DST/mipmap-$DENSITY/ic_launcher_foreground.png"
+          ICON_SRC="android-icons"; ICON_DST="android/app/src/main/res"
+          for D in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            mkdir -p "$ICON_DST/mipmap-$D"
+            cp "$ICON_SRC/mipmap-$D/ic_launcher.png"            "$ICON_DST/mipmap-$D/ic_launcher.png"
+            cp "$ICON_SRC/mipmap-$D/ic_launcher_round.png"      "$ICON_DST/mipmap-$D/ic_launcher_round.png"
+            cp "$ICON_SRC/mipmap-$D/ic_launcher_foreground.png" "$ICON_DST/mipmap-$D/ic_launcher_foreground.png"
           done
-          echo "All icons injected"
 
       - name: Fix adaptive icon XML
         run: |
           mkdir -p android/app/src/main/res/mipmap-anydpi-v26
           for f in ic_launcher ic_launcher_round; do
-            printf '<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n    <background android:drawable="@color/ic_launcher_background"/>\n    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>\n</adaptive-icon>\n' \
-              > android/app/src/main/res/mipmap-anydpi-v26/$f.xml
+            printf '<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n    <background android:drawable="@color/ic_launcher_background"/>\n    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>\n</adaptive-icon>\n' > android/app/src/main/res/mipmap-anydpi-v26/$f.xml
           done
           mkdir -p android/app/src/main/res/values
-          printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_background">#080810</color>\n</resources>\n' \
-            > android/app/src/main/res/values/ic_launcher_background.xml
-          echo "Adaptive icons fixed"
+          printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_background">#080810</color>\n</resources>\n' > android/app/src/main/res/values/ic_launcher_background.xml
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
@@ -105,27 +98,71 @@ jobs:
           BUILD_NUM=${{ github.run_number }}
           sed -i "s/versionCode .*/versionCode $BUILD_NUM/" android/app/build.gradle
           sed -i "s/versionName .*/versionName \"2.2.$BUILD_NUM\"/" android/app/build.gradle
-          echo "versionCode=$BUILD_NUM  versionName=2.2.$BUILD_NUM"
           grep -E "versionCode|versionName" android/app/build.gradle
+
+      # ════════════════════════════════════════════════════
+      # AUTO KEYSTORE — No laptop needed
+      # First run: auto-generates keystore, saves as artifact
+      # After that: set KEYSTORE_BASE64 secret once on GitHub
+      # ════════════════════════════════════════════════════
+      - name: Setup signing keystore
+        id: keystore
+        run: |
+          KS="${{ github.workspace }}/bible.keystore"
+          KS_PASS="HolyBible2025"
+          ALIAS="holybible"
+          KEY_PASS="HolyBible2025"
+
+          if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "Restoring keystore from secret..."
+            printf '%s' '${{ secrets.KEYSTORE_BASE64 }}' | base64 -d > "$KS"
+            KS_PASS="${{ secrets.STORE_PASSWORD }}"
+            ALIAS="${{ secrets.KEY_ALIAS }}"
+            KEY_PASS="${{ secrets.KEY_PASSWORD }}"
+          else
+            echo "Auto-generating keystore (first-time setup)..."
+            keytool -genkeypair \
+              -keystore "$KS" \
+              -alias "$ALIAS" \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -storepass "$KS_PASS" \
+              -keypass  "$KEY_PASS" \
+              -dname "CN=Holy Bible,OU=App,O=VedaVachanam,L=TamilNadu,S=TamilNadu,C=IN" \
+              -storetype PKCS12
+            echo ""
+            echo "╔══════════════════════════════════════════╗"
+            echo "║  COPY THIS — set as KEYSTORE_BASE64      ║"
+            echo "╚══════════════════════════════════════════╝"
+            base64 -w 0 "$KS"
+            echo ""
+            echo "STORE_PASSWORD = $KS_PASS"
+            echo "KEY_ALIAS      = $ALIAS"
+            echo "KEY_PASSWORD   = $KEY_PASS"
+          fi
+
+          echo "KS_FILE=$KS"       >> $GITHUB_ENV
+          echo "KS_PASS=$KS_PASS"  >> $GITHUB_ENV
+          echo "KS_ALIAS=$ALIAS"   >> $GITHUB_ENV
+          echo "KS_KPASS=$KEY_PASS" >> $GITHUB_ENV
 
       - name: Build Debug APK
         if: ${{ github.event.inputs.build_type == 'debug' }}
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon
 
-      # ── RELEASE BUILD — properly signed for Play Store ──
-      - name: Build Release APK
+      - name: Build Release APK (signed)
         if: ${{ github.event.inputs.build_type != 'debug' }}
         working-directory: android
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > ../bible.keystore
           ./gradlew assembleRelease \
-            -Pandroid.injected.signing.store.file=$(pwd)/../bible.keystore \
-            -Pandroid.injected.signing.store.password="${{ secrets.STORE_PASSWORD }}" \
-            -Pandroid.injected.signing.key.alias="${{ secrets.KEY_ALIAS }}" \
-            -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD }}" \
+            -Pandroid.injected.signing.store.file="${{ env.KS_FILE }}" \
+            -Pandroid.injected.signing.store.password="${{ env.KS_PASS }}" \
+            -Pandroid.injected.signing.key.alias="${{ env.KS_ALIAS }}" \
+            -Pandroid.injected.signing.key.password="${{ env.KS_KPASS }}" \
             --no-daemon
-          echo "Release APK built and signed"
+          echo "Release APK signed successfully"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
