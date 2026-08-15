@@ -1,22 +1,28 @@
 /* ================================================================
-   TTS_ENGINE.js  v4.0
+   TTS_ENGINE.js  v4.5 (Enhanced - Unlimited Text & Robust Queue)
    Capacitor Native TTS  (Android/iOS)
-   Web Speech API fallback  (Chrome / browser)
-   Supports Tamil + English · Settings Panel · Diagnostics
+   Web Speech API fallback  (Chrome / WebView / Browser)
+   Supports Tamil + English · Seamless Long Text · Diagnostics
 ================================================================ */
 
 var TTSEngine = (function () {
   'use strict';
 
-  var _isPlaying  = false;
-  var _settings   = {
+  var _isPlaying       = false;
+  var _isPaused        = false;
+  var _activeUtterance = null;  // Prevents JS garbage collection mid-speech
+  var _resumeInterval  = null;  // Fixes Chrome/WebView 15-sec timeout bug
+  var _currentSessionId = 0;    // Cancels stale queue callbacks on new speak/stop
+
+  var _settings = {
     lang_ta : 'ta-IN',
     lang_en : 'en-IN',
     rate    : 1.0,
     pitch   : 1.0,
     volume  : 1.0
   };
-  var _callbacks  = { onStart: null, onEnd: null, onError: null };
+
+  var _callbacks = { onStart: null, onEnd: null, onError: null };
 
   /* ── Platform detection ─────────────────────────────────────── */
   function _isCapacitor () {
@@ -29,10 +35,8 @@ var TTSEngine = (function () {
 
   function _capTTS () {
     try {
-      /* Capacitor 5: window.Capacitor.Plugins.TextToSpeech */
       var p = window.Capacitor && window.Capacitor.Plugins;
       if (p && p.TextToSpeech) return p.TextToSpeech;
-      /* Some builds expose at window.CapacitorTextToSpeech.TextToSpeech */
       if (window.CapacitorTextToSpeech && window.CapacitorTextToSpeech.TextToSpeech)
         return window.CapacitorTextToSpeech.TextToSpeech;
       return null;
@@ -48,6 +52,103 @@ var TTSEngine = (function () {
     return _hasSpeechSynth();
   }
 
+  /* ── Text Sanitization for Bible / General Text ─────────────── */
+  function _sanitizeText (text) {
+    if (!text) return '';
+    return text
+      // Remove verse reference markers like "1:16" or "12:1-3"
+      .replace(/\b\d+:\d+(?:-\d+)?\b/g, '')
+      // Remove standalone bracketed numbering like, (12)
+      .replace(/[\[\(]\s*\d+\s*[\]\)]/g, '')
+      // Replace em-dashes, en-dashes, and special symbols with natural pause
+      .replace(/[—–_~*#|]/g, ', ')
+      // Normalize multiple spaces/newlines
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  /* ── Deep Text Chunking (No Character Limit) ────────────────── */
+  function _splitIntoChunks (text, maxLen) {
+    maxLen = maxLen || 180; // Safe threshold for smooth cadence across all engines
+    var clean = _sanitizeText(text);
+    if (!clean) return [];
+
+    // Split by major sentence terminators (including Tamil/Indic punctuation)
+    var sentences = clean.split(/([.!?\n\r]+|[\u0964\u0965]+)/).filter(Boolean);
+    var fullSentences = [];
+
+    for (var i = 0; i < sentences.length; i += 2) {
+      var s = (sentences[i] || '') + (sentences[i + 1] || '');
+      s = s.trim();
+      if (s) fullSentences.push(s);
+    }
+    if (!fullSentences.length) fullSentences = [clean];
+
+    var chunks = [];
+
+    fullSentences.forEach(function (sentence) {
+      if (sentence.length <= maxLen) {
+        chunks.push(sentence);
+        return;
+      }
+
+      // If sentence is too long, split by clause boundaries (commas, semicolons, colons)
+      var clauses = sentence.split(/([,;:]+)/).filter(Boolean);
+      var currentChunk = '';
+
+      for (var j = 0; j < clauses.length; j++) {
+        var clause = clauses[j].trim();
+        if (!clause) continue;
+
+        if ((currentChunk + ' ' + clause).trim().length <= maxLen) {
+          currentChunk = currentChunk ? (currentChunk + ' ' + clause) : clause;
+        } else {
+          if (currentChunk) chunks.push(currentChunk);
+
+          // If a single clause is still too long, split by words
+          if (clause.length > maxLen) {
+            var words = clause.split(/\s+/);
+            var wordChunk = '';
+            words.forEach(function (w) {
+              if ((wordChunk + ' ' + w).trim().length <= maxLen) {
+                wordChunk = wordChunk ? (wordChunk + ' ' + w) : w;
+              } else {
+                if (wordChunk) chunks.push(wordChunk);
+                wordChunk = w;
+              }
+            });
+            if (wordChunk) currentChunk = wordChunk;
+            else currentChunk = '';
+          } else {
+            currentChunk = clause;
+          }
+        }
+      }
+      if (currentChunk) chunks.push(currentChunk);
+    });
+
+    return chunks.length ? chunks : [clean];
+  }
+
+  /* ── Keep-Alive for Chrome / WebView SpeechSynthesis ────────── */
+  function _startKeepAlive () {
+    _stopKeepAlive();
+    if (!_hasSpeechSynth()) return;
+    _resumeInterval = setInterval(function () {
+      if (_isPlaying && !_isPaused && window.speechSynthesis.speaking) {
+        window.speechSynthesis.pause();
+        window.speechSynthesis.resume();
+      }
+    }, 10000);
+  }
+
+  function _stopKeepAlive () {
+    if (_resumeInterval) {
+      clearInterval(_resumeInterval);
+      _resumeInterval = null;
+    }
+  }
+
   /* ── Init ───────────────────────────────────────────────────── */
   function init (opts) {
     if (opts) {
@@ -58,130 +159,212 @@ var TTSEngine = (function () {
       if (opts.lang_en) _settings.lang_en = opts.lang_en;
     }
     if (!_isCapacitor() && _hasSpeechSynth()) {
-      if (window.speechSynthesis.onvoiceschanged !== undefined)
-        window.speechSynthesis.onvoiceschanged = function () {};
-      window.speechSynthesis.getVoices();
+      if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = _loadWebVoices;
+      }
+      _loadWebVoices();
     }
     return isSupported();
   }
 
-  /* ── Capacitor speak ────────────────────────────────────────── */
-  function _capSpeak (text, lang, onEnd) {
+  /* ── Capacitor Native Speak (Sequential Chunk Queue) ────────── */
+  function _capSpeakQueue (chunks, lang, sessionId, onEnd) {
     var tts = _capTTS();
     if (!tts) {
-      /* Plugin not ready — try web speech fallback */
-      if (_hasSpeechSynth()) { _webSpeak(text, lang, onEnd); return; }
-      if (onEnd) onEnd(); return;
+      if (_hasSpeechSynth()) {
+        _webSpeakQueue(chunks, lang, sessionId, onEnd);
+      } else if (onEnd) {
+        onEnd();
+      }
+      return;
     }
-    _isPlaying = true;
-    if (_callbacks.onStart) _callbacks.onStart();
+
+    var idx = 0;
+
+    function playNext () {
+      if (sessionId !== _currentSessionId) return; // Discard canceled session
+      if (idx >= chunks.length) {
+        _isPlaying = false;
+        _isPaused = false;
+        if (onEnd) onEnd();
+        if (_callbacks.onEnd) _callbacks.onEnd();
+        return;
+      }
+
+      var textChunk = chunks[idx++];
+      tts.speak({
+        text   : textChunk,
+        lang   : lang || _settings.lang_ta,
+        rate   : _settings.rate,
+        pitch  : _settings.pitch,
+        volume : _settings.volume
+      }).then(function () {
+        if (sessionId === _currentSessionId) {
+          playNext();
+        }
+      }).catch(function (err) {
+        if (sessionId !== _currentSessionId) return;
+        console.warn('Native TTS Chunk Error:', err);
+        // Fallback to web speech if plugin fails
+        if (_hasSpeechSynth()) {
+          _webSpeakQueue(chunks.slice(idx - 1), lang, sessionId, onEnd);
+        } else {
+          _isPlaying = false;
+          _isPaused = false;
+          if (_callbacks.onError) _callbacks.onError(err);
+          if (onEnd) onEnd();
+        }
+      });
+    }
 
     var stopProm = (tts.stop && typeof tts.stop === 'function')
       ? tts.stop().catch(function () {})
       : Promise.resolve();
 
     stopProm.then(function () {
-      return tts.speak({
-        text   : text,
-        lang   : lang || _settings.lang_ta,
-        rate   : _settings.rate,
-        pitch  : _settings.pitch,
-        volume : _settings.volume
-      });
-    }).then(function () {
-      _isPlaying = false;
-      if (onEnd) onEnd();
-      if (_callbacks.onEnd) _callbacks.onEnd();
-    }).catch(function (e) {
-      _isPlaying = false;
-      console.warn('TTS native error:', e);
-      /* Auto-fallback to web speech */
-      if (_hasSpeechSynth()) {
-        console.log('TTS: falling back to Web Speech');
-        _webSpeak(text, lang, onEnd);
-      } else {
-        if (_callbacks.onError) _callbacks.onError(e);
+      if (sessionId === _currentSessionId) {
+        playNext();
       }
     });
   }
 
-  /* ── Web Speech speak ───────────────────────────────────────── */
+  /* ── Web Speech Voices ──────────────────────────────────────── */
   var _webVoices = [];
   function _loadWebVoices () {
-    if (_hasSpeechSynth()) _webVoices = window.speechSynthesis.getVoices() || [];
+    if (_hasSpeechSynth()) {
+      _webVoices = window.speechSynthesis.getVoices() || [];
+    }
   }
+
   function _pickWebVoice (lang) {
     _loadWebVoices();
-    var prefix = lang.split('-')[0];
+    var prefix = (lang || '').split('-')[0].toLowerCase();
     var exact = null, approx = null;
+
     for (var i = 0; i < _webVoices.length; i++) {
-      if (_webVoices[i].lang === lang) { exact = _webVoices[i]; break; }
-      if (!approx && _webVoices[i].lang && _webVoices[i].lang.indexOf(prefix) === 0) approx = _webVoices[i];
+      var vLang = (_webVoices[i].lang || '').toLowerCase();
+      if (vLang === (lang || '').toLowerCase()) {
+        exact = _webVoices[i];
+        break;
+      }
+      if (!approx && vLang.indexOf(prefix) === 0) {
+        approx = _webVoices[i];
+      }
     }
     return exact || approx || null;
   }
 
-  function _webSpeak (text, lang, onEnd) {
-    if (!_hasSpeechSynth()) { if (onEnd) onEnd(); return; }
-    try { window.speechSynthesis.cancel(); } catch (e) {}
-    var u = new SpeechSynthesisUtterance(text);
-    u.lang   = lang || _settings.lang_ta;
-    u.rate   = _settings.rate;
-    u.pitch  = _settings.pitch;
-    u.volume = _settings.volume;
-    var v = _pickWebVoice(u.lang);
-    if (v) u.voice = v;
-    u.onstart = function () { _isPlaying = true; if (_callbacks.onStart) _callbacks.onStart(); };
-    u.onend   = function () { _isPlaying = false; if (onEnd) onEnd(); if (_callbacks.onEnd) _callbacks.onEnd(); };
-    u.onerror = function (e) {
+  /* ── Web Speech Speak (Sequential Chunk Queue) ──────────────── */
+  function _webSpeakQueue (chunks, lang, sessionId, onEnd) {
+    if (!_hasSpeechSynth()) {
       _isPlaying = false;
-      console.warn('Web Speech error:', e.error);
-      if (_callbacks.onError) _callbacks.onError(e);
-    };
-    _isPlaying = true;
-    window.speechSynthesis.speak(u);
-  }
-
-  /* ── Split long text into chunks ────────────────────────────── */
-  function _split (text) {
-    var raw = text.split(/[.!?\n]+/).filter(function (s) { return s.trim(); });
-    var chunks = [], buf = '';
-    for (var i = 0; i < raw.length; i++) {
-      var s = raw[i].trim();
-      if (!s) continue;
-      if ((buf + ' ' + s).length > 200 && buf) { chunks.push(buf); buf = s; }
-      else { buf = buf ? buf + '. ' + s : s; }
+      if (onEnd) onEnd();
+      return;
     }
-    if (buf) chunks.push(buf);
-    return chunks.length ? chunks : [text];
+
+    try { window.speechSynthesis.cancel(); } catch (e) {}
+
+    var idx = 0;
+    _startKeepAlive();
+
+    function playNext () {
+      if (sessionId !== _currentSessionId) {
+        _stopKeepAlive();
+        return;
+      }
+
+      if (idx >= chunks.length) {
+        _isPlaying = false;
+        _isPaused = false;
+        _activeUtterance = null;
+        _stopKeepAlive();
+        if (onEnd) onEnd();
+        if (_callbacks.onEnd) _callbacks.onEnd();
+        return;
+      }
+
+      var textChunk = chunks[idx++];
+      var u = new SpeechSynthesisUtterance(textChunk);
+      _activeUtterance = u; // Retain reference to prevent Garbage Collection bug
+
+      u.lang   = lang || _settings.lang_ta;
+      u.rate   = _settings.rate;
+      u.pitch  = _settings.pitch;
+      u.volume = _settings.volume;
+
+      var v = _pickWebVoice(u.lang);
+      if (v) u.voice = v;
+
+      u.onend = function () {
+        if (sessionId === _currentSessionId) {
+          playNext();
+        }
+      };
+
+      u.onerror = function (e) {
+        if (sessionId !== _currentSessionId) return;
+        console.warn('Web Speech Chunk Error:', e);
+        _isPlaying = false;
+        _isPaused = false;
+        _activeUtterance = null;
+        _stopKeepAlive();
+        if (_callbacks.onError) _callbacks.onError(e);
+        if (onEnd) onEnd();
+      };
+
+      window.speechSynthesis.speak(u);
+    }
+
+    playNext();
   }
 
-  /* ── Public speak ───────────────────────────────────────────── */
+  /* ── Public Speak Methods ───────────────────────────────────── */
   function speak (text, lang, onEnd) {
-    if (!text || !text.trim()) { if (onEnd) onEnd(); return; }
-    if (_isCapacitor()) { _capSpeak(text, lang, onEnd); }
-    else { _webSpeak(text, lang, onEnd); }
+    if (!text || !text.trim()) {
+      if (onEnd) onEnd();
+      return;
+    }
+
+    // Stop any currently running speech
+    stop();
+
+    var chunks = _splitIntoChunks(text, 180);
+    if (!chunks.length) {
+      if (onEnd) onEnd();
+      return;
+    }
+
+    var sessionId = ++_currentSessionId;
+    _isPlaying = true;
+    _isPaused = false;
+
+    if (_callbacks.onStart) _callbacks.onStart();
+
+    if (_isCapacitor() && _capTTS()) {
+      _capSpeakQueue(chunks, lang, sessionId, onEnd);
+    } else {
+      _webSpeakQueue(chunks, lang, sessionId, onEnd);
+    }
   }
 
   function speakLong (text, lang, onEnd) {
-    if (!text || !text.trim()) { if (onEnd) onEnd(); return; }
-    stop();
-    /* Capacitor handles long text natively */
-    if (_isCapacitor()) { _capSpeak(text, lang, onEnd); return; }
-    var chunks = _split(text), idx = 0;
-    function next () {
-      if (idx >= chunks.length) { if (onEnd) onEnd(); return; }
-      _webSpeak(chunks[idx++], lang, next);
-    }
-    next();
+    // Both speak and speakLong now safely handle unlimited text
+    speak(text, lang, onEnd);
   }
 
-  /* ── Controls ───────────────────────────────────────────── */
+  /* ── Controls ───────────────────────────────────────────────── */
   function stop () {
+    _currentSessionId++; // Invalidate all pending chunk callbacks
     _isPlaying = false;
+    _isPaused = false;
+    _activeUtterance = null;
+    _stopKeepAlive();
+
     if (_isCapacitor()) {
       var t = _capTTS();
-      if (t && typeof t.stop === 'function') t.stop().catch(function () {});
+      if (t && typeof t.stop === 'function') {
+        t.stop().catch(function () {});
+      }
     }
     if (_hasSpeechSynth()) {
       try { window.speechSynthesis.cancel(); } catch (e) {}
@@ -189,20 +372,29 @@ var TTSEngine = (function () {
   }
 
   function pause () {
+    if (!_isPlaying || _isPaused) return;
+    _isPaused = true;
+
     if (!_isCapacitor() && _hasSpeechSynth()) {
       try { window.speechSynthesis.pause(); } catch (e) {}
-    } else { stop(); }
+    } else {
+      stop();
+    }
   }
 
   function resume () {
+    if (!_isPlaying || !_isPaused) return;
+    _isPaused = false;
+
     if (!_isCapacitor() && _hasSpeechSynth()) {
       try { window.speechSynthesis.resume(); } catch (e) {}
     }
   }
 
-  function isPlaying   () { return _isPlaying; }
-  function setRate   (v) { _settings.rate   = parseFloat(v) || 1.0; }
-  function setPitch  (v) { _settings.pitch  = parseFloat(v) || 1.0; }
+  function isPlaying () { return _isPlaying; }
+  function isPaused ()  { return _isPaused; }
+  function setRate (v)   { _settings.rate   = parseFloat(v) || 1.0; }
+  function setPitch (v)  { _settings.pitch  = parseFloat(v) || 1.0; }
   function setVolume (v) { _settings.volume = parseFloat(v) || 1.0; }
   function on (evt, fn)  { _callbacks[evt] = fn; }
 
@@ -215,14 +407,15 @@ var TTSEngine = (function () {
     if (_isCapacitor()) return [];
     _loadWebVoices();
     if (!lang) return _webVoices.slice();
-    var prefix = lang.split('-')[0], out = [];
+    var prefix = lang.split('-')[0].toLowerCase(), out = [];
     for (var i = 0; i < _webVoices.length; i++) {
-      if (_webVoices[i].lang && _webVoices[i].lang.indexOf(prefix) === 0) out.push(_webVoices[i]);
+      var vLang = (_webVoices[i].lang || '').toLowerCase();
+      if (vLang.indexOf(prefix) === 0) out.push(_webVoices[i]);
     }
     return out;
   }
 
-  /* ── Diagnostics ────────────────────────────────────────── */
+  /* ── Diagnostics ────────────────────────────────────────────── */
   function getDiagnostics () {
     _loadWebVoices();
     return {
@@ -232,12 +425,12 @@ var TTSEngine = (function () {
       webSpeechAPI   : _hasSpeechSynth(),
       totalWebVoices : _webVoices.length,
       tamilVoices    : getAvailableVoices('ta').map(function (v) { return v.name + ' (' + v.lang + ')'; }),
-      settings       : {rate: _settings.rate, pitch: _settings.pitch, volume: _settings.volume},
+      settings       : { rate: _settings.rate, pitch: _settings.pitch, volume: _settings.volume },
       browserInfo    : navigator.userAgent.substring(0, 120)
     };
   }
 
-  /* ── Settings Panel ─────────────────────────────────────── */
+  /* ── Settings Panel ─────────────────────────────────────────── */
   function renderSettingsPanel (containerId) {
     var container = document.getElementById(containerId);
     if (!container) return;
@@ -250,7 +443,7 @@ var TTSEngine = (function () {
     if (isCap && pluginReady) {
       statusHtml = '<div class="tts-status ok">✅ Native Android TTS Ready · அண்ட்ராய்டு ஒலி இயந்திரம் செயல்படுகிறது</div>';
     } else if (isCap && !pluginReady) {
-      statusHtml = '<div class="tts-status err">⚠ Native TTS plugin not found · Plugin இல்லை<br><small style="font-size:9px;opacity:.8">APK rebuild with @capacitor-community/text-to-speech@5.0.0 required</small></div>';
+      statusHtml = '<div class="tts-status err">⚠ Native TTS plugin not found · Plugin இல்லை<br><small style="font-size:9px;opacity:.8">APK rebuild with @capacitor-community/text-to-speech required</small></div>';
     } else if (webOk) {
       statusHtml = '<div class="tts-status ok">✅ Web Speech API · ' + _webVoices.length + ' voices available</div>';
     } else {
@@ -284,9 +477,9 @@ var TTSEngine = (function () {
       '</div>'
     ].join('');
 
-    var rateEl = document.getElementById('tts-rate');
+    var rateEl  = document.getElementById('tts-rate');
     var pitchEl = document.getElementById('tts-pitch');
-    var volEl = document.getElementById('tts-vol');
+    var volEl   = document.getElementById('tts-vol');
     if (rateEl)  rateEl.oninput  = function () { setRate(this.value);   document.getElementById('tts-rate-val').textContent  = this.value; };
     if (pitchEl) pitchEl.oninput = function () { setPitch(this.value);  document.getElementById('tts-pitch-val').textContent = this.value; };
     if (volEl)   volEl.oninput   = function () { setVolume(this.value); document.getElementById('tts-vol-val').textContent   = this.value; };
@@ -310,12 +503,23 @@ var TTSEngine = (function () {
 
   /* ── Public API ─────────────────────────────────────────── */
   return {
-    init: init, speak: speak, speakLong: speakLong,
-    pause: pause, resume: resume, stop: stop,
-    isSupported: isSupported, isPlaying: isPlaying,
-    setRate: setRate, setPitch: setPitch, setVolume: setVolume, on: on,
-    hasTamilVoice: hasTamilVoice, getAvailableVoices: getAvailableVoices,
-    getDiagnostics: getDiagnostics, renderSettingsPanel: renderSettingsPanel
+    init: init,
+    speak: speak,
+    speakLong: speakLong,
+    pause: pause,
+    resume: resume,
+    stop: stop,
+    isSupported: isSupported,
+    isPlaying: isPlaying,
+    isPaused: isPaused,
+    setRate: setRate,
+    setPitch: setPitch,
+    setVolume: setVolume,
+    on: on,
+    hasTamilVoice: hasTamilVoice,
+    getAvailableVoices: getAvailableVoices,
+    getDiagnostics: getDiagnostics,
+    renderSettingsPanel: renderSettingsPanel
   };
 })();
 
