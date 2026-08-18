@@ -7,6 +7,8 @@
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <title>வேத வசனம் Holy Bible</title>
+  <!-- Google AdMob -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-9057426786910647" crossorigin="anonymous"></script>
 <link rel="manifest" href="manifest.json"/>
 <link rel="icon" href="icon.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Tamil:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
@@ -194,6 +196,8 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .emtxt{font-size:9px;letter-spacing:2px;color:var(--txt3);line-height:2.2;font-family:var(--sans)}
 .ad{background:var(--bg2);border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);height:50px;display:flex;align-items:center;justify-content:center}
 .adlbl{font-size:8px;color:var(--txt3);letter-spacing:2px;font-family:var(--sans)}.pb{padding-bottom:calc(var(--nav)+12px)}
+.admob-wrap{width:100%;overflow:hidden;background:#0a0a14;border-top:1px solid var(--brd);border-bottom:1px solid var(--brd)}
+.admob-banner{display:block;width:100%;height:60px;text-align:center}
 /* TTS SETTINGS PANEL */
 .tts-panel{padding:8px 0}
 .tts-panel h3{padding:12px 14px;font-size:11px;letter-spacing:2px;color:var(--gold);font-family:var(--sans);border-bottom:1px solid var(--brd)}
@@ -252,8 +256,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
       </div>
     </div>
     <div class="hbtns">
-      <button class="hbtn" id="lang-btn" onclick="App.cycleLang()">BI</button>
-      <button class="hbtn" id="th-btn"   onclick="App.theme()">☀</button>
+      <button class="hbtn" id="th-btn" onclick="App.theme()">☀</button>
       <button class="hbtn" onclick="TTSS.open()" title="TTS Settings">⚙</button>
     </div>
   </header>
@@ -262,7 +265,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
     <!-- HOME -->
     <div class="scr on" id="s-home">
       <div class="tg" id="home-tiles"></div>
-      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 1</span></div>
+      <div class="admob-wrap"><ins class="admob-banner adsbygoogle" data-ad-client="ca-app-pub-9057426786910647" data-ad-slot="2630307385" data-ad-format="banner" data-full-width-responsive="false"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
       <div class="sh"><span class="sht">TODAY'S READING · இன்றைய வசனம்</span></div>
       <div id="home-vv" class="pb"></div>
     </div>
@@ -332,7 +335,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
         <div style="color:rgba(255,255,255,.4);font-size:9px;font-family:var(--sans);margin-top:2px" id="saved-lbl">0 SAVED</div>
       </div>
       <div id="saved-list" class="pb"></div>
-      <div class="ad"><span class="adlbl">GOOGLE ADSENSE — SLOT 3</span></div>
+      <div class="admob-wrap"><ins class="admob-banner adsbygoogle" data-ad-client="ca-app-pub-9057426786910647" data-ad-slot="2630307385" data-ad-format="banner" data-full-width-responsive="false"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
     </div>
   </main>
 
@@ -366,7 +369,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
     <div class="rta" id="read-ta"></div><div class="rdiv" id="read-div"></div>
     <div class="ren" id="read-en"></div>
     <div style="text-align:center;margin-top:20px"><span class="rbadge" id="read-badge"></span></div>
-    <div class="ad" style="margin-top:28px;height:120px"><span class="adlbl">GOOGLE ADSENSE</span></div>
+    <div class="admob-wrap"><ins class="admob-banner adsbygoogle" data-ad-client="ca-app-pub-9057426786910647" data-ad-slot="2630307385" data-ad-format="banner" data-full-width-responsive="false"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
   </div>
 </div>
 
@@ -552,6 +555,7 @@ var BD=(function(){
   }
   /* Global verse cache — set when rendering cards, avoids byId lookup */
   window._VC = {};
+  window._VC={};
   return{BEN:BEN,BTA:BTA,CLR:CLR,build:build,count:function(){return _vv.length;},all:function(){return _vv;},
     byId:function(id){return _vv.find(function(v){return v.id===id;})||null;},
     byBook:function(n){return _bb[n]||[];},
@@ -1225,7 +1229,7 @@ var App=(function(){
     var ls=['both','ta','en'],cur=ST.g('lang')||'both';
     var next=ls[(ls.indexOf(cur)+1)%ls.length];
     ST.setLang(next);
-    document.getElementById('lang-btn').textContent=next.toUpperCase();
+    /* lang-btn removed from header */
     if(_cur==='verses')SV.render();
   }
 
@@ -1253,8 +1257,8 @@ var App=(function(){
     return '<div class="vc"><div class="vch">'+
       '<div><div class="vr">'+v.ref+'</div><div class="vbk">'+v.bookTa+'</div></div>'+
       '<div class="va">'+
-      '<button onclick="AU.open(window._VC['+v.id+']||BD.byId('+v.id+'))">🔊</button>'+
-      '<button onclick="RM.open(window._VC['+v.id+']||BD.byId('+v.id+'))">📖</button>'+
+      '<button onclick="AU.open(window._VC['+v.id+'])">🔊</button>'+
+      '<button onclick="RM.open(window._VC['+v.id+'])">📖</button>'+
       '<button onclick="App.toggleSave('+v.id+',this)">'+(sv?'♥':'♡')+'</button>'+
       '</div></div><div class="vbd">'+
       (lang!=='en'?'<div class="vta">'+v.ta+'</div>':'')+
@@ -1359,7 +1363,7 @@ var App=(function(){
         '<div style="color:rgba(255,255,255,.5);font-size:9px;font-family:var(--sans);margin-top:2px">TAMIL &amp; ENGLISH VERSE SEARCH</div></div>'+
         '<div class="sbar"><input class="sinp" id="ai-srch" placeholder="love, அன்பு, peace, John 3:16…" onkeydown="if(event.key===\'Enter\')SA.run()"/>'+
         '<button class="sbtn" onclick="SA.run()">→</button></div>'+
-        '<div id="ai-out" class="pb"></div>';
+        '<div id="ai-list" class="pb"></div>';
     }
     /* Update song overlay hear button */
     var songbar=document.getElementById('songbar');
@@ -1373,7 +1377,7 @@ var App=(function(){
 
   function init(){
     if(ST.g('theme')==='light'){document.documentElement.setAttribute('data-light','');document.getElementById('th-btn').textContent='🌙';}
-    document.getElementById('lang-btn').textContent=(ST.g('lang')||'both').toUpperCase();
+    /* lang-btn removed from header */
     _buildScreens();
     var bar=document.getElementById('ls-bar'),lmsg=document.getElementById('ls-msg');
     function prog(p,t){if(bar)bar.style.width=p+'%';if(lmsg)lmsg.textContent=t;}
