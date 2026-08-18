@@ -67,15 +67,24 @@ jobs:
       - name: Inject AdMob App ID into AndroidManifest.xml
         run: |
           MANIFEST="android/app/src/main/AndroidManifest.xml"
+          ADMOB_ID="ca-app-pub-9057426786910647~7730878522"
           if [ -f "$MANIFEST" ]; then
-            if ! grep -q "com.google.android.gms.ads.APPLICATION_ID" "$MANIFEST" ; then
-              # Insert meta-data line before closing </application> tag
-              sed -i '/<\/application>/i \
-        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-9057426786910647~7730878522"\/>' "$MANIFEST"
+            # If meta-data not present, insert it before </application>
+            if ! grep -q "com.google.android.gms.ads.APPLICATION_ID" "$MANIFEST"; then
+              awk -v id="$ADMOB_ID" '
+                { print }
+                /<\/application>/ && !inserted {
+                  print "        <meta-data android:name=\"com.google.android.gms.ads.APPLICATION_ID\" android:value=\"" id "\"/>"
+                  inserted=1
+                }
+              ' "$MANIFEST" > "$MANIFEST.tmp" && mv "$MANIFEST.tmp" "$MANIFEST"
             else
-              sed -i 's|android:value="ca-app-pub-[^~]*~[^"]*"|android:value="ca-app-pub-9057426786910647~7730878522"|' "$MANIFEST"
+              # Update existing meta-data value if present
+              sed -i 's|android:value="ca-app-pub-[^~]*~[^"]*"|android:value="'"$ADMOB_ID"'"|' "$MANIFEST"
             fi
-            echo "AdMob App ID injected"
+            echo "AdMob App ID injected/updated"
+          else
+            echo "AndroidManifest.xml not found at $MANIFEST"
           fi
 
       - name: Set app name to Holy Bible
@@ -85,7 +94,7 @@ jobs:
             sed -i 's|<string name="app_name">.*</string>|<string name="app_name">Holy Bible</string>|g' "$STRINGS_FILE"
           else
             mkdir -p android/app/src/main/res/values
-            printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <string name="app_name">Holy Bible</string>\n    <string name="title_activity_main">Holy Bible</string>\n' > android/app/src/main/res/values/strings.xml
+            printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <string name="app_name">Holy Bible</string>\n    <string name="title_activity_main">Holy Bible</string>\n</resources>\n' > "$STRINGS_FILE"
           fi
 
       - name: Inject app icons
@@ -93,16 +102,16 @@ jobs:
           ICON_SRC="android-icons"; ICON_DST="android/app/src/main/res"
           for D in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
             mkdir -p "$ICON_DST/mipmap-$D"
-            cp "$ICON_SRC/mipmap-$D/ic_launcher.png"            "$ICON_DST/mipmap-$D/ic_launcher.png"
-            cp "$ICON_SRC/mipmap-$D/ic_launcher_round.png"      "$ICON_DST/mipmap-$D/ic_launcher_round.png"
-            cp "$ICON_SRC/mipmap-$D/ic_launcher_foreground.png" "$ICON_DST/mipmap-$D/ic_launcher_foreground.png"
+            cp "$ICON_SRC/mipmap-$D/ic_launcher.png"            "$ICON_DST/mipmap-$D/ic_launcher.png" || true
+            cp "$ICON_SRC/mipmap-$D/ic_launcher_round.png"      "$ICON_DST/mipmap-$D/ic_launcher_round.png" || true
+            cp "$ICON_SRC/mipmap-$D/ic_launcher_foreground.png" "$ICON_DST/mipmap-$D/ic_launcher_foreground.png" || true
           done
 
       - name: Fix adaptive icon XML
         run: |
           mkdir -p android/app/src/main/res/mipmap-anydpi-v26
           for f in ic_launcher ic_launcher_round; do
-            printf '<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n    <background android:drawable="@color/ic_launcher_background"/>\n    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>\n</adaptive-icon>\n' > android/app/src/main/res/mipmap-anydpi-v26/$f.xml
+            printf '<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n    <background android:drawable="@color/ic_launcher_background"/>\n    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>\n</adaptive-icon>\n' > "android/app/src/main/res/mipmap-anydpi-v26/$f.xml"
           done
           mkdir -p android/app/src/main/res/values
           printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_background">#080810</color>\n</resources>\n' > android/app/src/main/res/values/ic_launcher_background.xml
@@ -113,9 +122,9 @@ jobs:
       - name: Set versionCode and versionName
         run: |
           BUILD_NUM=${{ github.run_number }}
-          sed -i "s/versionCode .*/versionCode $BUILD_NUM/" android/app/build.gradle
-          sed -i "s/versionName .*/versionName \"2.2.$BUILD_NUM\"/" android/app/build.gradle
-          grep -E "versionCode|versionName" android/app/build.gradle
+          sed -i "s/versionCode .*/versionCode $BUILD_NUM/" android/app/build.gradle || true
+          sed -i "s/versionName .*/versionName \"2.2.$BUILD_NUM\"/" android/app/build.gradle || true
+          grep -E "versionCode|versionName" android/app/build.gradle || true
 
       # ════════════════════════════════════════════════════
       # AUTO KEYSTORE — No laptop needed
