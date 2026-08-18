@@ -1,4 +1,4 @@
-name: Build Holy Bible APK
+name: Build Holy Bible APK + AAB
 
 on:
   push:
@@ -36,6 +36,9 @@ jobs:
       - name: Install Capacitor TTS plugin (Capacitor 5)
         run: npm install @capacitor-community/text-to-speech@5.0.0 --legacy-peer-deps
 
+      - name: Install Capacitor AdMob plugin (Capacitor 5)
+        run: npm install @capacitor-community/admob@5.0.0 --legacy-peer-deps
+
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
@@ -60,6 +63,19 @@ jobs:
 
       - name: Sync web app to Android
         run: npx cap sync android
+
+      - name: Inject AdMob App ID into AndroidManifest.xml
+        run: |
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
+          if [ -f "$MANIFEST" ]; then
+            if ! grep -q "com.google.android.gms.ads.APPLICATION_ID" "$MANIFEST"; then
+              sed -i 's|</application>|        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-9057426786910647~7730878522"/>
+    </application>|' "$MANIFEST"
+            else
+              sed -i 's|android:value="ca-app-pub-[^~]*~[^"]*"|android:value="ca-app-pub-9057426786910647~7730878522"|' "$MANIFEST"
+            fi
+            echo "AdMob App ID injected"
+          fi
 
       - name: Set app name to Holy Bible
         run: |
@@ -164,6 +180,18 @@ jobs:
             --no-daemon
           echo "Release APK signed successfully"
 
+      - name: Build Release AAB (Play Store bundle)
+        if: ${{ github.event.inputs.build_type != 'debug' }}
+        working-directory: android
+        run: |
+          ./gradlew bundleRelease \
+            -Pandroid.injected.signing.store.file="${{ env.KS_FILE }}" \
+            -Pandroid.injected.signing.store.password="${{ env.KS_PASS }}" \
+            -Pandroid.injected.signing.key.alias="${{ env.KS_ALIAS }}" \
+            -Pandroid.injected.signing.key.password="${{ env.KS_KPASS }}" \
+            --no-daemon
+          echo "AAB built for Play Store"
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
@@ -171,4 +199,5 @@ jobs:
           path: |
             android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/apk/release/app-release*.apk
+            android/app/build/outputs/bundle/release/app-release.aab
           retention-days: 30
