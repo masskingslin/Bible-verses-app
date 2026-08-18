@@ -21,7 +21,6 @@ jobs:
     timeout-minutes: 45
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -69,8 +68,7 @@ jobs:
           MANIFEST="android/app/src/main/AndroidManifest.xml"
           if [ -f "$MANIFEST" ]; then
             if ! grep -q "com.google.android.gms.ads.APPLICATION_ID" "$MANIFEST"; then
-              sed -i 's|</application>|        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-9057426786910647~7730878522"/>
-    </application>|' "$MANIFEST"
+              sed -i 's|</application>|        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-9057426786910647~7730878522"/>\n    </application>|' "$MANIFEST"
             else
               sed -i 's|android:value="ca-app-pub-[^~]*~[^"]*"|android:value="ca-app-pub-9057426786910647~7730878522"|' "$MANIFEST"
             fi
