@@ -68,9 +68,10 @@ jobs:
         run: |
           MANIFEST="android/app/src/main/AndroidManifest.xml"
           if [ -f "$MANIFEST" ]; then
-            if ! grep -q "com.google.android.gms.ads.APPLICATION_ID" "$MANIFEST"; then
-              sed -i 's|</application>|        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-9057426786910647~7730878522"/>
-    </application>|' "$MANIFEST"
+            if ! grep -q "com.google.android.gms.ads.APPLICATION_ID" "$MANIFEST" ; then
+              # Insert meta-data line before closing </application> tag
+              sed -i '/<\/application>/i \
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-9057426786910647~7730878522"\/>' "$MANIFEST"
             else
               sed -i 's|android:value="ca-app-pub-[^~]*~[^"]*"|android:value="ca-app-pub-9057426786910647~7730878522"|' "$MANIFEST"
             fi
@@ -84,7 +85,7 @@ jobs:
             sed -i 's|<string name="app_name">.*</string>|<string name="app_name">Holy Bible</string>|g' "$STRINGS_FILE"
           else
             mkdir -p android/app/src/main/res/values
-            printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <string name="app_name">Holy Bible</string>\n    <string name="title_activity_main">Holy Bible</string>\n    <string name="package_name">com.vedavachanam.holybible</string>\n    <string name="custom_url_scheme">com.vedavachanam.holybible</string>\n</resources>\n' > "$STRINGS_FILE"
+            printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <string name="app_name">Holy Bible</string>\n    <string name="title_activity_main">Holy Bible</string>\n' > android/app/src/main/res/values/strings.xml
           fi
 
       - name: Inject app icons
