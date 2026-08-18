@@ -18,9 +18,10 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 45
 
     steps:
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -30,12 +31,13 @@ jobs:
           node-version: '20'
 
       - name: Install packages
-        run: npm ci
+        run: npm install
 
-      - name: Install Capacitor plugins (TTS, AdMob)
-        run: |
-          npm install @capacitor-community/text-to-speech@5.0.0 --legacy-peer-deps
-          npm install @capacitor-community/admob@5.0.0 --legacy-peer-deps
+      - name: Install Capacitor TTS plugin (Capacitor 5)
+        run: npm install @capacitor-community/text-to-speech@5.0.0 --legacy-peer-deps
+
+      - name: Install Capacitor AdMob plugin (Capacitor 5)
+        run: npm install @capacitor-community/admob@5.0.0 --legacy-peer-deps
 
       - name: Setup Java 17
         uses: actions/setup-java@v4
@@ -52,106 +54,73 @@ jobs:
       - name: Install Capacitor CLI
         run: npm install -g @capacitor/cli@5
 
-      - name: Ensure Android project exists (generate if needed)
-        run: |
-          # Try to add the Android platform (no-op if already present)
-          npx cap add android || true
-          # Sync web assets into Android project
-          npx cap sync android || true
-          # Show android dir for debugging
-          echo "Android directory contents:"
-          ls -la android || true
-
-      - name: Validate AndroidManifest and ensure admob string
-        run: |
-          set -e
-          MANIFEST="android/app/src/main/AndroidManifest.xml"
-          STRINGS_FILE="android/app/src/main/res/values/strings.xml"
-          ADMOB_ID="ca-app-pub-9057426786910647~7730878522"
-          echo "Checking for manifest: $MANIFEST"
-          if [ ! -f "$MANIFEST" ]; then
-            echo "ERROR: AndroidManifest.xml not found at $MANIFEST"
-            echo "List android tree for debugging:"
-            ls -R android || true
-            exit 1
-          fi
-
-          # Ensure values directory and strings.xml contain admob_app_id
-          mkdir -p "$(dirname "$STRINGS_FILE")"
-          if ! grep -q "admob_app_id" "$STRINGS_FILE" 2>/dev/null || [ ! -s "$STRINGS_FILE" ]; then
-            echo "Creating or updating $STRINGS_FILE with admob_app_id"
-            cat > "$STRINGS_FILE" <<'EOF'
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <string name="app_name">Holy Bible</string>
-  <string name="title_activity_main">Holy Bible</string>
-  <string name="admob_app_id">REPLACE_ME</string>
-</resources>
-EOF
-            # Insert the real ID
-            sed -i "s|REPLACE_ME|$ADMOB_ID|" "$STRINGS_FILE"
-          else
-            # Update admob_app_id if present (or append)
-            if grep -q "admob_app_id" "$STRINGS_FILE"; then
-              sed -i "s|<string name=\"admob_app_id\">.*</string>|<string name=\"admob_app_id\">$ADMOB_ID</string>|" "$STRINGS_FILE"
-            else
-              # Append admob_app_id before closing </resources>
-              sed -i "/<\/resources>/i \ \ <string name=\"admob_app_id\">$ADMOB_ID</string>" "$STRINGS_FILE"
-            fi
-          fi
-
-          # Idempotently insert or update the meta-data element in AndroidManifest.xml
-          echo "Injecting or updating AdMob meta-data in AndroidManifest.xml"
-          awk -v id="$ADMOB_ID" '
-            BEGIN { inserted=0 }
-            {
-              print
-            }
-            /<\/application>/ && inserted==0 {
-              # Only add if not already present in file
-              # We'll scan previous lines for APPLICATION_ID presence
-              inserted=1
-            }
-          ' "$MANIFEST" > "$MANIFEST.tmp"
-
-          if grep -q 'com.google.android.gms.ads.APPLICATION_ID' "$MANIFEST"; then
-            echo "Existing AdMob meta-data found — updating value"
-            sed -i 's|android:value="ca-app-pub-[^~]*~[^"]*"|android:value="'"$ADMOB_ID"'"|' "$MANIFEST"
-            rm -f "$MANIFEST.tmp"
-          else
-            # Insert meta-data before closing </application>
-            awk -v id="$ADMOB_ID" '{
-              if (match($0, /<\/application>/) && !done) {
-                print "        <meta-data android:name=\"com.google.android.gms.ads.APPLICATION_ID\" android:value=\"" id "\"/>"
-                done=1
-              }
-              print $0
-            }' "$MANIFEST" > "$MANIFEST.tmp" && mv "$MANIFEST.tmp" "$MANIFEST"
-          fi
-
-          echo "Manifest injection complete. Preview:"
-          sed -n '1,240p' "$MANIFEST" || true
-          echo "Preview strings.xml:"
-          sed -n '1,240p' "$STRINGS_FILE" || true
-
       - name: Prepare icons in public folder
         run: |
-          cp android-icons/mipmap-xxxhdpi/ic_launcher.png public/icon.png || true
+          cp android-icons/mipmap-xxxhdpi/ic_launcher.png public/icon.png
+
+      - name: Add Android platform
+        run: npx cap add android || true
+
+      - name: Sync web app to Android
+        run: npx cap sync android
+
+      - name: Inject AdMob App ID into AndroidManifest.xml
+        run: |
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
+          if [ -f "$MANIFEST" ]; then
+            if ! grep -q "com.google.android.gms.ads.APPLICATION_ID" "$MANIFEST"; then
+              sed -i 's|</application>|        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-9057426786910647~7730878522"/>
+    </application>|' "$MANIFEST"
+            else
+              sed -i 's|android:value="ca-app-pub-[^~]*~[^"]*"|android:value="ca-app-pub-9057426786910647~7730878522"|' "$MANIFEST"
+            fi
+            echo "AdMob App ID injected"
+          fi
+
+      - name: Set app name to Holy Bible
+        run: |
+          STRINGS_FILE="android/app/src/main/res/values/strings.xml"
+          if [ -f "$STRINGS_FILE" ]; then
+            sed -i 's|<string name="app_name">.*</string>|<string name="app_name">Holy Bible</string>|g' "$STRINGS_FILE"
+          else
+            mkdir -p android/app/src/main/res/values
+            printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <string name="app_name">Holy Bible</string>\n    <string name="title_activity_main">Holy Bible</string>\n    <string name="package_name">com.vedavachanam.holybible</string>\n    <string name="custom_url_scheme">com.vedavachanam.holybible</string>\n</resources>\n' > "$STRINGS_FILE"
+          fi
+
+      - name: Inject app icons
+        run: |
+          ICON_SRC="android-icons"; ICON_DST="android/app/src/main/res"
+          for D in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            mkdir -p "$ICON_DST/mipmap-$D"
+            cp "$ICON_SRC/mipmap-$D/ic_launcher.png"            "$ICON_DST/mipmap-$D/ic_launcher.png"
+            cp "$ICON_SRC/mipmap-$D/ic_launcher_round.png"      "$ICON_DST/mipmap-$D/ic_launcher_round.png"
+            cp "$ICON_SRC/mipmap-$D/ic_launcher_foreground.png" "$ICON_DST/mipmap-$D/ic_launcher_foreground.png"
+          done
+
+      - name: Fix adaptive icon XML
+        run: |
+          mkdir -p android/app/src/main/res/mipmap-anydpi-v26
+          for f in ic_launcher ic_launcher_round; do
+            printf '<?xml version="1.0" encoding="utf-8"?>\n<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n    <background android:drawable="@color/ic_launcher_background"/>\n    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>\n</adaptive-icon>\n' > android/app/src/main/res/mipmap-anydpi-v26/$f.xml
+          done
+          mkdir -p android/app/src/main/res/values
+          printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_background">#080810</color>\n</resources>\n' > android/app/src/main/res/values/ic_launcher_background.xml
 
       - name: Make gradlew executable
-        run: chmod +x android/gradlew || true
+        run: chmod +x android/gradlew
 
       - name: Set versionCode and versionName
         run: |
           BUILD_NUM=${{ github.run_number }}
-          if [ -f android/app/build.gradle ]; then
-            sed -i "s/versionCode .*/versionCode $BUILD_NUM/" android/app/build.gradle || true
-            sed -i "s/versionName .*/versionName \"2.2.$BUILD_NUM\"/" android/app/build.gradle || true
-            grep -E "versionCode|versionName" android/app/build.gradle || true
-          else
-            echo "android/app/build.gradle not found — skipping version bump"
-          fi
+          sed -i "s/versionCode .*/versionCode $BUILD_NUM/" android/app/build.gradle
+          sed -i "s/versionName .*/versionName \"2.2.$BUILD_NUM\"/" android/app/build.gradle
+          grep -E "versionCode|versionName" android/app/build.gradle
 
+      # ════════════════════════════════════════════════════
+      # AUTO KEYSTORE — No laptop needed
+      # First run: auto-generates keystore, saves as artifact
+      # After that: set KEYSTORE_BASE64 secret once on GitHub
+      # ════════════════════════════════════════════════════
       - name: Setup signing keystore
         id: keystore
         run: |
@@ -167,8 +136,26 @@ EOF
             ALIAS="${{ secrets.KEY_ALIAS }}"
             KEY_PASS="${{ secrets.KEY_PASSWORD }}"
           else
-            echo "No KEYSTORE_BASE64 secret provided — generating a dev keystore (not for production)"
-            keytool -genkeypair -keystore "$KS" -alias "$ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass "$KS_PASS" -keypass "$KEY_PASS" -dname "CN=Holy Bible,OU=App,O=VedaVachanam,L=TamilNadu,S=TamilNadu,C=IN" -storetype PKCS12
+            echo "Auto-generating keystore (first-time setup)..."
+            keytool -genkeypair \
+              -keystore "$KS" \
+              -alias "$ALIAS" \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -storepass "$KS_PASS" \
+              -keypass  "$KEY_PASS" \
+              -dname "CN=Holy Bible,OU=App,O=VedaVachanam,L=TamilNadu,S=TamilNadu,C=IN" \
+              -storetype PKCS12
+            echo ""
+            echo "╔══════════════════════════════════════════╗"
+            echo "║  COPY THIS — set as KEYSTORE_BASE64      ║"
+            echo "╚══════════════════════════════════════════╝"
+            base64 -w 0 "$KS"
+            echo ""
+            echo "STORE_PASSWORD = $KS_PASS"
+            echo "KEY_ALIAS      = $ALIAS"
+            echo "KEY_PASSWORD   = $KEY_PASS"
           fi
 
           echo "KS_FILE=$KS"       >> $GITHUB_ENV
@@ -176,16 +163,36 @@ EOF
           echo "KS_ALIAS=$ALIAS"   >> $GITHUB_ENV
           echo "KS_KPASS=$KEY_PASS" >> $GITHUB_ENV
 
-      - name: Build (Debug or Release)
+      - name: Build Debug APK
+        if: ${{ github.event.inputs.build_type == 'debug' }}
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Build Release APK (signed)
+        if: ${{ github.event.inputs.build_type != 'debug' }}
         working-directory: android
         run: |
-          if [ "${{ github.event.inputs.build_type }}" = "debug" ]; then
-            ./gradlew assembleDebug --no-daemon
-          else
-            ./gradlew assembleRelease -Pandroid.injected.signing.store.file="${{ env.KS_FILE }}" -Pandroid.injected.signing.store.password="${{ env.KS_PASS }}" -Pandroid.injected.signing.key.alias="${{ env.KS_ALIAS }}" -Pandroid.injected.signing.key.password="${{ env.KS_KPASS }}" --no-daemon
-          fi
+          ./gradlew assembleRelease \
+            -Pandroid.injected.signing.store.file="${{ env.KS_FILE }}" \
+            -Pandroid.injected.signing.store.password="${{ env.KS_PASS }}" \
+            -Pandroid.injected.signing.key.alias="${{ env.KS_ALIAS }}" \
+            -Pandroid.injected.signing.key.password="${{ env.KS_KPASS }}" \
+            --no-daemon
+          echo "Release APK signed successfully"
 
-      - name: Upload APK / AAB artifacts
+      - name: Build Release AAB (Play Store bundle)
+        if: ${{ github.event.inputs.build_type != 'debug' }}
+        working-directory: android
+        run: |
+          ./gradlew bundleRelease \
+            -Pandroid.injected.signing.store.file="${{ env.KS_FILE }}" \
+            -Pandroid.injected.signing.store.password="${{ env.KS_PASS }}" \
+            -Pandroid.injected.signing.key.alias="${{ env.KS_ALIAS }}" \
+            -Pandroid.injected.signing.key.password="${{ env.KS_KPASS }}" \
+            --no-daemon
+          echo "AAB built for Play Store"
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: HolyBible-APK-${{ github.run_number }}
