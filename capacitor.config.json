@@ -2,7 +2,15 @@
   "appId": "com.vedavachanam.holybible",
   "appName": "Holy Bible",
   "webDir": "public",
-  "plugins": {},
+  "plugins": {
+    "TextToSpeech": {},
+    "AdMob": {
+      "appId": {
+        "android": "ca-app-pub-9057426786910647~7730878522"
+      },
+      "initializeForTesting": false
+    }
+  },
   "android": {
     "minWebViewVersion": 60,
     "backgroundColor": "#080810"
