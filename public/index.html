@@ -83,7 +83,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 /* VERSE CARD */
 .vc{background:var(--bg2);border-bottom:1px solid var(--brd)}
 .vch{padding:7px 14px;display:flex;align-items:center;justify-content:space-between}
-.vr{font-size:10px;font-weight:700;color:#fff;letter-spacing:.5px;font-family:var(--sans)}.vbk{font-size:9px;color:rgba(255,255,255,.5);font-family:var(--ta2)}
+.vr{font-size:10px;font-weight:700;color:var(--txt);letter-spacing:.5px;font-family:var(--sans)}.vbk{font-size:9px;color:var(--txt2);font-family:var(--ta2)}
 .vbd{padding:11px 14px}
 .vta{font-size:15px;line-height:2.0;color:var(--txt);font-family:var(--ta);margin-bottom:8px}
 .ven{font-size:15px;line-height:1.85;color:var(--txt);font-family:var(--en);font-style:italic}
@@ -124,13 +124,16 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .ovbar{flex-shrink:0;padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
 .ovbody{flex:1;overflow-y:auto}
 /* READING */
-.rbar{flex-shrink:0;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.rbar{flex-shrink:0;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border-bottom:1px solid var(--brd)}
+.rbar .rcbtn{background:var(--bg3);border-color:var(--brd);color:var(--txt)}
 .rbody{flex:1;overflow-y:auto;padding:32px 22px}
 .rta{font-family:var(--ta);line-height:2.2;margin-bottom:24px;color:var(--txt)}
 .rdiv{height:1px;width:40px;margin-bottom:24px}
 .ren{line-height:1.9;font-style:italic;color:var(--txt);font-family:var(--en)}
 .rbadge{display:inline-block;padding:5px 18px;font-size:9px;font-weight:700;letter-spacing:3px;margin-top:20px;font-family:var(--sans)}
 .rctls{display:flex;gap:6px}.rcbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.15);color:#fff;font-family:var(--sans);cursor:pointer}
+#char-bar,#stbar{background:var(--bg2);border-bottom:1px solid var(--brd)}
+#char-bar .rcbtn,#stbar .rcbtn{background:var(--bg3);border-color:var(--brd);color:var(--txt)}
 /* CHAPTER READER */
 .chbody{flex:1;overflow-y:auto;padding:12px 14px;background:var(--bg)}
 .chv{padding:9px 0;border-bottom:1px solid var(--brd);display:flex;gap:12px}
@@ -158,8 +161,8 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .aumsg{margin-top:6px;font-size:9px;color:rgba(255,255,255,.45);font-family:var(--sans);line-height:1.6}
 /* SONGS */
 .song-cat-hdr{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
-.song-cat-t{font-size:13px;font-weight:700;color:#fff;font-family:var(--sans)}
-.song-cat-e{font-size:10px;color:rgba(255,255,255,.6);font-family:var(--sans);margin-top:2px}
+.song-cat-t{font-size:13px;font-weight:700;color:var(--txt);font-family:var(--sans)}
+.song-cat-e{font-size:10px;color:var(--txt2);font-family:var(--sans);margin-top:2px}
 .song-cat-body{display:none}.song-cat-body.open{display:block}
 .song-item{padding:12px 14px;border-bottom:1px solid var(--brd);background:var(--bg2);cursor:pointer;display:flex;align-items:center;justify-content:space-between}
 .song-num{font-size:10px;color:var(--txt3);font-family:var(--sans);width:22px;flex-shrink:0}
@@ -180,7 +183,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .tli{display:flex;gap:13px;padding:9px 0;border-bottom:1px solid var(--brd)}.tli:last-child{border-bottom:none}
 .tlcol{display:flex;flex-direction:column;align-items:center;gap:4px}
 .tldot{width:9px;height:9px;border-radius:50%;flex-shrink:0}.tlline{width:1px;background:var(--brd);flex:1}
-.tlref{font-size:9px;font-weight:700;font-family:var(--sans);color:rgba(255,255,255,.55);margin-bottom:3px}
+.tlref{font-size:9px;font-weight:700;font-family:var(--sans);color:var(--gold);margin-bottom:3px}
 .tlen{font-size:14px;line-height:1.6;color:var(--txt);font-family:var(--en)}
 .tlta{font-size:13px;line-height:1.8;color:var(--txt2);font-family:var(--ta2);margin-top:3px}
 .lesn{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--brd)}.lesn:last-child{border-bottom:none}
@@ -356,8 +359,8 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
   <div class="rbar" id="read-bar">
     <div style="display:flex;align-items:center;gap:10px">
       <button class="rcbtn" style="width:32px;height:32px;font-size:14px" onclick="RM.close()">←</button>
-      <div><div id="read-ref" style="font-size:11px;font-weight:700;color:#fff;font-family:var(--sans)"></div>
-      <div style="font-size:8px;color:rgba(255,255,255,.4);font-family:var(--sans)">READING MODE</div></div>
+      <div><div id="read-ref" style="font-size:11px;font-weight:700;color:var(--txt);font-family:var(--sans)"></div>
+      <div style="font-size:8px;color:var(--txt3);font-family:var(--sans)">READING MODE</div></div>
     </div>
     <div class="rctls">
       <button class="rcbtn" style="width:32px;height:32px;font-size:14px;border-radius:50%" onclick="AU.toggle()">🔊</button>
@@ -401,9 +404,9 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
   <div class="ovbar" id="char-bar">
     <div style="display:flex;align-items:center;gap:10px">
       <button class="rcbtn" style="width:32px;height:32px;font-size:14px;flex-shrink:0" onclick="CD.close()">←</button>
-      <div><div id="cd-name" style="font-size:15px;font-weight:700;color:#fff;font-family:var(--sans)"></div>
-      <div id="cd-ta-name" style="font-size:12px;color:rgba(255,255,255,.7);font-family:var(--ta2)"></div>
-      <div id="cd-era" style="font-size:8px;color:rgba(255,255,255,.4);font-family:var(--sans)"></div></div>
+      <div><div id="cd-name" style="font-size:15px;font-weight:700;color:var(--txt);font-family:var(--sans)"></div>
+      <div id="cd-ta-name" style="font-size:12px;color:var(--txt2);font-family:var(--ta2)"></div>
+      <div id="cd-era" style="font-size:8px;color:var(--txt3);font-family:var(--sans)"></div></div>
     </div>
     <div id="cd-emi" style="font-size:28px"></div>
   </div>
@@ -414,8 +417,8 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
   <div class="ovbar" id="stbar">
     <div style="display:flex;align-items:center;gap:10px">
       <button class="rcbtn" style="width:32px;height:32px;font-size:14px;flex-shrink:0" onclick="StD.close()">←</button>
-      <div><div id="st-name" style="font-size:14px;font-weight:700;color:#fff;font-family:var(--sans)"></div>
-      <div id="st-ta-name" style="font-size:12px;color:rgba(255,255,255,.7);font-family:var(--ta2)"></div></div>
+      <div><div id="st-name" style="font-size:14px;font-weight:700;color:var(--txt);font-family:var(--sans)"></div>
+      <div id="st-ta-name" style="font-size:12px;color:var(--txt2);font-family:var(--ta2)"></div></div>
     </div>
     <span id="st-emi" style="font-size:28px"></span>
   </div>
@@ -813,7 +816,7 @@ var TTSS=(function(){
         '<div style="font-size:11px;letter-spacing:2px;color:'+(supported?'#fac85a':'#fa5a5a')+';font-family:var(--sans);font-weight:700;margin-bottom:8px">',
           supported?'TTS ENGINE NOT LOADED':'TTS NOT SUPPORTED',
         '</div>',
-        '<div style="font-size:12px;color:rgba(255,255,255,.6);font-family:var(--ta2);line-height:1.9">',
+        '<div style="font-size:12px;color:var(--txt2);font-family:var(--ta2);line-height:1.9">',
           supported
             ?'tts_engine.js வேலை செய்யவில்லை.<br>public/ folder-ல் tts_engine.js இருக்கிறதா என்று பார்க்கவும்.'
             :'Chrome browser-ல் திறந்தால் Audio வேலை செய்யும்.',
@@ -1186,9 +1189,9 @@ var SSONGS=(function(){
       return '<div class="song-cat-hdr" onclick="SSONGS.toggle('+ci+')">'+
         '<div>'+
         '<div class="song-cat-t">'+(cat.icon||'🎵')+' '+cat.title_ta+
-        ' <span style="color:rgba(255,255,255,.4);font-size:9px">'+cat.title_en+'</span></div>'+
+        ' <span style="color:var(--txt3);font-size:9px">'+cat.title_en+'</span></div>'+
         '<div class="song-cat-e">'+cat.songs.length+' பாடல்கள்</div></div>'+
-        '<span id="sa'+ci+'" style="color:rgba(255,255,255,.4)">'+(ci===0?'▲':'▼')+'</span></div>'+
+        '<span id="sa'+ci+'" style="color:var(--txt3)">'+(ci===0?'▲':'▼')+'</span></div>'+
         '<div class="song-cat-body'+(ci===0?' open':'')+'" id="sb'+ci+'">'+
         cat.songs.map(function(s,si){
           var songRealIdx=0;
