@@ -21,7 +21,11 @@
   --en:'EB Garamond','Georgia',serif;--sans:'Barlow Condensed','Arial Narrow',sans-serif;
   --nav:56px;--hdr:50px;
 }
-[data-light]{--bg:#f0ead8;--bg2:#f8f4e8;--bg3:#ede4cc;--bg4:#e0d5b8;--brd:rgba(100,80,40,.15);--txt:#1a1005;--txt2:rgba(26,16,5,.5);--txt3:rgba(26,16,5,.2);}
+[data-light]{
+  --bg:#f0ead8;--bg2:#f8f4e8;--bg3:#ede4cc;--bg4:#e0d5b8;
+  --brd:rgba(100,80,40,.15);--txt:#1a1005;--txt2:rgba(26,16,5,.65);
+  --txt3:rgba(26,16,5,.35);--gold:#8c6214;--acc:#0055b3;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 body{font-family:var(--ta2);background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased}
@@ -32,7 +36,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 #hdr{flex-shrink:0;height:var(--hdr);background:var(--bg2);border-bottom:1px solid var(--gold);display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:50}
 #main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 #nav{flex-shrink:0;height:var(--nav);background:var(--bg2);border-top:1px solid var(--gold);display:flex;overflow-x:auto}
-/* LOADING — FIX 2 & 7 */
+/* LOADING */
 #ls{position:fixed;inset:0;z-index:999;background:#040408;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
 .ls-img{width:90px;height:90px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;animation:lsglow 2s ease-in-out infinite alternate}
 @keyframes lsglow{from{box-shadow:0 0 10px rgba(201,168,76,.3)}to{box-shadow:0 0 28px rgba(201,168,76,.7)}}
@@ -41,7 +45,6 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .ls-track{width:200px;height:3px;background:rgba(201,168,76,.15);border-radius:2px;overflow:hidden}
 .ls-bar{height:100%;background:var(--gold);width:0%;transition:width .4s ease;border-radius:2px}
 .ls-msg{font-size:10px;color:rgba(232,220,200,.5);letter-spacing:1px;font-family:var(--sans)}
-/* FIX 7: error message */
 .ls-err{display:none;font-size:10px;color:#ff6b6b;text-align:center;line-height:1.9;font-family:var(--sans);padding:0 30px}
 /* PUSH BANNER */
 #pn-banner{display:none;position:fixed;top:0;left:0;right:0;z-index:998;max-width:480px;margin:0 auto;background:linear-gradient(135deg,#0d2040,#1a3a6a);border-bottom:2px solid var(--gold);padding:12px 14px;animation:slidedown .3s ease}
@@ -144,7 +147,9 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .chlb{display:flex;gap:3px;margin-right:4px}
 .chlb button{padding:0 8px;height:28px;border:none;background:var(--bg3);color:var(--txt2);font-size:8px;font-weight:700;font-family:var(--sans)}
 .chlb button.on{background:var(--acc);color:#fff}
-/* AUDIO PANEL — FIX 3 */
+.ch-vrange{font-size:9px;font-weight:normal;opacity:0.85;color:var(--gold);margin-left:4px}
+
+/* AUDIO PANEL */
 #au-panel{display:none;position:fixed;bottom:var(--nav);left:0;right:0;z-index:200;max-width:480px;margin:0 auto}
 #au-panel.on{display:block}
 .auinner{background:linear-gradient(135deg,#030818,#0a1835);padding:14px;box-shadow:0 -4px 20px rgba(0,0,0,.6);position:relative;border-top:1px solid rgba(100,150,255,.2)}
@@ -204,6 +209,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .tts-status{padding:10px 14px;font-size:11px;font-family:var(--sans);border-bottom:1px solid var(--brd)}
 .tts-status.ok{color:#5afa5a;background:rgba(0,100,0,.15)}
 .tts-status.err{color:#fa5a5a;background:rgba(100,0,0,.15)}
+.tts-row{display:flex;align-items:center;padding:8px 14px;gap:8px}
 .tts-row label{font-size:10px;color:var(--txt2);font-family:var(--sans);flex-shrink:0;width:110px}
 .tts-row input[type=range]{flex:1}
 .tts-row span{font-size:10px;color:var(--txt);font-family:var(--sans);width:32px;text-align:right}
@@ -214,18 +220,37 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 .tts-diag{padding:12px 14px}
 .tts-diag summary{font-size:9px;color:var(--txt3);font-family:var(--sans);cursor:pointer;letter-spacing:1px}
 .tts-diag pre{font-size:9px;color:var(--txt2);margin-top:8px;white-space:pre-wrap;font-family:monospace;line-height:1.6}
+
+/* ================================================================
+   EXPLICIT LIGHT THEME CONTRAST & VISIBILITY OVERRIDES
+================================================================ */
+[data-light] .vr{color:#8c6214 !important;}
+[data-light] .vbk{color:rgba(26,16,5,.65) !important;}
+[data-light] .sht{color:#7a5818 !important;}
+[data-light] .song-cat-t{color:#1a1005 !important;}
+[data-light] .song-cat-e{color:rgba(26,16,5,.65) !important;}
+[data-light] .song-cat-hdr span{color:rgba(26,16,5,.5) !important;}
+[data-light] .song-cat-hdr span span{color:rgba(26,16,5,.45) !important;}
+[data-light] .va button{background:var(--bg3) !important;color:var(--txt) !important;}
+[data-light] .pgbtn{background:var(--gold) !important;color:#fff !important;}
+[data-light] .chnav button.on{background:var(--gold) !important;color:#fff !important;}
+[data-light] .ch-vrange{color:#8c6214 !important;}
+[data-light] .admob-wrap{background:var(--bg3) !important;}
+[data-light] .rcbtn{background:rgba(0,0,0,.08) !important;border:1px solid rgba(0,0,0,.15) !important;color:var(--txt) !important;}
+[data-light] #ch-title{color:var(--txt) !important;}
+[data-light] #ch-sub{color:var(--txt2) !important;}
+[data-light] .rctls .rcbtn{color:var(--txt) !important;}
 </style>
 </head>
 <body>
 
-<!-- ═══ LOADING SCREEN (Fix 2 + Fix 7) ═══ -->
+<!-- ═══ LOADING SCREEN ═══ -->
 <div id="ls">
   <img src="icon.png" class="ls-img" onerror="this.style.display='none'"/>
   <div class="ls-title">வேத வசனம்</div>
   <div class="ls-sub">HOLY BIBLE · TAMIL + ENGLISH</div>
   <div class="ls-track"><div class="ls-bar" id="ls-bar"></div></div>
   <div class="ls-msg" id="ls-msg">Loading…</div>
-  <!-- Fix 7: error fallback -->
   <div class="ls-err" id="ls-err">
     ⚠ Data failed to load.<br/>
     Check that all bd_a.js – bd_f.js files<br/>are uploaded to public/data/
@@ -248,7 +273,6 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
 <div id="app" style="display:none">
   <header id="hdr">
     <div class="hbrand">
-      <!-- Fix 1: icon.png in public/ shown in header -->
       <img src="icon.png" class="hico" onerror="this.style.display='none'"/>
       <div>
         <div class="htit">வேத வசனம்</div>
@@ -475,7 +499,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
   <div class="ovbody" id="tts-body"></div>
 </div>
 
-<!-- AUDIO PANEL (Fix 3 — Inbuilt TTS with warmup) -->
+<!-- AUDIO PANEL -->
 <div id="au-panel">
   <div class="auinner">
     <button class="aucls" onclick="AU.close()">✕</button>
@@ -495,7 +519,7 @@ button:active{opacity:.7}input{font-family:inherit;outline:none}::-webkit-scroll
   </div>
 </div>
 
-<!-- DATA: Script tags (no fetch — reliable on Android) -->
+<!-- DATA -->
 <script src="data/bd_a.js"></script>
 <script src="data/bd_b.js"></script>
 <script src="data/bd_c.js"></script>
@@ -524,9 +548,9 @@ var BD=(function(){
         typeof BD_C!=='undefined'?BD_C:[],typeof BD_D!=='undefined'?BD_D:[],
         typeof BD_E!=='undefined'?BD_E:[],typeof BD_F!=='undefined'?BD_F:[]);
       _vv=all.map(function(r){
-        return{id:r[0]*1000000+r[1]*1000+r[2],bi:r[0],book:BEN[r[0]],bookTa:BTA[r[0]],
-               ch:r[1],v:r[2],ref:BEN[r[0]]+' '+r[1]+':'+r[2],
-               ta:r[3]||'',en:r[4]||'',color:CLR[r[0]%CLR.length]};
+        return{id:r[0]*1000000+r*1000+r,bi:r[0],book:BEN[r[0]],bookTa:BTA[r[0]],
+               ch:r,v:r,ref:BEN[r[0]]+' '+r+':'+r,
+               ta:r||'',en:r||'',color:CLR[r[0]%CLR.length]};
       });
       _map={};_bb={};
       _vv.forEach(function(v){
@@ -553,8 +577,6 @@ var BD=(function(){
     sc.sort(function(a,b){return b.s-a.s;});
     return sc.slice(0,15).map(function(x){return x.v;});
   }
-  /* Global verse cache — set when rendering cards, avoids byId lookup */
-  window._VC = {};
   window._VC={};
   return{BEN:BEN,BTA:BTA,CLR:CLR,build:build,count:function(){return _vv.length;},all:function(){return _vv;},
     byId:function(id){return _vv.find(function(v){return v.id===id;})||null;},
@@ -578,14 +600,12 @@ var ST=(function(){
 })();
 
 /* ═══════════════════════════════════════
-   AUDIO ENGINE — delegates to TTSEngine when available
-   Falls back to raw speechSynthesis if not loaded
+   AUDIO ENGINE
 ═══════════════════════════════════════ */
 var AU=(function(){
   var _ok=typeof window!=='undefined'&&'speechSynthesis'in window;
   var _v=null,_lang='ta',_vs=[],_warm=false,_ut=null;
 
-  /* Load voices — also re-init TTSEngine so its voice list stays fresh */
   function _lv(){
     if(_ok)_vs=window.speechSynthesis.getVoices()||[];
     if(typeof TTSEngine!=='undefined')TTSEngine.init();
@@ -597,7 +617,6 @@ var AU=(function(){
     setTimeout(_lv,500);setTimeout(_lv,1500);setTimeout(_lv,3500);setTimeout(_lv,7000);
   }
 
-  /* Warm-up: required by Android WebView before TTS works */
   function _warmup(){
     if(_warm||!_ok)return;
     try{
@@ -642,12 +661,10 @@ var AU=(function(){
     });
   }
 
-  /* Core speak — delegates to TTSEngine when available, raw SpeechSynthesis as fallback */
   function _speak(text,lc,onEnd){
     if(!text||!text.trim()){msg('⚠ No text.');return;}
     stop();
 
-    /* ── TTSEngine path (better voice selection + chunking) ── */
     if(typeof TTSEngine!=='undefined'&&TTSEngine.isSupported()){
       sui(true);msg('');
       TTSEngine.on('onError',function(){
@@ -663,7 +680,6 @@ var AU=(function(){
       return;
     }
 
-    /* ── Raw speechSynthesis fallback ── */
     if(!_ok){msg('⚠ Speech not available.');return;}
     _lv();
     try{
@@ -735,14 +751,11 @@ var AU=(function(){
 })();
 
 /* ═══════════════════════════════════════
-   IN-APP NOTIFICATIONS (No Firebase needed)
-   Admin sends message via localStorage ADMIN_MSG
-   Users see it as a banner notification
+   IN-APP NOTIFICATIONS
 ═══════════════════════════════════════ */
 var PN=(function(){
   var _dismissed=false;
   function checkLocal(){
-    /* Check for admin message stored in localStorage */
     try{
       var raw=localStorage.getItem('ADMIN_MSG');
       if(!raw)return;
@@ -770,42 +783,28 @@ var PN=(function(){
 
 /* ═══════════════════════════════════════
    TTSS — TTS SETTINGS OVERLAY
-   Opens the TTS settings overlay and renders
-   TTSEngine's diagnostic + test panel inside it.
-   Falls back gracefully if TTSEngine not loaded.
 ═══════════════════════════════════════ */
 var TTSS=(function(){
-
   function open(){
-    /* Re-init TTSEngine on user gesture — critical for lazy browsers */
-    if(typeof TTSEngine!=='undefined'){
-      TTSEngine.init();
-    }
+    if(typeof TTSEngine!=='undefined') TTSEngine.init();
     var ov=document.getElementById('tts-ov');
     if(!ov)return;
     ov.classList.add('on');
     _render();
   }
-
   function close(){
-    /* Stop any test audio */
     if(typeof TTSEngine!=='undefined')TTSEngine.stop();
     else AU.stop();
     var ov=document.getElementById('tts-ov');
     if(ov)ov.classList.remove('on');
   }
-
   function _render(){
     var body=document.getElementById('tts-body');
     if(!body)return;
-
-    /* ── TTSEngine available: use its built-in settings panel ── */
     if(typeof TTSEngine!=='undefined'){
       TTSEngine.renderSettingsPanel('tts-body');
       return;
     }
-
-    /* ── Fallback: TTSEngine not loaded ── */
     var supported='speechSynthesis'in window;
     body.innerHTML=[
       '<div style="padding:20px 16px;text-align:center">',
@@ -821,11 +820,8 @@ var TTSS=(function(){
       '</div>'
     ].join('');
   }
-
   return{open:open,close:close};
 })();
-
-
 
 /* ═══════════════════════════════════════
    VERSES SCREEN — SV
@@ -943,7 +939,7 @@ var SA=(function(){
 })();
 
 /* ═══════════════════════════════════════
-   CHAPTER READER — CR
+   CHAPTER READER — CR (Verse range included)
 ═══════════════════════════════════════ */
 var CR=(function(){
   var _bk='Genesis',_ch=1,_lang='ta';
@@ -963,9 +959,13 @@ var CR=(function(){
   function ch(){return _ch;}
   function _render(){
     var vs=BD.byBookCh(_bk,_ch);
-    document.getElementById('ch-title').textContent=_bk+' — Chapter '+_ch;
+    var vCount=vs.length;
+    var vRange = vCount > 1 ? (' (1–' + vCount + ' Verses)') : (vCount === 1 ? ' (1 Verse)' : '');
+    var vRangeTa = vCount > 1 ? (' (வசனங்கள் 1–' + vCount + ')') : (vCount === 1 ? ' (1 வசனம்)' : '');
+
+    document.getElementById('ch-title').innerHTML=_bk+' — Chapter '+_ch + '<span class="ch-vrange">'+vRange+'</span>';
     var bi=BD.BEN.indexOf(_bk);
-    document.getElementById('ch-sub').textContent=(bi>=0?BD.BTA[bi]:'')+' — அதிகாரம் '+_ch;
+    document.getElementById('ch-sub').innerHTML=(bi>=0?BD.BTA[bi]:'')+' — அதிகாரம் '+_ch + '<span class="ch-vrange">'+vRangeTa+'</span>';
     document.getElementById('ch-jump').textContent='Ch '+_ch;
     var body=document.getElementById('ch-body');
     body.innerHTML=vs.map(function(v){
@@ -1229,7 +1229,6 @@ var App=(function(){
     var ls=['both','ta','en'],cur=ST.g('lang')||'both';
     var next=ls[(ls.indexOf(cur)+1)%ls.length];
     ST.setLang(next);
-    /* lang-btn removed from header */
     if(_cur==='verses')SV.render();
   }
 
@@ -1252,14 +1251,15 @@ var App=(function(){
     return n;
   }
 
-  function _vcard(v){window._VC[v.id]=v;
+  function _vcard(v){
+    window._VC[v.id]=v;
     var lang=ST.g('lang')||'both';var sv=ST.isSaved(v.id);
     return '<div class="vc"><div class="vch">'+
       '<div><div class="vr">'+v.ref+'</div><div class="vbk">'+v.bookTa+'</div></div>'+
       '<div class="va">'+
       '<button onclick="AU.open(window._VC['+v.id+'])">🔊</button>'+
       '<button onclick="RM.open(window._VC['+v.id+'])">📖</button>'+
-      '<button onclick="App.toggleSave('+v.id+',this)">'+(sv?'♥':'♡')+'</button>'+
+      '<button id="sv'+v.id+'" onclick="App.toggleSave('+v.id+',this)">'+(sv?'♥':'♡')+'</button>'+
       '</div></div><div class="vbd">'+
       (lang!=='en'?'<div class="vta">'+v.ta+'</div>':'')+
       (lang!=='ta'?'<div class="ven">'+v.en+'</div>':'')+
@@ -1319,7 +1319,6 @@ var App=(function(){
     var g=document.getElementById('stor-grid');
     var f=document.getElementById('stor-filt');
     if(!g||typeof KIDS_STORIES==='undefined')return;
-    /* Collect unique categories — ES5 safe, no spread/Set */
     var cats=[],seen={};
     for(var i=0;i<KIDS_STORIES.length;i++){
       var c=KIDS_STORIES[i].category;
@@ -1354,7 +1353,6 @@ var App=(function(){
     g.innerHTML=ids.map(function(id){var v=BD.byId(id);return v?_vcard(v):'';}).join('')+'<div class="pb"></div>';
   }
 
-  /* Build missing screen HTML before init */
   function _buildScreens(){
     var ss=document.getElementById('s-search');
     if(ss&&!document.getElementById('ai-srch')){
@@ -1365,7 +1363,6 @@ var App=(function(){
         '<button class="sbtn" onclick="SA.run()">→</button></div>'+
         '<div id="ai-list" class="pb"></div>';
     }
-    /* Update song overlay hear button */
     var songbar=document.getElementById('songbar');
     if(songbar&&!document.getElementById('sg-hear-ta')){
       var old=songbar.querySelector('.rcbtn');if(old)old.remove();
@@ -1377,7 +1374,6 @@ var App=(function(){
 
   function init(){
     if(ST.g('theme')==='light'){document.documentElement.setAttribute('data-light','');document.getElementById('th-btn').textContent='🌙';}
-    /* lang-btn removed from header */
     _buildScreens();
     var bar=document.getElementById('ls-bar'),lmsg=document.getElementById('ls-msg');
     function prog(p,t){if(bar)bar.style.width=p+'%';if(lmsg)lmsg.textContent=t;}
@@ -1408,25 +1404,21 @@ var App=(function(){
 /* ═══════════════════════════════════════
    FIX: AU.readCh uses CR.bk() / CR.ch()
 ═══════════════════════════════════════ */
-/* readCh — reads current chapter via TTSEngine / AU.speakText */
 AU.readCh=function(){
   var bk=CR&&CR.bk?CR.bk():'';
   var ch=CR&&CR.ch?CR.ch():1;
   if(!bk)return;
   var vs=BD.byBookCh(bk,ch);
   if(!vs.length)return;
-  /* Show audio panel */
   var panel=document.getElementById('au-panel');
   if(panel&&!panel.classList.contains('on')){
     document.getElementById('au-ref').textContent=bk+' Ch '+ch;
     panel.classList.add('on');
   }
   var lang=AU.getLang?AU.getLang():'ta';
-  /* Build numbered text */
   var t=vs.map(function(v,i){return (i+1)+'. '+(lang==='ta'?v.ta:v.en);}).join(' ');
   var msgEl=document.getElementById('au-msg');
   if(msgEl)msgEl.textContent='Reading '+vs.length+' verses…';
-  /* Use TTSEngine if available, else AU.speakText */
   if(typeof TTSEngine!=='undefined'&&TTSEngine.isSupported()){
     TTSEngine.speakLong(t,lang==='ta'?'ta-IN':'en-US',function(){
       if(msgEl)msgEl.textContent='Chapter complete ✓';
@@ -1444,7 +1436,6 @@ if(document.readyState==='loading'){
 }else{
   App.init();
 }
-
 </script>
 </body>
 </html>
